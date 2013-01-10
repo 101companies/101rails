@@ -16,6 +16,9 @@ role :web, "sl-mac.uni-koblenz.de"                          # Your HTTP server, 
 role :app, "sl-mac.uni-koblenz.de"                          # This may be the same as your `Web` server
 role :db,  "sl-mac.uni-koblenz.de", :primary => true # This is where Rails migrations will run
 
+set :user, "wiki101"
+set :host, 'sl-mac.uni-koblenz.de'
+
 default_run_options[:pty] = true  # Must be set for the password prompt
                                   # from git to work
 set :repository, "git://github.com/101companies/101rails.git"  # Your clone URL
@@ -41,9 +44,6 @@ after "deploy:restart", "deploy:cleanup"
 # if you're still using the script/reaper helper you will need
 # these http://github.com/rails/irs_process_scripts
 
-
-#TODO: try this to precompile assets https://gist.github.com/1477596
-
 # If you are using Passenger mod_rails uncomment this:
  namespace :deploy do
   task :start do ; end
@@ -61,20 +61,13 @@ namespace :deploy do
       ln -s #{shared_path}/assets #{latest_release}/public/assets
     CMD
   end
-
-  task :assets do
-    update_code
-    ln_assets
-    
-    run_locally "rake assets:precompile"
-    run_locally "cd public; tar -zcvf assets.tar.gz assets"
-    top.upload "public/assets.tar.gz", "#{shared_path}", :via => :scp
-    run "cd #{shared_path}; tar -zxvf assets.tar.gz"
-    run_locally "rm public/assets.tar.gz"
-    run_locally "rm -rf public/assets"
-    
-    create_symlink
-    restart
-  end
-
 end
+
+namespace :assets do
+    desc 'Run the precompile task locally and rsync with shared'
+    task :precompile, :roles => :web, :except => { :no_release => true } do
+      %x{bundle exec rake assets:precompile}
+      %x{rsync --recursive --times --rsh=ssh --compress --human-readable --progress public/assets #{user}@#{host}:#{shared_path}}
+      %x{bundle exec rake assets:clean}
+    end
+  end
