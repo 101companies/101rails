@@ -8,6 +8,7 @@ set :rake, "#{rake} --trace"
 
 set :scm, :git
 set :scm_command, "/usr/local/bin/git"
+set :local_scm_command, "/usr/local/bin/git"
 
 # Or: `accurev`, `bzr`, `cvs`, `darcs`, `git`, `mercurial`, `perforce`, `subversion` or `none`
 
