@@ -1,4 +1,4 @@
-101rails
-========
+101wiki
+=======
 
-101wiki web front-end written Rails and backbone.js
+We are moving gradually 101wiki-related efforts to here (from 101dev or wherever).

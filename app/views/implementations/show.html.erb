@@ -1,0 +1,8 @@
+<script type="text/javascript">
+  $(function() {
+    Wiki.page = <%= @title.to_json.html_safe -%>
+    
+    window.router = new Wiki.Routers.ImplementationsRouter();
+    Backbone.history.start();
+  });
+</script>

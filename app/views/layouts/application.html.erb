@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= content_for?(:title) ? yield(:title) : "Wiki" %></title>
+  <meta name="description" content="<%= content_for?(:description) ? yield(:description) : "Wiki" %>">
+  <%= stylesheet_link_tag "application", :media => "all" %>
+  <%= javascript_include_tag "application" %>
+  <%= csrf_meta_tags %>
+  <%= yield(:head) %>
+</head>
+<body>
+
+  <div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+      <div class="container-fluid">
+        <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </a>
+        <a class="brandname" href="/" name="top"><!--img src="assets/logo.jpg"/-->101companies</a>
+        <div class="nav-collapse collapse">
+          <ul class="nav">
+            <li class="divider-vertical"></li>
+            <li class="active"><a href="/wiki"><i class="icon-file"></i>Wiki</a></li>
+            <li class="divider-vertical"></li>
+            <li><a href="/data"><i class="icon-envelope"></i>Data</a></li>
+            <li class="divider-vertical"></li>
+          </ul>
+
+           <!-- The drop down menu -->
+        <ul class="nav pull-right">
+           <% if !user_signed_in? %>
+          <li><a href="/users/sign_up">Sign Up</a></li>
+          <li class="divider-vertical"></li>
+          <li class="dropdown">
+            <a class="dropdown-toggle" href="#" data-toggle="dropdown">Sign In <strong class="caret"></strong></a>
+            <div class="dropdown-menu" style="padding: 15px; padding-bottom: 0px;">
+
+              <!-- http://mifsud.me/adding-dropdown-login-form-bootstraps-navbar/ -->
+          <form action="[YOUR ACTION]" method="post" accept-charset="UTF-8">
+  <input id="user_username" style="margin-bottom: 15px;" type="text" name="user[username]" size="30" />
+  <input id="user_password" style="margin-bottom: 15px;" type="password" name="user[password]" size="30" />
+  <input id="user_remember_me" style="float: left; margin-right: 10px;" type="checkbox" name="user[remember_me]" value="1" />
+  <label class="string optional" for="user_remember_me"> Remember me</label>
+ 
+  <input class="btn btn-primary" style="clear: left; width: 100%; height: 32px; font-size: 13px;" type="submit" name="commit" value="Sign In" />
+</form>
+<h5><%= "Or use your GitHub account" -%></h5>
+<%= render '/authentications/authentications' %>
+            </div>
+          </li>
+        </ul>
+      <% else %>
+          <div class="btn-group pull-right">
+            <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+              <i class="icon-user"></i> <%= current_user.email %> <span class="caret"></span>
+            </a>
+            <ul class="dropdown-menu">
+              <li><a href="#"><i class="icon-wrench"></i><%=link_to "Settings", current_user %></a></li>
+              <li class="divider"></li>
+              <li><a href="#"><i class="icon-share"></i><%= link_to "Logout", destroy_user_session_path, :method => 'delete' %></a></li>
+            </ul>
+          </div>
+      <% end %>
+        </div>
+        <!--/.nav-collapse -->
+      </div>
+      <!--/.container-fluid -->
+    </div>
+    <!--/.navbar-inner -->
+  </div>
+  <!--/.navbar -->
+  <%= render 'layouts/messages' %>
+  <div class="container-fluid">
+    <div class="row-fluid"> 
+      <div class="span12">
+        <%= yield %>
+      </div>  
+    </div>
+  </div> 
+
+  <footer><p>&copy; 101companies</p></footer>
+</body>
+</html>

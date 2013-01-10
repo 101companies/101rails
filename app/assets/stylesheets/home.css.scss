@@ -1,0 +1,301 @@
+0// Place all the styles related to the home controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+html {
+	background-color: rgb(250,250,250);
+	padding-top: 0px;
+}
+
+body {
+	background-color: rgb(250,250,250);
+}
+
+
+.container a{
+  color: #043048;
+  &:visited {
+    color: #043048;
+  }
+  &:hover {
+    color: #043048;
+  }
+}
+
+
+h1, h2, h3, h4, h5, h6, h7{
+	color: #333;
+}
+
+h2 {
+	font-size: 28px;
+}
+
+.container h2 a {
+	color: #333;
+}
+
+
+.tablecontainer {
+	width: 40%;
+	padding: 10px;
+}
+
+#main {
+  margin: -10px 10% 0px 10%;
+  background-color: rgb(250,250,250);
+  border-radius: 4px;
+  box-shadow: 0 0 2px 1px #777 ,0 0 4px 1px #397AA1;
+  background-color: rgb(240,240,240);
+  padding: 15px 25px 5px 25px;
+  height: 100%;
+  margin-top: 30px;
+}
+
+.header {
+	padding: 0px 0px 0px 10%;
+	/* IE10 Consumer Preview */
+	background-image: -ms-linear-gradient(top, rgb(250,250,250) 0%, rgb(230,230,235) 100%);
+	background-image: -moz-linear-gradient(top, rgb(250,250,250) 0%, rgb(230,230,235) 100%);
+	background-image: -o-linear-gradient(top, rgb(250,250,250) 0%, rgb(230,230,235) 100%);
+	background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, rgb(250,250,250)), color-stop(1, rgb(230,230,235)));
+	background-image: -webkit-linear-gradient(top, rgb(250,250,250) 0%, rgb(230,230,235) 100%);
+	background-image: linear-gradient(to bottom, rgb(250,250,250) 0%, rgb(230,230,245) 100%);
+	box-shadow: 0 0 3px 1px #777 ,0 0 2px 1px #397AA1;
+}
+
+header {
+	height: 57.3px;
+}
+
+#logo {
+	height: 57.3px;
+	width: 90px;
+	background-size: 100%;
+	float: left;
+	background-image: url('http://101companies.org/TechnologiesAnywhere.png')
+}
+
+
+#pagename {
+	float: left;
+	font-size: 16px;
+	color: rgb(20,20,40);
+	font-family: sketchRockwell;
+	padding: 20px 0px 0px 20px;
+	text-shadow: rgba(0,0,0,0.5) -1px 0, rgba(0,0,0,0.3) 0 -1px, rgba(255,255,255,0.5) 0 1px, rgba(0,0,0,0.3) -1px -1px;
+}
+
+
+
+#nav {
+  border-radius: 3px;
+  padding-bottom: 40px;
+  margin-left: 10px;
+  float: right;
+  margin-top: 10px;
+}
+
+#nav div {
+	font-weight:bold;
+	float: right;
+	margin: 0px 10px 0px 0px;
+	padding: 2px 15px 2px 15px;
+	box-shadow: 0 0 2px 1px #888,0 0 3px 1px #397AA1;
+	background-color: rgb(220,220,220);
+
+    -webkit-transition: background 50ms ease-in 00ms; /* property duration timing-function delay */
+    -moz-transition: background 150ms ease-in 00ms;
+    -o-transition: background 150ms ease-in 00ms;
+    transition: background 150ms ease-in 00ms;
+	border-radius: 3px;
+}
+
+#nav div:hover {
+	background-color: #3E6379;
+}
+
+#nav a {
+	color: #060224;
+}
+
+footer {
+	text-align: center;
+	font-size: 16px;
+	margin-top: 10px;
+	margin-bottom: 15px;
+	padding: 10px 0px 0px 5px;
+	background-color: rgb(250,250,250);
+}
+
+.item {
+	padding: 1px 0px 1px 3px;
+}
+
+.indexaction, .newaction {
+	font-weight:bold;
+	font-size: 11px;
+	padding: 6px 12px 6px 12px;
+	box-shadow: 0 0 1px 1px #888;
+	border-radius: 1px;
+    background: -webkit-linear-gradient(#eeedfa,#bfbfc9);
+    background: -moz-linear-gradient(#eeedfa,#bfbfc9);
+    background: -o-linear-gradient(#eeedfa,#bfbfc9);
+    background: -ie-linear-gradient(#eeedfa,#bfbfc9);
+
+    -webkit-transition: background 200ms ease-out;
+    -moz-transition: background 200ms ease-out;
+    -o-transition: background 200ms ease-out;
+    -ie-transition: background 200ms ease-out;
+
+    background-size:1px 50px;
+}
+.indexaction:hover {
+	   background-position:25px;
+}
+
+a.newaction {
+	margin-bottom: 10px;
+}
+
+
+p {
+	margin-bottom: 1px;
+}
+
+#wikicontent {
+	padding: 5px 15px 15px 15px;
+	margin: 0px 15px 0px 15px;
+}
+
+#wikicontent p, #wikicontent ul {
+	margin-left: 10px;
+	font-size: 16px;
+	line-height: 1.5;
+}
+
+.sep {
+	height: 0px;
+	border-width: 0px 0px 1px 0px;
+	border-style: solid;
+	border-color: #999;
+}
+
+@font-face {
+	font-family: sketchRockwell;
+	src: url('/assets/Strato-linked.ttf');
+}
+.container {
+	background-color: #FFFFFF;
+	-webkit-border-radius: 2px;
+      -moz-border-radius: 2px;
+        border-radius: 2px;
+	padding: 10px 20px 10px;
+	margin-top: 60px;
+	overflow: hidden;
+}
+
+.headlinecontainer {
+	width: 100%;
+	height: 50px;
+}
+
+.editbutton {
+	float: right;
+}
+
+.editbutton a:visted{
+	float: right;
+}
+
+
+.headline {
+	float: left;
+	width: 50%;
+
+}
+
+.brandname {
+  display: block;
+  float: left;
+  padding: 13px 20px 10px;
+  margin-left: 20px;
+  text-shadow: 0 4px 0 #ffffff;
+  font-family: sketchRockwell;
+  color: #333;
+  color: #B62424;
+  font-size: 15px;
+}
+
+.brandname:hover {
+  color: #333;
+  text-decoration: none;
+}
+
+.brandname:visted {
+  color: #B62424;
+}
+
+
+.navbar-fixed-top {
+	border-radius: 10px;
+	box-shadow:0 0 10px 1px #333;
+}
+
+.section-content-container {
+	overflow: hidden;
+	width: 100%;
+}
+
+.section-content, .section-content ul, .section-content p {
+	width: 200%;
+	font-size: 14px;
+	padding-left: 3px;
+}
+
+.section-content-parsed,.section-content-source {
+
+	float: left;
+	width: 50%;
+}
+
+.section-content-source {
+	height: 0px;
+}
+
+
+.editor {
+	float: left;
+	width: 50%;
+	height: 0px;
+}
+
+#categories {
+	margin-bottom: 20px;
+}
+
+.label {
+	background-color: #555;
+	font-weight: 500;
+}
+.tripel {
+	color: gray;
+ 	text-align: left;
+ 	margin-bottom: 100px;
+}
+
+.subject, .predicate, .object, .arrow {
+	margin-left: 4px;
+	margin-right: 4px;
+	float: left;
+}
+
+.arrow {
+	font-size: 12px;
+}
+.predicate {
+	font-style: italic;
+	font-weight: bold;
+	color: #333;
+	background-color: white;
+}
