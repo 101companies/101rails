@@ -5,7 +5,6 @@
   <title><%= content_for?(:title) ? yield(:title) : "Wiki" %></title>
   <meta name="description" content="<%= content_for?(:description) ? yield(:description) : "Wiki" %>">
   <%= stylesheet_link_tag "application", :media => "all" %>
-  <%= javascript_include_tag "application" %>
   <%= csrf_meta_tags %>
   <%= yield(:head) %>
 </head>
@@ -72,30 +71,9 @@
 
         <hr class="soften">
 
-        <h2>Our Latest Projects</h2>
+        <h2>Quotes</h2>
         <p class="marketing-byline">Quisque a quam non metus fringilla feugiat quisen, id interdum mi. <a href="portfolio.html">Click here</a> to see our portfolio.</p>
-        <ul id="latest-projects" class="thumbnails portfolio">
-            <li class="span3">
-                <a href="portfolio.html">
-                    <img class="sengal-thumbnail thumbnail" alt="Portfolio Item" src="http://placehold.it/300x250">
-                </a>
-            </li>
-            <li class="span3">
-                <a href="portfolio.html">
-                    <img class="sengal-thumbnail thumbnail" alt="Portfolio Item" src="http://placehold.it/300x250">
-                </a>
-            </li>
-            <li class="span3">
-                <a href="portfolio.html">
-                    <img class="sengal-thumbnail thumbnail" alt="Portfolio Item" src="http://placehold.it/300x250">
-                </a>
-            </li>
-            <li class="span3">
-                <a href="portfolio.html">
-                    <img class="sengal-thumbnail thumbnail" alt="Portfolio Item" src="http://placehold.it/300x250">
-                </a>
-            </li>
-        </ul>
+         <div>BLOCK</div>
     </div>
 </div>
 <div id="footer">

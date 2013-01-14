@@ -1,0 +1,565 @@
+body{
+    background-color: #efefeb;
+    font-size: 0.875em;
+}
+
+/* Header
+-------------------------------------------------- */
+#header{
+    background: url(/assets/topbg.jpg) repeat-x;
+    max-height: 523px;
+}
+#logo{
+    margin-top: 0; margin-left: 0; padding:  0;
+    font-size: 38.5px;
+    display: inline;
+}
+#logo a, #logo a:hover{
+    color: #372F2B;
+    font-family: 'Source Sans Pro','Helvetica Neue',Helvetica,Arial,sans-serif;
+    text-shadow: 1px 1px 3px #FFFFFF;
+    text-decoration: none;
+}
+
+#logo-nav-container{
+    padding: 30px 0 10px 0;
+}
+
+#logo-nav-container h1{
+    color: #372F2B;
+}
+
+#home-page-marketing{
+    padding: 30px 0;
+}
+
+#bricks-hero-unit h1{
+    text-shadow: 1px 1px 3px #fff;
+    color: #372f2b;
+    line-height: 50px;
+    font-family: 'Source Sans Pro', 'Helvetica Neue',Helvetica,Arial,sans-serif;
+    margin-top: 0;
+}
+
+#bricks-hero-unit .explanation{
+    color: #5f5f5f;
+    text-shadow: 0 0 1px #fff;
+    margin-top: 20px;
+    line-height: 28px;
+    font-size: 16px;
+}
+
+#bricks-hero-unit .action-buttons-container{
+    margin-top: 30px;
+}
+
+#bricks-nav li a{
+    color : #404040;
+}
+
+#bricks-nav li a:hover, #bricks-nav li.active a{
+    /*background-image: linear-gradient(to bottom, #286398, #3b85c8);*/
+    background-color : #3b85c8;
+    color: #fff;
+}
+
+#top-left-nav .nav > li > a{
+    text-shadow: none;
+}
+
+#top-left-nav .btn-navbar{
+    color: #fff;
+    text-shadow: none;
+    background-color: #006DCC;
+    background-image: linear-gradient(to bottom, #3b85c8, #286398);
+}
+
+/* Content
+-------------------------------------------------- */
+
+
+.page-header h1{
+    color: #372F2B;
+    font-family: 'Source Sans Pro','Helvetica Neue',Helvetica,Arial,sans-serif;
+    text-shadow: 1px 1px 3px #FFFFFF;
+}
+
+#middle-bar{
+    /*background-color: #F5F5F5;*/
+    background-color: #fff;
+    border-bottom: 1px solid #DDDDDD;
+    border-top: 1px solid #FFFFFF;
+    padding: 15px 0;
+    box-shadow: 0 2px 4px rgba(220, 218, 216, 0.75);
+}
+
+#footer{
+    background-color: #FFFFFF;
+    border-top: 1px solid #DCDAD8;
+    box-shadow: 0 2px 4px rgba(220, 218, 216, 0.75);
+    margin-top: 70px;
+}
+
+.marketing{
+    color: #5f5f5f;
+    text-align: center;
+}
+.marketing-left{
+    text-align: left;
+}
+.marketing h2 {
+    font-weight: 200;
+    line-height: 1;
+    margin: 60px 0 10px;
+    font-family: 'Source Sans Pro','Helvetica Neue',Helvetica,Arial,sans-serif;
+    color: #372f2b;
+    text-shadow: 0 2px 3px #fff;
+    font-size: 40px;
+}
+
+#content h2{
+    font-weight: 200;
+    line-height: 1;
+    font-family: 'Source Sans Pro','Helvetica Neue',Helvetica,Arial,sans-serif;
+    color: #372f2b;
+    text-shadow: 0 2px 3px #fff;
+}
+
+.marketing .marketing-byline {
+    color: #999999;
+    font-size: 20px;
+    font-weight: 300;
+    line-height: 1.25;
+    margin-bottom: 30px;
+}
+
+.marketing h3, #content h3 {
+    font-weight: 200;
+    margin-bottom: 5px;
+    font-family: 'Source Sans Pro','Helvetica Neue',Helvetica,Arial,sans-serif;
+    color: #372f2b;
+}
+
+.marketing p, #content p {
+    line-height: 26px;
+}
+
+.soften{
+    border-bottom: 2px solid white;
+    border-top: 1px solid #BEC0C3;
+    margin: 70px 0;
+}
+
+#social-following p{
+
+}
+
+.social-item{
+    font-size: 22px;
+    display: inline-block;
+    margin-right: 30px;
+}
+
+/* Footer
+-------------------------------------------------- */
+#copyright{
+    border-top: 1px solid #EBE8E5;
+    clear: both;
+    margin: 1.1429em 0;
+    overflow: hidden;
+    padding-top: 1.0714em;
+}
+
+#footer h4{
+    margin: 1.5238em 0;
+}
+
+#social-icons li a{
+    font-size: 24px;
+    color: #372f2b;
+    border-radius: 50%;
+    padding: 4px; margin: 4px;
+
+}
+#social-icons li a:hover{
+    text-decoration: none;
+    background: #372f2b;
+    color: #fff;
+}
+address{
+    line-height: 24px;
+}
+
+#from-the-blog a{
+    color: #333;
+}
+
+
+#featured-list li{
+    margin-left: 10px;
+}
+
+.quote{
+    font-style: italic;
+    font-weight: bold;
+    letter-spacing: 0.021em;
+
+}
+#content .page-header h2{
+    margin-top: 40px;
+}
+
+
+/* Blog
+-------------------------------------------------- */
+.entry{
+    margin: 30px 0 15px 0;
+    border-bottom: 1px solid #d7d7d3;
+    padding-bottom: 15px;
+}
+
+.entry-meta span{
+    margin-right: 15px;
+}
+
+.entry h2{
+    margin: 10px 0;
+}
+
+.sidebar-widget{
+    margin: 15px 0 30px;
+}
+
+.sidebar-list{
+    margin: 0; padding: 0;
+}
+.sidebar-list li{
+    list-style: none;
+}
+
+.sidebar-list li a{
+    display: block;
+    color: #372F2B;
+    padding: 10px 0;
+    margin: 0;
+    border-bottom: 1px solid #d7d7d3;
+}
+
+.sidebar-widget h3{
+    border-bottom: 2px solid #c0c0c0;
+    text-transform: uppercase;
+    font-size: 18px;
+}
+
+#blog{
+    padding-top: 20px;
+}
+
+.no-middle-bar{
+    border-bottom: 5px solid #fff; box-shadow: 0 2px 4px rgba(220, 218, 216, 0.75);
+}
+
+#content .entry-content{
+    margin-bottom: 36px;
+}
+.entry-comments{
+    margin-top: 20px;
+}
+
+#content .entry-comments h3{
+    margin: 0;
+    padding: 18px 0;
+    border-bottom: 1px solid #C0C0C0;
+}
+
+#comments-list{
+    clear: both;
+    margin: 0;
+}
+
+.comment{
+    border-bottom: 1px solid #d7d7d3;
+    padding: 36px 0;
+}
+
+.last-comment{
+    border-bottom: none;
+}
+
+#comments-list .media .pull-left{
+    margin-right: 24px;
+}
+
+.comment .media-body .comment-author{
+    margin-top: 0;
+}
+
+.add-a-comment-form h3{
+    margin: 0;
+    padding: 18px 0;
+    border-bottom: 1px solid #C0C0C0;
+}
+
+
+/* Services Page
+-------------------------------------------------- */
+
+.service-icon{
+    font-size: 100px;
+    padding: 40px 0 30px 0;
+    display: block;
+    color: #372F2B;
+    text-shadow: 0 2px 3px #fff;
+}
+
+.services-icon{
+    display: block;
+    font-size: 40px;
+    margin-top: 30px;
+    color: #372F2B;
+    text-shadow: 0 2px 3px #fff;
+}
+
+
+/* Overwritten Classes
+-------------------------------------------------- */
+
+.btn-primary{
+    background-color: #006DCC;
+    background-image: linear-gradient(to bottom, #3b85c8, #286398);
+}
+
+.btn-primary:hover,
+.btn-primary:active,
+.btn-primary.active,
+.btn-primary.disabled,
+.btn-primary[disabled] {
+    color: #ffffff;
+    background-color: #286398;
+    *background-color: #286398;
+}
+
+.btn-primary:active,
+.btn-primary.active {
+    background-color: #286398 \9;
+}
+.page-header{
+    border-bottom: 1px solid #C0C0C0;
+}
+
+h1 small{
+    color: #5F5F5F;
+    text-shadow: 0 0 1px #FFFFFF;
+}
+
+
+h1, h2,h3, h4,h5,h6{
+    font-family: 'Source Sans Pro','Helvetica Neue',Helvetica,Arial,sans-serif;
+    color: #372f2b;
+}
+
+label{
+    color: #5f5f5f;
+    text-shadow: 0 0 1px #fff;
+    font-weight: 500;
+}
+
+.control-group{
+    margin: 18px 0;
+}
+
+
+/* Additional Classes
+-------------------------------------------------- */
+
+.sengal-pagination ul{
+    display: block;
+}
+
+.sengal-pagination ul > li > a, .sengal-pagination ul > li > span{
+    margin-right: 5px;
+    background-color: transparent;
+    color: #372f2b;
+    border: 1px solid #ccc;
+    font-weight: bold;
+}
+
+.sengal-pagination ul > li.active > a, .sengal-pagination ul > li > a:hover{
+    background-color: #006DCC;
+    background-image: linear-gradient(to bottom, #3b85c8, #286398);
+    color: #fff;
+    box-shadow: 1px 0 1px #000;
+    border: 1px solid transparent;
+}
+
+.sengal-form {
+    padding: 18px 0;
+}
+.sengal-form .select, .sengal-form textarea,
+.sengal-form input[type="text"],
+.sengal-form input[type="password"],
+.sengal-form input[type="datetime"],
+.sengal-form input[type="datetime-local"],
+.sengal-form input[type="date"], .sengal-form input[type="month"],
+.sengal-form input[type="time"], .sengal-form input[type="week"],
+.sengal-form input[type="number"], .sengal-form input[type="email"],
+.sengal-form input[type="url"], .sengal-form input[type="search"],
+.sengal-form input[type="tel"],.sengal-form  input[type="color"], .sengal-form .uneditable-input{
+    height: auto;
+    padding: 10px;
+}
+
+.sengal-pagination ul > .disabled > a:hover{
+    color: #fff;
+}
+
+#portfolio-list{
+    margin-top: 45px;
+}
+
+.sengal-thumbnail{
+    background-color: #fff;
+}
+
+
+/* Portrait tablet to landscape and desktop */
+@media (min-width: 768px) and (max-width: 979px) {
+
+    #logo{
+        font-size: 28px;
+        line-height: 34px;
+    }
+
+    #logo small{
+        font-size: 18px;
+    }
+
+    #bricks-hero-unit h1{
+        font-size: 28px;
+        line-height: 34px;
+    }
+
+    #bricks-hero-unit .explanation{
+        font-size: 14px;
+        line-height: 24px;
+    }
+
+    .btn-large{
+        font-size: 15px;
+        padding: 5px 10px;
+    }
+
+}
+
+/* Landscape phone to portrait tablet */
+@media (max-width: 767px) {
+
+    body{
+        padding-left: 0; padding-right: 0;
+    }
+
+
+    #header, #middle-bar, #content, #footer{
+        padding: 0 20px;
+    }
+
+
+    #bricks-hero-unit h1{
+        font-size: 32px;
+        line-height: 42px;
+
+    }
+
+    #bricks-hero-unit .explanation{
+        font-size: 14px;
+        color: #000;
+        line-height: 26px;
+    }
+
+    #bricks-hero-unit .action-buttons-container{
+        margin: 20px 0;
+        text-align: center;
+    }
+
+    #home-page-marketing{
+        padding: 0 0;
+    }
+
+    .hero-unit-image{}
+
+    #header{
+        max-height: none;
+        background-image: none;
+        background-color: #b7dbf1;
+    }
+    
+    .sengal-thumbnail{
+        margin: 0 auto;
+    }
+
+    .marketing h2{
+        margin : 30px 0 10px
+    }
+
+    .marketing .marketing-byline{
+        font-size: 16px;
+        line-height: 26px;
+    }
+
+    .soften{
+        margin: 35px 0;
+    }
+
+    #top-left-nav .btn-navbar{
+        color: #fff;
+        text-shadow: none;
+        background-color: #006DCC;
+        background-image: none;
+        border-radius: 0;
+        /*background-image: linear-gradient(to bottom, #3b85c8, #286398);*/
+    }
+
+    .thumbnails{
+        margin: 0;
+    }
+
+    #contact-map{
+        padding-top: 10px; padding-bottom: 20px;
+    }
+}
+
+/* Landscape phones and down */
+@media (max-width: 480px) {
+    #logo{
+        font-size: 24px;
+    }
+
+    #logo-nav-container{
+        padding: 10px 0;
+    }
+
+    #logo-nav-container .navbar{
+        margin-bottom: 0;
+    }
+
+    #logo small{
+        font-size: 18px;
+    }
+
+    #bricks-hero-unit{
+        margin-top: 10px;
+    }
+
+    #bricks-hero-unit h1{
+        font-size: 30px;
+        line-height: 32px;
+        margin-bottom: 20px;
+    }
+
+    #header{
+        max-height: none;
+        background-image: none;
+        background-color: #b7dbf1;
+    }
+
+}
