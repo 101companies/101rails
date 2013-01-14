@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= content_for?(:title) ? yield(:title) : "Wiki" %></title>
+  <meta name="description" content="<%= content_for?(:description) ? yield(:description) : "Wiki" %>">
+  <%= stylesheet_link_tag "application", :media => "all" %>
+  <%= javascript_include_tag "application" %>
+  <%= csrf_meta_tags %>
+  <%= yield(:head) %>
+</head>
+<body>
+<div id="header" class="no-middle-bar">
+    <div class="container">
+        <div id="logo-nav-container" class="row">
+            <div class="span12">
+                <div id="top-left-nav" class="navbar">
+                    <h1 id="logo" class="brand"><a href="index.html">Sengal <small>business theme</small></a></h1>
+                    <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+                    <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                        <span class="icon-reorder"></span>
+                    </a>
+                    <div class="nav-collapse collapse">
+                        <ul id="bricks-nav" class="nav nav-pills pull-right">
+                            <li class = "active" ><a href="index.html">Home</a></li>
+                            <li ><a href="services.html">Services</a></li>
+                            <li ><a href="about.html">About</a></li>
+                            <li ><a href="blog.html">Blog</a></li>
+                            <li ><a href="portfolio.html">Portfolio</a></li>
+                            <li class="dropdown" ><a class="dropdown-toggle" data-toggle="dropdown" href="portfolio.html">Pages <b class="caret"></b></a><ul class="dropdown-menu"><li><a href="single.html">Blog Post</a></li><li><a href="sliding-home.html">Sliding Home Page</a></li><li><a href="services.html">Services</a></li></ul></li>
+                            <li ><a href="contact.html">Contact</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>        </div>
+        <div id="home-page-marketing" class="row">
+            <div id="bricks-hero-unit" class="span6">
+                <h1>A responsive business theme based on bootstrap</h1>
+                <img src="img/responsive-layout.png" class="visible-phone hero-unit-image" />
+                <p class="explanation">Donec non ultricies est. Vestibulum porta odio justo, et tincidunt metus. Cras dictum laoreet nibh, nec tempus tortor porta vel. Cras risus purus, porttitor sed condimentum ac, scelerisque quis ipsum. Donec posuere tincidunt nisl vitae facilisis. Nam pharetra elit ut lacus feugiat eget cursus leo blandit.</p>
+                <p class="action-buttons-container"><a class="btn btn-primary btn-large">Get in touch with us</a></p>
+            </div>
+            <div class="span6 hidden-phone">
+                <img src="img/responsive-layout.png" />
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="content" class="container">
+    <div class="marketing">
+        <h2>Our Services</h2>
+        <p class="marketing-byline">Quisque a quam non metus fringilla feugiat quis non sem. Phasellus quis felis sapien, id interdum mi. <a href="services.html">Learn more</a></p>
+
+        <div class="row">
+            <div class="span4">
+                <i class="icon-tint service-icon"></i>
+                <h3>Consulting</h3>
+                <p>In in tellus a ante dignissim aliquet. Phasellus odio nisi, hendrerit vel faucibus ac, iaculis et metus. Nulla ac suscipit quam. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Curabitur porta pharetra laoreet.</p>
+            </div>
+            <div class="span4">
+                <i class="icon-leaf service-icon"></i>
+                <h3>Technology</h3>
+                <p>Nam lacus nisl, facilisis ac tempor ac, faucibus et eros. Cras sed erat libero, sit amet imperdiet urna. In tempor commodo dui, fringilla pharetra massa hendrerit blandit. Phasellus condimentum hendrerit condimentum.</p>
+            </div>
+            <div class="span4">
+                <i class="icon-globe service-icon"></i>
+                <h3>Outsourcing</h3>
+                <p>Donec eu enim metus. Nulla sed elit augue. Mauris purus turpis, placerat sed tincidunt at, rutrum ac sem. Integer eget mi mi, eget accumsan elit. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.</p>
+            </div>
+        </div>
+
+        <hr class="soften">
+
+        <h2>Our Latest Projects</h2>
+        <p class="marketing-byline">Quisque a quam non metus fringilla feugiat quisen, id interdum mi. <a href="portfolio.html">Click here</a> to see our portfolio.</p>
+        <ul id="latest-projects" class="thumbnails portfolio">
+            <li class="span3">
+                <a href="portfolio.html">
+                    <img class="sengal-thumbnail thumbnail" alt="Portfolio Item" src="http://placehold.it/300x250">
+                </a>
+            </li>
+            <li class="span3">
+                <a href="portfolio.html">
+                    <img class="sengal-thumbnail thumbnail" alt="Portfolio Item" src="http://placehold.it/300x250">
+                </a>
+            </li>
+            <li class="span3">
+                <a href="portfolio.html">
+                    <img class="sengal-thumbnail thumbnail" alt="Portfolio Item" src="http://placehold.it/300x250">
+                </a>
+            </li>
+            <li class="span3">
+                <a href="portfolio.html">
+                    <img class="sengal-thumbnail thumbnail" alt="Portfolio Item" src="http://placehold.it/300x250">
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
+<div id="footer">
+    <div class="container">
+        <div class="row">
+            <div class="span4">
+                <h4>From the Blog</h4>
+                <ul id="from-the-blog" class="unstyled">
+                    <li><p><a href="#">Vestibulum risus lorem, molestie quis placerat sit amet, pellentesque vel eros</a></p></li>
+                    <li><p><a href="#">In tortor ante, aliquam in vulputate non</a></p></li>
+                    <li><p><a href="#">Suspendisse non tellus augue, sit amet convallis purus</a></p></li>
+                    <li><p><a href="#">Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Curabitur porta pharetra laoreet.</a></p></li>
+                </ul>
+            </div>
+            <div class="span4">
+                <h4>Subscribe to our newsletter</h4>
+                <form>
+                    <div class="input-append">
+                        <input type="text" class="span3" placeholder="Enter your Email Address" />
+                        <button type="submit" class="btn btn-primary">Subscribe</button>
+                    </div>
+
+                </form>
+
+                <h4>Our Fan Following</h4>
+                <div id="social-following">
+                    <p>
+                        <span class="social-item"><i class="icon-facebook"></i> <span class="number">29,053</span></span>
+                        <span class="social-item"><i class="icon-twitter"></i> <span class="number">1,777</span></span>
+                        <span class="social-item"><i class="icon-rss"></i> <span class="number">2,345</span></span>
+                    </p>
+                </div>
+            </div>
+            <div class="span4">
+                <h4>Stay in touch</h4>
+                <ul id="social-icons" class="unstyled nav-pills">
+                    <li><a href=#><i class="icon-facebook"></i></a></li>
+                    <li><a href=#><i class="icon-google-plus"></i></a></li>
+                    <li><a href=#><i class="icon-pinterest"></i></a></li>
+                    <li><a href=#><i class="icon-linkedin"></i></a></li>
+                    <li><a href=#><i class="icon-envelope"></i></a></li>
+                </ul>
+                <h4 style="margin-bottom: 12px;">Our Office Address</h4>
+                <address>
+                    27 Name of the Office Building, <br/>
+                    Your Street, The City <br/>
+                    United States of America <br/>
+                    <i class="icon-phone"></i> + 1-555-563-3434
+                </address>
+            </div>
+        </div>
+        <div class="row">
+            <div id="copyright">
+                <div class="span6 pull-left"><p>&copy; The Bricks All Rights Reserved. 2013.</p></div>
+                <div class="span6">
+                    <ul class="unstyled nav-pills pull-right">
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="services.html">Services</a></li>
+                        <li><a href="about.html">About</a></li>
+                        <li><a href="blog.html">Blog</a></li>
+                        <li><a href="portfolio.html">Portfolio</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+    </div>s
+  <footer><p>&copy; 101companies</p></footer>
+</body>
+</html>
