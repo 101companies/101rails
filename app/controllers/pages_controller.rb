@@ -4,6 +4,9 @@ class PagesController < ApplicationController
 
   def show
     @title = params[:title]
+    if @title == nil
+      @title = "101companies:Project"
+    end  
     @page = Page.new(@title)
     respond_with @page
   end
