@@ -12,6 +12,7 @@
  *= require bootstrap
  *= require bootstrap-responsive
  *= require pygments
+ *= require home
 */
 .brand {
   float: left;
