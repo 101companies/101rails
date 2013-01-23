@@ -24,6 +24,7 @@ Wiki::Application.routes.draw do
         get 'sections/:title' => 'pages#section'
       end
     end
+    get 'user/allowed/:action/:page' => 'users#allowed'
   end
 
   devise_for :users, :controllers => { :registrations => 'registrations' }
