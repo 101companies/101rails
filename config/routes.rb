@@ -7,8 +7,8 @@ Wiki::Application.routes.draw do
 
   root :to => "home#index"
   get '/data' => 'home#data'
-  match '/Category/:title' => 'category_pages#show'
-  match '/:title' => 'pages#show'
+  get '/wiki' => 'pages#show'
+  match '/wiki/:title' => 'pages#show'
 
   #users
   match 'registrations' => 'users#index', :as => 'registrations'
