@@ -33,9 +33,9 @@ This application uses MongoDB with the Mongoid ORM.
 
 h2. Development
 
-* Template Engine: ERB
-* Testing Framework: RSpec and Factory Girl and Cucumber
-* Front-end Framework: None
+* Template Engine: ERB, HAML
+* Testing Framework: RSpec, Factory Girl, Cucumber
+* Front-end Framework: jQuery, backbone.js
 * Form Builder: None
 * Authentication: Devise
 * Authorization: None
@@ -46,7 +46,16 @@ The application is configured to send email using a Gmail account.
 
 h2. Getting Started
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+Install ruby version 1.9.3 and gem bundle.
+Then go to application folder and do
+@bundle install --path vendor/bundle@
+
+Now you need to install mongodb.
+If you are using OSX it could very helpful to use homebrew for this purposes:
+@brew install mongodb@
+
+After installing mongodb start this database and then simply launch application with:
+@bundle exec rails s@
 
 h2. Documentation and Support
 
