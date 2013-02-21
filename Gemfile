@@ -7,6 +7,9 @@ group :assets do
   gem 'compass-rails'
 end
 gem 'jquery-rails'
+
+gem 'thin' #faster web server
+
 gem "mongoid", ">= 3.0.5"
 gem "rspec-rails", ">= 2.11.0", :group => [:development, :test]
 gem "capybara", ">= 1.1.2", :group => :test
@@ -20,7 +23,7 @@ gem "devise", ">= 2.1.2"
 
 # Authentication
 gem 'omniauth'#, :git => 'git://github.com/intridea/omniauth.git'
-gem 'json_pure' 
+gem 'json_pure'
 gem 'json'
 gem 'omniauth-github'#, :git => 'git://github.com/intridea/omniauth-github.git'
 gem "cancan"
