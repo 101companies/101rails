@@ -10,33 +10,33 @@ gem 'jquery-rails'
 
 gem 'thin' #faster web server
 
-gem "mongoid", ">= 3.0.5"
-gem "rspec-rails", ">= 2.11.0", :group => [:development, :test]
-gem "capybara", ">= 1.1.2", :group => :test
-gem "database_cleaner", ">= 0.8.0", :group => :test
-gem "mongoid-rspec", ">= 1.4.6", :group => :test
-gem "email_spec", ">= 1.2.1", :group => :test
-gem "cucumber-rails", ">= 1.3.0", :group => :test, :require => false
-gem "launchy", ">= 2.1.2", :group => :test
-gem "factory_girl_rails", ">= 4.0.0", :group => [:development, :test]
-gem "devise", ">= 2.1.2"
+gem 'mongoid', '>= 3.0.5'
+gem 'rspec-rails', '>= 2.11.0', :group => [:development, :test]
+gem 'capybara', '>= 1.1.2', :group => :test
+gem 'database_cleaner', '>= 0.8.0', :group => :test
+gem 'mongoid-rspec', '>= 1.4.6', :group => :test
+gem 'email_spec', '>= 1.2.1', :group => :test
+gem 'cucumber-rails', '>= 1.3.0', :group => :test, :require => false
+gem 'launchy', '>= 2.1.2', :group => :test
+gem 'factory_girl_rails', '>= 4.0.0', :group => [:development, :test]
+gem 'devise', '>= 2.1.2'
 
 # Authentication
 gem 'omniauth'#, :git => 'git://github.com/intridea/omniauth.git'
 gem 'json_pure'
 gem 'json'
 gem 'omniauth-github'#, :git => 'git://github.com/intridea/omniauth-github.git'
-gem "cancan"
+gem 'cancan'
 gem 'bcrypt-ruby', '~> 3.0.0'
-gem "omniauth-identity"
+gem 'omniauth-identity'
 
-gem "rails-backbone"
+gem 'rails-backbone'
 
 gem 'httparty'
-gem "haml-rails"
+gem 'haml-rails'
 
 gem 'wikicloth', :git => 'git://github.com/avaranovich/wikicloth.git'
-gem "pygments.rb", "~> 0.2.13"
+gem 'pygments.rb', '~> 0.2.13'
 gem 'closure-compiler'
 
 # Deploy with Capistrano
