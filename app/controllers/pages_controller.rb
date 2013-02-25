@@ -13,10 +13,15 @@ class PagesController < ApplicationController
 
   # get all sections for a page
   def sections
-    title = params[:id]
-    page = Page.new(title)
-    sections = page.sections
-    respond_with sections
+    begin
+      title = params[:id]
+      page = Page.new(title)
+      sections = page.sections
+      respond_with sections
+    rescue
+      @error_message="#{$!}"
+      render :json => {:success => false, :error => @error_message}
+    end
   end
 
   def update
