@@ -8,7 +8,7 @@ Wiki::Application.routes.draw do
   root :to => "home#index"
   get '/data' => 'home#data'
   get '/wiki' => 'pages#show'
-  match '/wiki/:title' => 'pages#show'
+  match '/wiki/:title' => 'pages#show', :constraints => { :title => /.*/ }
 
   #users
   match 'registrations' => 'users#index', :as => 'registrations'
@@ -19,6 +19,7 @@ Wiki::Application.routes.draw do
     post 'classify' => 'classification#classify'
     resources :pages, :only => [:section,:show] do
       member do
+        get "/" => "pages#get", :constraints => { :id => /.*/ }
         put "/" => "pages#update"
         get 'sections' => 'pages#sections'
         get 'sections/:title' => 'pages#section'

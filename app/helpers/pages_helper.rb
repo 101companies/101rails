@@ -7,10 +7,9 @@ module PagesHelper
 	def parse(page)
     wiki = page.wiki
     html = page.html
-    #html.gsub!('!START!', '<pre>')
-    #html.gsub!('!END!','</pre>')
     wiki.internal_links.each do |link|
-      html.gsub!("<a href=\"#{link}\"", "<a href=\"/#{link}\"")
+      html.gsub!("<a href=\"#{link}\"", "<a href=\"/wiki/#{link}\"")
+      #html.gsub!(":Category:","/wiki/Category:")
     end  
     return html.html_safe
   end 
