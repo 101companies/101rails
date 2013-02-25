@@ -17,12 +17,12 @@ Wiki::Application.routes.draw do
 
   scope 'api', :format => :json do
     post 'classify' => 'classification#classify'
-    resources :pages, :only => [:section,:show] do
+    resources :pages, :constraints => { :id => /[^\/]+/ }, :only => [:section,:show] do
       member do
-        get "/" => "pages#get", :constraints => { :id => /.*/ }
+        get "/" => "pages#get"
         put "/" => "pages#update"
-        get 'sections' => 'pages#sections'
-        get 'sections/:title' => 'pages#section'
+        get 'sections' => 'pages#sections' 
+        get 'sections/:title' => 'pages#section' 
       end
     end
     get 'user/allowed/:action/:page' => 'users#allowed'
