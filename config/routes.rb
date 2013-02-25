@@ -8,7 +8,7 @@ Wiki::Application.routes.draw do
   root :to => "home#index"
   get '/data' => 'home#data'
   get '/wiki' => 'pages#show'
-  match '/wiki/:title' => 'pages#show', :constraints => { :title => /.*/ }
+  match '/wiki/:title' => 'pages#show', :constraints => { :title => /[^\/]+/ }
 
   #users
   match 'registrations' => 'users#index', :as => 'registrations'
