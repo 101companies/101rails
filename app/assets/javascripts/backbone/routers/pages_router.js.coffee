@@ -14,6 +14,7 @@ class Wiki.Routers.PagesRouter extends Backbone.Router
 	# show page with wiki view
 	wikiTab: (x) ->
 		console.log("Wiki view selected")
+		console.log(Wiki.currentUser.toJSON())
 		new @ViewClass(model: Wiki.page)
 
 	# show page with explorer view

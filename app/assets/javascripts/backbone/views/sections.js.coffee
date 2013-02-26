@@ -28,6 +28,8 @@ class Wiki.Views.Sections extends Backbone.View
 
     # set handler
     $(@el).find('.editbutton').click( -> self.edit(@))
+    if (_.contains(Wiki.currentUser.actions, "Edit"))
+        alert("YES!")
 
   edit: (button) ->
     self = @
