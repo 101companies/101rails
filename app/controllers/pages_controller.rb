@@ -3,6 +3,10 @@ class PagesController < ApplicationController
   respond_to :json, :html
 
   def show
+    @logged_user = current_user
+    #TODO: add actions for the current page based on the roles
+    @logged_user.actions = ["View"]
+
     @title = params[:title]
     if @title == nil
       @title = "101companies:Project"

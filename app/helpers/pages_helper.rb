@@ -3,7 +3,7 @@
 module PagesHelper
   require 'wikicloth'
   require 'pygments.rb'
-  
+
 	def parse(page)
     wiki = page.wiki
     html = page.html
@@ -20,13 +20,6 @@ module PagesHelper
   def substring_positions(substring, string)
     string.enum_for(:scan, substring).map { $~.offset(0)[0] }
   end
-
-  def logged_user
-    @user = current_user
-    #TODO: add actions for the current page based on the roles
-    @user.actions = ["View"]
-    return @user
-  end  
 
   def json_escape(s)
     result = s.to_s.gsub('/', '\/')
