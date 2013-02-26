@@ -21,6 +21,13 @@ module PagesHelper
     string.enum_for(:scan, substring).map { $~.offset(0)[0] }
   end
 
+  def logged_user
+    @user = current_user
+    #TODO: add actions for the current page based on the roles
+    @user.actions = ["View"]
+    return @user
+  end  
+
   def json_escape(s)
     result = s.to_s.gsub('/', '\/')
     s.html_safe? ? result.html_safe : result
