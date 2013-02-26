@@ -1,5 +1,14 @@
 Wiki::Application.routes.draw do
+
+  mount RailsAdmin::Engine => '/admin', :as => 'rails_admin'
+
   #match "101implementation:title" => "pages#show"
+
+  scope 'github_project' do
+    get '/index' => 'github_project#index'
+    get '/' => 'github_project#index'
+    post '/new' => 'github_project#new'
+  end
 
   authenticated :user do
     root :to => 'home#index'
