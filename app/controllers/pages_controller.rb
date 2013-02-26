@@ -5,7 +5,7 @@ class PagesController < ApplicationController
   def show
     @logged_user = current_user
     #TODO: add actions for the current page based on the roles
-    @logged_user.actions = ["View"]
+    @logged_user[:actions] = ["View"]
 
     @title = params[:title]
     if @title == nil
