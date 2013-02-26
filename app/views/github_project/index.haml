@@ -1,0 +1,5 @@
+#new-submission-wrapper
+  %h2 Submission of new contribution
+  %form{:action => "/github_project/new", :method => "post"}
+    %input{:name => 'project_url'}
+    %input{:type => 'submit'}

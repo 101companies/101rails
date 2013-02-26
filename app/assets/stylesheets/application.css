@@ -13,7 +13,15 @@
  *= require bootstrap-responsive
  *= require pygments
  *= require home
+ *= require github_project
 */
+
+/* better fonts */
+@import url(http://fonts.googleapis.com/css?family=Open+Sans);
+body, div, span, p, input, form, label {
+    font-family: 'Open Sans';
+}
+
 .brand {
   float: left;
 }
