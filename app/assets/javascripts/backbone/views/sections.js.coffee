@@ -28,13 +28,13 @@ class Wiki.Views.Sections extends Backbone.View
 
     # set handler
     $(@el).find('.editbutton').click( -> self.edit(@))
-    if _.contains(Wiki.currentUser.actions, "Edit")
-        alert("YES!")
+    if _.contains(Wiki.currentUser.get('actions'), "Edit")
+      $(@el).find('.editbutton').toggleClass("disabled")
 
   edit: (button) ->
-    if  _.contains(Wiki.currentUser.actions, "Edit")
+    if  not _.contains(Wiki.currentUser.get('actions'), "Edit")
       $('#modal_body').html(
-          $('<div>').addClass('alert alert-info')
+          $('<div>').addClass('alert alert-warning')
           .text("Please login to edit"))
       $('#modal').modal()
     else
