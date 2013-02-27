@@ -17,6 +17,16 @@ class PagesController < ApplicationController
     respond_with @page
   end
 
+  def parse
+    content = params[:content]
+    wiki = WikiCloth::Parser.new(:data => @content, :noedit => true)
+    html = wiki.to_html
+    wiki.internal_links.each do |link|
+      html.gsub!("<a href=\"#{link}\"", "<a href=\"/wiki/#{link}\"")
+    end  
+    render :json => {:success => true, :html => html.html_safe}
+  end 
+
   # get all sections for a page
   def sections
     begin
