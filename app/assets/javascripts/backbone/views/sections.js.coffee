@@ -28,25 +28,19 @@ class Wiki.Views.Sections extends Backbone.View
 
     # set handler
     $(@el).find('.editbutton').click( -> self.edit(@))
-    if _.contains(Wiki.currentUser.get('actions'), "Edit")
-      $(@el).find('.editbutton').toggleClass("disabled")
+    if not _.contains(Wiki.currentUser.get('actions'), "Edit")
+      $(@el).find('.editbutton').css("display", "none")
 
   edit: (button) ->
-    if  not _.contains(Wiki.currentUser.get('actions'), "Edit")
-      $('#modal_body').html(
-          $('<div>').addClass('alert alert-warning')
-          .text("Please login to edit"))
-      $('#modal').modal()
-    else
-      self = @
-      console.log(button)
-      @toggleEdit(true)
-      self.editor = ace.edit($(self.el).find('.editor')[0]);
-      self.editor.setTheme("ace/theme/chrome");
-      self.editor.getSession().setMode("ace/mode/text");
-      self.editor.insert(self.model.get('content'))
-      $(button).find('strong').text("Save")
-      $(button).unbind('click').bind('click', -> self.save(button))
+    self = @
+    console.log(button)
+    @toggleEdit(true)
+    self.editor = ace.edit($(self.el).find('.editor')[0]);
+    self.editor.setTheme("ace/theme/chrome");
+    self.editor.getSession().setMode("ace/mode/text");
+    self.editor.insert(self.model.get('content'))
+    $(button).find('strong').text("Save")
+    $(button).unbind('click').bind('click', -> self.save(button))
 
   save: (button) ->
     @model.set('content', @editor.getValue())

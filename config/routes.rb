@@ -2,8 +2,6 @@ Wiki::Application.routes.draw do
 
   mount RailsAdmin::Engine => '/admin', :as => 'rails_admin'
 
-  #match "101implementation:title" => "pages#show"
-
   scope 'github_project' do
     get '/index' => 'github_project#index'
     get '/' => 'github_project#index'
@@ -32,8 +30,8 @@ Wiki::Application.routes.draw do
       member do
         get "/" => "pages#get"
         put "/" => "pages#update"
-        get 'sections' => 'pages#sections' 
-        get 'sections/:title' => 'pages#section' 
+        get 'sections' => 'pages#sections'
+        get 'sections/:title' => 'pages#section'
       end
     end
   end

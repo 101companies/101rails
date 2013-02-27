@@ -79,6 +79,5 @@ class Wiki.Views.Pages extends Backbone.View
     $('#modal').modal()
     @model.save()
 
-  foo: ->
-    alert("yes")
+
 

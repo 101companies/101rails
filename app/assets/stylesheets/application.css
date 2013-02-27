@@ -16,9 +16,8 @@
  *= require github_project
 */
 
-/* better fonts */
 @import url(http://fonts.googleapis.com/css?family=Open+Sans);
-body, div, span, p, input, form, label {
+ p, h1, h2, ul, a, span, strong {
     font-family: 'Open Sans';
 }
 
