@@ -19,3 +19,4 @@
 //= require backbone_datalink
 //= require backbone/wiki
 //= require_tree .
+//= require bootstrap

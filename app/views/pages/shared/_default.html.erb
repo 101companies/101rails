@@ -6,8 +6,13 @@ Wiki.page.set('backlinks',<%= j @page.backlinks.to_json.html_safe -%>);
 Wiki.page.set('triples', new Wiki.Models.Triples())
 
 // possible options: Edit, View
-Wiki.currentUser = new Wiki.Models.User();
-Wiki.currentUser.set('actions', ['View'])
+
+<% if signed_in? -%>
+	Wiki.currentUser = new Wiki.Models.User(<%= j @logged_user.to_json.html_safe %>);
+<% else -%>
+     	Wiki.currentUser = new Wiki.Models.User();
+	Wiki.currentUser.set('actions', ['View'])
+ <% end -%>
 
 jQuery(document).ready(function ($){
   window.router = new Wiki.Routers.PagesRouter(Wiki.Views.Pages);

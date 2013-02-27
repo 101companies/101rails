@@ -28,27 +28,30 @@ class Wiki.Views.Sections extends Backbone.View
 
     # set handler
     $(@el).find('.editbutton').click( -> self.edit(@))
-    if (_.contains(Wiki.currentUser.actions, "Edit"))
+    if _.contains(Wiki.currentUser.actions, "Edit")
         alert("YES!")
 
   edit: (button) ->
-    self = @
-    console.log(button)
-    @toggleEdit(true)
-    self.editor = ace.edit($(self.el).find('.editor')[0]);
-    self.editor.setTheme("ace/theme/chrome");
-    self.editor.getSession().setMode("ace/mode/text");
-    self.editor.insert(self.model.get('content'))
-    $(button).find('strong').text("Save")
-    $(button).unbind('click').bind('click', -> self.save(button))
+    if  _.contains(Wiki.currentUser.actions, "Edit")
+      $('#modal_body').html(
+          $('<div>').addClass('alert alert-info')
+          .text("Please login to edit"))
+      $('#modal').modal()
+    else
+      self = @
+      console.log(button)
+      @toggleEdit(true)
+      self.editor = ace.edit($(self.el).find('.editor')[0]);
+      self.editor.setTheme("ace/theme/chrome");
+      self.editor.getSession().setMode("ace/mode/text");
+      self.editor.insert(self.model.get('content'))
+      $(button).find('strong').text("Save")
+      $(button).unbind('click').bind('click', -> self.save(button))
 
   save: (button) ->
     @model.set('content', @editor.getValue())
 
   toggleEdit: (open) ->
-    if open
-      $(@el).find('.section-content').animate({marginLeft: '-100%'}, 400)
-      $(@el).find('.section-content-source').css(height: '400px')
-      $(@el).find('.editor').css(height: '400px')
-    else
-      console.log("foo")
+    $(@el).find('.section-content').animate({marginLeft: '-100%'}, 400)
+    $(@el).find('.section-content-source').css(height: '400px')
+    $(@el).find('.editor').css(height: '400px')
