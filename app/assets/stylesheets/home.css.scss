@@ -300,6 +300,12 @@ font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', 'Droid Sans Mono', 'Consolas', mo
 	background-color: #555;
 	font-weight: 500;
 }
+
+.label a {
+	color: white;
+	text-decoration: none;
+}
+
 .tripel {
 	color: gray;
  	text-align: left;
@@ -311,6 +317,8 @@ font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', 'Droid Sans Mono', 'Consolas', mo
 	margin-right: 4px;
 	float: left;
 }
+
+
 
 .arrow {
 	font-size: 12px;
