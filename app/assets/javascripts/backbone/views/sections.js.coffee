@@ -50,7 +50,6 @@ class Wiki.Views.Sections extends Backbone.View
       success: (data) ->
         if data.success
           $(self.el).find('.section-content-parsed').html(data.html).find("h2").remove()
-          alert "foo"
           self.model.set('content', self.editor.getValue())
           self.toggleEdit(false)
     })
