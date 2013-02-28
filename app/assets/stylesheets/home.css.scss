@@ -31,6 +31,10 @@ h2 {
 	font-size: 28px;
 }
 
+#title {
+	margin-left: 5px;
+}
+
 .container h2 a {
 	color: #333;
 }
@@ -198,15 +202,15 @@ p {
 }
 
 .headlinecontainer {
-	width: 100%;
+	width: 98%;
 	height: 50px;
 }
 
-.editbutton {
+.editorbutton {
 	float: right;
 }
 
-.editbutton a:visted{
+.editorbutton a:visted{
 	float: right;
 }
 
@@ -244,9 +248,14 @@ p {
 	box-shadow:0 0 10px 1px #333;
 }
 
+.section {
+	margin-left: 20px;
+}
+
 .section-content-container {
 	overflow: hidden;
 	width: 100%;
+	margin-left: 25px;
 }
 
 .section-content, .section-content ul, .section-content p {
@@ -261,7 +270,10 @@ p {
 }
 
 .section-content-parsed p {
-
+	width: 95%;
+}
+.section-content-parsed pre {
+	width: 95%;
 }
 
 .section-content-source {

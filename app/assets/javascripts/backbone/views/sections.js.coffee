@@ -33,19 +33,36 @@ class Wiki.Views.Sections extends Backbone.View
 
   edit: (button) ->
     self = @
-    console.log(button)
     @toggleEdit(true)
     self.editor = ace.edit($(self.el).find('.editor')[0]);
     self.editor.setTheme("ace/theme/chrome");
     self.editor.getSession().setMode("ace/mode/text");
-    self.editor.insert(self.model.get('content'))
+    self.editor.setValue(self.model.get('content'))
     $(button).find('strong').text("Save")
     $(button).unbind('click').bind('click', -> self.save(button))
 
   save: (button) ->
-    @model.set('content', @editor.getValue())
+    self = @
+    $.ajax({
+      type: "POST"
+      url: "/api/parse/"
+      data: {content: self.editor.getValue()}
+      success: (data) ->
+        if data.success
+          $(self.el).find('.section-content-parsed').html(data.html).find("h2").remove()
+          alert "foo"
+          self.model.set('content', self.editor.getValue())
+          self.toggleEdit(false)
+    })
+    $(button).find('strong').text("Edit")
+    $(button).unbind('click').bind('click', -> self.edit(button))
 
   toggleEdit: (open) ->
-    $(@el).find('.section-content').animate({marginLeft: '-100%'}, 400)
-    $(@el).find('.section-content-source').css(height: '400px')
-    $(@el).find('.editor').css(height: '400px')
+    if open
+      $(@el).find('.section-content').animate({marginLeft: '-100%'}, 400)
+      $(@el).find('.section-content-source').css(height: '400px')
+      $(@el).find('.editor').css(height: '400px')
+    else
+      $(@el).find('.section-content').animate({marginLeft: '0%'}, 400)
+      $(@el).find('.section-content-source').css(height: '0px')
+      $(@el).find('.editor').css(height: '0px')
