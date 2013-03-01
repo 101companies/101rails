@@ -25,17 +25,19 @@ class Wiki.Views.Pages extends Backbone.View
 
     # modal for completed ajax
     $(document).ajaxComplete((event, res, settings) ->
-      if self.listen
-        self.listen = false
-        console.log(res)
+      if settings.url.lastIndexOf("/api/pages/", 0) == 0
         unless res.status == 200
           $('#modal_body').html(
             $('<div>').addClass('alert alert-error')
-            .text("Something went wrong: " + res.statusText))
+              .text("Something went wrong: " + res.statusText))
         else
           $('#modal_body').html(
             $('<div>').addClass('alert alert-success')
-            .text('Done')
+              .text('Done')
+          )
+          setTimeout (
+            -> $("#modal").modal('hide')
+            200
           )
     )
 
@@ -46,10 +48,6 @@ class Wiki.Views.Pages extends Backbone.View
            $('<p>').html($('<span>').addClass('label').text(bl))
         ).append(' ')
       )
-    #backlinks = for bl in @model.get('backlinks')
-     # listitem = new Wiki.Models.ListItem(title: bl)
-     # (new Wiki.Views.ListItems(model: listitem)).render()
-    #$('#backlinks').append(backlinks)
 
     # remove TOC
     $('#toc').remove()
@@ -77,8 +75,4 @@ class Wiki.Views.Pages extends Backbone.View
           $('<div>').addClass('alert alert-info')
           .text("Saving page..."))
     $('#modal').modal()
-    @listen = true
     @model.save()
-
-
-

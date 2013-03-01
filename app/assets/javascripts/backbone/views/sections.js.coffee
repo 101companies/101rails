@@ -48,10 +48,9 @@ class Wiki.Views.Sections extends Backbone.View
       url: "/api/parse/"
       data: {content: self.editor.getValue()}
       success: (data) ->
-        if data.success
-          $(self.el).find('.section-content-parsed').html(data.html).find("h2").remove()
-          self.model.set('content', self.editor.getValue())
-          self.toggleEdit(false)
+        $(self.el).find('.section-content-parsed').html(data.html).find("h2").remove()
+        self.model.set('content', self.editor.getValue())
+        self.toggleEdit(false)
     })
     $(button).find('strong').text("Edit")
     $(button).unbind('click').bind('click', -> self.edit(button))
