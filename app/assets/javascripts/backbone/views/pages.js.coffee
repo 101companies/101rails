@@ -32,8 +32,7 @@ class Wiki.Views.Pages extends Backbone.View
               .text("Something went wrong: " + res.statusText))
         else
           $('#modal_body').html(
-            $('<div>').addClass('alert alert-success')
-              .text('Done')
+            $('<div>').addClass('alert alert-success').text('Done')
           )
           setTimeout (
             -> $("#modal").modal('hide')
@@ -73,6 +72,6 @@ class Wiki.Views.Pages extends Backbone.View
   saveSectionEdit: ->
     $('#modal_body').html(
           $('<div>').addClass('alert alert-info')
-          .text("Saving page..."))
+          .text("Saving..."))
     $('#modal').modal()
     @model.save()

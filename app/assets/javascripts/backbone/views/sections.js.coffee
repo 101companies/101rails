@@ -26,22 +26,24 @@ class Wiki.Views.Sections extends Backbone.View
       $(@el).find('.section-content-parsed').html("")
       $(@el).attr('id','metasection')
 
-    # set handler
-    $(@el).find('.editbutton').click( -> self.edit(@))
+    # buttons and handlers
+    @editb = $(@el).find('.editbutton')
+    @canelb = $(@el).find('.cancelbutton')
     if not _.contains(Wiki.currentUser.get('actions'), "Edit")
-      $(@el).find('.editbutton').css("display", "none")
+      @editb.css("display", "none")
+    else
+      @editb.click( -> self.edit())
+      @canelb.click( -> self.cancel())
 
-  edit: (button) ->
+  edit: ->
     self = @
     @toggleEdit(true)
-    self.editor = ace.edit($(self.el).find('.editor')[0]);
-    self.editor.setTheme("ace/theme/chrome");
-    self.editor.getSession().setMode("ace/mode/text");
-    self.editor.setValue(self.model.get('content'))
-    $(button).find('strong').text("Save")
-    $(button).unbind('click').bind('click', -> self.save(button))
+    @editor = ace.edit($(@el).find('.editor')[0]);
+    @editor.setTheme("ace/theme/chrome");
+    @editor.getSession().setMode("ace/mode/text");
+    @editor.setValue(@model.get('content'))
 
-  save: (button) ->
+  save: ->
     self = @
     $.ajax({
       type: "POST"
@@ -52,15 +54,26 @@ class Wiki.Views.Sections extends Backbone.View
         self.model.set('content', self.editor.getValue())
         self.toggleEdit(false)
     })
-    $(button).find('strong').text("Edit")
-    $(button).unbind('click').bind('click', -> self.edit(button))
+
+  cancel: (button) ->
+    @toggleEdit(false)
+    @editor.setValue(@model.get('content'))
 
   toggleEdit: (open) ->
+    self = @
     if open
-      $(@el).find('.section-content').animate({marginLeft: '-100%'}, 400)
+      $(@el).find('.section-content').animate({marginLeft: '-100%'}, 300)
       $(@el).find('.section-content-source').css(height: '400px')
       $(@el).find('.editor').css(height: '400px')
+      @editb.find("i").attr("class", "icon-ok")
+      @editb.find('strong').text("Save")
+      @editb.unbind('click').bind('click', -> self.save())
+      @canelb.show()
     else
-      $(@el).find('.section-content').animate({marginLeft: '0%'}, 400)
+      $(@el).find('.section-content').animate({marginLeft: '0%'}, 300)
       $(@el).find('.section-content-source').css(height: '0px')
       $(@el).find('.editor').css(height: '0px')
+      @editb.find("i").attr("class", "icon-pencil")
+      @editb.find('strong').text("Edit")
+      @editb.unbind('click').bind('click', -> self.edit())
+      @canelb.hide()
