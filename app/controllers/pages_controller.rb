@@ -47,6 +47,21 @@ class PagesController < ApplicationController
     sections.each { |s| content += s['content'] }
     page = Page.new(title)
     page.update(content)
+
+    if History.where(:page => title).exists?
+      history = History.where(:page => title).first
+      history.update_attributes(
+        version: history.version + 1,
+        user: current_user
+      )
+    else
+      History.create!(
+        page: title,
+        version: 1,
+        user: current_user
+      )
+    end
+
     render :json => {:success => true}
   end
 

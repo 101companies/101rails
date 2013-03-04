@@ -60,5 +60,5 @@ class Page
   private
     def gateway
       return MediaWiki::Gateway.new(@base_uri)
-   end
+    end
 end

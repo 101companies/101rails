@@ -53,6 +53,8 @@ class User
 
   has_many :authentications, :dependent => :delete
 
+  has_many :histories
+
   # Authentications
   after_create :save_new_authentication
 
