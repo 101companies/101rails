@@ -27,10 +27,8 @@
     <p id="infofooter">
     	| <i class="icon-user"></i> <a href="#">
 
-<% if signed_in? -%>
-  <% if @page.history.user? -%>
+<% if @page.history.user?  -%>
     <%= @page.history.user.email %></a>
-  <% end -%>
 <% else -%>
 <% end -%>
 
