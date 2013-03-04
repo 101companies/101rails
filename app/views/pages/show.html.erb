@@ -25,10 +25,12 @@
       <h2>Citations:</h2>
     </div>
     <p id="infofooter">
-    	| <i class="icon-user"></i> <a href="#">Admin</a>
-    	| <i class="icon-calendar"></i> Sept 16th, 2012 at 4:20 pm
-      | <i class="icon-comment"></i> <a href="#">3 Comments</a>
-      | <i class="icon-share"></i> <a href="#">39 Shares</a>
+    	| <i class="icon-user"></i> <a href="#">
+        <%= @page.history.user.email %></a>   
+      
+    	| <i class="icon-calendar"></i> <%= @page.history.updated_at %> 
+     <!-- | <i class="icon-comment"></i> <a href="#">3 Comments</a>
+      | <i class="icon-share"></i> <a href="#">39 Shares</a> -->
   </p>
 </div>
 <div class="modal fade" id="modal">

@@ -35,6 +35,7 @@ gem 'cancan'
 group :development do
   gem 'zeus',  '0.13.2'
   gem 'debugger'
+  gem 'better_errors'
 end
 
 group :test do

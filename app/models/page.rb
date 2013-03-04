@@ -14,7 +14,7 @@ class Page
     @wiki = WikiCloth::Parser.new(:data => @content, :noedit => true)
     @html = @wiki.to_html
   end
-
+      
   def html
     @html
   end

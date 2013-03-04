@@ -14,6 +14,20 @@ class PagesController < ApplicationController
       @title = "101companies:Project"
     end
     @page = Page.new(@title)
+
+    @page.instance_eval { class << self; self end }.send(:attr_accessor, "history")
+    if not History.where(:page => @title).exists?
+      @page.history = History.create!(
+        user: current_user,
+        page: @title,
+        version: 1
+      )
+    else
+     @page.history = History.where(:page => @title).first
+    end 
+
+     
+
     respond_with @page
   end
 

@@ -3,7 +3,8 @@ Wiki.page = new Wiki.Models.Page({title: <%= j @page.title.to_json.html_safe -%>
 Wiki.page.set('sections',new Wiki.Models.Sections(<%= j @page.sections.to_json.html_safe -%>));
 Wiki.page.set('categories',<%= j @page.categories.to_json.html_safe -%>);
 Wiki.page.set('backlinks',<%= j @page.backlinks.to_json.html_safe -%>);
-Wiki.page.set('triples', new Wiki.Models.Triples())
+Wiki.page.set('triples', new Wiki.Models.Triples());
+Wiki.page.set('history', <%= j @page.history.to_json.html_safe -%> );
 
 // possible options: Edit, View
 
