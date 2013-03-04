@@ -1,5 +1,5 @@
 Wiki::Application.config.middleware.use OmniAuth::Builder do
-  # OpenSSL::SSL::VERIFY_PEER = OpenSSL::SSL::VERIFY_NONE
+   OpenSSL::SSL::VERIFY_PEER = OpenSSL::SSL::VERIFY_NONE
 
   configure do |config|
     config.path_prefix = '/auth' if Rails.env == 'production'
