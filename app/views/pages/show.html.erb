@@ -28,7 +28,9 @@
     	| <i class="icon-user"></i> <a href="#">
 
 <% if signed_in? -%>
-  <%= @page.history.user.email %></a>
+  <% if @page.history.user? -%>
+    <%= @page.history.user.email %></a>
+  <% end -%>
 <% else -%>
 <% end -%>
 
