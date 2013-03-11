@@ -38,6 +38,10 @@ class Page
     gw.edit(@title, content)
   end
 
+  def internal_links
+    @wiki.internal_links
+  end  
+
   def sections
     sec = []
     @wiki.sections.first.children.each { |s| sec.push({'title' => s.title, 'content' => s.wikitext})  }

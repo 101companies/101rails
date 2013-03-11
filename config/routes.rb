@@ -28,9 +28,10 @@ Wiki::Application.routes.draw do
 
     resources :pages, :constraints => { :id => /[^\/]+/ }, :only => [:section,:show] do
       member do
-        get "/" => "pages#get"
+        get "/" => "pages#show"
         put "/" => "pages#update"
         get 'sections' => 'pages#sections'
+        get 'internal_links' => 'pages#internal_links'
         get 'sections/:title' => 'pages#section'
       end
     end

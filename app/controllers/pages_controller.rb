@@ -54,6 +54,18 @@ class PagesController < ApplicationController
     end
   end
 
+  # get all internal links for the page
+  def internal_links
+    begin
+      title = params[:id]
+      page = Page.new(title)
+      respond_with page.internal_links
+    rescue
+      @error_message="#{$!}"
+      render :json => {:success => false, :error => @error_message}
+    end
+  end
+
   def update
     title = params[:title]
     sections = params[:sections]
