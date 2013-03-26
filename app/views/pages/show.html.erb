@@ -24,6 +24,10 @@
     <div id="backlinks">
       <h2>Citations:</h2>
     </div>
+</div>
+<div class="section">
+  <div id="resources"></div>
+</div>
     <p id="infofooter">
     	| <i class="icon-user"></i> <a href="#">
 
@@ -35,7 +39,7 @@
     	| <i class="icon-calendar"></i>
 
 <% if signed_in? -%>
-  <%= @page.history.updated_at %> 
+  <%= @page.history.updated_at %>
 <% else -%>
 <% end -%>
 

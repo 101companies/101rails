@@ -1,5 +1,4 @@
 class Wiki.Views.Pages extends Backbone.View
-
   el: "#page"
 
   initialize: ->
@@ -8,15 +7,6 @@ class Wiki.Views.Pages extends Backbone.View
     @model.get('sections').bind('change', @saveSectionEdit, @)
     @listen = false
     @render()
-    @addAllSections()
-    self = @
-    @model.get('triples').fetch({
-      url: self.model.get('triples').urlBase + self.model.get('title').replace(":", "-3A")
-      dataType: 'jsonp'
-      jsonpCallback: 'callback'
-      success: (data,res,o) ->
-          self.addAllTriples()
-    })
 
   render: ->
     self = @
@@ -33,10 +23,7 @@ class Wiki.Views.Pages extends Backbone.View
         else
           $('#modal_body').html(
             $('<div>').addClass('alert alert-success').text('Done')
-          )
-          setTimeout (
-            -> $("#modal").modal('hide')
-            200
+            $("#modal").modal('hide')
           )
     )
 
@@ -47,6 +34,27 @@ class Wiki.Views.Pages extends Backbone.View
            $('<p>').html($('<span>').addClass('label').text(bl))
         ).append(' ')
       )
+
+    # add sections
+    @addAllSections()
+
+    # add triples
+    @model.get('triples').fetch({
+      url: self.model.get('triples').urlBase + self.model.get('title').replace(":", "-3A")
+      dataType: 'jsonp'
+      jsonpCallback: 'callback'
+      success: (data,res,o) ->
+          self.addAllTriples()
+    })
+
+     # add resources
+    @model.get('resources').fetch({
+      url: self.model.get('resources').urlBase + self.model.get('title').replace(":", "-3A") + '.jsonp'
+      dataType: 'jsonp'
+      jsonpCallback: 'resourcecallback'
+      success: (data,res,o) ->
+        self.addResources()
+    })
 
     # remove TOC
     $('#toc').remove()
@@ -66,8 +74,21 @@ class Wiki.Views.Pages extends Backbone.View
 
   addAllTriples: ->
     self = @
-    $.each @model.get('triples').models , (i, triple) ->
+    $.each @model.get('triples').models, (i, triple) ->
       self.addTriple(triple)
+
+  addResource: (resource) ->
+    resourceview = new Wiki.Views.Resources(model: resource)
+    resourceview.render()
+
+  addResources: ->
+    self = @
+    resources = _.filter(@model.get('resources').models, (r) -> not r.get('error'))
+    if resources
+      $('#resources').append($('<h2>Resources:</h2>'))
+      $.each resources, (i,r) ->
+        self.addResource(r)
+
 
   saveSectionEdit: ->
     $('#modal_body').html(
