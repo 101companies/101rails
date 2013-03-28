@@ -41,6 +41,17 @@ class PagesController < ApplicationController
     render :json => {:success => true, :html => html.html_safe}
   end
 
+  def summary
+    begin
+      title = params[:id]
+      page = Page.new(title)
+      render :json => {:sections => page.sections, :internal_links => page.internal_links}
+    rescue
+      @error_message="#{$!}"
+      render :json => {:success => false, :error => @error_message}
+    end
+  end
+
   # get all sections for a page
   def sections
     begin
