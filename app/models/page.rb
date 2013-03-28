@@ -11,7 +11,7 @@ class Page
     @title = title
     @base_uri = 'http://101companies.org/api.php'
     @content = gateway.get(title)
-    @wiki = WikiCloth::Parser.new(:data => @content, :noedit => true, :context = )
+    @wiki = WikiCloth::Parser.new(:data => @content, :noedit => true, :context = nil)
     @html = @wiki.to_html
   end
       
