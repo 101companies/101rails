@@ -1,28 +1,12 @@
 class Wiki.Views.Resources extends Backbone.View
-  template : JST['backbone/templates/resource']
+  resourceTemplate : JST['backbone/templates/resource']
+  resourceBoxTemplate : JST['backbone/templates/resourcebox']
 
   render: ->
     self = @
-    console.log(@model.get('name'))
-    @setElement($(@template(@model.toJSON())))
-    primary = @model.get('primary')
-    if not _.isEmpty(primary)
-      primaryel = $('<div class="subresources">')
-      $(primaryel).append($('<h5>').text('Primary'))
-      $.each primary, (i, target) ->
-        if target.substring(0, 7) == 'http://'
-          $(primaryel).append($('<li>').html($('<a>').attr('href', target).text(target)))
-        else
-          $(primaryel).append($('<li>').text(target))
-
-      $(@el).append(primaryel)
-    secondary = @model.get('secondary')
-    if not _.isEmpty(secondary)
-      secondaryel= $('<div class="subresources">')
-      $(secondaryel).append($('<h5>').text('Secondary'))
-      $.each secondary, (i, target) ->
-       $(secondaryel).append($('<li>').text(target))
-      $(@el).append(secondaryel)
-    $('#resources').append(@el)
-
-
+    if @model.get('isLinkable')
+      @setElement($(@resourceTemplate(@model.toJSON())))
+      $.each ['primary', 'secondary'], (i, cat) ->
+        $.each self.model.get(cat), (i, target) ->
+          $(self.el).find('.resourcebar').append($(self.resourceBoxTemplate(cat:cat, link:target)).tooltip("show"))
+      $('#resources').append(@el)

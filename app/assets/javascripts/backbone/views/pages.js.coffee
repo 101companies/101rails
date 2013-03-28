@@ -44,6 +44,7 @@ class Wiki.Views.Pages extends Backbone.View
       dataType: 'jsonp'
       jsonpCallback: 'callback'
       success: (data,res,o) ->
+
           self.addAllTriples()
     })
 

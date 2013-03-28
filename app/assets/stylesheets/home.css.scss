@@ -320,6 +320,7 @@ font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', 'Droid Sans Mono', 'Consolas', mo
 .subject, .predicate, .object, .arrow {
 	margin-left: 4px;
 	margin-right: 4px;
+	font-size: 12px;
 	float: left;
 }
 
@@ -336,13 +337,47 @@ font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', 'Droid Sans Mono', 'Consolas', mo
 }
 
 #backlinks {
-	margin-bottom: 30px;
+	margin-bottom: 20px;
 }
 
-.subresources {
-	margin-left: 20px;
+#resources {
+	margin-bottom: 20px;
+
 }
 
-.subresources li {
+.resource {
+	margin-left: 10px;
+}
+
+.resourcebar {
+	width: 100%;
+	height: 20px;
 	margin-left: 5px;
+}
+
+.resourcename {
+	font-family: 'Open Sans';
+}
+
+.resourcebox {
+	float:left;
+	margin: 2px;
+	border-radius: 5px;
+}
+
+.resourcebox.primary {
+	background-color: #303030;
+	width: 15px;
+	height: 15px;
+}
+
+.resourcebox.secondary {
+	border: solid 3px #303030;
+	width: 9px;
+	height: 9px;
+}
+
+.resoucebox a {
+	width: 15px;
+	height: 15px;
 }

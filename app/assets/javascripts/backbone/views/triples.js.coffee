@@ -4,6 +4,7 @@ class Wiki.Views.Triples extends Backbone.View
   decode: (str, toLower) ->
     resBase = "http://101companies.org/resource/"
     str = str.replace(resBase,"").replace("-3A",":").replace("Property:", "").replace("_", " ")
+    str = _.last(str.split("/"))
     if toLower
       firstLetter = str.substr(0, 1)
       firstLetter.toLowerCase() + str.substr(1)

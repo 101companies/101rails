@@ -2,6 +2,8 @@ class Wiki.Models.Resource extends Backbone.Model
 
   defaults:
     name: ""
+    fullName: ""
+    isLinkable: false
     primary: []
     secondary: []
 
