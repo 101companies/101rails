@@ -69,14 +69,26 @@ class Wiki.Views.Pages extends Backbone.View
     $.each @model.get('sections').models , (i, section) ->
       self.addSection(section)
 
-  addTriple: (triple) ->
+  addInternalTriple: (triple) ->
     tripleview = new Wiki.Views.Triples(model: triple)
     tripleview.render()
+
+  addExternalTriple: (triple) ->
+    tripleview = new Wiki.Views.ExTriples(model: triple)
+    tripleview.render()
+
+  is101Triple: (triple) ->
+    internalPrefix = 'http://101companies.org/'
+    triple.get('node').substring(0, internalPrefix.length) == internalPrefix
 
   addAllTriples: ->
     self = @
     $.each @model.get('triples').models, (i, triple) ->
-      self.addTriple(triple)
+      if self.is101Triple(triple)
+        self.addInternalTriple(triple)
+      else
+        self.addExternalTriple(triple)
+
 
   addResource: (resource) ->
     resourceview = new Wiki.Views.Resources(model: resource)
@@ -86,10 +98,8 @@ class Wiki.Views.Pages extends Backbone.View
     self = @
     resources = _.filter(@model.get('resources').models, (r) -> not r.get('error'))
     if resources
-      $('#resources').append($('<h2>Resources:</h2>'))
       $.each resources, (i,r) ->
         self.addResource(r)
-
 
   saveSectionEdit: ->
     $('#modal_body').html(
