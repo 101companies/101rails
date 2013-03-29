@@ -4988,7 +4988,7 @@ input[type="submit"].btn.btn-mini {
   z-index: 1030;
   display: block;
   padding: 5px;
-  font-size: 11px;
+  font-size: 13px;
   opacity: 0;
   filter: alpha(opacity=0);
   visibility: visible;
