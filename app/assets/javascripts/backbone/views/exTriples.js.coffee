@@ -2,7 +2,7 @@ class Wiki.Views.ExTriples extends Backbone.View
   resourceTemplate : JST['backbone/templates/resource']
   resourceBoxTemplate : JST['backbone/templates/resourcebox']
 
-  prefixToName : {'www.haskell.org': 'HaskellWiki', 'en.wikipedia.org' : 'Wikipedia', 'en.wikibooks.orgs': 'Wikibooks'}
+  prefixToName : {'www.haskell.org': 'HaskellWiki', 'en.wikipedia.org' : 'Wikipedia', 'en.wikibooks.org': 'Wikibooks'}
 
   render: ->
     self = @
