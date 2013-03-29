@@ -347,16 +347,19 @@ font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', 'Droid Sans Mono', 'Consolas', mo
 
 .resource {
 	margin-left: 10px;
+	height: 50px;
 }
 
 .resourcebar {
 	width: 100%;
 	height: 20px;
-	margin-left: 5px;
+	padding-top: 10px;
 }
 
 .resourcename {
+	float: left;
 	font-family: 'Open Sans';
+	margin-right: 5px;
 }
 
 .resourcebox {
