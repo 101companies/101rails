@@ -3,7 +3,7 @@ class Wiki.Views.Triples extends Backbone.View
 
   decode: (str, toLower) ->
     resBase = "http://101companies.org/resource/"
-    str = str.replace(resBase,"").replace("-3A",":").replace("Property:", "").replace("_", " ")
+    str = decodeURIComponent(str.replace(resBase,"").replace("-3A",":").replace("Property:", "").replace("_", " ").replace(/-/g, '%'))
     str = _.last(str.split("/"))
     if toLower
       firstLetter = str.substr(0, 1)
@@ -17,9 +17,9 @@ class Wiki.Views.Triples extends Backbone.View
     rendertriple.p = @decode(@model.get('predicate'), true)
     if @model.get('direction') is "IN"
       rendertriple.arrow = "&#9654;"
-      rendertriple.s = @decode(@model.get('node'))
+      rendertriple.s = @decode(@model.get('node'), false)
     else
-      rendertriple.o = @decode(@model.get('node'))
+      rendertriple.o = @decode(@model.get('node'), false)
     $('#metasection').append(@template(rendertriple))
 
 

@@ -1,7 +1,7 @@
 <span class="tripel">
   <div class="arrow"> <%= arrow %></div>
-  <div class="subject label"><%= s %></div>
+  <div class="subject label"><%if (s != 'this') {%><a href="wiki/../<%= s %>"><%= s %></a><%}else{%>this<%}%></div>
   <div class="predicate"><%= p %></div>
-  <div class="object label"><a href="wiki/<%= o %>"><%= o %></a></div>
+  <div class="object label"><%if (o != 'this') {%><a href="wiki/../<%= o %>"><%= o %></a><%}else{%>this<%}%></div>
   </br>
 </span>
