@@ -29,11 +29,14 @@ class Wiki.Views.Sections extends Backbone.View
     # buttons and handlers
     @editb = $(@el).find('.editbutton')
     @canelb = $(@el).find('.cancelbutton')
-    if not _.contains(Wiki.currentUser.get('actions'), "Edit")
+    @foldb = $(@el).find('.foldbutton')
+    # UNDO!
+    if false and not _.contains(Wiki.currentUser.get('actions'), "Edit")
       @editb.css("display", "none")
     else
       @editb.click( -> self.edit())
       @canelb.click( -> self.cancel())
+     @foldb.click( -> self.fold())
 
   edit: ->
     self = @
@@ -77,3 +80,8 @@ class Wiki.Views.Sections extends Backbone.View
       @editb.find('strong').text("Edit")
       @editb.unbind('click').bind('click', -> self.edit())
       @canelb.hide()
+
+  fold: ->
+      $(@el).find('.section-content-container').toggle(100)
+      $(@foldb).find('i').toggleClass('icon-resize-small icon-resize-full')
+
