@@ -16,11 +16,20 @@ class Wiki.Views.Sections extends Backbone.View
         else
           break
 
+
     # replace prerendered section by template
     $section = $(@template(title: @model.get('title')))
     $section.find('.section-content-parsed').append($set)
     preRendered.after($section).remove()
     @setElement($section)
+
+    # fix links
+    $.each $(@el).find('a') , (a) ->
+        if $(@).attr('href')
+          $(@).attr('href', $(@).attr('href').replace(/\/wiki\/(\b[a-z])/g, (s,match) ->
+            '/wiki/' + match.toUpperCase())
+          )
+
     # hide metadata section
     if @model.get('title') == "Metadata"
       $(@el).find('.section-content-parsed').html("")

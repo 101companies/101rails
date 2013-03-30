@@ -6,15 +6,12 @@ class Wiki.Routers.PagesRouter extends Backbone.Router
 
 	initialize: (ViewClass) ->
 		@ViewClass = ViewClass
-		console.log(Wiki.page.toJSON())
 		# Change hash when a tab changes
 		$('a[data-toggle="tab"]').on 'shown', (e) ->
 		  location.href = event.target.href
 
 	# show page with wiki view
 	wikiTab: (x) ->
-		console.log("Wiki view selected")
-		console.log(Wiki.currentUser.toJSON())
 		new @ViewClass(model: Wiki.page)
 
 	# show page with explorer view
