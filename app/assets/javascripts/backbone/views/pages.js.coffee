@@ -90,9 +90,17 @@ class Wiki.Views.Pages extends Backbone.View
     internalPrefix = 'http://101companies.org/'
     triple.get('node').substring(0, internalPrefix.length) == internalPrefix
 
+  tripleOrdering: (a,b) ->
+    if a.get('predicate') < b.get('predicate')
+      -1
+    else if a.get('predicate') > b.get('predicate')
+      1
+    else
+      0
+
   addAllTriples: ->
     self = @
-    $.each @model.get('triples').models, (i, triple) ->
+    $.each @model.get('triples').models.sort(self.tripleOrdering), (i, triple) ->
       if self.is101Triple(triple)
         self.addInternalTriple(triple)
       else
