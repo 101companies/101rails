@@ -26,7 +26,7 @@ class Wiki.Views.Pages extends Backbone.View
             $("#modal").modal('hide')
           )
     )
-    $('a[href="' + window.location.hash + '"]').click()
+
     # add backlinks
     $.each @model.get('backlinks'), (i,bl) ->
       $('#backlinks').append(

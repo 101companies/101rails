@@ -8,9 +8,10 @@ class Wiki.Views.Sections extends Backbone.View
 
     # collect prerendered content nodes
     $set = $()
-    nxt = preRendered[0].nextSibling
-    while nxt
-        unless $(nxt).is('h2')
+    if preRendered[0]
+      nxt = preRendered[0].nextSibling
+      while nxt
+        unless $(nxt).is('h2') or not nxt.nextSibling
           $set.push nxt
           nxt = nxt.nextSibling
         else
@@ -39,8 +40,8 @@ class Wiki.Views.Sections extends Backbone.View
     @editb = $(@el).find('.editbutton')
     @canelb = $(@el).find('.cancelbutton')
     @foldb = $(@el).find('.foldbutton')
-    # UNDO!
-    if false and not _.contains(Wiki.currentUser.get('actions'), "Edit")
+
+    if not _.contains(Wiki.currentUser.get('actions'), "Edit")
       @editb.css("display", "none")
     else
       @editb.click( -> self.edit())
