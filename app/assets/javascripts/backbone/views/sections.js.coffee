@@ -40,8 +40,8 @@ class Wiki.Views.Sections extends Backbone.View
     @editb = $(@el).find('.editbutton')
     @canelb = $(@el).find('.cancelbutton')
     @foldb = $(@el).find('.foldbutton')
-
-    if not _.contains(Wiki.currentUser.get('actions'), "Edit")
+    # UNDO!
+    if true and not _.contains(Wiki.currentUser.get('actions'), "Edit")
       @editb.css("display", "none")
     else
       @editb.click( -> self.edit())
