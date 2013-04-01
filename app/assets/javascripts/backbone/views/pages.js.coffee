@@ -26,7 +26,7 @@ class Wiki.Views.Pages extends Backbone.View
             $("#modal").modal('hide')
           )
     )
-
+    $('a[href="' + window.location.hash + '"]').click()
     # add backlinks
     $.each @model.get('backlinks'), (i,bl) ->
       $('#backlinks').append(
@@ -44,7 +44,6 @@ class Wiki.Views.Pages extends Backbone.View
       dataType: 'jsonp'
       jsonpCallback: 'callback'
       success: (data,res,o) ->
-
           self.addAllTriples()
     })
 
@@ -56,6 +55,16 @@ class Wiki.Views.Pages extends Backbone.View
       success: (data,res,o) ->
         self.addResources()
     })
+
+    contribPrefix = "Contribution:"
+    if @model.get('title').substring(0, contribPrefix.length) == contribPrefix
+      @model.get('sourceLinks').fetch({
+        url: self.model.get('sourceLinks').urlBase + self.model.get('title').substring(contribPrefix.length) + '.jsonp'
+        dataType: 'jsonp'
+        jsonpCallback: 'sourcelinkscallback'
+        success: (data, res, o) ->
+          self.addSourceLinks()
+      })
 
     # remove TOC
     $('#toc').remove()
@@ -89,7 +98,6 @@ class Wiki.Views.Pages extends Backbone.View
       else
         self.addExternalTriple(triple)
 
-
   addResource: (resource) ->
     resourceview = new Wiki.Views.Resources(model: resource)
     resourceview.render()
@@ -100,6 +108,15 @@ class Wiki.Views.Pages extends Backbone.View
     if resources
       $.each resources, (i,r) ->
         self.addResource(r)
+
+  addSourceLink: (link) ->
+    githubview = new Wiki.Views.SourceLink(model: link)
+    githubview.render()
+
+  addSourceLinks: ->
+    self = @
+    $.each @model.get('sourceLinks').models, (i, link) ->
+      self.addSourceLink(link)
 
   saveSectionEdit: ->
     $('#modal_body').html(

@@ -10,8 +10,9 @@ class Wiki.Models.Page extends Backbone.Model
     triples: []
     history: null
 
+
   model:
-  	sections: Wiki.Models.Sections
+      sections: Wiki.Models.Sections
 
   urlRoot : ->
     "/api/pages"
