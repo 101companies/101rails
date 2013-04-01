@@ -95,12 +95,17 @@ class Wiki.Views.Pages extends Backbone.View
       -1
     else if a.get('predicate') > b.get('predicate')
       1
+    else if a.get('node') < b.get('node')
+      -1
+    else if a.get('node') > b.get('node')
+      1
     else
       0
 
   addAllTriples: ->
     self = @
     $.each @model.get('triples').models.sort(self.tripleOrdering), (i, triple) ->
+      console.log(triple.toJSON())
       if self.is101Triple(triple)
         self.addInternalTriple(triple)
       else
