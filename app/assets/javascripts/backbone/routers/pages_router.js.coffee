@@ -1,6 +1,5 @@
 class Wiki.Routers.PagesRouter extends Backbone.Router
 	routes:
-		"explorer" : "explorerTab"
 		"*actions" : "wikiTab"
 
 
@@ -13,7 +12,3 @@ class Wiki.Routers.PagesRouter extends Backbone.Router
 	# show page with wiki view
 	wikiTab: (x) ->
 		new @ViewClass(model: Wiki.page)
-
-	# show page with explorer view
-	explorerTab: (x) ->
-		console.log("Explorer view selected")

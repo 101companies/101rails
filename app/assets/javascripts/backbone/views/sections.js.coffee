@@ -50,10 +50,11 @@ class Wiki.Views.Sections extends Backbone.View
   edit: ->
     self = @
     @toggleEdit(true)
-    @editor = ace.edit($(@el).find('.editor')[0]);
-    @editor.setTheme("ace/theme/chrome");
-    @editor.getSession().setMode("ace/mode/text");
+    @editor = ace.edit($(@el).find('.editor')[0])
+    @editor.setTheme("ace/theme/chrome")
+    @editor.getSession().setMode("ace/mode/text")
     @editor.setValue(@model.get('content'))
+    @editor.navigateFileStart()
 
   save: ->
     self = @
