@@ -1,6 +1,9 @@
 class Wiki.Views.Sections extends Backbone.View
   template : JST['backbone/templates/section']
 
+  initialize: ->
+    @model.bind('error', @error, @)
+
   render: ->
     self = @
     # get prerendered headline node
@@ -94,4 +97,11 @@ class Wiki.Views.Sections extends Backbone.View
   fold: ->
       $(@el).find('.section-content-container').toggle(100)
       $(@foldb).find('i').toggleClass('icon-resize-small icon-resize-full')
+
+  error: (model, err, options) ->
+    $('#modal_body').html(
+      $('<div>').addClass('alert alert-error')
+        .text(err))
+    $('#modal').modal()
+    @render
 
