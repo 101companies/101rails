@@ -9,6 +9,7 @@ class Wiki.Models.Page extends Backbone.Model
     backlinks: []
     triples: []
     history: null
+    content: ''                       # in case the entire page is stored
 
 
   model:

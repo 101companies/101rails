@@ -17,9 +17,37 @@
     <ul id="menu1" class="dropdown-menu" role="menu"></ul>
   </li>
 </ul>
-<div id="title"><h1/></div>
+
 <div id="page">
-    <%= parse(@page) -%>
+  <div class="modal hide fade" id="creationmodal">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+    <h4>Create new section...</h4>
+  </div>
+    <div class="modal-body">
+      <p>Name:</p>
+      <input id="sname" name="sname" type="text">
+      <p>Insert after:</p>
+      <select id="sposition"></select>
+  </div>
+  <div class="modal-footer">
+    <a href="#" class="btn btn-primary" id="createSection">Create</a>
+  </div>
+</div>
+  <div id="top">
+    <div id="title">
+      <h1/>
+    </div>
+    <div id="topeditbar">
+      <div class="btn sectionaddbutton" title="Add section">
+        <i class="icon-plus"></i>
+        <strong>Add Section</strong>
+      </div>
+    </div>
+ </div>
+ <div id="sections">
+  <%= parse(@page) -%>
+ </div>
 </div>
 
 <%= render "/pages/shared/default" %>

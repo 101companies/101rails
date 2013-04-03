@@ -1,31 +1,42 @@
 class Wiki.Views.Sections extends Backbone.View
   template : JST['backbone/templates/section']
 
+  events:
+    'click .foldbutton' : 'fold'
+    'click .cancelbutton': 'cancel'
+
   initialize: ->
     @model.bind('error', @error, @)
+    @model.bind('sync', @foo, @)
 
-  render: ->
+  render: (options) ->
     self = @
     # get prerendered headline node
     preRendered = $('#' + @model.get('title')).parent()
-
-    # collect prerendered content nodes
-    $set = $()
-    if preRendered[0]
-      nxt = preRendered[0].nextSibling
-      while nxt
-        unless $(nxt).is('h2') or not nxt.nextSibling
-          $set.push nxt
-          nxt = nxt.nextSibling
-        else
-          break
-
-
-    # replace prerendered section by template
     $section = $(@template(title: @model.get('title')))
-    $section.find('.section-content-parsed').append($set)
-    preRendered.after($section).remove()
-    @setElement($section)
+    if preRendered.length
+
+      # collect prerendered content nodes
+      $set = $()
+      if preRendered[0]
+        nxt = preRendered[0].nextSibling
+        while nxt
+          unless $(nxt).is('h2') or not nxt.nextSibling
+            $set.push nxt
+            nxt = nxt.nextSibling
+          else
+            break
+
+      # replace prerendered section by template
+      preRendered.after($section).remove()
+      @setElement($section)
+      @insertHTML($set)
+
+    else
+      $section = $(@template(title: @model.get('title')))
+      index = 3 + 2 * options.at
+      $('#sections .section:nth-child('+ index + ')').before($section)
+      @setElement($section)
 
     # fix links
     $.each $(@el).find('a') , (a) ->
@@ -46,30 +57,39 @@ class Wiki.Views.Sections extends Backbone.View
     if not _.contains(Wiki.currentUser.get('actions'), "Edit")
       @editb.css("display", "none")
     else
-      @editb.click( -> self.edit())
-      @canelb.click( -> self.cancel())
-     @foldb.click( -> self.fold())
+      @editb.click( -> self.initedit())
 
-  edit: ->
+  insertHTML : (html) ->
+    $(@el).find('.section-content-parsed').html(html).find("h2").remove()
+
+  initedit: ->
     self = @
     @toggleEdit(true)
-    @editor = ace.edit($(@el).find('.editor')[0])
-    @editor.setTheme("ace/theme/chrome")
-    @editor.getSession().setMode("ace/mode/text")
-    @editor.setValue(@model.get('content'))
-    @editor.navigateFileStart()
+    @editor = $(@el).find('.editor').first()
+    @editor.text(@model.get('content'))
+
+  edit: ->
+    @toggleEdit(true)
 
   save: ->
     self = @
-    $.ajax({
-      type: "POST"
-      url: "/api/parse/"
-      data: {content: self.editor.getValue()}
-      success: (data) ->
-        $(self.el).find('.section-content-parsed').html(data.html).find("h2").remove()
-        self.model.set('content', self.editor.getValue())
-        self.toggleEdit(false)
-    })
+    text = @editor.val()
+    `matches = text.match(/==([^\r\n=])+==/g)`
+    if matches
+      `newheadline = matches[0].replace(/==/g,'').trim()`
+      $(@el).find('.headline').text(newheadline)
+      $.ajax({
+        type: "POST"
+        url: "/api/parse/"
+        data: {content: text}
+        success: (data) ->
+          self.insertHTML(data.html)
+          self.model.set('content': self.editor.val(), 'title': newheadline)
+          self.model.set()
+          self.toggleEdit(false)
+      })
+    else
+      @showError("Validation Error: Section header missing")
 
   cancel: (button) ->
     @toggleEdit(false)
@@ -99,9 +119,11 @@ class Wiki.Views.Sections extends Backbone.View
       $(@foldb).find('i').toggleClass('icon-resize-small icon-resize-full')
 
   error: (model, err, options) ->
+    @showError(err)
+
+  showError: (err) ->
     $('#modal_body').html(
       $('<div>').addClass('alert alert-error')
         .text(err))
     $('#modal').modal()
-    @render
 

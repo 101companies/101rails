@@ -1,18 +1,14 @@
 class Wiki.Views.Pages extends Backbone.View
   el: "#page"
 
+  events:
+    'click .sectionaddbutton' : 'newSectionModal'
+    'click #createSection' : 'createSection'
+
   initialize: ->
     @model.get('sections').bind('add', @addSection, @)
-    @model.bind('change', @render, @)
+    #@model.bind('change', @render, @)
     @model.get('sections').bind('change', @saveSectionEdit, @)
-    @listen = false
-    @render()
-
-  render: ->
-    self = @
-    # add page title
-    $("#title h1").text(@model.get('title'))
-
     # modal for completed ajax
     $(document).ajaxComplete((event, res, settings) ->
       if settings.url.lastIndexOf("/api/pages/", 0) == 0
@@ -26,6 +22,12 @@ class Wiki.Views.Pages extends Backbone.View
             $("#modal").modal('hide')
           )
     )
+    @render()
+
+  render: ->
+    self = @
+    # add page title
+    $("#title h1").text(@model.get('title'))
 
     # add backlinks
     $.each @model.get('backlinks'), (i,bl) ->
@@ -56,6 +58,7 @@ class Wiki.Views.Pages extends Backbone.View
         self.addResources()
     })
 
+    # add source links
     contribPrefix = "Contribution:"
     if @model.get('title').substring(0, contribPrefix.length) == contribPrefix
       @model.get('sourceLinks').fetch({
@@ -69,14 +72,27 @@ class Wiki.Views.Pages extends Backbone.View
     # remove TOC
     $('#toc').remove()
 
-  addSection: (section) ->
+  addSection: (section, sections, options) ->
     sectionview = new Wiki.Views.Sections(model: section)
-    sectionview.render()
+    sectionview.render(options)
 
   addAllSections: ->
     self = @
+    $('#sposition').html('')
+    $('#sposition').append($('<option>').text('(before first section)'))
     $.each @model.get('sections').models , (i, section) ->
+      if section.get('title') != "Metadata"
+        $('#sposition').append($('<option>').text(section.get('title')))
       self.addSection(section)
+
+  newSectionModal: ->
+    $('#creationmodal').modal()
+
+  createSection: ->
+    $("#creationmodal").modal('hide')
+    newtitle = $('#sname').val()
+    newsection = new Wiki.Models.Section({title: newtitle, content: "==" + newtitle + "=="})
+    @model.get('sections').add([newsection], {at: document.getElementById('sposition').selectedIndex})
 
   addInternalTriple: (triple) ->
     tripleview = new Wiki.Views.Triples(model: triple)
@@ -126,6 +142,7 @@ class Wiki.Views.Pages extends Backbone.View
     githubview.render()
 
   addSourceLinks: ->
+    $('#sourcelinks').find('.dropdown-menu').html('')
     self = @
     $.each @model.get('sourceLinks').models, (i, link) ->
       self.addSourceLink(link)

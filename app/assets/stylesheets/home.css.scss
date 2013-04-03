@@ -90,6 +90,9 @@ header {
 	text-shadow: rgba(0,0,0,0.5) -1px 0, rgba(0,0,0,0.3) 0 -1px, rgba(255,255,255,0.5) 0 1px, rgba(0,0,0,0.3) -1px -1px;
 }
 
+#page {
+	width: 100%;
+}
 
 
 #nav {
@@ -281,6 +284,7 @@ p {
 .section-content-parsed,.section-content-source {
 	float: left;
 	width: 50%;
+	min-height: 10px;
 }
 
 .section-content-parsed p, .section-content-parsed ul {
@@ -405,4 +409,23 @@ font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', 'Droid Sans Mono', 'Consolas', mo
 
 .highlight pre {
 	padding: 7px;
+}
+
+#top {
+	width: 98%;
+	margin-bottom: 90px;
+	height: 2px;
+}
+
+#title {
+	float: left;
+}
+#topeditbar {
+	float: right;
+	height: 20px;
+}
+
+.sectionaddbutton {
+	margin-top: 20px;
+	float: right;
 }
