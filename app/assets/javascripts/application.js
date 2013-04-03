@@ -12,6 +12,8 @@
 //
 //= require jquery
 //= require ace/ace
+//= require typo/typo
+//= require spellcheck_ace/spellcheck_ace
 //= require jquery_ujs
 //= require underscore
 //= require backbone

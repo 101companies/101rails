@@ -65,15 +65,24 @@ class Wiki.Views.Sections extends Backbone.View
   initedit: ->
     self = @
     @toggleEdit(true)
-    @editor = $(@el).find('.editor').first()
-    @editor.text(@model.get('content'))
+    editordiv = $(@el).find('.editor')[0]
+    editorid = @model.get('title').replace(' ', '-') + 'editor'
+    $(editordiv).attr('id', editorid)
+    @editor = ace.edit(editordiv)
+    @editor.setTheme("ace/theme/chrome")
+    @editor.getSession().setMode("ace/mode/text")
+    @editor.getSession().setUseWrapMode(true)
+    @editor.setValue(@model.get('content'))
+    @editor.navigateFileStart()
+    enable_spellcheck(editorid)
+
 
   edit: ->
     @toggleEdit(true)
 
   save: ->
     self = @
-    text = @editor.val()
+    text = @editor.getValue()
     `matches = text.match(/==([^\r\n=])+==/g)`
     if matches
       `newheadline = matches[0].replace(/==/g,'').trim()`
@@ -84,7 +93,7 @@ class Wiki.Views.Sections extends Backbone.View
         data: {content: text}
         success: (data) ->
           self.insertHTML(data.html)
-          self.model.set('content': self.editor.val(), 'title': newheadline)
+          self.model.set('content': self.editor.getValue(), 'title': newheadline)
           self.model.set()
           self.toggleEdit(false)
       })
