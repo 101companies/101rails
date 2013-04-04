@@ -3,7 +3,7 @@ gem 'rails', '3.2.8'
 
 group :assets do
   gem 'sass-rails',   '~> 3.2.3'
-  gem 'coffee-rails', '~> 3.2.1'
+  gem 'coffee-rails', '~> 3.2.2'
   gem 'uglifier', '>= 1.0.3'
   gem 'compass-rails'
 end
@@ -14,7 +14,7 @@ gem 'rails-backbone'
 gem 'haml-rails'
 
 # web server
-gem 'thin', '1.5.0'
+gem 'thin', '1.5.1'
 
 # database
 gem 'mongoid', '>= 3.0.5'
@@ -33,7 +33,7 @@ gem 'cancan'
 
 # faster rails command
 group :development do
-  gem 'zeus',  '0.13.2'
+  gem 'zeus',  '0.13.3'
   gem 'debugger'
   gem 'better_errors'
   gem 'binding_of_caller' 
@@ -69,7 +69,7 @@ gem 'mediawiki-gateway', :git => 'git://github.com/kubicek/mediawiki-gateway.git
 gem 'wikicloth', :git => 'git://github.com/avaranovich/wikicloth.git'
 
 # source text highlighting
-gem 'pygments.rb', '~> 0.2.13'
+gem 'pygments.rb', '~> 0.4.2'
 gem 'closure-compiler'
 
 # deploy with Capistrano
