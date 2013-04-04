@@ -425,7 +425,11 @@ font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', 'Droid Sans Mono', 'Consolas', mo
 	height: 20px;
 }
 
-.sectionaddbutton {
+#topButton {
 	margin-top: 20px;
 	float: right;
+}
+
+.userdropdown {
+	background-color: red;
 }

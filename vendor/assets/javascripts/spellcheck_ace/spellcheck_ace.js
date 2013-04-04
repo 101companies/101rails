@@ -20,7 +20,6 @@ $.get(dicPath, function(data) {
   $.get(affPath, function(data) {
       affData = data;
   }).done(function() {
-    console.log("Dictionary loaded");
     dictionary = new Typo(lang, affData, dicData);
   });
 });
@@ -67,7 +66,6 @@ function spell_check(id) {
     session.removeMarker(markers_present[i]);
   }
   markers_present = [];
-console.log('Got here.')
   try {
       var Range = ace.require('ace/range').Range
       var lines = session.getDocument().getAllLines();

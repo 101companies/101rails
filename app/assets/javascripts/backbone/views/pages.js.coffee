@@ -2,7 +2,8 @@ class Wiki.Views.Pages extends Backbone.View
   el: "#page"
 
   events:
-    'click .sectionaddbutton' : 'newSectionModal'
+    'click #pageEditButton' : 'edit'
+    'click #sectionAddButton' : 'newSectionModal'
     'click #createSection' : 'createSection'
 
   initialize: ->
@@ -146,6 +147,9 @@ class Wiki.Views.Pages extends Backbone.View
     self = @
     $.each @model.get('sourceLinks').models, (i, link) ->
       self.addSourceLink(link)
+
+  edit: ->
+    alert("Yes")
 
   saveSectionEdit: ->
     $('#modal_body').html(

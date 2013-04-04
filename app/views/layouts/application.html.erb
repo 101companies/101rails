@@ -55,13 +55,17 @@
         </ul>
       <% else %>
           <div class="btn-group pull-right">
-            <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+            <a class="btn dropdown-toggle" data-toggle="dropdown" href="">
               <i class="icon-user"></i> <%= current_user.email %> <span class="caret"></span>
             </a>
             <ul class="dropdown-menu">
-              <li><a href="#"><i class="icon-wrench"></i><%=link_to "Settings", current_user %></a></li>
+              <li>
+                  <%=link_to raw("<i class=\"icon-wrench\"></i> Settings"), current_user %>
+              </li>
               <li class="divider"></li>
-              <li><a href="#"><i class="icon-share"></i><%= link_to "Logout", destroy_user_session_path, :method => 'delete' %></a></li>
+              <li>
+                <%= link_to raw("<i class=\"icon-share\"></i> Logout"), destroy_user_session_path, :method => 'delete' %>
+              </li>
             </ul>
           </div>
       <% end %>
