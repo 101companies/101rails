@@ -36,6 +36,7 @@ group :development do
   gem 'zeus',  '0.13.2'
   gem 'debugger'
   gem 'better_errors'
+  gem 'binding_of_caller' 
 end
 
 group :test do

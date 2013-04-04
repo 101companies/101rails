@@ -26,8 +26,6 @@ class PagesController < ApplicationController
      @page.history = History.where(:page => @title).first
     end 
 
-     
-
     respond_with @page
   end
 
