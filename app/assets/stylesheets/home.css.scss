@@ -265,6 +265,16 @@ p {
 	box-shadow:0 0 10px 1px #333;
 }
 
+#sections {
+	width: 200%;
+}
+
+#sections-parsed, #sections-source {
+	width: 50%;
+	float: left;
+	min-height: 10px;
+}
+
 .section {
 	margin-left: 20px;
 }

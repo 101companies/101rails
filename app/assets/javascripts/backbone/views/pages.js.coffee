@@ -7,6 +7,7 @@ class Wiki.Views.Pages extends Backbone.View
     'click #createSection' : 'createSection'
 
   initialize: ->
+    @inedit = false
     @model.get('sections').bind('add', @addSection, @)
     #@model.bind('change', @render, @)
     @model.get('sections').bind('change', @saveSectionEdit, @)
@@ -149,7 +150,22 @@ class Wiki.Views.Pages extends Backbone.View
       self.addSourceLink(link)
 
   edit: ->
-    alert("Yes")
+    console.log(@model.get('sections').models.reduce(((agg, cur) -> agg + cur.get('content')), ''))
+    @inedit = not @inedit
+    @toggleEdit(@inedit)
+
+
+  toggleEdit: (open) ->
+    self = @
+    if open
+      $(@el).find('#sections').animate({marginLeft: '-100%'}, 300)
+      $(@el).find('#sections-source').css(height: '400px')
+      $(@el).find('.pageeditor').css(height: '400px')
+    else
+      $(@el).find('#sections').animate({marginLeft: '0%'}, 300)
+      $(@el).find('#sections-source').css(height: '0px')
+      $(@el).find('.pageeditor').css(height: '0px')
+
 
   saveSectionEdit: ->
     $('#modal_body').html(
