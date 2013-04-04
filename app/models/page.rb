@@ -13,9 +13,11 @@ class Page
     @content = gateway.get(title)
 
     # create a context from NS:TITLE
-    @ctx = title.split.length == 2 ? {ns: title.split[0].downcase, title: title.split[1]} : {ns: 'concept', title: title.split[0]}
+    @ctx = title.split(':').length == 2 ? {ns: title.split(':')[0].downcase, title: title.split(':')[1]} : {ns: 'concept', title: title.split(':')[0]}
+    #Rails.logger.debug(@ctx)
 
-    @wiki = WikiCloth::Parser.new(:data => @content, :noedit => true, :context => @ctx)
+    @wiki = WikiCloth::Parser.new(:data => @content, :noedit => true)
+    WikiCloth::Parser.context = @ctx
     @html = @wiki.to_html
   end
       

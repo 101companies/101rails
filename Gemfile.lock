@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/avaranovich/wikicloth.git
-  revision: ca5b8f8060af655bd5573d28f58fc2c0c0bc97fd
+  revision: 9dce874ac2a7bab8fc71ab3159e821f57d8f82e2
   specs:
     wikicloth (0.8.0)
       builder
@@ -72,7 +72,6 @@ GEM
       erubis (>= 2.6.6)
     binding_of_caller (0.7.1)
       debug_inspector (>= 0.0.1)
-    blankslate (3.1.2)
     bootstrap-sass (2.3.1.0)
       sass (~> 3.2)
     builder (3.0.4)
@@ -152,7 +151,7 @@ GEM
       railties (>= 3.0.0)
     faraday (0.8.7)
       multipart-post (~> 1.1)
-    ffi (1.0.11)
+    ffi (1.6.0)
     font-awesome-sass-rails (3.0.2.2)
       railties (>= 3.1.1)
       sass-rails (>= 3.1.1)
@@ -239,8 +238,10 @@ GEM
     origin (1.0.11)
     orm_adapter (0.4.0)
     polyglot (0.3.3)
-    pygments.rb (0.2.13)
-      rubypython (~> 0.5.3)
+    posix-spawn (0.3.6)
+    pygments.rb (0.4.2)
+      posix-spawn (~> 0.3.6)
+      yajl-ruby (~> 1.1.0)
     rack (1.4.5)
     rack-cache (1.2)
       rack (>= 0.4)
@@ -291,9 +292,6 @@ GEM
       rspec-core (~> 2.13.0)
       rspec-expectations (~> 2.13.0)
       rspec-mocks (~> 2.13.0)
-    rubypython (0.5.3)
-      blankslate (>= 2.1.2.3)
-      ffi (~> 1.0.7)
     rubyzip (0.9.9)
     rvm-capistrano (1.2.7)
       capistrano (>= 2.0.0)
@@ -312,7 +310,7 @@ GEM
       hike (~> 1.2)
       rack (~> 1.0)
       tilt (~> 1.1, != 1.3.0)
-    thin (1.5.0)
+    thin (1.5.1)
       daemons (>= 1.0.9)
       eventmachine (>= 0.12.6)
       rack (>= 1.0.0)
@@ -330,7 +328,8 @@ GEM
     websocket (1.0.7)
     xpath (1.0.0)
       nokogiri (~> 1.3)
-    zeus (0.13.2)
+    yajl-ruby (1.1.0)
+    zeus (0.13.3)
       method_source (>= 0.6.7)
 
 PLATFORMS
@@ -345,7 +344,7 @@ DEPENDENCIES
   capistrano_rsync_with_remote_cache
   capybara (>= 1.1.2)
   closure-compiler
-  coffee-rails (~> 3.2.1)
+  coffee-rails (~> 3.2.2)
   compass-rails
   cucumber-rails (>= 1.3.0)
   database_cleaner (>= 0.8.0)
@@ -365,14 +364,14 @@ DEPENDENCIES
   omniauth
   omniauth-github
   omniauth-identity
-  pygments.rb (~> 0.2.13)
+  pygments.rb (~> 0.4.2)
   rails (= 3.2.8)
   rails-backbone
   rails_admin!
   rspec-rails (>= 2.11.0)
   rvm-capistrano
   sass-rails (~> 3.2.3)
-  thin (= 1.5.0)
+  thin (= 1.5.1)
   uglifier (>= 1.0.3)
   wikicloth!
-  zeus (= 0.13.2)
+  zeus (= 0.13.3)
