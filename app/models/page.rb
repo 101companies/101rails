@@ -11,7 +11,11 @@ class Page
     @title = title
     @base_uri = 'http://101companies.org/api.php'
     @content = gateway.get(title)
-    @wiki = WikiCloth::Parser.new(:data => @content, :noedit => true, :context => nil)
+
+    # create a context from NS:TITLE
+    @ctx = title.split.length == 2 ? {ns: title.split[0].downcase, title: title.split[1]} : {ns: 'concept', title: title.split[0]}
+
+    @wiki = WikiCloth::Parser.new(:data => @content, :noedit => true, :context => @ctx)
     @html = @wiki.to_html
   end
       
