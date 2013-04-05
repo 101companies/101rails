@@ -43,7 +43,11 @@
         <i class="icon-plus"></i>
         <strong>Add Section</strong>
       </div>
-      <div class="btn btn-small topButton" id="pageEditButton" title="Add section">
+      <div class="editorbutton btn btn-small topButton" id="pageCancelButton">
+        <i class="icon-remove"></i>
+        <strong class="editbuttontext">Cancel</strong>
+      </div>
+      <div class="btn btn-small topButton" id="pageEditButton">
         <i class="icon-pencil"></i>
         <strong>Edit page</strong>
       </div>
@@ -54,7 +58,7 @@
     <%= parse(@page) -%>
   </div>
   <div id="sections-source">
-        <div class="pageeditor"/>
+        <div id="pageeditor"/>
   </div>
  </div>
 </div>

@@ -213,7 +213,7 @@ p {
 	float: right;
 }
 
-.cancelbutton {
+.cancelbutton, #pageCancelButton {
 	margin-right: 10px;
 	display: none;
 }
@@ -304,12 +304,13 @@ p {
 	width: 95%;
 }
 
-.section-content-source {
+.section-content-source, #sections-source {
 	height: 0px;
+	margin-bottom: 30px;
 }
 
 
-.editor {
+.editor,  #pageeditor {
 	float: left;
 	width: 60%;
 	height: 0px;
@@ -435,7 +436,8 @@ font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', 'Droid Sans Mono', 'Consolas', mo
 	height: 20px;
 }
 
-#topButton {
+.topButton {
+	margin: 2px;
 	margin-top: 20px;
 	float: right;
 }

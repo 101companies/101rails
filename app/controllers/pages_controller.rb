@@ -24,7 +24,7 @@ class PagesController < ApplicationController
       )
     else
      @page.history = History.where(:page => @title).first
-    end 
+    end
 
     respond_with @page
   end
@@ -78,10 +78,14 @@ class PagesController < ApplicationController
   def update
     title = params[:title]
     sections = params[:sections]
-    content = ""
-    sections.each { |s| content += s['content'] }
     page = Page.new(title)
-    page.update(content)
+    if params.has_key?('content')
+      page.update(params[:content])
+    else
+      content = ""
+      sections.each { |s| content += s['content'] }
+      page.update(content)
+    end
 
     if History.where(:page => title).exists?
       history = History.where(:page => title).first

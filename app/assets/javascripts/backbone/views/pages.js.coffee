@@ -2,9 +2,9 @@ class Wiki.Views.Pages extends Backbone.View
   el: "#page"
 
   events:
-    'click #pageEditButton' : 'edit'
     'click #sectionAddButton' : 'newSectionModal'
     'click #createSection' : 'createSection'
+    'click #pageCancelButton': 'cancel'
 
   initialize: ->
     @inedit = false
@@ -73,6 +73,14 @@ class Wiki.Views.Pages extends Backbone.View
 
     # remove TOC
     $('#toc').remove()
+    @editb = $('#pageEditButton')
+    @editb.click( -> self.initedit())
+    @canelb = $('#pageCancelButton')
+    @newsectionb = $('#sectionAddButton')
+    if not _.contains(Wiki.currentUser.get('actions'), "Edit")
+      @editb.css("display", "none")
+    else
+      @editb.click( -> self.initedit())
 
   addSection: (section, sections, options) ->
     sectionview = new Wiki.Views.Sections(model: section)
@@ -149,22 +157,55 @@ class Wiki.Views.Pages extends Backbone.View
     $.each @model.get('sourceLinks').models, (i, link) ->
       self.addSourceLink(link)
 
-  edit: ->
-    console.log(@model.get('sections').models.reduce(((agg, cur) -> agg + cur.get('content')), ''))
-    @inedit = not @inedit
-    @toggleEdit(@inedit)
+  fillEditor: ->
+    allcontents = @model.get('sections').models.reduce(((agg, cur) -> agg + cur.get('content')), '')
+    @editor.setValue(allcontents)
 
+  initedit: ->
+    @toggleEdit(true)
+    editorid = 'pageeditor'
+    @editor = ace.edit(editorid)
+    @editor.setTheme("ace/theme/chrome")
+    @editor.getSession().setMode("ace/mode/text")
+    @editor.getSession().setUseWrapMode(true)
+    @fillEditor()
+    @editor.navigateFileStart()
+    enable_spellcheck(editorid)
+
+  edit: ->
+    @toggleEdit(true)
+
+  save: ->
+    $('#modal_body').html(
+          $('<div>').addClass('alert alert-info')
+          .text("Saving..."))
+    $('#modal').modal()
+    text = @editor.getValue()
+    @model.save({'content' : text}, {success: -> location.reload()})
+
+  cancel: (button) ->
+    @toggleEdit(false)
+    @fillEditor()
 
   toggleEdit: (open) ->
     self = @
     if open
       $(@el).find('#sections').animate({marginLeft: '-100%'}, 300)
       $(@el).find('#sections-source').css(height: '400px')
-      $(@el).find('.pageeditor').css(height: '400px')
+      $(@el).find('#pageeditor').css(height: '400px')
+      @editb.find("i").attr("class", "icon-ok")
+      @editb.find('strong').text("Save")
+      @editb.unbind('click').bind('click', -> self.save())
+      @canelb.show()
+      @newsectionb.hide()
     else
       $(@el).find('#sections').animate({marginLeft: '0%'}, 300)
       $(@el).find('#sections-source').css(height: '0px')
-      $(@el).find('.pageeditor').css(height: '0px')
+      $(@el).find('#pageeditor').css(height: '0px')
+      @editb.find('strong').text("Edit")
+      @editb.unbind('click').bind('click', -> self.edit())
+      @canelb.hide()
+      @newsectionb.show()
 
 
   saveSectionEdit: ->
