@@ -12,6 +12,6 @@ class Wiki.Views.ExTriples extends Backbone.View
     if place.length
       $(place).find('.resourcebar').append($(self.resourceBoxTemplate(cat:'primary', link:info)).tooltip("show"))
     else
-      @setElement($(@resourceTemplate(fullName: fullName)))
+      @setElement($(@resourceTemplate(fullName: fullName, name: fullName.replace(/\w/, ''))))
       $(@el).find('.resourcebar').append($(self.resourceBoxTemplate(cat:'primary', link:info)).tooltip("show"))
     $('#resources').append(@el)

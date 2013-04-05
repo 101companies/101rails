@@ -366,17 +366,18 @@ font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', 'Droid Sans Mono', 'Consolas', mo
 
 #resources {
 	margin-bottom: 20px;
+	width: 100%;
 
 }
 
 .resource {
-	margin-left: 10px;
-	height: 50px;
+	width: 100%;
+	float: left;
 }
 
 .resourcebar {
+	float: left;
 	width: 100%;
-	height: 20px;
 	padding-top: 10px;
 }
 
@@ -386,27 +387,44 @@ font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', 'Droid Sans Mono', 'Consolas', mo
 	margin-right: 5px;
 }
 
+
+.resourceButton {
+	margin-top: 15px;
+	margin-right: 5px;
+	float: left;
+}
+
 .resourcebox {
-	float:left;
-	margin: 2px;
+	float: left;
+	padding-left: 5px;
+	padding-right: 5px;
+	width: 100%;
+}
+
+
+.resourcebox .primary, .resourcebox .secondary  {
+	width: 7px;
+	height: 7px;
+	float: left;
+	margin: 6px;
+	margin-left: 2px;
+	margin-right: 4px;
 	border-radius: 5px;
 }
 
-.resourcebox.primary {
+.resourcebox .primary {
 	background-color: #303030;
-	width: 15px;
-	height: 15px;
 }
 
-.resourcebox.secondary {
-	border: solid 3px #303030;
-	width: 9px;
-	height: 9px;
+.resourcebox .secondary {
+	border: solid 2px #303030;
+	width: 3px;
+	height: 3px;
 }
+
 
 .resoucebox a {
 	width: 15px;
-	height: 15px;
 }
 
 #sourcelinks {

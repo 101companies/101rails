@@ -11,7 +11,7 @@ module Secrets
   end
 
 private
-  def self.keys_file 
+  def self.keys_file
     Rails.env == 'development' ? 'test_secrets.yml' : 'secrets.yml'
   end
 end

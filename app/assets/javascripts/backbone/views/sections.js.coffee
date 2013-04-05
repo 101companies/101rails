@@ -76,7 +76,6 @@ class Wiki.Views.Sections extends Backbone.View
     @editor.navigateFileStart()
     enable_spellcheck(editorid)
 
-
   edit: ->
     @toggleEdit(true)
 
@@ -92,7 +91,8 @@ class Wiki.Views.Sections extends Backbone.View
         url: "/api/parse/"
         data: {content: text}
         success: (data) ->
-          self.insertHTML(data.html)
+          unless self.model.get('title') == 'Metadata'
+            self.insertHTML(data.html)
           self.model.set('content': self.editor.getValue(), 'title': newheadline)
           self.model.set()
           self.toggleEdit(false)
