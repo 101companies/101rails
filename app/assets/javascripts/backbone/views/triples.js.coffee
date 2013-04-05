@@ -20,6 +20,6 @@ class Wiki.Views.Triples extends Backbone.View
       rendertriple.s = @decode(@model.get('node'), false)
     else
       rendertriple.o = @decode(@model.get('node'), false)
-    $('#metasection').append(@template(rendertriple))
+    $('#metasection').find('.section-content-parsed').append(@template(rendertriple))
 
 

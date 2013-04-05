@@ -29,7 +29,7 @@ class Wiki.Views.Pages extends Backbone.View
   render: ->
     self = @
     # add page title
-    $("#title h1").text(@model.get('title'))
+    $("#title h1").text(@model.get('title').replace('_', ' '))
 
     # add backlinks
     $.each @model.get('backlinks'), (i,bl) ->
@@ -44,7 +44,7 @@ class Wiki.Views.Pages extends Backbone.View
 
     # add triples
     @model.get('triples').fetch({
-      url: self.model.get('triples').urlBase + self.model.get('title').replace(":", "-3A")
+      url: self.model.get('triples').urlBase + self.escapeURI(self.model.get('title'))
       dataType: 'jsonp'
       jsonpCallback: 'callback'
       success: (data,res,o) ->
@@ -53,7 +53,7 @@ class Wiki.Views.Pages extends Backbone.View
 
      # add resources
     @model.get('resources').fetch({
-      url: self.model.get('resources').urlBase + self.model.get('title').replace(":", "-3A") + '.jsonp'
+      url: self.model.get('resources').urlBase + self.escapeURI(self.model.get('title')) + '.jsonp'
       dataType: 'jsonp'
       jsonpCallback: 'resourcecallback'
       success: (data,res,o) ->
@@ -81,6 +81,15 @@ class Wiki.Views.Pages extends Backbone.View
       @editb.css("display", "none")
     else
       @editb.click( -> self.initedit())
+
+  escapeURI: (uri) ->
+    result = decodeURIComponent(uri
+      .replace(/\-/, '-2D')
+      .replace(/\:/, "-3A")
+      .replace(/\s/, '_')
+    )
+    console.log(result)
+    result
 
   addSection: (section, sections, options) ->
     sectionview = new Wiki.Views.Sections(model: section)
@@ -132,6 +141,7 @@ class Wiki.Views.Pages extends Backbone.View
     self = @
     $.each @model.get('triples').models.sort(self.tripleOrdering), (i, triple) ->
       if self.is101Triple(triple)
+        console.log(triple.toJSON())
         self.addInternalTriple(triple)
       else
         self.addExternalTriple(triple)
