@@ -1,4 +1,4 @@
-require "rvm/capistrano"  
+#require "rvm/capistrano"  
 require 'bundler/capistrano'
 
 logger.level = Logger::DEBUG
@@ -7,26 +7,26 @@ set :application, "101wiki"
 set :rake, "#{rake} --trace"
 
 set :scm, :git
-set :scm_command, "/usr/local/bin/git"
-set :local_scm_command, "/usr/local/bin/git"
+#set :scm_command, "/usr/local/bin/git"
+#set :local_scm_command, "/usr/local/bin/git"
 
 # Or: `accurev`, `bzr`, `cvs`, `darcs`, `git`, `mercurial`, `perforce`, `subversion` or `none`
 
-role :web, "sl-mac.uni-koblenz.de"                          # Your HTTP server, Apache/etc
-role :app, "sl-mac.uni-koblenz.de"                          # This may be the same as your `Web` server
-role :db,  "sl-mac.uni-koblenz.de", :primary => true # This is where Rails migrations will run
+role :web, "beta.101companies.org"                          # Your HTTP server, Apache/etc
+role :app, "beta.101companies.org"                          # This may be the same as your `Web` server
+role :db,  "beta.101companies.org", :primary => true # This is where Rails migrations will run
 
-set :user, "wiki101"
-set :host, 'sl-mac.uni-koblenz.de'
+set :user, "user101"
+set :host, 'beta.101companies.org'
 
 default_run_options[:pty] = true  # Must be set for the password prompt
                                   # from git to work
 set :repository, "git://github.com/101companies/101rails.git"  # Your clone URL
 set :branch, "master"
 set :use_sudo, true
-set :user, "wiki101"
+set :user, "user101"
 
-set :deploy_to, "/Users/wiki101/Sites/101wiki"
+set :deploy_to, "/home/user101/wiki"
 set :deploy_via, :remote_cache
 ssh_options[:forward_agent] = true
 ssh_options[:keys] = [File.join(ENV["HOME"], ".ssh", "id_rsa")] 

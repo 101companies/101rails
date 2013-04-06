@@ -71,6 +71,6 @@ production:
     default:
       database: wiki_production
       hosts:
-        - localhost:27017
+        - db.101companies.org:27017
       options:
         consistency: :strong
