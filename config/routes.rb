@@ -2,10 +2,10 @@ Wiki::Application.routes.draw do
 
   mount RailsAdmin::Engine => '/admin', :as => 'rails_admin'
 
-  scope 'github_project' do
-    get '/index' => 'github_project#index'
-    get '/' => 'github_project#index'
-    post '/new' => 'github_project#new'
+  scope 'contributions' do
+    get '/index' => 'contributions#index'
+    get '/' => 'contributions#index'
+    post '/new' => 'contributions#new'
   end
 
   authenticated :user do

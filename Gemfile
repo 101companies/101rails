@@ -13,9 +13,6 @@ gem 'jquery-rails'
 gem 'rails-backbone'
 gem 'haml-rails'
 
-# web server
-gem 'thin', '1.5.1'
-
 # database
 gem 'mongoid', '>= 3.0.5'
 
@@ -36,7 +33,9 @@ group :development do
   gem 'zeus',  '0.13.3'
   gem 'debugger'
   gem 'better_errors'
-  gem 'binding_of_caller' 
+  gem 'binding_of_caller'
+  # web server
+  gem 'thin', '1.5.1'
 end
 
 group :test do
