@@ -208,7 +208,7 @@ GEM
     multi_json (1.7.2)
     multi_xml (0.5.3)
     multipart-post (1.2.0)
-    nested_form (0.3.1)
+    nested_form (0.3.2)
     net-scp (1.1.0)
       net-ssh (>= 2.6.5)
     net-sftp (2.1.1)
@@ -339,7 +339,7 @@ DEPENDENCIES
   bcrypt-ruby (~> 3.0.0)
   better_errors
   binding_of_caller
-  cancan
+  cancan (= 1.6.9)
   capistrano
   capistrano_rsync_with_remote_cache
   capybara (>= 1.1.2)

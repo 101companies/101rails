@@ -1,4 +1,4 @@
-class GithubProjectController < ApplicationController
+class ContributionsController < ApplicationController
 
   def index
   end
@@ -8,8 +8,9 @@ class GithubProjectController < ApplicationController
     # wait for three responses
 
     # save to db
-    contribution = GithubProject.new
+    contribution = Contribution.new
     contribution.url = params[:project_url]
+    contribution.user = current_user
     contribution.save
 
     redirect_to :index
