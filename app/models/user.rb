@@ -20,7 +20,7 @@ class User
   # work with roles
   field :role,               :type => String, :default => "guest"
 
-  # creating dropdown select with roles for user model
+  # creating dropdown select with roles for user model in edit view (create view)
   rails_admin do
     edit do
       include_all_fields
