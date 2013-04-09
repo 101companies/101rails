@@ -79,6 +79,7 @@ class Wiki.Views.Pages extends Backbone.View
     @newsectionb = $('#sectionAddButton')
     if not _.contains(Wiki.currentUser.get('actions'), "Edit")
       @editb.css("display", "none")
+      @newsectionb.css("display", "none")
     else
       @editb.click( -> self.initedit())
 
