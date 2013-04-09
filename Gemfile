@@ -26,7 +26,7 @@ gem 'omniauth'#, :git => 'git://github.com/intridea/omniauth.git'
 gem 'omniauth-github'#, :git => 'git://github.com/intridea/omniauth-github.git'
 
 # roles and permissions
-gem 'cancan'
+gem 'cancan', '1.6.9'
 
 # faster rails command
 group :development do

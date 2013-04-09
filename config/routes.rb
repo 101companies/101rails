@@ -12,6 +12,8 @@ Wiki::Application.routes.draw do
     root :to => 'home#index'
   end
 
+  get '/not_authorized' => 'home#not_authorized'
+
   root :to => "home#index"
   get '/data' => 'home#data'
   get '/wiki' => 'pages#show'

@@ -7,4 +7,8 @@ class HomeController < ApplicationController
   def data
   	
   end
+
+  def not_authorized
+  end
+
 end
