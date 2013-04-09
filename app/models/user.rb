@@ -11,9 +11,26 @@ class User
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
 
+  ROLE_OPTIONS = %w[admin editor owner gatekeeper guest]
+
   ## Database authenticatable
   field :email,              :type => String, :default => ""
   field :encrypted_password, :type => String, :default => ""
+
+  # work with roles
+  field :role,               :type => String, :default => "guest"
+
+  # creating dropdown select with roles for user model in edit view (create view)
+  rails_admin do
+    edit do
+      include_all_fields
+      field :role, :enum do
+        enum do
+          ROLE_OPTIONS.to_a
+        end
+      end
+    end
+  end
 
   validates_presence_of :email
   validates_presence_of :encrypted_password
@@ -49,7 +66,7 @@ class User
   index({ email: 1 }, { unique: true, background: true })
   field :name, :type => String
   validates_presence_of :name
-  attr_accessible :name, :email, :password, :password_confirmation, :remember_me, :created_at, :updated_at
+  attr_accessible :name, :email, :role, :password, :password_confirmation, :remember_me, :created_at, :updated_at
 
   has_many :authentications, :dependent => :delete
 
