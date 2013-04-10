@@ -27,7 +27,7 @@ set :use_sudo, true
 set :user, "user101"
 
 set :deploy_to, "/home/user101/wiki"
-set :deploy_via, :remote_cache
+set :deploy_via, :rsync_with_remote_cache #:remote_cache.
 ssh_options[:forward_agent] = true
 ssh_options[:keys] = [File.join(ENV["HOME"], ".ssh", "id_rsa")] 
 
@@ -54,16 +54,7 @@ after "deploy:restart", "deploy:cleanup"
  end
 
 namespace :deploy do
-  task :ln_assets do
-    run <<-CMD
-      rm -rf #{latest_release}/public/assets &&
-      mkdir -p #{shared_path}/assets &&
-      ln -s #{shared_path}/assets #{latest_release}/public/assets
-    CMD
-  end
-end
-
-namespace :assets do
+  namespace :assets do
     desc 'Run the precompile task locally and rsync with shared'
     task :precompile, :roles => :web, :except => { :no_release => true } do
       %x{bundle exec rake assets:precompile}
@@ -71,3 +62,4 @@ namespace :assets do
       %x{bundle exec rake assets:clean}
     end
   end
+end
