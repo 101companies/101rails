@@ -7,6 +7,6 @@ class Wiki.Models.Triple extends Backbone.Model
 
 class Wiki.Models.Triples extends Backbone.Collection
   model: Wiki.Models.Triple
-  urlBase:  'http://sl-mac.uni-koblenz.de:8081/org.softlang.semanticendpoint/doQuery?method=getResourceTriples&resource='
+  urlBase:  'http://triples.101companies.org/org.softlang.semanticendpoint/doQuery?method=getResourceTriples&resource='
 
 
