@@ -46,7 +46,7 @@ The application is configured to send email using a Gmail account.
 
 h2. Getting Started
 
-Install ruby version 1.9.3 and gem bundle.
+Install ruby version 1.9.3 and gem bundle. (by using gem install bundler)
 Then go to application folder and do
 @bundle install --path vendor/bundle@
 
