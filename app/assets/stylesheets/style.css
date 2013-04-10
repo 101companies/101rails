@@ -10,8 +10,8 @@ body{
 
 .navbar .brand {
     display: block;
-    /*width: 90px;
-    height: 34px;*/
+    width: 122px;
+    /* height: 34px;*/
     padding-top: 0;
     padding-bottom: 0;
     margin-top: 12px;
@@ -19,7 +19,7 @@ body{
     overflow: hidden;
     
     color: #333;
-    background: url(/assets/logo.jpg) no-repeat 0 0;
+    background: url(/assets/logo2.jpg) no-repeat 0 0;
 }
 
 .navbar .brand {
