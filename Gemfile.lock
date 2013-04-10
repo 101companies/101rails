@@ -216,6 +216,7 @@ GEM
     net-ssh (2.6.6)
     net-ssh-gateway (1.2.0)
       net-ssh (>= 2.6.5)
+    newrelic_rpm (3.5.8.72)
     nokogiri (1.5.9)
     oauth2 (0.8.1)
       faraday (~> 0.8)
@@ -361,6 +362,7 @@ DEPENDENCIES
   mediawiki-gateway!
   mongoid (>= 3.0.5)
   mongoid-rspec (>= 1.4.6)
+  newrelic_rpm
   omniauth
   omniauth-github
   omniauth-identity
