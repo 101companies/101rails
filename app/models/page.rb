@@ -9,7 +9,7 @@ class Page
 
   def initialize(title)
     @title = title
-    @base_uri = 'http://101companies.org/api.php'
+    @base_uri = 'http://mediawiki.101companies.org/api.php'
     @content = gateway.get(title)
 
     # create a context from NS:TITLE
