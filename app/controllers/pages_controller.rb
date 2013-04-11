@@ -41,12 +41,16 @@ class PagesController < ApplicationController
 
   def summary
     begin
+      GC.disable
       title = params[:id]
       page = Page.new(title)
       render :json => {:sections => page.sections, :internal_links => page.internal_links}
     rescue
       @error_message="#{$!}"
       render :json => {:success => false, :error => @error_message}
+    ensure
+      GC.enable
+      GC.start  
     end
   end
 
@@ -110,4 +114,9 @@ class PagesController < ApplicationController
     section = {'content' => p.section(params[:title])}
     respond_with section.to_json
   end
+
+  def query()
+    calculate
+    respond_to do |format| format.html {render} end
+ 
 end

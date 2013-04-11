@@ -32,7 +32,7 @@ class PassengerMonitor
       next unless line =~ /Rack: /
  
       pid, memory_usage =  extract_stats(line)
-      puts pid
+      puts memory_usage
  
       # If a given passenger process is bloated try to
       # kill it gracefully and if it fails, force killing it
@@ -76,7 +76,7 @@ class PassengerMonitor
   # Extract pid and memory usage of a single Passenger
   def extract_stats(line)
     stats = line.split
-    return stats[0].to_i, stats[2].to_f
+    return stats[0].to_i, stats[3].to_f
   end
  
   # Check if a given process is exceeding memory limit
