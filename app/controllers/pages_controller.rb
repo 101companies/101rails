@@ -6,7 +6,10 @@ class PagesController < ApplicationController
     @logged_user = current_user
     #TODO: add actions for the current page based on the roles
     if not @logged_user.nil?
-      @logged_user[:actions] = ["View", "Edit"]
+      @logged_user[:actions] = ["View"]
+    end
+    if @logged_user and (@logged_user.role=="admin" || @logged_user.role=="editor")
+      @logged_user[:actions] << "Edit"
     end
 
     @title = params[:title]
@@ -80,6 +83,9 @@ class PagesController < ApplicationController
   end
 
   def update
+    if current_user and not (current_user.role=="admin" || current_user.role=="editor")
+      render :json => {:success => false}
+    end
     title = params[:title]
     sections = params[:sections]
     page = Page.new(title)
