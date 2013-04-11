@@ -32,6 +32,7 @@ class PassengerMonitor
       next unless line =~ /Rake: /
  
       pid, memory_usage =  extract_stats(line)
+      puts pid
  
       # If a given passenger process is bloated try to
       # kill it gracefully and if it fails, force killing it
