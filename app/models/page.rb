@@ -10,7 +10,12 @@ class Page
   def initialize(title)
     @title = title
     @base_uri = 'http://mediawiki.101companies.org/api.php'
-    content = gateway.get(title)
+    content = Rails.cache.read(title)
+    
+    if (content == nil)
+      content = gateway.get(title)
+      Rails.cache.write(title, content)
+    end  
 
     # create a context from NS:TITLE
     @ctx = title.split(':').length == 2 ? {ns: title.split(':')[0].downcase, title: title.split(':')[1]} : {ns: 'concept', title: title.split(':')[0]}
@@ -34,7 +39,8 @@ class Page
   end
 
   def update(content)
-    puts content
+    Rails.cache.write(@title, content)
+    
     gw = MediaWiki::Gateway.new(@base_uri)
     gw.login(ENV['WIKIUSER'], ENV['WIKIPASSWORD'])
     gw.edit(@title, content)

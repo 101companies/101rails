@@ -31,7 +31,7 @@ Wiki::Application.configure do
     password: ENV["GMAIL_PASSWORD"]
   }
 
-
+  config.cache_store = :memory_store  
 
   # Print deprecation notices to the Rails logger
   config.active_support.deprecation = :log

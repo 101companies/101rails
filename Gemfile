@@ -77,3 +77,4 @@ gem 'capistrano_rsync_with_remote_cache'
 gem 'rvm-capistrano'
 
 gem 'newrelic_rpm'
+gem 'redis-store'
