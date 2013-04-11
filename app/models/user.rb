@@ -76,6 +76,7 @@ class User
 
   has_many :histories
   has_many :contributions
+  has_many :pages
 
   # Authentications
   after_create :save_new_authentication

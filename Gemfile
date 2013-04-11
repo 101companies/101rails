@@ -44,6 +44,8 @@ group :development do
   gem 'binding_of_caller', '0.7.1'
   # web server
   gem 'thin', '1.5.1'
+  # gem for creating db/controller diagrams
+  gem 'railroady', '1.1.0'
 end
 
 group :test do

@@ -243,6 +243,7 @@ GEM
       rack
     rack-test (0.6.2)
       rack (>= 1.0)
+    railroady (1.1.0)
     rails (3.2.8)
       actionmailer (= 3.2.8)
       actionpack (= 3.2.8)
@@ -390,6 +391,7 @@ DEPENDENCIES
   omniauth-github (= 1.1.0)
   omniauth-identity (= 1.1.0)
   pygments.rb (= 0.4.2)
+  railroady (= 1.1.0)
   rails (= 3.2.8)
   rails-backbone (= 0.7.2)
   rails_admin (= 0.4.7)
