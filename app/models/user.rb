@@ -1,4 +1,4 @@
-require 'string_extensions' 
+require 'string_extensions'
 include StringExtensions
 
 class User
@@ -11,7 +11,7 @@ class User
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
 
-  ROLE_OPTIONS = %w[admin editor owner gatekeeper guest]
+  ROLE_OPTIONS = %w[admin editor guest]
 
   ## Database authenticatable
   field :email,              :type => String, :default => ""
@@ -34,7 +34,7 @@ class User
 
   validates_presence_of :email
   validates_presence_of :encrypted_password
-  
+
   ## Recoverable
   field :reset_password_token,   :type => String
   field :reset_password_sent_at, :type => Time
@@ -112,5 +112,5 @@ private
   # Called :after_create
   def save_new_authentication
     @new_auth.save unless @new_auth.nil?
-  end  
+  end
 end
