@@ -114,9 +114,4 @@ class PagesController < ApplicationController
     section = {'content' => p.section(params[:title])}
     respond_with section.to_json
   end
-
-  def query()
-    calculate
-    respond_to do |format| format.html {render} end
- 
 end
