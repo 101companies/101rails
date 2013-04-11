@@ -7,7 +7,7 @@ require 'logger'
  
 class PassengerMonitor
   # How much memory (MB) single Passenger instance can use
-  DEFAULT_MEMORY_LIMIT = 500
+  DEFAULT_MEMORY_LIMIT = 1500
   # Log file name
   DEFAULT_LOG_FILE = 'passenger_monitoring.log'
   # How long should we wait after graceful kill attempt, before force kill
@@ -29,7 +29,7 @@ class PassengerMonitor
     @logger.info 'Checking for bloated Passenger workers'
  
     `passenger-memory-stats`.each_line do |line|
-      next unless line =~ /Rails: /
+      next unless line =~ /Rake: /
  
       pid, memory_usage =  extract_stats(line)
  
@@ -75,7 +75,7 @@ class PassengerMonitor
   # Extract pid and memory usage of a single Passenger
   def extract_stats(line)
     stats = line.split
-    return stats[0].to_i, stats[3].to_f
+    return stats[0].to_i, stats[2].to_f
   end
  
   # Check if a given process is exceeding memory limit
