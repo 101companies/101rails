@@ -39,8 +39,7 @@ class Page
 
   def update(content)
     @content = content
-    gw = MediaWiki::Gateway.new(@base_uri)
-    gw.login(ENV['WIKIUSER'], ENV['WIKIPASSWORD'])
+    gateway.login(ENV['WIKIUSER'], ENV['WIKIPASSWORD'])
     gw.edit(@title, content)
   end
 
@@ -59,8 +58,7 @@ class Page
   end
 
   def backlinks
-    gw = MediaWiki::Gateway.new(@base_uri)
-    gw.backlinks(@title)
+    gateway.backlinks(@title)
   end
 
   def section(section)
@@ -69,6 +67,10 @@ class Page
 
   private
     def gateway
-      return MediaWiki::Gateway.new(@base_uri)
+      if @_gateway == nil
+        @_gateway = MediaWiki::Gateway.new(@base_uri)
+      else
+        return @_gateway
+      end    
     end
 end
