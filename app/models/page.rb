@@ -34,7 +34,7 @@ class Page
   end
 
   def update(content)
-    #@content = content
+    puts content
     gw = MediaWiki::Gateway.new(@base_uri)
     gw.login(ENV['WIKIUSER'], ENV['WIKIPASSWORD'])
     gw.edit(@title, content)

@@ -79,7 +79,7 @@ class PagesController < ApplicationController
     title = params[:title]
     sections = params[:sections]
     page = Page.new(title)
-    if params.has_key?('content')
+    if params.has_key?('content') and params[:content] != ""
       page.update(params[:content])
     else
       content = ""
