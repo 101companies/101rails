@@ -29,7 +29,7 @@ class PassengerMonitor
     @logger.info 'Checking for bloated Passenger workers'
  
     `passenger-memory-stats`.each_line do |line|
-      next unless line =~ /Rake: /
+      next unless line =~ /Rack: /
  
       pid, memory_usage =  extract_stats(line)
       puts pid
