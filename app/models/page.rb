@@ -10,13 +10,13 @@ class Page
   def initialize(title)
     @title = title
     @base_uri = 'http://mediawiki.101companies.org/api.php'
-    @content = gateway.get(title)
+    content = gateway.get(title)
 
     # create a context from NS:TITLE
     @ctx = title.split(':').length == 2 ? {ns: title.split(':')[0].downcase, title: title.split(':')[1]} : {ns: 'concept', title: title.split(':')[0]}
     #Rails.logger.debug(@ctx)
 
-    @wiki = WikiCloth::Parser.new(:data => @content, :noedit => true)
+    @wiki = WikiCloth::Parser.new(:data => content, :noedit => true)
     WikiCloth::Parser.context = @ctx
     @html = @wiki.to_html
   end
@@ -33,12 +33,8 @@ class Page
     @title
   end
 
-  def content
-    @content
-  end
-
   def update(content)
-    @content = content
+    #@content = content
     gateway.login(ENV['WIKIUSER'], ENV['WIKIPASSWORD'])
     gw.edit(@title, content)
   end
