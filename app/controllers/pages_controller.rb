@@ -83,9 +83,10 @@ class PagesController < ApplicationController
   end
 
   def update
-    if current_user and not (current_user.role=="admin" || current_user.role=="editor")
-      render :json => {:success => false}
-    end
+    #if current_user and not (current_user.role=="admin" || current_user.role=="editor")
+    #  render :json => {:success => false}
+    #  return
+    #end
     title = params[:title]
     sections = params[:sections]
     page = Page.new(title)
