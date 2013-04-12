@@ -35,6 +35,11 @@ h1 {
 	font-size: 32px;
 }
 
+h5  {
+	margin: 0px;
+	font-size: 14px;
+}
+
 #title {
 	margin-left: 5px;
 }
@@ -375,6 +380,11 @@ font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', 'Droid Sans Mono', 'Consolas', mo
 	margin-bottom: 20px;
 }
 
+#backlinks p {
+	margin-left: 25px;
+
+}
+
 #resources {
 	margin-bottom: 20px;
 	width: 100%;
@@ -384,12 +394,14 @@ font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', 'Droid Sans Mono', 'Consolas', mo
 .resource {
 	width: 100%;
 	float: left;
+	margin-left: 25px;
 }
 
 .resourcebar {
 	float: left;
 	width: 100%;
-	padding-top: 10px;
+	padding-top: 5px;
+	margin-bottom: 10px;
 }
 
 .resourcename {
@@ -400,7 +412,6 @@ font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', 'Droid Sans Mono', 'Consolas', mo
 
 
 .resourceButton {
-	margin-top: 15px;
 	margin-right: 5px;
 	float: left;
 }
@@ -414,13 +425,13 @@ font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', 'Droid Sans Mono', 'Consolas', mo
 
 
 .resourcebox .primary, .resourcebox .secondary  {
-	width: 7px;
-	height: 7px;
+	width: 5px;
+	height: 5px;
 	float: left;
 	margin: 6px;
-	margin-left: 2px;
+	margin-left: 10px;
 	margin-right: 4px;
-	border-radius: 5px;
+	border-radius: 2px;
 }
 
 .resourcebox .primary {
@@ -429,8 +440,8 @@ font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', 'Droid Sans Mono', 'Consolas', mo
 
 .resourcebox .secondary {
 	border: solid 2px #303030;
-	width: 3px;
-	height: 3px;
+	width: 2px;
+	height: 2px;
 }
 
 
@@ -475,6 +486,12 @@ font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', 'Droid Sans Mono', 'Consolas', mo
 	background-color: red;
 }
 
-h2, h1 {
+h1, h2, h3, h4, h5 {
 	font-weight: normal;
+}
+
+.smallinfo {
+	font-size: 11px;
+	margin-top: -18px;
+	margin-bottom: 10px;
 }

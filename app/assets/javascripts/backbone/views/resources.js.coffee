@@ -5,9 +5,12 @@ class Wiki.Views.Resources extends Backbone.View
   render: ->
     self = @
     if @model.get('isLinkable')
-      console.log(@model.toJSON())
       @setElement($(@resourceTemplate(@model.toJSON())))
       $.each ['primary', 'secondary'], (i, cat) ->
         $.each self.model.get(cat), (i, target) ->
-          $(self.el).find('.resourcebar').append($(self.resourceBoxTemplate(cat:cat, link:target)).tooltip("show"))
+          $(self.el).find('.resourcebar').append($(self.resourceBoxTemplate(cat:cat, link:target)))
       $('#resources').append(@el)
+      $(@el).find('.resourcename')
+        .mouseenter(-> $(self.el).find('.resourcebar').first().collapse('show'))
+        .mouseout(-> $(self.el).find('.resourcebar').first().collapse('hide'))
+
