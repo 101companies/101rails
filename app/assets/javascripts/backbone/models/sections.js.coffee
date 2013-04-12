@@ -5,7 +5,7 @@ class Wiki.Models.Section extends Backbone.Model
     content: ""
 
   validate: (attrs, options) ->
-    `check = attrs.content.match(/==([^\r\n=])+==[^=]/g)`
+    `check = attrs.content.match(/==([^\r\n=])+==(\r|\n|[^=])/g)`
     if not check
       "Validation Error: Section header missing"
     else if check.length > 1
