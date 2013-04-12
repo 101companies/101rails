@@ -73,6 +73,8 @@ class Wiki.Views.Pages extends Backbone.View
 
     # remove TOC
     $('#toc').remove()
+
+    # add handlers
     @editb = $('#pageEditButton')
     @editb.click( -> self.initedit())
     @canelb = $('#pageCancelButton')
@@ -82,6 +84,9 @@ class Wiki.Views.Pages extends Backbone.View
       @newsectionb.css("display", "none")
     else
       @editb.click( -> self.initedit())
+
+    # temporary fixes
+    $('a[href^=imported]').remove()
 
   escapeURI: (uri) ->
     result = decodeURIComponent(uri
