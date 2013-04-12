@@ -23,7 +23,12 @@ class Page
 
     @wiki = WikiCloth::Parser.new(:data => content, :noedit => true)
     WikiCloth::Parser.context = @ctx
-    @html = @wiki.to_html
+
+    @html = Rails.cache.read(title + "_html")
+    if (@html == nil)
+      @html = @wiki.to_html
+      Rails.cache.write(title + "_html", @html)
+    end 
   end
       
   def html
@@ -40,7 +45,8 @@ class Page
 
   def update(content)
     Rails.cache.write(@title, content)
-    
+    Rails.cache.delete(@title, + "_html", content)
+
     gw = MediaWiki::Gateway.new(@base_uri)
     gw.login(ENV['WIKIUSER'], ENV['WIKIPASSWORD'])
     gw.edit(@title, content)
