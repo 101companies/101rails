@@ -28,7 +28,11 @@ h1, h2, h3, h4, h5, h6, h7{
 }
 
 h2 {
-	font-size: 28px;
+	font-size: 22px;
+}
+
+h1 {
+	font-size: 32px;
 }
 
 #title {
@@ -273,10 +277,13 @@ p {
 	width: 50%;
 	float: left;
 	min-height: 10px;
+
 }
 
 .section {
 	margin-left: 20px;
+	margin-top: -10px;
+	margin-bottom: -5px;
 }
 
 .section-content-container {
