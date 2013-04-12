@@ -14,7 +14,7 @@ class Wiki.Views.Sections extends Backbone.View
     # get prerendered headline node
     preRendered = $('#' + @model.get('title')).parent()
     $section = $(@template(title: @model.get('title')))
-    if preRendered.length
+    unless options
 
       # collect prerendered content nodes
       $set = $()
