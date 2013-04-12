@@ -61,8 +61,8 @@ class Wiki.Views.Pages extends Backbone.View
     })
 
     # add source links
-    contribPrefix = "Contribution:"
-    if @model.get('title').substring(0, contribPrefix.length) == contribPrefix
+    contribPrefix = "contribution:"
+    if @model.get('title').toLowerCase().substring(0, contribPrefix.length) == contribPrefix
       @model.get('sourceLinks').fetch({
         url: self.model.get('sourceLinks').urlBase + self.model.get('title').substring(contribPrefix.length) + '.jsonp'
         dataType: 'jsonp'
