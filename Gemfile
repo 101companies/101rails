@@ -25,6 +25,9 @@ gem 'omniauth-identity'
 gem 'omniauth'#, :git => 'git://github.com/intridea/omniauth.git'
 gem 'omniauth-github'#, :git => 'git://github.com/intridea/omniauth-github.git'
 
+# github integration
+gem 'github_api', '0.9.7'
+
 # roles and permissions
 gem 'cancan', '1.6.9'
 

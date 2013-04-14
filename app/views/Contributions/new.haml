@@ -1,1 +1,6 @@
-#new-submission-wrapper
+%h1 Create new contribution
+
+= form_tag('/contributions/create', :method => :post) do
+  = label_tag "Url to repository"
+  = text_field_tag :repo_url
+  = submit_tag "Create contributon"

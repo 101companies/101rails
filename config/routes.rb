@@ -3,9 +3,10 @@ Wiki::Application.routes.draw do
   mount RailsAdmin::Engine => '/admin', :as => 'rails_admin'
 
   scope 'contributions' do
-    get '/index' => 'contributions#index'
     get '/' => 'contributions#index'
-    post '/new' => 'contributions#new'
+    get '/new' => 'contributions#new'
+    post '/create' => 'contributions#create'
+
   end
 
   authenticated :user do

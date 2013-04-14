@@ -1,1 +1,5 @@
-#new-submission-wrapper
+%h1 List of last contributions
+
+- @contributions.each do |one_contribution|
+  %div{:class => "contribution"}
+    #{one_contribution.user.name} made contribution #{one_contribution.url}
