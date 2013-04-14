@@ -14,7 +14,12 @@ class Wiki.Views.ExTriples extends Backbone.View
     else
       @setElement($(@resourceTemplate(fullName: fullName, name: fullName.replace(/\w/, ''))))
       $(@el).find('.resourcebar').append($(self.resourceBoxTemplate(cat:'primary', link:info)).tooltip("show"))
-    $('#resources').append(@el)
-    $(@el).find('.resourcename')
-        .mouseenter(-> $(self.el).find('.resourcebar').first().collapse('show'))
-        .mouseout(-> $(self.el).find('.resourcebar').first().collapse('hide'))
+      $('#resources').append(@el)
+      $(@el).find('.resourcename').mouseenter( ->
+        $('.resource:not(#' + self.model.get('fullName')+ ')').each( (i, obj) ->
+          $(obj).find('.resourcebar').first().collapse('hide'))
+        $(self.el).find('.resourcebar').first().collapse('show')
+      )
+      $(@el).mouseout(
+        -> $(self.el).find('.resourcebar').first().collapse('hide')
+      )

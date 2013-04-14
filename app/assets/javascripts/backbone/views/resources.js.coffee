@@ -10,7 +10,11 @@ class Wiki.Views.Resources extends Backbone.View
         $.each self.model.get(cat), (i, target) ->
           $(self.el).find('.resourcebar').append($(self.resourceBoxTemplate(cat:cat, link:target)))
       $('#resources').append(@el)
-      $(@el).find('.resourcename')
-        .mouseenter(-> $(self.el).find('.resourcebar').first().collapse('show'))
-        .mouseout(-> $(self.el).find('.resourcebar').first().collapse('hide'))
-
+      $(@el).find('.resourcename').mouseenter( ->
+        $('.resource:not(#' + self.model.get('fullName')+ ')').each( (i, obj) ->
+          $(obj).find('.resourcebar').first().collapse('hide'))
+        $(self.el).find('.resourcebar').first().collapse('show')
+      )
+      $(@el).mouseout(
+        -> $(self.el).find('.resourcebar').first().collapse('hide')
+      )
