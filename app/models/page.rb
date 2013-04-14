@@ -4,6 +4,12 @@ require 'pp'
 require 'media_wiki'
 require 'wikicloth'
 
+class WikiParser < WikiCloth::Parser
+    external_link do |url,text|
+      "<a href=\"#{url}\" target=\"_blank\" class=\"exlink\">#{text.blank? ? url : text}</a>"
+    end
+end
+
 class Page
   include HTTParty
 
@@ -21,8 +27,8 @@ class Page
     @ctx = title.split(':').length == 2 ? {ns: title.split(':')[0].downcase, title: title.split(':')[1]} : {ns: 'concept', title: title.split(':')[0]}
     #Rails.logger.debug(@ctx)
 
-    @wiki = WikiCloth::Parser.new(:data => content, :noedit => true)
-    WikiCloth::Parser.context = @ctx
+    @wiki = WikiParser.new(:data => content, :noedit => true)
+    WikiParser.context = @ctx
 
     @html = Rails.cache.read(title + "_html")
     if (@html == nil)
