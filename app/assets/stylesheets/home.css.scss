@@ -275,7 +275,13 @@ p {
 }
 
 #sections {
+	float: left;
 	width: 200%;
+}
+
+#addtional-sections {
+	float: left;
+	width: 100%;
 }
 
 #sections-parsed, #sections-source {
