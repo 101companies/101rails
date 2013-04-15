@@ -82,8 +82,8 @@ header {
 }
 
 #logo {
-	height: 57.3px;
-	width: 90px;
+	height: 107.3px;
+	width: 180px;
 	background-size: 100%;
 	float: left;
 	background-image: url(/assets/logo2.jpg)
@@ -275,7 +275,13 @@ p {
 }
 
 #sections {
+	float: left;
 	width: 200%;
+}
+
+#addtional-sections {
+	float: left;
+	width: 100%;
 }
 
 #sections-parsed, #sections-source {
