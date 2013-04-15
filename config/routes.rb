@@ -6,13 +6,14 @@ Wiki::Application.routes.draw do
     get '/' => 'contributions#index'
     get '/new' => 'contributions#new'
     post '/create' => 'contributions#create'
-
+    get '/:id' => 'contributions#show', :as => :contribution
   end
 
   authenticated :user do
     root :to => 'home#index'
   end
 
+  # page for unauthorized
   get '/not_authorized' => 'home#not_authorized'
 
   root :to => "home#index"

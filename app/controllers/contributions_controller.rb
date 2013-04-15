@@ -2,6 +2,10 @@ class ContributionsController < ApplicationController
 
   load_and_authorize_resource :only => [:create, :new]
 
+  def show
+    @contribution = Contribution.find(params[:id])
+  end
+
   def index
 
     # last 10 contributions

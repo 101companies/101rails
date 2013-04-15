@@ -2,4 +2,6 @@
 
 - @contributions.each do |one_contribution|
   %div{:class => "contribution"}
-    #{one_contribution.user.name} made contribution #{one_contribution.url}
+    =link_to one_contribution.user.name, one_contribution.user
+    made contribution
+    =link_to one_contribution.url, one_contribution
