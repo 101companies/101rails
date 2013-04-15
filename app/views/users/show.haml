@@ -1,0 +1,11 @@
+%h1
+  = @user.name
+
+%h2 Personal
+= render 'users/shared/view', :user => @user
+
+%h2 User Contributions
+%ul
+- @user.contributions.each do |contribution|
+  %li
+    = render 'contributions/shared/view', :contribution => contribution
