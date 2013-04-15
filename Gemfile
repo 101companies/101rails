@@ -51,6 +51,7 @@ group :test do
 
 end
 
+# gem for retrieving gravatar/github avatars
 gem 'gravatar_image_tag', '1.1.3'
 
 # admin interface

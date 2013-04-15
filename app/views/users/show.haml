@@ -1,9 +1,11 @@
-%h3 User
-%div{:class => 'user'}
-  = gravatar_image_tag(@user.email, :alt => @user.name)
-  %p
-    User: #{@user.name}
-  %p
-    Email:
-    %a{:href => "mailto:#{@user.email}"}
-      = @user.email
+%h1
+  = @user.name
+
+%h2 Personal
+= render 'users/shared/view', :user => @user
+
+%h2 User Contributions
+%ul
+- @user.contributions.each do |contribution|
+  %li
+    = render 'contributions/shared/view', :contribution => contribution

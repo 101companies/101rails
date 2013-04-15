@@ -1,7 +1,4 @@
 %h1 List of last contributions
 
-- @contributions.each do |one_contribution|
-  %div{:class => "contribution"}
-    =link_to one_contribution.user.name, one_contribution.user
-    made contribution
-    =link_to one_contribution.url, one_contribution
+- @contributions.each do |contribution|
+  = render 'contributions/shared/view', :contribution => contribution
