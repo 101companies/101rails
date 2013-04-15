@@ -5,9 +5,9 @@ require 'media_wiki'
 require 'wikicloth'
 
 class WikiParser < WikiCloth::Parser
-    external_link do |url,text|
-      "<a href=\"#{url}\" target=\"_blank\" class=\"exlink\">#{text.blank? ? url : text}</a>"
-    end
+    #external_link do |url,text|
+    #  "<a href=\"#{url}\" target=\"_blank\" class=\"exlink\">#{text.blank? ? url : text}</a>"
+    #end
 end
 
 class Page
@@ -16,12 +16,6 @@ class Page
   def initialize(title)
     @title = title
     @base_uri = 'http://mediawiki.101companies.org/api.php'
-    content = Rails.cache.read(title)
-    
-    if (content == nil)
-      content = gateway.get(title)
-      Rails.cache.write(title, content)
-    end  
 
     # create a context from NS:TITLE
     @ctx = title.split(':').length == 2 ? {ns: title.split(':')[0].downcase, title: title.split(':')[1]} : {ns: 'concept', title: title.split(':')[0]}
@@ -35,6 +29,17 @@ class Page
       @html = @wiki.to_html
       Rails.cache.write(title + "_html", @html)
     end 
+  end
+
+  def content
+    c = Rails.cache.read(@title)
+    
+    if (c == nil)
+      c = gateway.get(@title)
+      Rails.cache.write(title, c)
+    end  
+
+    return c
   end
       
   def html
@@ -59,6 +64,8 @@ class Page
   end
 
   def internal_links
+    puts "internal_links " 
+    puts @wiki
     @wiki.internal_links
   end  
 
