@@ -3,15 +3,17 @@ Wiki::Application.routes.draw do
   mount RailsAdmin::Engine => '/admin', :as => 'rails_admin'
 
   scope 'contributions' do
-    get '/index' => 'contributions#index'
     get '/' => 'contributions#index'
-    post '/new' => 'contributions#new'
+    get '/new' => 'contributions#new'
+    post '/create' => 'contributions#create'
+    get '/:id' => 'contributions#show', :as => :contribution
   end
 
   authenticated :user do
     root :to => 'home#index'
   end
 
+  # page for unauthorized
   get '/not_authorized' => 'home#not_authorized'
 
   root :to => "home#index"

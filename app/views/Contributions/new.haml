@@ -1,1 +1,10 @@
-#new-submission-wrapper
+%h1 Create new contribution from github-user
+= @github_name
+
+= render 'users/shared/view', :user => current_user
+
+
+= form_tag('/contributions/create', :method => :post) do
+  = label_tag "Url to repository"
+  = select(:repo_url, nil, @user_github_repos.html_safe)
+  = submit_tag "Create contributon"
