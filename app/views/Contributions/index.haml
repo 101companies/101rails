@@ -1,1 +1,4 @@
-#new-submission-wrapper
+%h1 List of last contributions
+
+- @contributions.each do |contribution|
+  = render 'contributions/shared/view', :contribution => contribution
