@@ -1,6 +1,9 @@
 %h3 User
-%p
-  User: #{@user.name}
-%p
-  Email: #{@user.email if @user.email}
+%div{:class => 'user'}
   = gravatar_image_tag(@user.email, :alt => @user.name)
+  %p
+    User: #{@user.name}
+  %p
+    Email:
+    %a{:href => "mailto:#{@user.email}"}
+      = @user.email
