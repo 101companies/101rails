@@ -64,10 +64,13 @@ gem 'rspec-rails', '>= 2.11.0', :group => [:development, :test]
 # ???
 gem 'launchy', '>= 2.1.2', :group => :test
 
-# web-scraping?
+# web-scraping
 gem 'json_pure'
 gem 'json'
 gem 'httparty'
+
+# used for retrieving github-username by email
+gem 'mechanize'
 
 # work with wikimarkdown
 gem 'mediawiki-gateway', :git => 'git://github.com/kubicek/mediawiki-gateway.git'

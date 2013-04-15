@@ -1,6 +1,10 @@
-%h1 Create new contribution
+%h1 Create new contribution from github-user
+= @github_name
+
+= render 'users/shared/view', :user => current_user
+
 
 = form_tag('/contributions/create', :method => :post) do
   = label_tag "Url to repository"
-  = text_field_tag :repo_url
+  = select(:repo_url, nil, @user_github_repos.html_safe)
   = submit_tag "Create contributon"

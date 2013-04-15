@@ -4,6 +4,7 @@ class Contribution
   include Mongoid::Timestamps
 
   field :url, type: String
+  index({ url: 1 }, { unique: true, background: true })
 
   field :created_at, type: DateTime
   field :updated_at, type: DateTime
