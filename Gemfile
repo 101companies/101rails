@@ -51,6 +51,8 @@ group :test do
 
 end
 
+gem 'gravatar_image_tag', '1.1.3'
+
 # admin interface
 gem 'rails_admin', :git => 'git://github.com/sferik/rails_admin.git'
 
