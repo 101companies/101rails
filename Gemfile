@@ -28,6 +28,9 @@ gem 'omniauth-github'#, :git => 'git://github.com/intridea/omniauth-github.git'
 # github integration
 gem 'github_api', '0.9.7'
 
+# font with bundled icons
+gem 'font-awesome-sass-rails', '3.0.2.2'
+
 # roles and permissions
 gem 'cancan', '1.6.9'
 
