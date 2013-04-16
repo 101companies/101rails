@@ -188,10 +188,6 @@ class Wiki.Views.Pages extends Backbone.View
     @toggleEdit(true)
 
   save: ->
-    $('#modal_body').html(
-          $('<div>').addClass('alert alert-info')
-          .text("Saving..."))
-    $('#modal').modal()
     text = @editor.getValue()
     @model.save({'content' : text}, {success: -> location.reload()})
 
