@@ -917,3 +917,9 @@ label{
   margin-left: 8.56353591160221%;
   *margin-left: 8.457152932878806%;
 }
+
+#why h4 [class^="icon-"], #whats-new h4 [class^="icon-"], #why h4 [class*=" icon-"], #whats-new h4 [class*=" icon-"] {
+  vertical-align: -10%;
+  font-size: 28px;
+  margin-right: 5px;
+}
