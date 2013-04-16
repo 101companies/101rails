@@ -40,10 +40,6 @@ h5  {
 	font-size: 14px;
 }
 
-#title {
-	margin-left: 5px;
-}
-
 .container h2 a {
 	color: #333;
 }
@@ -274,6 +270,7 @@ p {
 	box-shadow:0 0 10px 1px #333;
 }
 
+
 #sections {
 	float: left;
 	width: 200%;
@@ -292,7 +289,6 @@ p {
 }
 
 .section {
-	margin-left: 20px;
 	margin-top: -10px;
 	margin-bottom: -5px;
 }
@@ -300,13 +296,11 @@ p {
 .section-content-container {
 	overflow: hidden;
 	width: 100%;
-	margin-left: 25px;
 }
 
 .section-content, .section-content ul, .section-content p {
 	width: 200%;
 	font-size: 14px;
-	padding-left: 3px;
 }
 
 .section-content-parsed,.section-content-source {
@@ -386,11 +380,6 @@ font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', 'Droid Sans Mono', 'Consolas', mo
 	margin-bottom: 20px;
 }
 
-#backlinks p {
-	margin-left: 25px;
-
-}
-
 #resources {
 	margin-bottom: 20px;
 	width: 100%;
@@ -400,7 +389,6 @@ font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', 'Droid Sans Mono', 'Consolas', mo
 .resource {
 	width: 100%;
 	float: left;
-	margin-left: 25px;
 }
 
 .resourcebar {
@@ -470,7 +458,7 @@ font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', 'Droid Sans Mono', 'Consolas', mo
 
 #top {
 	width: 98%;
-	margin-bottom: 90px;
+	margin-bottom: 70px;
 	height: 2px;
 }
 
