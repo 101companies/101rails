@@ -2,7 +2,7 @@ class Wiki.Views.ExTriples extends Backbone.View
   resourceTemplate : JST['backbone/templates/resource']
   resourceBoxTemplate : JST['backbone/templates/resourcebox']
 
-  prefixToName : {'www.haskell.org': 'HaskellWiki', 'en.wikipedia.org' : 'Wikipedia', 'en.wikibooks.org': 'Wikibooks'}
+  prefixToName : {'www.haskell.org': 'HaskellWiki', 'en.wikipedia.org' : 'Wikipedia', 'en.wikibooks.org': 'Wikibooks', 'www.youtube.com' : "YouTube"}
 
   render: ->
     self = @
@@ -16,10 +16,8 @@ class Wiki.Views.ExTriples extends Backbone.View
       $(@el).find('.resourcebar').append($(self.resourceBoxTemplate(cat:'primary', link:info)).tooltip("show"))
       $('#resources').append(@el)
       $(@el).find('.resourcename').mouseenter( ->
-        $('.resource:not(#' + self.model.get('fullName')+ ')').each( (i, obj) ->
-          $(obj).find('.resourcebar').first().collapse('hide'))
         $(self.el).find('.resourcebar').first().collapse('show')
       )
-      $(@el).mouseout(
+      $(@el).mouseleave(
         -> $(self.el).find('.resourcebar').first().collapse('hide')
       )
