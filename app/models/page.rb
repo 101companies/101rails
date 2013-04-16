@@ -27,6 +27,10 @@ class Page
     @html = Rails.cache.read(title + "_html")
     if (@html == nil)
       @html = @wiki.to_html
+      @wiki.internal_links.each do |link|
+        @html.gsub!("<a href=\"#{link}\"", "<a href=\"/wiki/#{link}\"")
+        #html.gsub!(":Category:","/wiki/Category:")
+     end  
       Rails.cache.write(title + "_html", @html)
     end 
   end
