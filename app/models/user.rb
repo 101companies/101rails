@@ -20,6 +20,9 @@ class User
   # work with roles
   field :role,               :type => String, :default => "guest"
 
+  # github data
+  field :github_name,        :type => String, :default => ''
+
   # creating dropdown select with roles for user model in edit view (create view)
   rails_admin do
     edit do
@@ -66,11 +69,13 @@ class User
   index({ email: 1 }, { unique: true, background: true })
   field :name, :type => String
   validates_presence_of :name
-  attr_accessible :name, :email, :role, :password, :password_confirmation, :remember_me, :created_at, :updated_at
+  attr_accessible :name, :email, :role, :password, :password_confirmation, :remember_me, :created_at, :updated_at,
+                  :contributions, :github_name
 
   has_many :authentications, :dependent => :delete
 
   has_many :histories
+  has_many :contributions
 
   # Authentications
   after_create :save_new_authentication

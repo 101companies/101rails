@@ -25,6 +25,12 @@ gem 'omniauth-identity'
 gem 'omniauth'#, :git => 'git://github.com/intridea/omniauth.git'
 gem 'omniauth-github'#, :git => 'git://github.com/intridea/omniauth-github.git'
 
+# github integration
+gem 'github_api', '0.9.7'
+
+# font with bundled icons
+gem 'font-awesome-sass-rails', '3.0.2.2'
+
 # roles and permissions
 gem 'cancan', '1.6.9'
 
@@ -48,6 +54,9 @@ group :test do
 
 end
 
+# gem for retrieving gravatar/github avatars
+gem 'gravatar_image_tag', '1.1.3'
+
 # admin interface
 gem 'rails_admin', :git => 'git://github.com/sferik/rails_admin.git'
 
@@ -58,10 +67,13 @@ gem 'rspec-rails', '>= 2.11.0', :group => [:development, :test]
 # ???
 gem 'launchy', '>= 2.1.2', :group => :test
 
-# web-scraping?
+# web-scraping
 gem 'json_pure'
 gem 'json'
 gem 'httparty'
+
+# used for retrieving github-username by email
+gem 'mechanize'
 
 # work with wikimarkdown
 gem 'mediawiki-gateway', :git => 'git://github.com/kubicek/mediawiki-gateway.git'
