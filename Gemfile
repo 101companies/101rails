@@ -55,11 +55,11 @@ end
 
 group :test do
 
-  gem 'capybara', '2.1.0'
-  gem 'database_cleaner', '0.9.1'
-  gem 'mongoid-rspec', '1.7.0'
-  gem 'email_spec', '1.4.0'
-  gem 'cucumber-rails', '1.3.1', :require => false
+  #gem 'capybara', '2.1.0'
+  #gem 'database_cleaner', '0.9.1'
+  #gem 'mongoid-rspec', '1.7.0'
+  #gem 'email_spec', '1.4.0'
+  #gem 'cucumber-rails', '1.3.1', :require => false
 
 end
 
@@ -70,8 +70,8 @@ gem 'gravatar_image_tag', '1.1.3'
 gem 'rails_admin', '0.4.7'
 
 # testing
-gem 'factory_girl_rails', '4.2.1', :group => [:development, :test]
-gem 'rspec-rails', '2.13.0', :group => [:development, :test]
+#gem 'factory_girl_rails', '4.2.1', :group => [:development, :test]
+#gem 'rspec-rails', '2.13.0', :group => [:development, :test]
 
 # ???
 gem 'launchy', '2.2.0', :group => :test
