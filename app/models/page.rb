@@ -11,16 +11,12 @@ class WikiParser < WikiCloth::Parser
 end
 
 class Page
-  include HTTParty
 
   include Mongoid::Document
   include Mongoid::Timestamps
 
   field :title, type: String
   index({ title: 1 }, { unique: true, background: true })
-
-  field :created_at, type: DateTime
-  field :updated_at, type: DateTime
 
   belongs_to :user
 
@@ -34,6 +30,8 @@ class Page
     @ctx = title.split(':').length == 2 ?
         {ns: title.split(':')[0].downcase, title: title.split(':')[1]} : {ns: 'concept', title: title.split(':')[0]}
     #Rails.logger.debug(@ctx)
+
+    @title = title
 
     @wiki = WikiParser.new(:data => content, :noedit => true)
     WikiParser.context = @ctx
@@ -60,6 +58,10 @@ class Page
     end
 
     return c
+  end
+
+  def title
+    @title
   end
 
   def html
