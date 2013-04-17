@@ -6,8 +6,6 @@ capybara-*.html
 /.bundle
 /vendor/bundle
 /log/*
-# ignore files produces with railroady
-/doc/*.svg
 /tmp/*
 /db/*.sqlite3
 /public/system/*
