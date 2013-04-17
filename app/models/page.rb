@@ -72,7 +72,7 @@ class Page
     @wiki
   end
 
-  def update(content)
+  def change(content)
     # TODO: add section with auth
     Rails.cache.write(self.title, content)
     Rails.cache.delete(self.title + "_html")

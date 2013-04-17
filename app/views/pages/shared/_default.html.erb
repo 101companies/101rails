@@ -9,14 +9,13 @@
     Wiki.page.set('sourceLinks', new Wiki.Models.SourceLinks());
     Wiki.page.set('history', <%= j @page.history.to_json.html_safe -%> );
 
-    // possible options: Edit, View
+    <% current_user["actions"] = ['View'] %>
 
-    <% if signed_in? -%>
-        Wiki.currentUser = new Wiki.Models.User(<%= j @logged_user.to_json.html_safe %>);
-    <% else -%>
-        Wiki.currentUser = new Wiki.Models.User();
-        Wiki.currentUser.set('actions', ['View'])
-    <% end -%>
+    <% if can? :update, @page %>
+      <%  current_user["actions"] << 'Edit' %>
+    <% end %>
+
+    Wiki.currentUser = new Wiki.Models.User(<%= j current_user.to_json.html_safe %>);
 
     jQuery(document).ready(function ($){
         window.router = new Wiki.Routers.PagesRouter(Wiki.Views.Pages);

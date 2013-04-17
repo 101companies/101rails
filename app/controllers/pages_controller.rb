@@ -16,15 +16,6 @@ class PagesController < ApplicationController
   end
 
   def show
-    @logged_user = current_user
-
-    # TODO: !!!!
-    if not @logged_user.nil?
-      @logged_user[:actions] = ["View"]
-    end
-    if @logged_user and (@logged_user.role=="admin" || @logged_user.role=="editor")
-      @logged_user[:actions] << "Edit"
-    end
 
     @title = params[:title]
     if @title == nil
@@ -110,16 +101,15 @@ class PagesController < ApplicationController
   end
 
   def update
-    # TODO: auth!
-    #if current_user and not (current_user.role=="admin" || current_user.role=="editor")
-    #  render :json => {:success => false}
-    #  return
-    #end
+    # check if operation is not permitted
+    if cannot? :update, self
+      render :json => {:success => false} and return
+    end
     title = params[:title]
     sections = params[:sections]
     page = Page.new.create(title)
     if params.has_key?('content') and params[:content] != ""
-      page.update(params[:content])
+      page.change(params[:content])
     else
       content = ""
       sections.each { |s| content += s['content'] + "\n" }
