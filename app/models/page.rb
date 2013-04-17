@@ -13,12 +13,26 @@ end
 class Page
   include HTTParty
 
-  def initialize(title)
-    @title = title
+  include Mongoid::Document
+  include Mongoid::Timestamps
+
+  field :title, type: String
+  index({ title: 1 }, { unique: true, background: true })
+
+  field :created_at, type: DateTime
+  field :updated_at, type: DateTime
+
+  belongs_to :user
+
+  attr_accessible :user, :title, :created_at, :updated_at
+
+  def create(title)
+
     @base_uri = 'http://mediawiki.101companies.org/api.php'
 
     # create a context from NS:TITLE
-    @ctx = title.split(':').length == 2 ? {ns: title.split(':')[0].downcase, title: title.split(':')[1]} : {ns: 'concept', title: title.split(':')[0]}
+    @ctx = title.split(':').length == 2 ?
+        {ns: title.split(':')[0].downcase, title: title.split(':')[1]} : {ns: 'concept', title: title.split(':')[0]}
     #Rails.logger.debug(@ctx)
 
     @wiki = WikiParser.new(:data => content, :noedit => true)
@@ -38,10 +52,10 @@ class Page
   end
 
   def content
-    c = Rails.cache.read(@title)
+    c = Rails.cache.read(self.title)
 
     if (c == nil)
-      c = gateway.get(@title)
+      c = gateway.get(self.title)
       Rails.cache.write(title, c)
     end
 
@@ -56,17 +70,13 @@ class Page
     @wiki
   end
 
-  def title
-    @title
-  end
-
   def update(content)
-    Rails.cache.write(@title, content)
-    Rails.cache.delete(@title + "_html")
-
+    # TODO: add section with auth
+    Rails.cache.write(self.title, content)
+    Rails.cache.delete(self.title + "_html")
     gw = MediaWiki::Gateway.new(@base_uri)
     gw.login(ENV['WIKIUSER'], ENV['WIKIPASSWORD'])
-    gw.edit(@title, content)
+    gw.edit(self.title, content)
   end
 
   def internal_links
@@ -86,7 +96,7 @@ class Page
   end
 
   def backlinks
-    gateway.backlinks(@title).map { |e| e.gsub(" ", "_")  }
+    gateway.backlinks(self.title).map { |e| e.gsub(" ", "_")  }
   end
 
   def section(section)

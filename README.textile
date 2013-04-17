@@ -54,6 +54,9 @@ Now you need to install mongodb.
 If you are using OSX it could very helpful to use homebrew for this purposes:
 @brew install mongodb@
 
+To apply index for mongodb you need to execute
+@bundle exec rake db:mongoid:create_indexes@
+
 After installing mongodb start this database and then simply launch application with:
 @bundle exec rails s@
 

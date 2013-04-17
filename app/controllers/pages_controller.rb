@@ -17,7 +17,8 @@ class PagesController < ApplicationController
 
   def show
     @logged_user = current_user
-    #TODO: add actions for the current page based on the roles
+
+    # TODO: !!!!
     if not @logged_user.nil?
       @logged_user[:actions] = ["View"]
     end
@@ -29,7 +30,7 @@ class PagesController < ApplicationController
     if @title == nil
       @title = "101companies:Project"
     end
-    @page = Page.new(@title)
+    @page = Page.new.create @title
 
     @page.instance_eval { class << self; self end }.send(:attr_accessor, "history")
     if not History.where(:page => @title).exists?
@@ -71,7 +72,7 @@ class PagesController < ApplicationController
     begin
       GC.disable
       title = params[:id]
-      page = Page.new(title)
+      page = Page.new.create(title)
       render :json => {:sections => page.sections, :internal_links => page.internal_links}
     rescue
       @error_message="#{$!}"
@@ -86,7 +87,7 @@ class PagesController < ApplicationController
   def sections
     begin
       title = params[:id]
-      page = Page.new(title)
+      page = Page.new.create(title)
       sections = page.sections
       respond_with sections
     rescue
@@ -100,7 +101,7 @@ class PagesController < ApplicationController
   def internal_links
     begin
       title = params[:id]
-      page = Page.new(title)
+      page = Page.new.create(title)
       respond_with page.internal_links
     rescue
       @error_message="#{$!}"
@@ -109,13 +110,14 @@ class PagesController < ApplicationController
   end
 
   def update
+    # TODO: auth!
     #if current_user and not (current_user.role=="admin" || current_user.role=="editor")
     #  render :json => {:success => false}
     #  return
     #end
     title = params[:title]
     sections = params[:sections]
-    page = Page.new(title)
+    page = Page.new.create(title)
     if params.has_key?('content') and params[:content] != ""
       page.update(params[:content])
     else
@@ -143,7 +145,7 @@ class PagesController < ApplicationController
 
   def section
     title = params[:id]
-    p = Page.new(title)
+    p = Page.new.create(title)
     section = {'content' => p.section(params[:title])}
     respond_with section.to_json
   end

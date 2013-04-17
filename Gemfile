@@ -4,10 +4,12 @@ source 'https://rubygems.org'
 gem 'rails', '3.2.8'
 
 group :assets do
+
   gem 'sass-rails',   '3.2.6'
   gem 'coffee-rails', '3.2.2'
   gem 'uglifier', '2.0.1'
   gem 'compass-rails', '1.0.3'
+
 end
 
 # frontend
@@ -38,6 +40,8 @@ gem 'cancan', '1.6.9'
 
 # faster rails command
 group :development do
+
+  # faster start for rake and rails commands
   gem 'zeus',  '0.13.3'
   gem 'debugger', '1.5.0'
   gem 'better_errors', '0.8.0'
@@ -46,6 +50,7 @@ group :development do
   gem 'thin', '1.5.1'
   # gem for creating db/controller diagrams
   gem 'railroady', '1.1.0'
+
 end
 
 group :test do

@@ -10,10 +10,10 @@ module PagesHelper
     wiki.internal_links.each do |link|
       html.gsub!("<a href=\"#{link}\"", "<a href=\"/wiki/#{link}\"")
       #html.gsub!(":Category:","/wiki/Category:")
-    end  
+    end
     return html.html_safe
-  end 
-  
+  end
+
   #      highlighted.gsub!('<pre>', '!START!')
   #    highlighted.gsub!('</pre>', '!END!')
 
