@@ -33,6 +33,20 @@ h2 {
 
 h1 {
 	font-size: 32px;
+	font-weight: 700;
+}
+
+h1 .title-prefix {
+	font-weight: normal;
+}
+
+.resource-prefix {
+	font-size: 13px;
+	margin-right: 1px;
+}
+
+.resource-postfix {
+	margin-left: 1px;
 }
 
 h5  {
@@ -480,7 +494,7 @@ font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', 'Droid Sans Mono', 'Consolas', mo
 	background-color: red;
 }
 
-h1, h2, h3, h4, h5 {
+h2, h3, h4, h5 {
 	font-weight: normal;
 }
 

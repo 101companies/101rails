@@ -25,7 +25,14 @@ class Wiki.Views.Pages extends Backbone.View
   render: ->
     self = @
     # add page title
-    $("#title h1").text(@model.get('title').replace('_', ' '))
+    cleanTitle = @model.get('title').replace('_', ' ')
+    colonSplit = cleanTitle.split(":")
+    if colonSplit.length > 1
+      $('#title h1')
+        .append($('<span class="title-prefix">').text(colonSplit[0] + ":"))
+        .append(colonSplit[1])
+    else
+      $("#title h1").text(cleanTitle)
 
     # add backlinks
     $.each @model.get('backlinks'), (i,bl) ->
@@ -90,7 +97,6 @@ class Wiki.Views.Pages extends Backbone.View
       .replace(/\:/, "-3A")
       .replace(/\s/, '_')
     )
-    console.log(result)
     result
 
   addSection: (section, sections, options) ->
@@ -143,7 +149,6 @@ class Wiki.Views.Pages extends Backbone.View
     self = @
     $.each @model.get('triples').models.sort(self.tripleOrdering), (i, triple) ->
       if self.is101Triple(triple)
-        console.log(triple.toJSON())
         self.addInternalTriple(triple)
       else
         self.addExternalTriple(triple)
