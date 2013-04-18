@@ -93,9 +93,9 @@ class Wiki.Views.Pages extends Backbone.View
 
   escapeURI: (uri) ->
     result = decodeURIComponent(uri
-      .replace(/\-/, '-2D')
-      .replace(/\:/, "-3A")
-      .replace(/\s/, '_')
+      .replace(/\-/g, '-2D')
+      .replace(/\:/g, "-3A")
+      .replace(/\s/g, '_')
     )
     result
 
