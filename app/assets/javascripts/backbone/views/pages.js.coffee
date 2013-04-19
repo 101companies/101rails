@@ -25,7 +25,7 @@ class Wiki.Views.Pages extends Backbone.View
   render: ->
     self = @
     # add page title
-    cleanTitle = @model.get('title').replace('_', ' ')
+    cleanTitle = @model.get('title').replace(/_/g, ' ')
     colonSplit = cleanTitle.split(":")
     if colonSplit.length > 1
       $('#title h1')
@@ -37,7 +37,7 @@ class Wiki.Views.Pages extends Backbone.View
     # add backlinks
     $.each @model.get('backlinks'), (i,bl) ->
       $('#backlinks-body').append(
-        $('<a>').attr('href', '/wiki/' + bl.replace(' ', '_')).html(
+        $('<a>').attr('href', '/wiki/' + bl.replace(/\s/, '_')).html(
            $('<p>').html($('<span>').addClass('label').text(bl))
         ).append(' ')
       )
