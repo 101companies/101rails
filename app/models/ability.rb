@@ -3,9 +3,10 @@ class Ability
 
   def initialize(user)
 
+    # get exsiting user or create new temporary user
     user ||= User.new
 
-    # permissions for work in admin inteface
+    # permissions for work in admin interface
     if user && user.role == 'admin'
       can :manage, :all
       can :access, :rails_admin
