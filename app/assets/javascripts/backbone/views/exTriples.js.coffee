@@ -4,6 +4,16 @@ class Wiki.Views.ExTriples extends Backbone.View
 
   prefixToName : {'www.haskell.org': 'HaskellWiki', 'en.wikipedia.org' : 'Wikipedia', 'en.wikibooks.org': 'Wikibooks', 'www.youtube.com' : "YouTube"}
 
+  decode: (str, toLower) ->
+    resBase = "http://101companies.org/resource/"
+    str = decodeURIComponent(str.replace(resBase,"").replace("-3A",":").replace("Property:", "").replace("_", " ").replace(/-/g, '%'))
+    str = _.last(str.split("/"))
+    if toLower
+      firstLetter = str.substr(0, 1)
+      firstLetter.toLowerCase() + str.substr(1)
+    else
+      str
+
   render: ->
     self = @
     key = @model.get('node').split('/')[2]
@@ -14,10 +24,10 @@ class Wiki.Views.ExTriples extends Backbone.View
     place = $('#resources').find('.' + fullName)
     info = {'full' : @model.get('node'), 'chapter': _.last(@model.get('node').split('/')).replace('%28', '(').replace('%29', ')').replace('_', ' ').replace('_', ' ')}
     if place.length
-      $(place).find('.resourcebar').append($(self.resourceBoxTemplate(cat:'primary', link:info)).tooltip("show"))
+      $(place).find('.resourcebar').append($(self.resourceBoxTemplate(cat:'primary', link:info, predicate: @decode(@model.get('predicate')))).tooltip("show"))
     else
       @setElement($(@resourceTemplate(fullName: fullName, name: fullName.replace(/\w/, ''))))
-      $(@el).find('.resourcebar').append($(self.resourceBoxTemplate(cat:'primary', link:info)).tooltip("show"))
+      $(@el).find('.resourcebar').append($(self.resourceBoxTemplate(cat:'primary', link:info, predicate: @decode(@model.get('predicate')))).tooltip("show"))
       $('#resources').append(@el)
       $(@el).find('.resourcename').mouseenter( ->
         $(self.el).find('.resourcebar').first().collapse('show')

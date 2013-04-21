@@ -1,3 +1,7 @@
 <span class="resourcebox"  data-toggle="collapse resource">
+	<%if (typeof predicate !== 'undefined') { %>
+	<div class="subject label">this</div>
+	<div class="predicate"><%= predicate %></div>
+	<% } %>
 	<a href=<%=link.full%> ><%=link.chapter%></a>
 </span>
