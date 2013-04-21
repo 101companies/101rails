@@ -483,6 +483,12 @@ font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', 'Droid Sans Mono', 'Consolas', mo
 	padding: 7px;
 }
 
+/* change font for code snippets */
+@import url(http://fonts.googleapis.com/css?family=Inconsolata);
+.highlight pre span {
+    font-family: Inconsolata;
+}
+
 #top {
 	width: 98%;
 	margin-bottom: 70px;
