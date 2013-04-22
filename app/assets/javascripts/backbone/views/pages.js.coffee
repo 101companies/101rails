@@ -37,7 +37,7 @@ class Wiki.Views.Pages extends Backbone.View
     # add backlinks
     $.each @model.get('backlinks'), (i,bl) ->
       $('#backlinks-body').append(
-        $('<a>').attr('href', '/wiki/' + bl.replace(/\s/, '_')).html(
+        $('<a>').attr('href', '/wiki/' + bl.replace(/\s/g, '_')).html(
            $('<p>').html($('<span>').addClass('label').text(bl))
         ).append(' ')
       )
