@@ -1,5 +1,6 @@
 class PagesController < ApplicationController
   include PagesHelper
+  require 'media_wiki'
   before_filter :check_uri
   respond_to :json, :html
 
@@ -7,11 +8,11 @@ class PagesController < ApplicationController
     title = params[:title]
     if title == nil
       return
-    end  
+    end
     if title.include?(" ")
       title = title.tr!(" ", "_")
       redirect_to "/wiki/#{title}"
-    end   
+    end
   end
 
   def show
@@ -65,7 +66,7 @@ class PagesController < ApplicationController
       render :json => {:success => false, :error => @error_message}
     ensure
       GC.enable
-      GC.start  
+      GC.start
     end
   end
 
@@ -80,6 +81,11 @@ class PagesController < ApplicationController
       @error_message="#{$!}"
       render :json => {:success => false, :error => @error_message}
     end
+  end
+
+  # search by keyword
+  def search
+    render :json => {:success => true}
   end
 
   # get all internal links for the page

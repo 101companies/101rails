@@ -29,6 +29,7 @@ Wiki::Application.routes.draw do
   scope 'api', :format => :json do
     post 'classify' => 'classification#classify'
     post 'parse' => 'pages#parse'
+    post 'search' => 'pages#search'
 
     resources :pages, :constraints => { :id => /[^\/]+/ }, :only => [:section,:show] do
       member do

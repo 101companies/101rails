@@ -39,7 +39,7 @@ class Wiki.Views.Pages extends Backbone.View
       if bl != null
         $('#backlinks-body').append(
           $('<a>').attr('href', '/wiki/' + bl.replace(/\s/g, '_')).html(
-             $('<p>').html($('<span>').addClass('label').text(bl.replace(/_/g, ' ')))
+             $('<div>').html($('<span>').addClass('label').text(bl.replace(/_/g, ' ')))
           ).append(' ')
         )
 
@@ -83,7 +83,7 @@ class Wiki.Views.Pages extends Backbone.View
     @editb.click( -> self.initedit())
     @canelb = $('#pageCancelButton')
     @newsectionb = $('#sectionAddButton')
-    if not _.contains(Wiki.currentUser.get('actions'), "Edit")
+    if false and not _.contains(Wiki.currentUser.get('actions'), "Edit")
       @editb.css("display", "none")
       @newsectionb.css("display", "none")
     else

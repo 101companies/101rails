@@ -7,7 +7,6 @@ class Wiki.Views.Sections extends Backbone.View
 
   initialize: ->
     @model.bind('error', @error, @)
-    @model.bind('sync', @foo, @)
 
   render: (options) ->
     self = @

@@ -296,7 +296,7 @@ p {
 	width: 200%;
 }
 
-#addtional-sections {
+.addtional-sections {
 	float: left;
 	width: 100%;
 }
@@ -313,6 +313,9 @@ p {
 	margin-bottom: -5px;
 }
 
+#last-section {
+	margin-bottom: 35px;
+}
 .section-content-container {
 	overflow: hidden;
 	width: 100%;
@@ -343,7 +346,7 @@ p {
 
 .section-content p {
 	margin-top: 4px;
-	margin-bottom: 10px;
+	margin-bottom: 7px;
 }
 
 .editor,  #pageeditor {
@@ -374,7 +377,9 @@ font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', 'Droid Sans Mono', 'Consolas', mo
 .tripel {
 	color: gray;
  	text-align: left;
- 	margin-bottom: 100px;
+ 	margin-bottom: 2px;
+ 	margin-left: 10px;
+ 	font-family: "Open Sans"
 }
 
 .subject, .predicate, .object, .arrow {
@@ -407,28 +412,37 @@ font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', 'Droid Sans Mono', 'Consolas', mo
 	margin: 3px;
 }
 
-#resources {
-	margin-bottom: 20px;
-	width: 100%;
-
+#backlinks-body {
+	width: 50%;
 }
+
+#resources {
+	width: 100%;
+	margin-top: 25px;
+}
+
 
 .resource {
 	width: 100%;
 	float: left;
+	margin-left: 40px;
+}
+
+.resource ul {
+	margin: 0px;
 }
 
 .resourcebar {
 	float: left;
 	width: 100%;
-	padding-top: 5px;
-	margin-bottom: 10px;
 }
 
 .resourcename {
 	float: left;
 	font-family: 'Open Sans';
 	margin-right: 5px;
+	margin-top: 5px;
+	margin-bottom: 5px;
 }
 
 
@@ -441,6 +455,7 @@ font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', 'Droid Sans Mono', 'Consolas', mo
 	float: left;
 	padding-left: 5px;
 	padding-right: 5px;
+	margin-left: 10px;
 	width: 100%;
 }
 
@@ -522,4 +537,22 @@ h2, h3, h4, h5 {
 	font-size: 11px;
 	margin-top: -18px;
 	margin-bottom: 10px;
+}
+
+hr {
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+
+#infofooter {
+
+}
+
+#additional-resources {
+	margin-bottom: 20px;
+}
+
+.additional-sections {
+	width: 100%;
+	float: left;
 }
