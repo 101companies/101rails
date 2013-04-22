@@ -112,7 +112,7 @@ class PagesController < ApplicationController
       page.update(params[:content])
     else
       content = ""
-      sections.each { |s| content += s['content'] + '\n' }
+      sections.each { |s| content += s['content'] + "\n" }
       page.update(content)
     end
 
