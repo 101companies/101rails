@@ -84,7 +84,7 @@ class Page
   end
 
   def backlinks
-    gateway.backlinks(@title).map { |e| e.tr!(" ", "_")  }
+    gateway.backlinks(@title).map { |e| e.gsub(" ", "_")  }
   end
 
   def section(section)
