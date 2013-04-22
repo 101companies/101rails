@@ -29,9 +29,10 @@ class Page
       @html = @wiki.to_html
       @wiki.internal_links.each do |link|
         @html.gsub!("<a href=\"#{link}\"", "<a href=\"/wiki/#{link}\"")
-        #TODO: convert <p>http://foo.com</p> into <p><a href="http://foo.com">http://foo.com</a>
         #html.gsub!(":Category:","/wiki/Category:")
      end  
+      #convert <p>http://foo.com</p> into <p><a href="http://foo.com">http://foo.com</a>
+      #@html.gsub!(/\b([\w]+?:\/\/[\w]+[^ \"\r\n\t<]*)/i, '<a href="\1">\1</a>')
       Rails.cache.write(title + "_html", @html)
     end 
   end

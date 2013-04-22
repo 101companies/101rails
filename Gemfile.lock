@@ -1,10 +1,11 @@
 GIT
   remote: git://github.com/avaranovich/wikicloth.git
-  revision: e968bed78be04973a06a9deb8b76263f401f723d
+  revision: 7d715b0a6ec63ddbdcfc05e5ed7ef7dec8f19e43
   specs:
     wikicloth (0.8.0)
       builder
       expression_parser
+      rinku
 
 GEM
   remote: https://rubygems.org/
@@ -299,6 +300,7 @@ GEM
     remotipart (1.0.5)
     rest-client (1.6.7)
       mime-types (>= 1.16)
+    rinku (1.7.2)
     rspec (2.13.0)
       rspec-core (~> 2.13.0)
       rspec-expectations (~> 2.13.0)
