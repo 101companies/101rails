@@ -314,7 +314,11 @@ p {
 }
 
 #last-section {
-	margin-bottom: 35px;
+	padding-bottom: 35px;
+}
+
+#last-section hr {
+	width: 100%;
 }
 .section-content-container {
 	overflow: hidden;
@@ -425,7 +429,7 @@ font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', 'Droid Sans Mono', 'Consolas', mo
 .resource {
 	width: 100%;
 	float: left;
-	margin-left: 40px;
+	margin-left: 20px;
 }
 
 .resource ul {
@@ -542,6 +546,7 @@ h2, h3, h4, h5 {
 hr {
 	margin-top: 10px;
 	margin-bottom: 10px;
+	width: 100%;
 }
 
 #infofooter {

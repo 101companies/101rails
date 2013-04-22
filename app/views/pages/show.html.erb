@@ -51,7 +51,12 @@
  <div id="sections">
   <div id="sections-parsed">
     <%= parse(@page) -%>
-    <div class="addtional-sections">
+  </div>
+  <div id="sections-source">
+        <div id="pageeditor"/>
+  </div>
+ </div>
+ <div class="addtional-sections">
    <div class="section" id="backlinks">
         <h2>Links:</h2>
         <div id="backlinks-body"></div>
@@ -62,13 +67,7 @@
         <h2>Resources:</h2>
     </div>
   </div>
-  </div>
-  <div id="sections-source">
-        <div id="pageeditor"/>
-  </div>
-
- </div>
-
+  <hr>
 </div>
 
 
@@ -77,8 +76,8 @@
 
 <%= render "/pages/shared/default" %>
 <br>
-<hr/>
     <div id="infofooter">
+      <div id="innerfooter">
     	| <i class="icon-user"></i> <a href="#">
 
 <% if @page.history.user?  -%>
@@ -92,12 +91,13 @@
   <%= @page.history.updated_at %>
 <% else -%>
 <% end -%>
-<hr/>
 
      <!-- | <i class="icon-comment"></i> <a href="#">3 Comments</a>
       | <i class="icon-share"></i> <a href="#">39 Shares</a> -->
+      <hr>
+    </div>
   </div>
-</div>
+
 <div class="modal fade" id="modal">
   <div class="modal-header">
     <a class="close" data-dismiss="modal">&times;</a>
