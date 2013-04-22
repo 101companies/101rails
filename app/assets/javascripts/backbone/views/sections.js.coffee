@@ -12,7 +12,7 @@ class Wiki.Views.Sections extends Backbone.View
   render: (options) ->
     self = @
     # get prerendered headline node
-    preRendered = $('#' + @model.get('title').replace(/\s/, '_')).parent()
+    preRendered = $('#' + @model.get('title').replace(/\s/g, '_')).parent()
     $section = $(@template(title: @model.get('title')))
     unless options
 
