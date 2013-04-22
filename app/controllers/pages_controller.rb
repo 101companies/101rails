@@ -1,6 +1,15 @@
 class PagesController < ApplicationController
   include PagesHelper
+  before_filter :check_uri
   respond_to :json, :html
+
+  def check_uri
+    title = params[:title]
+    if title.include?(" ")
+      title = title.tr!(" ", "_")
+      redirect_to "/wiki/#{title}"
+    end   
+  end
 
   def show
     @logged_user = current_user
