@@ -5,6 +5,9 @@ class PagesController < ApplicationController
 
   def check_uri
     title = params[:title]
+    if title == nil
+      return
+    end  
     if title.include?(" ")
       title = title.tr!(" ", "_")
       redirect_to "/wiki/#{title}"
