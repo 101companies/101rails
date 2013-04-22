@@ -39,7 +39,7 @@ class Wiki.Views.Pages extends Backbone.View
       if bl != null
         $('#backlinks-body').append(
           $('<a>').attr('href', '/wiki/' + bl.replace(/\s/g, '_')).html(
-             $('<p>').html($('<span>').addClass('label').text(bl))
+             $('<p>').html($('<span>').addClass('label').text(bl.replace(/_/g, ' ')))
           ).append(' ')
         )
 
