@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/avaranovich/wikicloth.git
-  revision: 57664b18d4e1f55932e1a79a571369c48912373f
+  revision: 547c929c79d85a4e44c56ef33b85d41806d1a1a0
   specs:
     wikicloth (0.8.0)
       builder
@@ -319,7 +319,7 @@ GEM
     rvm-capistrano (1.3.0)
       capistrano (>= 2.0.0)
     safe_yaml (0.9.1)
-    sass (3.2.7)
+    sass (3.2.8)
     sass-rails (3.2.6)
       railties (~> 3.2.0)
       sass (>= 3.1.10)
