@@ -1,10 +1,15 @@
 class Wiki.Views.Pages extends Backbone.View
   el: "#page"
 
+  expandableTemplate : JST['backbone/templates/expandable']
+
   events:
     'click #sectionAddButton' : 'newSectionModal'
     'click #createSection' : 'createSection'
     'click #pageCancelButton': 'cancel'
+
+  internalTripleCount: 0
+  linksCount: 0
 
   initialize: ->
     @inedit = false
@@ -36,12 +41,19 @@ class Wiki.Views.Pages extends Backbone.View
 
     # add backlinks
     $.each @model.get('backlinks'), (i,bl) ->
-      if bl != null
-        $('#backlinks-body').append(
-          $('<a>').attr('href', '/wiki/' + bl.replace(/\s/g, '_')).html(
-             $('<div>').html($('<span>').addClass('label').text(bl.replace(/_/g, ' ')))
-          ).append(' ')
-        )
+      if i < 21
+        target = '#backlinks-body'
+      else
+        if i == 21
+          $('#backlinks')
+            .append($("<br>"))
+            .append(self.expandableTemplate(name: 'backlinks-continued'))
+        target = '#backlinks-continued'
+      $(target).append(
+        $('<a>').attr('href', '/wiki/' + bl.replace(/\s/g, '_')).html(
+          $('<div>').html($('<span>').addClass('label').text(bl.replace(/_/g, ' ')))
+        ).append(' ')
+      )
 
     # add sections
     @addAllSections()
@@ -83,7 +95,7 @@ class Wiki.Views.Pages extends Backbone.View
     @editb.click( -> self.initedit())
     @canelb = $('#pageCancelButton')
     @newsectionb = $('#sectionAddButton')
-    if false and not _.contains(Wiki.currentUser.get('actions'), "Edit")
+    if not _.contains(Wiki.currentUser.get('actions'), "Edit")
       @editb.css("display", "none")
       @newsectionb.css("display", "none")
     else
@@ -123,8 +135,15 @@ class Wiki.Views.Pages extends Backbone.View
     @model.get('sections').add([newsection], {at: document.getElementById('sposition').selectedIndex})
 
   addInternalTriple: (triple) ->
-    tripleview = new Wiki.Views.Triples(model: triple)
+    if @internalTripleCount < 13
+      el = '#metasection .section-content-parsed'
+    else
+      if @internalTripleCount == 13
+        $('#metasection').append(@expandableTemplate(name: "metasection-continued"))
+      el = "#metasection-continued"
+    tripleview = new Wiki.Views.Triples(model: triple, el: el)
     tripleview.render()
+
 
   addExternalTriple: (triple) ->
     tripleview = new Wiki.Views.ExTriples(model: triple)
@@ -150,6 +169,7 @@ class Wiki.Views.Pages extends Backbone.View
     self = @
     $.each @model.get('triples').models.sort(self.tripleOrdering), (i, triple) ->
       if self.is101Triple(triple)
+        self.internalTripleCount++;
         self.addInternalTriple(triple)
       else
         self.addExternalTriple(triple)

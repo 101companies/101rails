@@ -418,6 +418,11 @@ font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', 'Droid Sans Mono', 'Consolas', mo
 
 #backlinks-body {
 	width: 50%;
+	height: 40px;
+}
+
+#backlinks-continued {
+	width: 50%;
 }
 
 #resources {
@@ -560,4 +565,11 @@ hr {
 .additional-sections {
 	width: 100%;
 	float: left;
+}
+
+span.continue {
+	margin-left: 12px;
+	margin-top: 2px;
+	margin-bottom: 5px;
+	font-size: 15px;
 }

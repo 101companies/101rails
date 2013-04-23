@@ -17,14 +17,11 @@ class Wiki.Views.Triples extends Backbone.View
     rendertriple = {arrow: "&#9664;", s: "this", o: "this"}
     rendertriple.p = @decode(@model.get('predicate'), true)
     decodedNode = @decode(@model.get('node'), false)
-    console.log(self.model.get('node'))
-    console.log(Wiki.page.get('backlinks'))
-    console.log (_.any(Wiki.page.get('backlinks'), (x) ->  x == decodedNode))
     if @model.get('direction') is "IN"
       rendertriple.arrow = "&#9654;"
       rendertriple.s = decodedNode
     else
       rendertriple.o = decodedNode
-    $('#metasection').find('.section-content-parsed').append(@template(rendertriple))
+    $(@el).append(@template(rendertriple))
 
 
