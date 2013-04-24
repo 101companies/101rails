@@ -55,6 +55,18 @@ class PagesController < ApplicationController
     render :json => {:success => true, :html => html.html_safe}
   end
 
+  def search
+    @query_string = params[:q]
+    if @query_string == ''
+      redirect_to "/wiki/"
+    else
+      gw = MediaWiki::Gateway.new('http://mediawiki.101companies.org/api.php')
+      gw.login(ENV['WIKIUSER'], ENV['WIKIPASSWORD'])
+      @search_results = gw.search(@query_string)
+      respond_with @search_results
+    end
+  end
+
   def summary
     begin
       GC.disable
@@ -83,10 +95,6 @@ class PagesController < ApplicationController
     end
   end
 
-  # search by keyword
-  def search
-    render :json => {:success => true}
-  end
 
   # get all internal links for the page
   def internal_links
@@ -139,4 +147,13 @@ class PagesController < ApplicationController
     section = {'content' => p.section(params[:title])}
     respond_with section.to_json
   end
+
+  private
+    def gateway
+      if @_gateway == nil
+        @_gateway = MediaWiki::Gateway.new('http://mediawiki.101companies.org/api.php')
+      else
+        return @_gateway
+      end
+    end
 end

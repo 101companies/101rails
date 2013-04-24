@@ -21,6 +21,7 @@
           <span class="icon-bar"></span>
         </a>
         <a class="brandname" href="/" name="top"><!--img src="assets/logo.jpg"/-->101companies</a>
+
         <div class="nav-collapse collapse">
           <ul class="nav">
             <!--li class="divider-vertical"></li>
@@ -32,6 +33,12 @@
 
            <!-- The drop down menu -->
         <ul class="nav pull-right">
+          <li>
+            <form action="/search" class="navbar-search pull-left">
+                <input name="q" type="text" class="search-query" placeholder="Search">
+            </form>
+          </li>
+          <li class="divider-vertical"></li>
            <% if !user_signed_in? %>
           <li><a href="/users/sign_up">Sign Up</a></li>
           <li class="divider-vertical"></li>

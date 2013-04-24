@@ -19,6 +19,7 @@ Wiki::Application.routes.draw do
   root :to => "home#index"
   get '/data' => 'home#data'
   get '/wiki' => 'pages#show'
+  get '/search' => 'pages#search'
   match '/wiki/:title' => 'pages#show', :constraints => { :title => /[^\/]+/ }
 
   #users
@@ -29,7 +30,6 @@ Wiki::Application.routes.draw do
   scope 'api', :format => :json do
     post 'classify' => 'classification#classify'
     post 'parse' => 'pages#parse'
-    post 'search' => 'pages#search'
 
     resources :pages, :constraints => { :id => /[^\/]+/ }, :only => [:section,:show] do
       member do
