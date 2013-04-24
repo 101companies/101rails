@@ -5,6 +5,7 @@ class Wiki.Views.Resources extends Backbone.View
   render: ->
     self = @
     if @model.get('isLinkable')
+      $('#resources').show()
       @setElement($(@resourceTemplate(@model.toJSON())))
       $.each ['primary', 'secondary'], (i, cat) ->
         $.each self.model.get(cat), (i, target) ->

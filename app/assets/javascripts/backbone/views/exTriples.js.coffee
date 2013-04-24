@@ -21,6 +21,7 @@ class Wiki.Views.ExTriples extends Backbone.View
       fullName = @prefixToName[key]
     else
       fullName = key
+    $('#resources').show()
     place = $('#resources').find('.' + fullName)
     info = {'full' : @model.get('node'), 'chapter': _.last(@model.get('node').split('/')).replace('%28', '(').replace('%29', ')').replace('_', ' ').replace('_', ' ')}
     if place.length

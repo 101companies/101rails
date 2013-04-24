@@ -406,6 +406,7 @@ font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', 'Droid Sans Mono', 'Consolas', mo
 }
 
 #backlinks {
+	margin-top: 5px;
 	margin-bottom: 20px;
 	width: 100%;
 }
@@ -426,6 +427,7 @@ font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', 'Droid Sans Mono', 'Consolas', mo
 }
 
 #resources {
+	display:none;
 	width: 100%;
 	margin-top: 25px;
 }
