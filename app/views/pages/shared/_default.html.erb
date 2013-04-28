@@ -7,6 +7,7 @@ Wiki.page.set('triples', new Wiki.Models.Triples());
 Wiki.page.set('resources', new Wiki.Models.Resources());
 Wiki.page.set('sourceLinks', new Wiki.Models.SourceLinks());
 Wiki.page.set('history', <%= j @page.history.to_json.html_safe -%> );
+Wiki.page.set('bar', <%= j @page.title.to_json.html_safe -%>)
 
 // possible options: Edit, View
 

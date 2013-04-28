@@ -30,24 +30,24 @@ class Page
       @wiki.internal_links.each do |link|
         @html.gsub!("<a href=\"#{link}\"", "<a href=\"/wiki/#{link}\"")
         #html.gsub!(":Category:","/wiki/Category:")
-     end  
+     end
       #convert <p>http://foo.com</p> into <p><a href="http://foo.com">http://foo.com</a>
       #@html.gsub!(/\b([\w]+?:\/\/[\w]+[^ \"\r\n\t<]*)/i, '<a href="\1">\1</a>')
       Rails.cache.write(title + "_html", @html)
-    end 
+    end
   end
 
   def content
     c = Rails.cache.read(@title)
-    
+
     if (c == nil)
       c = gateway.get(@title)
       Rails.cache.write(title, c)
-    end  
+    end
 
     return c
   end
-      
+
   def html
     @html
   end
@@ -70,10 +70,10 @@ class Page
   end
 
   def internal_links
-    puts "internal_links " 
+    puts "internal_links "
     puts @wiki
     @wiki.internal_links
-  end  
+  end
 
   def sections
     sec = []
@@ -99,6 +99,6 @@ class Page
         @_gateway = MediaWiki::Gateway.new(@base_uri)
       else
         return @_gateway
-      end    
+      end
     end
 end
