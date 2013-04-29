@@ -33,7 +33,6 @@ class Page
 
     self.title = title
     self.save
-
     @title = title
 
     @wiki = WikiParser.new(:data => content, :noedit => true)
@@ -56,18 +55,14 @@ class Page
   end
 
   def content
-    c = Rails.cache.read(@title)
+    c = Rails.cache.read(self.title)
 
     if (c == nil)
-      c = gateway.get(@title)
+      c = gateway.get(self.title)
       Rails.cache.write(title, c)
     end
 
     return c
-  end
-
-  def title
-    @title
   end
 
   def html
@@ -79,11 +74,11 @@ class Page
   end
 
   def change(content)
-    Rails.cache.write(@title, content)
-    Rails.cache.delete(@title + "_html")
+    Rails.cache.write(self.title, content)
+    Rails.cache.delete(self.title + "_html")
     gw = MediaWiki::Gateway.new(@base_uri)
     gw.login(ENV['WIKIUSER'], ENV['WIKIPASSWORD'])
-    gw.edit(@title, content)
+    gw.edit(self.title, content)
   end
 
   def internal_links
@@ -103,7 +98,7 @@ class Page
   end
 
   def backlinks
-    gateway.backlinks(@title).map { |e| e.gsub(" ", "_")  }
+    gateway.backlinks(self.title).map { |e| e.gsub(" ", "_")  }
   end
 
   def section(section)
