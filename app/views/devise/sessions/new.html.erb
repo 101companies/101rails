@@ -1,26 +1,3 @@
-<h2>Sign in</h2>
-
-<%= form_for(resource, :as => resource_name, :url => session_path(resource_name)) do |f| %>
-  <div class='field'><%= f.label :email %>
-  <%= f.text_field :email %></div>
-
-  <div class='field'><%= f.label :password %>
-  <%= f.password_field :password %></div>
-
-  <% if devise_mapping.rememberable? -%>
-    <div class='field'><%= f.label :remember_me %>
-     <%= f.check_box :remember_me %> <%= t(:stay_logged_in)%></div>
-  <% end -%>
-
-  <div class='field'>
-    <%= f.label :sign_in %>
-    <%= f.submit "Sign in", :class => "button save" %>
-  </div>
-<% end %>
-
-<h2><%= "Or use your GitHub account" -%></h2>
+<h2>Use your GitHub account to sing in</h2>
 
 <%= render '/authentications/authentications' %>
-
-
-<%= render :partial => "devise/shared/links" %>
