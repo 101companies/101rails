@@ -20,7 +20,7 @@ class Page
 
   belongs_to :user
 
-  attr_accessible :user, :title, :created_at, :updated_at
+  attr_accessible :user_id, :title, :created_at, :updated_at
 
   def create(title)
 
@@ -56,10 +56,10 @@ class Page
   end
 
   def content
-    c = Rails.cache.read(self.title)
+    c = Rails.cache.read(@title)
 
     if (c == nil)
-      c = gateway.get(self.title)
+      c = gateway.get(@title)
       Rails.cache.write(title, c)
     end
 
@@ -79,7 +79,6 @@ class Page
   end
 
   def change(content)
-    # TODO: add section with auth
     Rails.cache.write(@title, content)
     Rails.cache.delete(@title + "_html")
     gw = MediaWiki::Gateway.new(@base_uri)
