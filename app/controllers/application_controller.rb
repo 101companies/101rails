@@ -9,7 +9,7 @@ class ApplicationController < ActionController::Base
   # handle non authorized 500 status from cancan
   rescue_from CanCan::AccessDenied do |exception|
     flash[:notice] = "Sorry, you aren't permitted to do it =/"
-    redirect_to root_url
+    redirect_to '/'
   end
 
 end

@@ -31,6 +31,9 @@ class Page
         {ns: title.split(':')[0].downcase, title: title.split(':')[1]} : {ns: 'concept', title: title.split(':')[0]}
     #Rails.logger.debug(@ctx)
 
+    self.title = title
+    self.save
+
     @title = title
 
     @wiki = WikiParser.new(:data => content, :noedit => true)
@@ -47,6 +50,9 @@ class Page
       #@html.gsub!(/\b([\w]+?:\/\/[\w]+[^ \"\r\n\t<]*)/i, '<a href="\1">\1</a>')
       Rails.cache.write(title + "_html", @html)
     end
+
+    self
+
   end
 
   def content
@@ -74,11 +80,11 @@ class Page
 
   def change(content)
     # TODO: add section with auth
-    Rails.cache.write(self.title, content)
-    Rails.cache.delete(self.title + "_html")
+    Rails.cache.write(@title, content)
+    Rails.cache.delete(@title + "_html")
     gw = MediaWiki::Gateway.new(@base_uri)
     gw.login(ENV['WIKIUSER'], ENV['WIKIPASSWORD'])
-    gw.edit(self.title, content)
+    gw.edit(@title, content)
   end
 
   def internal_links
@@ -98,7 +104,7 @@ class Page
   end
 
   def backlinks
-    gateway.backlinks(self.title).map { |e| e.gsub(" ", "_")  }
+    gateway.backlinks(@title).map { |e| e.gsub(" ", "_")  }
   end
 
   def section(section)
