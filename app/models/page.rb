@@ -31,6 +31,12 @@ class Page
         {ns: title.split(':')[0].downcase, title: title.split(':')[1]} : {ns: 'concept', title: title.split(':')[0]}
     #Rails.logger.debug(@ctx)
 
+    # set title to page, if defined in db
+    page_from_db = Page.where(:title => title).first
+    if !page_from_db.nil?
+      self.user = page_from_db.user
+    end
+
     self.title = title
     self.save
     @title = title
