@@ -18,9 +18,9 @@ class Page
   field :title, type: String
   index({ title: 1 }, { unique: true, background: true })
 
-  belongs_to :user
+  has_and_belongs_to_many :users
 
-  attr_accessible :user_id, :title, :created_at, :updated_at
+  attr_accessible :user_ids, :title, :created_at, :updated_at
 
   def create(title)
 
@@ -34,7 +34,7 @@ class Page
     # set title to page, if defined in db
     page_from_db = Page.where(:title => title).first
     if !page_from_db.nil?
-      self.user = page_from_db.user
+      self.users = page_from_db.users
     end
 
     self.title = title

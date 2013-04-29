@@ -15,7 +15,7 @@ class Ability
 
     # page can be updated, if user is admin or editor, or user owns the page
     can :update, Page do |page|
-      user.role == 'admin' or user.role == 'editor' or page.try(:user) == user
+      user.role == 'admin' or user.role == 'editor' or page.users.include? user
     end
 
   end
