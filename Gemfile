@@ -72,9 +72,7 @@ gem 'rails_admin', '0.4.7'
 # testing
 #gem 'factory_girl_rails', '4.2.1', :group => [:development, :test]
 #gem 'rspec-rails', '2.13.0', :group => [:development, :test]
-
-# ???
-gem 'launchy', '2.2.0', :group => :test
+#gem 'launchy', '2.2.0', :group => :test
 
 # web-scraping
 gem 'json_pure', '1.7.7'
