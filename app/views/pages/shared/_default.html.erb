@@ -14,7 +14,9 @@
         Wiki.currentUser = new Wiki.Models.User(<%= j current_user.to_json.html_safe %>);
 
         <% if can? :update, @page %>
-            Wiki.currentUser.actions.push('edit');
+            Wiki.currentUser.set('actions', ['View', 'Edit'])
+        <% else %>
+            Wiki.currentUser.set('actions', ['View'])
         <% end %>
 
     <% else -%>
@@ -23,8 +25,6 @@
         Wiki.currentUser.set('actions', ['View'])
 
     <% end -%>
-
-    Wiki.currentUser = new Wiki.Models.User(<%= j current_user.to_json.html_safe %>);
 
     jQuery(document).ready(function ($){
         window.router = new Wiki.Routers.PagesRouter(Wiki.Views.Pages);
