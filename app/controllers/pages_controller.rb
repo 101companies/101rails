@@ -17,7 +17,7 @@ class PagesController < ApplicationController
 
   def delete
     if @logged_user and (@logged_user.role=="admin")
-      title = params[:title]
+      title = params[:id]
       page = Page.new(@title)
       page.delete
     end  
