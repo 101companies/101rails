@@ -88,7 +88,7 @@ class Wiki.Views.Sections extends Backbone.View
       $.ajax({
         type: "POST"
         url: "/api/parse/"
-        data: {content: text}
+        data: {content: text, pagetitle: Wiki.page.get('title')}
         success: (data) ->
           unless self.model.get('title') == 'Metadata'
             self.insertHTML(data.html)
