@@ -74,7 +74,7 @@ class Page
   end
 
   def delete
-    @gateway.delete
+    gateway.delete
     Rails.cache.delete(@title + "_html")
     Rails.cache.delete(@title)
   end
