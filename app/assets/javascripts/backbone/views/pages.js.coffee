@@ -95,10 +95,12 @@ class Wiki.Views.Pages extends Backbone.View
     @editb = $('#pageEditButton')
     @editb.click( -> self.initedit())
     @canelb = $('#pageCancelButton')
+    @deleteb = $('#pageDeleteButton')
     @newsectionb = $('#sectionAddButton')
     if not _.contains(Wiki.currentUser.get('actions'), "Edit")
       @editb.css("display", "none")
       @newsectionb.css("display", "none")
+      @deleteb.css("display", "none")
     else
       @editb.click( -> self.initedit())
 
