@@ -24,24 +24,31 @@
 
 .error {
   overflow: hidden;
+  width: 350px;
   font-family: 'Monaco', 'Menlo', 'Consolas', monospaced;
-  padding: 4px;
+  padding: 8px;
   height: 14px;
   font-size: 12px;
   line-height: 1.5em;
   background-color: #ff7b7e;
   color: #ff7b7e;
-}
-
-.error:before {
-  content: 'Something went wrong. Hover to see it: ';
-  color: #fff;
+  border: 1px dashed #fff;
 }
 
 .error:hover {
   height: 100%;
-  color: #fff;
+  width: 100%;
   background-color: none;
+  color: #fff
+}
+
+.error:before {
+    content: 'Something went wrong. Hover here to see error. ';
+    color: #fff
+}
+
+.error:hover:before {
+    content: '';
 }
 
 .brand {
