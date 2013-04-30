@@ -60,6 +60,10 @@ class Page
     @title
   end
 
+  def context
+    @ctx
+  end  
+
   def update(content)
     Rails.cache.write(@title, content)
     Rails.cache.delete(@title + "_html")

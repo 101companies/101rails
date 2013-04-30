@@ -47,7 +47,12 @@ class PagesController < ApplicationController
 
   def parse
     content = params[:content]
+    #we use the title to get the context of the page
+    title = params[:pagetitle]
     wiki = WikiCloth::Parser.new(:data => content, :noedit => true)
+    page = Page.new(title)
+    WikiParser.context = page.context
+
     html = wiki.to_html
     wiki.internal_links.each do |link|
       html.gsub!("<a href=\"#{link}\"", "<a href=\"/wiki/#{link}\"")
