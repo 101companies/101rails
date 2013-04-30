@@ -18,7 +18,7 @@ class PagesController < ApplicationController
   def delete
     if @logged_user and (@logged_user.role=="admin")
       title = params[:id]
-      page = Page.new(@title)
+      page = Page.new(title)
       page.delete
     end  
     render :json => {:success => true}
