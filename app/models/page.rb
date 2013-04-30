@@ -75,6 +75,8 @@ class Page
 
   def delete
     @gateway.delete
+    Rails.cache.delete(@title + "_html")
+    Rails.cache.delete(@title)
   end
 
   def internal_links
