@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/avaranovich/wikicloth.git
-  revision: 79bba1dd943d6d4731b8a274ff6142133ebd44e4
+  revision: e1cc7ef43477973007690b6e9f8952a0f96836ef
   specs:
     wikicloth (0.8.0)
       builder
@@ -45,7 +45,7 @@ GEM
       erubis (>= 2.6.6)
     binding_of_caller (0.7.1)
       debug_inspector (>= 0.0.1)
-    bootstrap-sass (2.3.1.0)
+    bootstrap-sass (2.3.1.1)
       sass (~> 3.2)
     builder (3.0.4)
     cancan (1.6.9)
