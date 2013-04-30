@@ -7,6 +7,7 @@ class Wiki.Views.Pages extends Backbone.View
     'click #sectionAddButton' : 'newSectionModal'
     'click #createSection' : 'createSection'
     'click #pageCancelButton': 'cancel'
+    'click #pageDeleteButton': 'delete'
 
   internalTripleCount: 0
   linksCount: 0
@@ -221,6 +222,9 @@ class Wiki.Views.Pages extends Backbone.View
     @toggleEdit(false)
     @fillEditor()
 
+  delete: ->
+    @model.destroy(success: -> document.location.href = '/')
+
   toggleEdit: (open) ->
     self = @
     if open
@@ -240,7 +244,6 @@ class Wiki.Views.Pages extends Backbone.View
       @editb.unbind('click').bind('click', -> self.edit())
       @canelb.hide()
       @newsectionb.show()
-
 
   saveSectionEdit: ->
     @model.save()
