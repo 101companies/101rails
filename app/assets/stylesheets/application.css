@@ -19,8 +19,36 @@
 
 @import url(http://fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,800italic,400,700,800);
  p, h1, h2, ul, a, span, strong {
-    font-family: 'Open Sans', sans-serif;
+  font-family: 'Open Sans', sans-serif;
+}
 
+.error {
+  overflow: hidden;
+  width: 350px;
+  font-family: 'Monaco', 'Menlo', 'Consolas', monospaced;
+  padding: 8px;
+  height: 14px;
+  font-size: 12px;
+  line-height: 1.5em;
+  background-color: #ff7b7e;
+  color: #ff7b7e;
+  border: 1px dashed #fff;
+}
+
+.error:hover {
+  height: 100%;
+  width: 100%;
+  background-color: none;
+  color: #fff
+}
+
+.error:before {
+    content: 'Something went wrong. Hover here to see error. ';
+    color: #fff
+}
+
+.error:hover:before {
+    content: '';
 }
 
 .brand {
