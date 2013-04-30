@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/avaranovich/wikicloth.git
-  revision: 547c929c79d85a4e44c56ef33b85d41806d1a1a0
+  revision: adc60185a1f1ec99b992ccd3faa12bced9d5bc76
   specs:
     wikicloth (0.8.0)
       builder
@@ -141,7 +141,7 @@ GEM
       activesupport (>= 3.1, < 4.1)
       haml (>= 3.1, < 4.1)
       railties (>= 3.1, < 4.1)
-    hashie (2.0.3)
+    hashie (2.0.4)
     highline (1.6.18)
     hike (1.2.2)
     httparty (0.11.0)
@@ -226,7 +226,7 @@ GEM
     omniauth-oauth2 (1.1.1)
       oauth2 (~> 0.8.0)
       omniauth (~> 1.0)
-    origin (1.0.11)
+    origin (1.1.0)
     orm_adapter (0.4.0)
     polyglot (0.3.3)
     posix-spawn (0.3.6)
@@ -300,7 +300,7 @@ GEM
     remotipart (1.0.5)
     rest-client (1.6.7)
       mime-types (>= 1.16)
-    rinku (1.7.2)
+    rinku (1.7.3)
     rspec (2.13.0)
       rspec-core (~> 2.13.0)
       rspec-expectations (~> 2.13.0)
