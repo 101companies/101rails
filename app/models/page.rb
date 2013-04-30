@@ -73,6 +73,10 @@ class Page
     gw.edit(@title, content)
   end
 
+  def delete
+    @gateway.delete
+  end
+
   def internal_links
     puts "internal_links "
     puts @wiki

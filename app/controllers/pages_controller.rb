@@ -15,6 +15,15 @@ class PagesController < ApplicationController
     end
   end
 
+  def delete
+    if @logged_user and (@logged_user.role=="admin")
+      title = params[:title]
+      page = Page.new(@title)
+      page.delete
+    end  
+    render :json => {:success => true}
+  end
+
   def show
     @logged_user = current_user
     #TODO: add actions for the current page based on the roles
