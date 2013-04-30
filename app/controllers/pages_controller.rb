@@ -16,10 +16,11 @@ class PagesController < ApplicationController
   end
 
   def delete
-    if @logged_user and (@logged_user.role=="admin")
+    logger.debug(current_user.role)
+    if current_user and (current_user.role=="admin")
       title = params[:id]
       page = Page.new(title)
-      page.delete
+      page.delete()
     end  
     render :json => {:success => true}
   end

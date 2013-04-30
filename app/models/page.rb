@@ -76,7 +76,7 @@ class Page
   def delete
     gw = MediaWiki::Gateway.new(@base_uri)
     gw.login(ENV['WIKIUSER'], ENV['WIKIPASSWORD'])
-    gw.delete
+    gw.delete(@title)
     Rails.cache.delete(@title + "_html")
     Rails.cache.delete(@title)
   end
