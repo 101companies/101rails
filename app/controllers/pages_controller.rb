@@ -19,9 +19,9 @@ class PagesController < ApplicationController
     logger.debug(current_user.role)
     if current_user and (current_user.role=="admin")
       title = params[:id]
-      page = Page.new(title)
-      page.delete()
-    end  
+      page = Page.new.create(title)
+      page.delete
+    end
     render :json => {:success => true}
   end
 
