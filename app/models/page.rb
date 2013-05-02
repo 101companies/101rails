@@ -87,7 +87,7 @@ class Page
     @ctx
   end
 
-  def update(content)
+  def change(content)
     Rails.cache.write(@title, content)
     Rails.cache.delete(@title + "_html")
     gw = MediaWiki::Gateway.new(@base_uri)
