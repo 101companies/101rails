@@ -1,7 +1,6 @@
 h1. 101companies Wiki
 
-This application was generated with the "rails_apps_composer" :
-https://github.com/RailsApps/rails_apps_composer gem provided by the "RailsApps Project":http://railsapps.github.com/.
+This application was generated with the "rails_apps_composer":https://github.com/RailsApps/rails_apps_composer gem provided by the "RailsApps Project":http://railsapps.github.com/.
 
 Learn more about "Installing Rails":http://railsapps.github.com/installing-rails.html.
 
@@ -15,7 +14,7 @@ Recipes:
 Preferences:
 {:git=>true, :railsapps=>"rails3-mongoid-devise", :database=>"mongodb", :orm=>"mongoid", :unit_test=>"rspec", :integration=>"cucumber", :fixtures=>"factory_girl", :frontend=>"none", :email=>"gmail", :authentication=>"devise", :devise_modules=>"default", :authorization=>"none", :starter_app=>"users_app", :form_builder=>"none", :dev_webserver=>"webrick", :templates=>"erb", :ban_spiders=>true}
 
-h2. Getting started
+h2. Requirements
 
 This application requires:
 
