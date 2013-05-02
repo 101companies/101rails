@@ -52,7 +52,7 @@ class PagesController < ApplicationController
     #we use the title to get the context of the page
     title = params[:pagetitle]
     wiki = WikiCloth::Parser.new(:data => content, :noedit => true)
-    page = Page.new(title)
+    page = Page.new.create title
     WikiParser.context = page.context
 
     html = wiki.to_html
