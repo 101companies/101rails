@@ -12,4 +12,9 @@ class ApplicationController < ActionController::Base
     redirect_to '/'
   end
 
+  def current_git_state
+    last_commit = %x( git rev-parse HEAD).to_s
+    render :text => "<a href='https://github.com/101companies/101rails/commit/#{last_commit}'>#{last_commit}</a>"
+  end
+
 end
