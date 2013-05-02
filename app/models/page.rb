@@ -88,8 +88,8 @@ class Page
   end
 
   def change(content)
-    Rails.cache.write(@title, content)
-    Rails.cache.delete(@title + "_html")
+    Rails.cache.write(self.title, content)
+    Rails.cache.delete(self.title + "_html")
     gw = MediaWiki::Gateway.new(@base_uri)
     gw.login(ENV['WIKIUSER'], ENV['WIKIPASSWORD'])
     gw.edit(self.title, content)
@@ -98,9 +98,9 @@ class Page
   def delete
     gw = MediaWiki::Gateway.new(@base_uri)
     gw.login(ENV['WIKIUSER'], ENV['WIKIPASSWORD'])
-    gw.delete(@title)
-    Rails.cache.delete(@title + "_html")
-    Rails.cache.delete(@title)
+    gw.delete(self.title)
+    Rails.cache.delete(self.title + "_html")
+    Rails.cache.delete(self.title)
     # TODO: remove from db page entity
   end
 
