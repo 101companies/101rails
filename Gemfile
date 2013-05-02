@@ -3,6 +3,9 @@
 source 'https://rubygems.org'
 gem 'rails', '3.2.8'
 
+# freezed, dependecy for rails_admin
+gem 'bootstrap-sass', '2.3.1.0'
+
 group :assets do
 
   gem 'sass-rails',   '3.2.6'
