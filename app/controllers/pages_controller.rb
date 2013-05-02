@@ -26,20 +26,12 @@ class PagesController < ApplicationController
   end
 
   def show
-    @logged_user = current_user
-    #TODO: add actions for the current page based on the roles
-    if not @logged_user.nil?
-      @logged_user[:actions] = ["View"]
-    end
-    if @logged_user and (@logged_user.role=="admin" || @logged_user.role=="editor")
-      @logged_user[:actions] << "Edit"
-    end
 
     @title = params[:title]
     if @title == nil
       @title = "101companies:Project"
     end
-    @page = Page.new(@title)
+    @page = Page.new.create @title
 
     @page.instance_eval { class << self; self end }.send(:attr_accessor, "history")
     if not History.where(:page => @title).exists?
@@ -86,7 +78,7 @@ class PagesController < ApplicationController
     begin
       GC.disable
       title = params[:id]
-      page = Page.new(title)
+      page = Page.new.create(title)
       render :json => {:sections => page.sections, :internal_links => page.internal_links}
     rescue
       @error_message="#{$!}"
@@ -101,7 +93,7 @@ class PagesController < ApplicationController
   def sections
     begin
       title = params[:id]
-      page = Page.new(title)
+      page = Page.new.create(title)
       sections = page.sections
       respond_with sections
     rescue
@@ -115,7 +107,7 @@ class PagesController < ApplicationController
   def internal_links
     begin
       title = params[:id]
-      page = Page.new(title)
+      page = Page.new.create(title)
       respond_with page.internal_links
     rescue
       @error_message="#{$!}"
@@ -124,15 +116,15 @@ class PagesController < ApplicationController
   end
 
   def update
-    #if current_user and not (current_user.role=="admin" || current_user.role=="editor")
-    #  render :json => {:success => false}
-    #  return
-    #end
+    # check if operation is not permitted
+    if cannot? :update, self
+      render :json => {:success => false} and return
+    end
     title = params[:title]
     sections = params[:sections]
-    page = Page.new(title)
+    page = Page.new.create(title)
     if params.has_key?('content') and params[:content] != ""
-      page.update(params[:content])
+      page.change(params[:content])
     else
       content = ""
       sections.each { |s| content += s['content'] + "\n" }
@@ -158,7 +150,7 @@ class PagesController < ApplicationController
 
   def section
     title = params[:id]
-    p = Page.new(title)
+    p = Page.new.create(title)
     section = {'content' => p.section(params[:title])}
     respond_with section.to_json
   end

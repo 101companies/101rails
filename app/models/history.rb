@@ -2,8 +2,7 @@ require 'mongoid'
 
 class History
   include Mongoid::Document
-  include Mongoid::Timestamps::Created
-  include Mongoid::Timestamps::Updated
+  include Mongoid::Timestamps
 
   field :page, type: String
   field :version, type: Integer

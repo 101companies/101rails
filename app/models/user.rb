@@ -70,12 +70,12 @@ class User
   field :name, :type => String
   validates_presence_of :name
   attr_accessible :name, :email, :role, :password, :password_confirmation, :remember_me, :created_at, :updated_at,
-                  :contributions, :github_name
+                  :contributions, :github_name, :page_ids
 
   has_many :authentications, :dependent => :delete
 
-  has_many :histories
   has_many :contributions
+  has_and_belongs_to_many :pages
 
   # Authentications
   after_create :save_new_authentication
