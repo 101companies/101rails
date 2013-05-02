@@ -1,25 +1,34 @@
 <script type="text/javascript">
-Wiki.page = new Wiki.Models.Page({title: <%= j @page.title.to_json.html_safe -%>});
-Wiki.page.set('sections',new Wiki.Models.Sections(<%= j @page.sections.to_json.html_safe -%>));
-Wiki.page.set('categories',<%= j @page.categories.to_json.html_safe -%>);
-Wiki.page.set('backlinks',<%= j @page.backlinks.to_json.html_safe -%>);
-Wiki.page.set('triples', new Wiki.Models.Triples());
-Wiki.page.set('resources', new Wiki.Models.Resources());
-Wiki.page.set('sourceLinks', new Wiki.Models.SourceLinks());
-Wiki.page.set('history', <%= j @page.history.to_json.html_safe -%> );
-Wiki.page.set('bar', <%= j @page.title.to_json.html_safe -%>)
 
-// possible options: Edit, View
+    Wiki.page = new Wiki.Models.Page({title: <%= j @page.title.to_json.html_safe -%>});
+    Wiki.page.set('sections',new Wiki.Models.Sections(<%= j @page.sections.to_json.html_safe -%>));
+    Wiki.page.set('categories',<%= j @page.categories.to_json.html_safe -%>);
+    Wiki.page.set('backlinks',<%= j @page.backlinks.to_json.html_safe -%>);
+    Wiki.page.set('triples', new Wiki.Models.Triples());
+    Wiki.page.set('resources', new Wiki.Models.Resources());
+    Wiki.page.set('sourceLinks', new Wiki.Models.SourceLinks());
+    Wiki.page.set('history', <%= j @page.history.to_json.html_safe -%> );
 
-<% if signed_in? -%>
-	Wiki.currentUser = new Wiki.Models.User(<%= j @logged_user.to_json.html_safe %>);
-<% else -%>
-     	Wiki.currentUser = new Wiki.Models.User();
-	Wiki.currentUser.set('actions', ['View'])
- <% end -%>
+    <% if current_user -%>
 
-jQuery(document).ready(function ($){
-  window.router = new Wiki.Routers.PagesRouter(Wiki.Views.Pages);
-  Backbone.history.start();
-})
+        Wiki.currentUser = new Wiki.Models.User(<%= j current_user.to_json.html_safe %>);
+
+        <% if can? :update, @page %>
+            Wiki.currentUser.set('actions', ['View', 'Edit'])
+        <% else %>
+            Wiki.currentUser.set('actions', ['View'])
+        <% end %>
+
+    <% else -%>
+
+        Wiki.currentUser = new Wiki.Models.User();
+        Wiki.currentUser.set('actions', ['View'])
+
+    <% end -%>
+
+    jQuery(document).ready(function ($){
+        window.router = new Wiki.Routers.PagesRouter(Wiki.Views.Pages);
+        Backbone.history.start();
+    })
+
 </script>

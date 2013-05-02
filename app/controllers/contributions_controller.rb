@@ -18,7 +18,6 @@ class ContributionsController < ApplicationController
     @contribution = Contribution.new
     @contribution.url = params[:repo_url].first
     @contribution.user = current_user
-    # check uniq
     @contribution.save
     redirect_to  action: "index" #, :notice => 'New contribution added'
 

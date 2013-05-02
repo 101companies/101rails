@@ -11,15 +11,35 @@ class WikiParser < WikiCloth::Parser
 end
 
 class Page
-  include HTTParty
 
-  def initialize(title)
-    @title = title
+  include Mongoid::Document
+  include Mongoid::Timestamps
+
+  field :title, type: String
+  index({ title: 1 }, { unique: true, background: true })
+
+  has_and_belongs_to_many :users
+
+  attr_accessible :user_ids, :title, :created_at, :updated_at
+
+  def create(title)
+
     @base_uri = 'http://mediawiki.101companies.org/api.php'
 
     # create a context from NS:TITLE
-    @ctx = title.split(':').length == 2 ? {ns: title.split(':')[0].downcase, title: title.split(':')[1]} : {ns: 'concept', title: title.split(':')[0]}
+    @ctx = title.split(':').length == 2 ?
+        {ns: title.split(':')[0].downcase, title: title.split(':')[1]} : {ns: 'concept', title: title.split(':')[0]}
     #Rails.logger.debug(@ctx)
+
+    # set title to page, if defined in db
+    page_from_db = Page.where(:title => title).first
+    if !page_from_db.nil?
+      self.users = page_from_db.users
+    end
+
+    self.title = title
+    self.save
+    @title = title
 
     @wiki = WikiParser.new(:data => content, :noedit => true)
     WikiParser.context = @ctx
@@ -35,13 +55,16 @@ class Page
       #@html.gsub!(/\b([\w]+?:\/\/[\w]+[^ \"\r\n\t<]*)/i, '<a href="\1">\1</a>')
       Rails.cache.write(title + "_html", @html)
     end
+
+    self
+
   end
 
   def content
-    c = Rails.cache.read(@title)
+    c = Rails.cache.read(self.title)
 
     if (c == nil)
-      c = gateway.get(@title)
+      c = gateway.get(self.title)
       Rails.cache.write(title, c)
     end
 
@@ -62,15 +85,14 @@ class Page
 
   def context
     @ctx
-  end  
+  end
 
   def update(content)
     Rails.cache.write(@title, content)
     Rails.cache.delete(@title + "_html")
-
     gw = MediaWiki::Gateway.new(@base_uri)
     gw.login(ENV['WIKIUSER'], ENV['WIKIPASSWORD'])
-    gw.edit(@title, content)
+    gw.edit(self.title, content)
   end
 
   def delete
@@ -79,6 +101,7 @@ class Page
     gw.delete(@title)
     Rails.cache.delete(@title + "_html")
     Rails.cache.delete(@title)
+    # TODO: remove from db page entity
   end
 
   def internal_links
@@ -98,7 +121,7 @@ class Page
   end
 
   def backlinks
-    gateway.backlinks(@title).map { |e| e.gsub(" ", "_")  }
+    gateway.backlinks(self.title).map { |e| e.gsub(" ", "_")  }
   end
 
   def section(section)

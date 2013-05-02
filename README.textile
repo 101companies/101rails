@@ -54,8 +54,15 @@ Now you need to install mongodb.
 If you are using OSX it could very helpful to use homebrew for this purposes:
 @brew install mongodb@
 
+To apply index for mongodb you need to execute
+@bundle exec rake db:mongoid:create_indexes@
+
 After installing mongodb start this database and then simply launch application with:
 @bundle exec rails s@
+
+If you want to see all models of app you need to execute next:
+@be railroady -M -e app/models/ability.rb | neato -Tpng > controllers.png@
+It will be generated a picture in root of the app named *controllers.png*
 
 h2. Documentation and Support
 
