@@ -128,7 +128,7 @@ class PagesController < ApplicationController
     else
       content = ""
       sections.each { |s| content += s['content'] + "\n" }
-      page.update(content)
+      page.change(content)
     end
 
     if History.where(:page => title).exists?
