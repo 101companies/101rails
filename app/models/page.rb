@@ -41,8 +41,6 @@ class Page
       self.save
     end
 
-    @title = title
-
     @wiki = WikiParser.new(:data => content, :noedit => true)
     WikiParser.context = @ctx
 
@@ -79,10 +77,6 @@ class Page
 
   def wiki
     @wiki
-  end
-
-  def title
-    @title
   end
 
   def context
