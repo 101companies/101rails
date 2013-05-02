@@ -79,12 +79,29 @@ class Page
     @wiki
   end
 
-  def change(content)
-    Rails.cache.write(self.title, content)
-    Rails.cache.delete(self.title + "_html")
+  def title
+    @title
+  end
+
+  def context
+    @ctx
+  end
+
+  def update(content)
+    Rails.cache.write(@title, content)
+    Rails.cache.delete(@title + "_html")
     gw = MediaWiki::Gateway.new(@base_uri)
     gw.login(ENV['WIKIUSER'], ENV['WIKIPASSWORD'])
     gw.edit(self.title, content)
+  end
+
+  def delete
+    gw = MediaWiki::Gateway.new(@base_uri)
+    gw.login(ENV['WIKIUSER'], ENV['WIKIPASSWORD'])
+    gw.delete(@title)
+    Rails.cache.delete(@title + "_html")
+    Rails.cache.delete(@title)
+    # TODO: remove from db page entity
   end
 
   def internal_links

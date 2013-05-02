@@ -15,6 +15,16 @@ class PagesController < ApplicationController
     end
   end
 
+  def delete
+    logger.debug(current_user.role)
+    if current_user and (current_user.role=="admin")
+      title = params[:id]
+      page = Page.new(title)
+      page.delete()
+    end  
+    render :json => {:success => true}
+  end
+
   def show
 
     @title = params[:title]
@@ -39,7 +49,12 @@ class PagesController < ApplicationController
 
   def parse
     content = params[:content]
+    #we use the title to get the context of the page
+    title = params[:pagetitle]
     wiki = WikiCloth::Parser.new(:data => content, :noedit => true)
+    page = Page.new(title)
+    WikiParser.context = page.context
+
     html = wiki.to_html
     wiki.internal_links.each do |link|
       html.gsub!("<a href=\"#{link}\"", "<a href=\"/wiki/#{link}\"")

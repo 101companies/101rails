@@ -35,6 +35,7 @@ Wiki::Application.routes.draw do
       member do
         get "/" => "pages#show"
         put "/" => "pages#update"
+        delete '/' => 'pages#delete'
         get 'sections' => 'pages#sections'
         get 'internal_links' => 'pages#internal_links'
         get 'sections/:title' => 'pages#section'
