@@ -46,7 +46,7 @@ group :development do
 
   # faster start for rake and rails commands
   gem 'zeus',  '0.13.3'
-  gem 'debugger', '1.5.0'
+  #gem 'debugger', '1.5.0'
   gem 'better_errors', '0.8.0'
   gem 'binding_of_caller', '0.7.1'
   # web server

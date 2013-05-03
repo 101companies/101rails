@@ -64,7 +64,6 @@ GEM
       coffee-script-source
       execjs
     coffee-script-source (1.6.2)
-    columnize (0.3.6)
     compass (0.12.2)
       chunky_png (~> 1.2)
       fssm (>= 0.2.7)
@@ -73,12 +72,6 @@ GEM
       compass (>= 0.12.2, < 0.14)
     daemons (1.1.9)
     debug_inspector (0.0.2)
-    debugger (1.5.0)
-      columnize (>= 0.3.1)
-      debugger-linecache (~> 1.2.0)
-      debugger-ruby_core_source (~> 1.2.0)
-    debugger-linecache (1.2.0)
-    debugger-ruby_core_source (1.2.0)
     devise (2.2.3)
       bcrypt-ruby (~> 3.0)
       orm_adapter (~> 0.1)
@@ -315,7 +308,6 @@ DEPENDENCIES
   closure-compiler (= 1.1.8)
   coffee-rails (= 3.2.2)
   compass-rails (= 1.0.3)
-  debugger (= 1.5.0)
   devise (= 2.2.3)
   font-awesome-sass-rails (= 3.0.2.2)
   github_api (= 0.9.7)
