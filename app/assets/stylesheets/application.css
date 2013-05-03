@@ -13,6 +13,7 @@
  *= require bootstrap-responsive
  *= require _font-awesome
  *= require pygments
+ *= require home
  *= require contribution
 */
 
