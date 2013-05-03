@@ -1,16 +1,12 @@
-h1. Wiki2
+h1. 101companies Wiki
 
 This application was generated with the "rails_apps_composer":https://github.com/RailsApps/rails_apps_composer gem provided by the "RailsApps Project":http://railsapps.github.com/.
+
+Learn more about "Installing Rails":http://railsapps.github.com/installing-rails.html.
 
 h2. Diagnostics
 
 This application was built with recipes that are known to work together.
-
-This application was built with preferences that are NOT known to work together.
-
-If the application doesn't work as expected, please "report an issue":https://github.com/RailsApps/rails_apps_composer/issues and include these diagnostics:
-
-We'd also like to know if you've found combinations of recipes or preferences that do work together.
 
 Recipes:
 ["controllers", "core", "email", "extras", "frontend", "gems", "git", "init", "models", "prelaunch", "railsapps", "readme", "routes", "setup", "testing", "views"]
@@ -18,35 +14,29 @@ Recipes:
 Preferences:
 {:git=>true, :railsapps=>"rails3-mongoid-devise", :database=>"mongodb", :orm=>"mongoid", :unit_test=>"rspec", :integration=>"cucumber", :fixtures=>"factory_girl", :frontend=>"none", :email=>"gmail", :authentication=>"devise", :devise_modules=>"default", :authorization=>"none", :starter_app=>"users_app", :form_builder=>"none", :dev_webserver=>"webrick", :templates=>"erb", :ban_spiders=>true}
 
-h2. Ruby on Rails
+h2. Requirements
 
 This application requires:
 
 * Ruby version 1.9.3
 * Rails version 3.2.8
-
-Learn more about "Installing Rails":http://railsapps.github.com/installing-rails.html.
-
-h2. Database
-
-This application uses MongoDB with the Mongoid ORM.
+* MongoDB
+* Redis (for production mode)
 
 h2. Development
 
 * Template Engine: ERB, HAML
-* Testing Framework: RSpec, Factory Girl, Cucumber
 * Front-end Framework: jQuery, backbone.js
-* Form Builder: None
 * Authentication: Devise
-* Authorization: None
+* Authorization: Omniauth, Cancan
 
 h2. Email
 
-The application is configured to send email using a Gmail account.
+The application is configured to send emails using a Gmail account.
 
 h2. Getting Started
 
-Install ruby version 1.9.3 and gem bundle. (by using gem install bundler)
+Install ruby (version 1.9.3) and gem bundle. (by using *gem install bundler*)
 Then go to application folder and do
 @bundle install --path vendor/bundle@
 
@@ -54,27 +44,21 @@ Now you need to install mongodb.
 If you are using OSX it could very helpful to use homebrew for this purposes:
 @brew install mongodb@
 
+If you will test this application locally in production mode, you also need to install Redis
+@brew install redis@
+
 To apply index for mongodb you need to execute
 @bundle exec rake db:mongoid:create_indexes@
+Indexes are using for unique keys in db.
 
-After installing mongodb start this database and then simply launch application with:
+Creating indexes need to be done after adding any new model with indexes or changing old models with indexes.
+
+After installing mongodb start this database and then launch application with:
 @bundle exec rails s@
 
 If you want to see all models of app you need to execute next:
 @be railroady -M -e app/models/ability.rb | neato -Tpng > controllers.png@
 It will be generated a picture in root of the app named *controllers.png*
-
-h2. Documentation and Support
-
-This is the only documentation.
-
-h4. Issues
-
-Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-
-h2. Similar Projects
-
-Lorem ipsum dolor sit amet, consectetur adipiscing elit.
 
 h2. Contributing
 
@@ -85,12 +69,6 @@ If you make improvements to this application, please share with others.
 * Commit with Git.
 * Send the author a pull request.
 
-If you add functionality to this application, create an alternative implementation, or build an application that is similar, please contact me and I'll add a note to the README so that others can find your work.
+If you add functionality to this application, create an alternative implementation, or build an application that is
+similar, please contact me and I'll add a note to the README so that others can find your work.
 
-h2. Credits
-
-Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-
-h2. License
-
-Lorem ipsum dolor sit amet, consectetur adipiscing elit.

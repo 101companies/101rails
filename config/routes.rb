@@ -13,8 +13,8 @@ Wiki::Application.routes.draw do
     root :to => 'home#index'
   end
 
-  # page for unauthorized
-  get '/not_authorized' => 'home#not_authorized'
+  # get actual commit hash
+  get '/current_git_state' => 'application#current_git_state'
 
   root :to => "home#index"
   get '/data' => 'home#data'

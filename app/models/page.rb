@@ -16,7 +16,7 @@ class Page
   include Mongoid::Timestamps
 
   field :title, type: String
-  index({ title: 1 }, { unique: true, background: true })
+  #index({ title: 1 }, { unique: true, background: true })
 
   has_and_belongs_to_many :users
 
@@ -31,15 +31,15 @@ class Page
         {ns: title.split(':')[0].downcase, title: title.split(':')[1]} : {ns: 'concept', title: title.split(':')[0]}
     #Rails.logger.debug(@ctx)
 
+    self.title = title
+
     # set title to page, if defined in db
     page_from_db = Page.where(:title => title).first
     if !page_from_db.nil?
       self.users = page_from_db.users
+    else
+      self.save
     end
-
-    self.title = title
-    self.save
-    @title = title
 
     @wiki = WikiParser.new(:data => content, :noedit => true)
     WikiParser.context = @ctx
@@ -77,10 +77,6 @@ class Page
 
   def wiki
     @wiki
-  end
-
-  def title
-    @title
   end
 
   def context

@@ -116,7 +116,7 @@ class PagesController < ApplicationController
 
   def update
     # check if operation is not permitted
-    if cannot? :update, self
+    if cannot? :update, Page.where(:title => params[:title]).first
       render :json => {:success => false} and return
     end
     title = params[:title]
