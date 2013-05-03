@@ -1,3 +1,4 @@
+<%= stylesheet_link_tag "wiki", :media => "all" %>
 <script type="text/javascript">
 Wiki.searchResults = <%= j @search_results.to_json.html_safe %>
 Wiki.queryString = <%= j @query_string.to_json.html_safe %>
@@ -7,8 +8,6 @@ jQuery(document).ready(function ($){
   Backbone.history.start();
 })
 </script>
-
-
 <div id="page">
   <h1 id="query-string"></h1>
   <div id="search-results">
