@@ -108,7 +108,7 @@ class Page
 
   def sections
     sec = []
-    @wiki.sections.first.children.each { |s| sec.push({'title' => s.title, 'content' => s.wikitext})  }
+    @wiki.sections.first.children.each { |s| sec.push({'title' => s.title, 'content' => s.wikitext.sub(/\s+\Z/, "")})  }
     return sec
   end
 
