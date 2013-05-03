@@ -26,7 +26,6 @@ class PagesController < ApplicationController
   end
 
   def show
-
     @title = params[:title]
     if @title == nil
       @title = "101companies:Project"
