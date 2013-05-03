@@ -1,6 +1,6 @@
 class ContributionsController < ApplicationController
 
-  load_and_authorize_resource :only => [:create, :new]
+  before_filter :authenticate_user!, :only => [:new, :create]
 
   def show
     @contribution = Contribution.find(params[:id])
@@ -19,7 +19,8 @@ class ContributionsController < ApplicationController
     @contribution.url = params[:repo_url].first
     @contribution.user = current_user
     @contribution.save
-    redirect_to  action: "index" #, :notice => 'New contribution added'
+    #TODO: => 'New contribution added'
+    redirect_to  action: "index"
 
   end
 
