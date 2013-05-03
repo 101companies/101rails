@@ -10,7 +10,6 @@ class Wiki.Views.ExTriples extends Backbone.View
     split = str.split("/")
     str = _.last(split)
     if str.replace(/\s/g, '') == ''
-      console.log(split)
       str = split[split.length - 2]
     if toLower
       firstLetter = str.substr(0, 1)
