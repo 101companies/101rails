@@ -199,7 +199,10 @@ class Wiki.Views.Pages extends Backbone.View
       self.addSourceLink(link)
 
   fillEditor: ->
-    allcontents = @model.get('sections').models.reduce(((agg, cur) -> agg + cur.get('content')), '')
+    if @model.get('sections').models.length == 0
+      allcontents = @model.get('content')
+    else
+      allcontents = @model.get('sections').models.reduce(((agg, cur) -> agg + cur.get('content') + "\n\n"), '')
     @editor.setValue(allcontents)
 
   initedit: ->
