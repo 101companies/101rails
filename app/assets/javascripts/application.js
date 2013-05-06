@@ -22,3 +22,9 @@
 //= require_tree .
 //= require bootstrap
 //= require ace/ace
+
+$(function(){
+  $('.flash-rails').modal({
+      show: true
+  });
+});
