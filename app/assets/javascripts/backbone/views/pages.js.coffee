@@ -230,7 +230,12 @@ class Wiki.Views.Pages extends Backbone.View
     @fillEditor()
 
   delete: ->
-    @model.destroy(success: -> document.location.href = '/')
+    @model.destroy(success: ->
+      if history.length > 1
+        history.back()
+      else
+        document.location.href = '/'
+    )
 
   toggleEdit: (open) ->
     self = @
