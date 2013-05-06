@@ -234,7 +234,7 @@ class Wiki.Views.Pages extends Backbone.View
       if history.length > 1
         history.back()
       else
-        document.location.href = '/'
+        document.location.href = '/wiki'
     )
 
   toggleEdit: (open) ->
