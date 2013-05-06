@@ -21,6 +21,6 @@ class Contribution
 
   has_one :page
 
-  attr_accessible :user, :url, :created_at, :updated_at, :title, :description, :page
+  attr_accessible :user_id, :url, :created_at, :updated_at, :title, :description, :page_id, :approved
 
 end

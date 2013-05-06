@@ -21,21 +21,24 @@ class ContributionsController < ApplicationController
     @contribution.description = params[:contrb_description]
     @contribution.user = current_user
     @contribution.save
-    #TODO: send email to gatekeeper
-    #TODO: => 'New contribution added', send
+    #TODO: send email to gatekeeper and contributor
     redirect_to  action: "index"
-
+    flash[:notice] = "You have created new contribution. Please wait until it will be approved by gatekeepers."
   end
 
   def new
 
     # retrieve github login
-    if current_user.github_name == ''
-      agent = Mechanize.new
-      resp = agent.get "https://api.github.com/legacy/user/email/#{current_user.email}"
-      resp = JSON.parse resp.body
-      current_user.github_name = resp["user"]["login"]
-      current_user.save
+    begin
+      if current_user.github_name == ''
+        agent = Mechanize.new
+        resp = agent.get "https://api.github.com/legacy/user/email/#{current_user.email}"
+        resp = JSON.parse resp.body
+        current_user.github_name = resp["user"]["login"]
+        current_user.save
+      end
+    rescue
+      flash[:warning] = "We couldn't retrieve you github repos, please log out and log in again"
     end
 
     # retrieve repos of user

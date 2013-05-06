@@ -22,7 +22,7 @@ class Page
 
   belongs_to :contribution
 
-  attr_accessible :user_ids, :title, :created_at, :updated_at, :contribution
+  attr_accessible :user_ids, :title, :created_at, :updated_at, :contribution_id
 
   def create(title)
 

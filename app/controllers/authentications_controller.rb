@@ -19,7 +19,7 @@ class AuthenticationsController < ApplicationController
     authentication = Authentication.where(:provider => omniauth['provider'], :uid => omniauth['uid']).first
     if authentication
       # Just sign in an existing user with omniauth
-      flash[:notice] = t(:signed_in_successfully)
+      flash[:notice] = I18n.t 'devise.sessions.signed_in'
       sign_in_and_redirect(:user, authentication.user)
     elsif current_user
       # Add authentication to signed in user
@@ -28,7 +28,7 @@ class AuthenticationsController < ApplicationController
       redirect_to authentications_url
     elsif user = create_new_omniauth_user(omniauth)
       # Create a new User through omniauth
-      flash[:notice] = t(:signed_in_successfully)
+      flash[:notice] = I18n.t 'devise.sessions.signed_in'
       sign_in_and_redirect(:user, user)
     else
       # New user data not valid, try again
@@ -42,7 +42,7 @@ class AuthenticationsController < ApplicationController
     @authentication = current_user.authentications.find(params[:id])
     @authentication.destroy
     flash[:notice] = t(:successfully_destroyed_authentication)
-    redirect_to authentications_url
+    redirect_to '/wiki'
   end
 
   # try again when authentication failed.
