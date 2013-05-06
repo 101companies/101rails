@@ -24,7 +24,7 @@
 //= require ace/ace
 //= require ace/ext-searchbox
 //= require ace/theme-chrome
-//= require ace/theme-chrome.js
+//= require ace/theme-textmate
 
 $(function(){
   $('.flash-rails').modal({
