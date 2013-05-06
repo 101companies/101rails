@@ -6,8 +6,9 @@ class Wiki.Views.Pages extends Backbone.View
   events:
     'click #sectionAddButton' : 'newSectionModal'
     'click #createSection' : 'createSection'
-    'click #pageCancelButton': 'cancel'
-    'click #pageDeleteButton': 'delete'
+    'click #pageCancelButton' : 'cancel'
+    'click #pageDeleteButton' : 'delete'
+    'click #pageSaveButton' : 'save'
 
   internalTripleCount: 0
   linksCount: 0
@@ -96,8 +97,10 @@ class Wiki.Views.Pages extends Backbone.View
 
     # add handlers
     @editb = $('#pageEditButton')
+    @actionsb = $('#pageActions')
+    @saveb = $('#pageSaveButton')
     @editb.click( -> self.initedit())
-    @canelb = $('#pageCancelButton')
+    @cancelb = $('#pageCancelButton')
     @deleteb = $('#pageDeleteButton')
     @newsectionb = $('#sectionAddButton')
     if not _.contains(Wiki.currentUser.get('actions'), "Edit")
@@ -246,19 +249,16 @@ class Wiki.Views.Pages extends Backbone.View
       $(@el).find('#sections').animate({marginLeft: '-100%'}, 300)
       $(@el).find('#sections-source').css(height: '400px')
       $(@el).find('#pageeditor').css(height: '400px')
-      @editb.find("i").attr("class", "icon-ok")
-      @editb.find('strong').text("Save")
-      @editb.unbind('click').bind('click', -> self.save())
-      @canelb.show()
-      @newsectionb.hide()
+      @cancelb.show()
+      @saveb.show()
+      @actionsb.hide()
     else
       $(@el).find('#sections').animate({marginLeft: '0%'}, 300)
       $(@el).find('#sections-source').css(height: '0px')
       $(@el).find('#pageeditor').css(height: '0px')
-      @editb.find('strong').text("Edit")
-      @editb.unbind('click').bind('click', -> self.edit())
-      @canelb.hide()
-      @newsectionb.show()
+      @cancelb.hide()
+      @saveb.hide()
+      @actionsb.show()
 
   saveSectionEdit: (section) ->
     @model.set('content', '')

@@ -35,25 +35,38 @@
       <h1></h1>
     </div>
     <div id="topeditbar">
-      <div class="btn btn-small topButton" id="pageDeleteButton">
-        <i class="icon-remove"></i>
-        <strong>Delete page</strong>
+      <div class="btn btn-small topButton" id="pageCancelButton">
+            <i class="icon-remove"></i>
+            <strong>Cancel</strong>
       </div>
-      <div class="btn btn-small topButton" id="sectionAddButton" title="Add section">
-        <i class="icon-plus"></i>
-        <strong>Add Section</strong>
-      </div>
-      <div class="editorbutton btn btn-small topButton" id="pageCancelButton">
-        <i class="icon-remove"></i>
-        <strong class="editbuttontext">Cancel</strong>
-      </div>
-      <div class="btn btn-small topButton" id="pageEditButton">
-        <i class="icon-pencil"></i>
-        <strong>Edit page</strong>
+      <div class="btn btn-small topButton" id="pageSaveButton">
+              <i class="icon-pencil"></i>
+              <strong>Save</strong>
+            </a>
       </div>
       <div class="loading-indicator">
         <img src="/assets/ajax-loader.gif"/>
-    </div>
+      </div>
+      <div class="btn-group">
+        <button id="pageActions" class="btn btn-small dropdown-toggle" data-toggle="dropdown"><strong>Page actions </strong><span class="caret"></span></button>
+        <ul class="dropdown-menu">
+          <li id="pageEditButton">
+            <a href="#">
+              <i class="icon-pencil"></i>Edit page
+            </a>
+          </li>
+          <li id="pageDeleteButton">
+            <a href="#">
+              <i class="icon-remove"></i>Delete page
+            </a>
+          </li>
+          <li id="sectionAddButton">
+            <a href="#">
+              <i class="icon-plus"></i>Add Section
+            </a>
+          </li>
+        </ul>
+      </div>
     </div>
  </div>
  <div id="sections">
