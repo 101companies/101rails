@@ -220,8 +220,10 @@ class Wiki.Views.Pages extends Backbone.View
     @toggleEdit(true)
 
   save: ->
-    text = @editor.getValue()
-    @model.save({'content' : text}, {success: -> location.reload()})
+    newcontent = @editor.getValue()
+    if newcontent != @model.get('content')
+      $(@el).find("#topeditbar .loading-indicator").css('visibility', 'visible')
+    @model.save({'content' : newcontent}, {success: -> location.reload()})
 
   cancel: (button) ->
     @toggleEdit(false)
@@ -250,5 +252,11 @@ class Wiki.Views.Pages extends Backbone.View
       @canelb.hide()
       @newsectionb.show()
 
-  saveSectionEdit: ->
-    @model.save()
+  saveSectionEdit: (section) ->
+    index = @model.get('sections').indexOf(section)
+    indicator = $(@el).find('#sections .loading-indicator')[index]
+    $(indicator).css('visibility', 'visible')
+    @model.save({},
+      success: -> $(indicator).css('visibility', 'hidden')
+      error: -> $(indicator).css('visibility', 'hidden')
+    )
