@@ -88,6 +88,9 @@ class Wiki.Views.Pages extends Backbone.View
           self.addSourceLinks()
       })
 
+    upperTitle = @model.get('title').charAt(0).toUpperCase() + @model.get('title').slice(1);
+    $('#discovery-tab-link').attr('href', 'http://101companies.org/resources?format=html&wikititle=' + upperTitle)
+
     # remove TOC
     $('#toc').remove()
 
@@ -189,8 +192,8 @@ class Wiki.Views.Pages extends Backbone.View
         self.addResource(r)
 
   addSourceLink: (link) ->
-    githubview = new Wiki.Views.SourceLink(model: link)
-    githubview.render()
+    sourceview = new Wiki.Views.SourceLink(model: link)
+    sourceview.render()
 
   addSourceLinks: ->
     $('#sourcelinks').find('.dropdown-menu').html('')
