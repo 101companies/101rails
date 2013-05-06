@@ -253,6 +253,7 @@ class Wiki.Views.Pages extends Backbone.View
       @newsectionb.show()
 
   saveSectionEdit: (section) ->
+    @model.set('content', '')
     index = @model.get('sections').indexOf(section)
     indicator = $(@el).find('#sections .loading-indicator')[index]
     $(indicator).css('visibility', 'visible')
