@@ -17,6 +17,9 @@ class User
   field :email,              :type => String, :default => ""
   field :encrypted_password, :type => String, :default => ""
 
+  # added field for matching users from old wiki
+  field :old_wiki_name,      :type => String, :default => ""
+
   # work with roles
   field :role,               :type => String, :default => "guest"
 
