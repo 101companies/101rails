@@ -10,7 +10,8 @@ GIT
 GEM
   remote: https://rubygems.org/
   specs:
-    ace-rails-ap (2.0.0)
+    aced_rails (0.2.1)
+      rails (~> 3.2)
     actionmailer (3.2.8)
       actionpack (= 3.2.8)
       mail (~> 2.4.4)
@@ -300,7 +301,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  ace-rails-ap
+  aced_rails
   bcrypt-ruby (= 3.0.1)
   better_errors (= 0.8.0)
   binding_of_caller (= 0.7.1)
