@@ -22,6 +22,9 @@
 //= require_tree .
 //= require bootstrap
 //= require ace/ace
+//= require ace/ext-searchbox
+//= require ace/theme-chrome
+//= require ace/theme-chrome.js
 
 $(function(){
   $('.flash-rails').modal({
