@@ -6,5 +6,10 @@
 
 = form_tag('/contributions/create', :method => :post) do
   = label_tag "Url to repository"
-  = select(:repo_url, nil, @user_github_repos.html_safe)
+  = select(:contrb_repo_url, nil, @user_github_repos.html_safe)
+  = label_tag "Title of contribution"
+  %input{:name => 'contrb_title', :placeholder => 'Not obvious'}
+  = label_tag "Secription for contribution"
+  %textarea{:name => 'contrb_description', :placeholder => 'Not obvious'}
+  %p
   = submit_tag "Create contributon"

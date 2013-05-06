@@ -16,10 +16,13 @@ class ContributionsController < ApplicationController
   def create
 
     @contribution = Contribution.new
-    @contribution.url = params[:repo_url].first
+    @contribution.url = params[:contrb_repo_url].first
+    @contribution.title = params[:contrb_title]
+    @contribution.description = params[:contrb_description]
     @contribution.user = current_user
     @contribution.save
-    #TODO: => 'New contribution added'
+    #TODO: send email to gatekeeper
+    #TODO: => 'New contribution added', send
     redirect_to  action: "index"
 
   end
