@@ -6,7 +6,7 @@ class Wiki.Views.ExTriples extends Backbone.View
 
   decode: (str, toLower) ->
     resBase = "http://101companies.org/resource/"
-    str = decodeURIComponent(str.replace(resBase,"").replace(/-3A/g,":").replace("Property:", "").replace(/_/g, " ").replace(/-/g, '%'))
+    str = decodeURIComponent(str.replace(resBase,"").replace(/-3A/g,":").replace("Property:", "").replace(/_/g, " "))
     split = str.split("/")
     str = _.last(split)
     if str.replace(/\s/g, '') == ''
