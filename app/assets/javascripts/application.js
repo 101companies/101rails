@@ -26,6 +26,7 @@
 //= require ace/theme-chrome
 //= require ace/theme-textmate
 
+// rails flash messages using bootstrap modal dialog
 $(function(){
   $('.flash-rails').modal({
       show: true
