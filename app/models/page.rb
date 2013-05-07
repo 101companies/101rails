@@ -4,12 +4,6 @@ require 'pp'
 require 'media_wiki'
 require 'wikicloth'
 
-class WikiParser < WikiCloth::Parser
-    #external_link do |url,text|
-    #  "<a href=\"#{url}\" target=\"_blank\" class=\"exlink\">#{text.blank? ? url : text}</a>"
-    #end
-end
-
 class Page
 
   include Mongoid::Document
@@ -31,7 +25,6 @@ class Page
     # create a context from NS:TITLE
     @ctx = title.split(':').length == 2 ?
         {ns: title.split(':')[0].downcase, title: title.split(':')[1]} : {ns: 'concept', title: title.split(':')[0]}
-    #Rails.logger.debug(@ctx)
 
     self.title = title
 
@@ -43,8 +36,8 @@ class Page
       self.save
     end
 
-    @wiki = WikiParser.new(:data => content, :noedit => true)
-    WikiParser.context = @ctx
+    @wiki = WikiCloth::Parser.new(:data => content, :noedit => true)
+    WikiCloth::Parser.context = @ctx
 
     @html = Rails.cache.read(title + "_html")
     if (@html == nil)
@@ -66,7 +59,7 @@ class Page
     c = Rails.cache.read(self.title)
 
     if (c == nil)
-      c = gateway.get(self.title)
+      c = self.gateway.get(self.title)
       Rails.cache.write(title, c)
     end
 
@@ -88,13 +81,13 @@ class Page
   def change(content)
     Rails.cache.write(self.title, content)
     Rails.cache.delete(self.title + "_html")
-    gw = MediaWiki::Gateway.new(@base_uri)
+    gw = self.gateway
     gw.login(ENV['WIKIUSER'], ENV['WIKIPASSWORD'])
     gw.edit(self.title, content)
   end
 
   def delete
-    gw = MediaWiki::Gateway.new(@base_uri)
+    gw = self.gateway
     gw.login(ENV['WIKIUSER'], ENV['WIKIPASSWORD'])
     gw.delete(self.title)
     Rails.cache.delete(self.title + "_html")
@@ -110,8 +103,10 @@ class Page
 
   def sections
     sec = []
-    @wiki.sections.first.children.each { |s| sec.push({'title' => s.title, 'content' => s.wikitext.sub(/\s+\Z/, "")})  }
-    return sec
+    @wiki.sections.first.children.each do |s|
+      sec.push({'title' => s.title, 'content' => s.wikitext.sub(/\s+\Z/, "")})
+    end
+    sec
   end
 
   def categories
@@ -119,19 +114,19 @@ class Page
   end
 
   def backlinks
-    gateway.backlinks(self.title).map { |e| e.gsub(" ", "_")  }
+    self.gateway.backlinks(self.title).map { |e| e.gsub(" ", "_")  }
   end
 
   def section(section)
     @wiki.sections.first.children.find { |s| s.title.downcase == section.downcase }
   end
 
-  private
-    def gateway
-      if @_gateway == nil
-        @_gateway = MediaWiki::Gateway.new(@base_uri)
-      else
-        return @_gateway
-      end
+  def gateway
+    if @_gateway == nil
+      @_gateway = MediaWiki::Gateway.new(@base_uri)
+    else
+      return @_gateway
     end
+  end
+
 end
