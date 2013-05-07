@@ -17,14 +17,14 @@ class User
   field :email,              :type => String, :default => ""
   field :encrypted_password, :type => String, :default => ""
 
-  # added field for matching users from old wiki
-  field :old_wiki_name,      :type => String, :default => ""
-
   # work with roles
   field :role,               :type => String, :default => "guest"
 
   # github data
   field :github_name,        :type => String, :default => ''
+
+  #mapping with old wiki
+  has_many :old_wiki_users
 
   # creating dropdown select with roles for user model in edit view (create view)
   rails_admin do
@@ -73,7 +73,7 @@ class User
   field :name, :type => String
   validates_presence_of :name
   attr_accessible :name, :email, :role, :password, :password_confirmation, :remember_me, :created_at, :updated_at,
-                  :contributions, :github_name, :page_ids
+                  :contributions, :github_name, :page_ids, :old_wiki_user_ids
 
   has_many :authentications, :dependent => :delete
 
