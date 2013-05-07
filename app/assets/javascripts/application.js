@@ -11,7 +11,6 @@
 // GO AFTER THE REQUIRES BELOW.
 //
 //= require jquery
-//= require ace/ace
 //= require typo/typo
 //= require spellcheck_ace/spellcheck_ace
 //= require jquery_ujs
@@ -22,3 +21,14 @@
 //= require backbone/wiki
 //= require_tree .
 //= require bootstrap
+//= require ace/ace
+//= require ace/ext-searchbox
+//= require ace/theme-chrome
+//= require ace/theme-textmate
+
+$(function(){
+  $('.flash-rails').modal({
+      show: true
+  });
+});
+

@@ -6,8 +6,9 @@ class Wiki.Views.Pages extends Backbone.View
   events:
     'click #sectionAddButton' : 'newSectionModal'
     'click #createSection' : 'createSection'
-    'click #pageCancelButton': 'cancel'
-    'click #pageDeleteButton': 'delete'
+    'click #pageCancelButton' : 'cancel'
+    'click #pageDeleteButton' : 'delete'
+    'click #pageSaveButton' : 'save'
 
   internalTripleCount: 0
   linksCount: 0
@@ -88,19 +89,22 @@ class Wiki.Views.Pages extends Backbone.View
           self.addSourceLinks()
       })
 
+    upperTitle = @model.get('title').charAt(0).toUpperCase() + @model.get('title').slice(1);
+    $('#discovery-tab-link').attr('href', 'http://101companies.org/resources?format=html&wikititle=' + upperTitle)
+
     # remove TOC
     $('#toc').remove()
 
     # add handlers
     @editb = $('#pageEditButton')
+    @actionsb = $('#pageActions')
+    @saveb = $('#pageSaveButton')
     @editb.click( -> self.initedit())
-    @canelb = $('#pageCancelButton')
+    @cancelb = $('#pageCancelButton')
     @deleteb = $('#pageDeleteButton')
     @newsectionb = $('#sectionAddButton')
     if not _.contains(Wiki.currentUser.get('actions'), "Edit")
-      @editb.css("display", "none")
-      @newsectionb.css("display", "none")
-      @deleteb.css("display", "none")
+      @actionsb.css("display", "none")
     else
       @editb.click( -> self.initedit())
 
@@ -189,8 +193,8 @@ class Wiki.Views.Pages extends Backbone.View
         self.addResource(r)
 
   addSourceLink: (link) ->
-    githubview = new Wiki.Views.SourceLink(model: link)
-    githubview.render()
+    sourceview = new Wiki.Views.SourceLink(model: link)
+    sourceview.render()
 
   addSourceLinks: ->
     $('#sourcelinks').find('.dropdown-menu').html('')
@@ -199,7 +203,10 @@ class Wiki.Views.Pages extends Backbone.View
       self.addSourceLink(link)
 
   fillEditor: ->
-    allcontents = @model.get('sections').models.reduce(((agg, cur) -> agg + cur.get('content')), '')
+    if @model.get('sections').models.length == 0
+      allcontents = @model.get('content')
+    else
+      allcontents = @model.get('sections').models.reduce(((agg, cur) -> agg + cur.get('content') + "\n\n"), '')
     @editor.setValue(allcontents)
 
   initedit: ->
@@ -217,15 +224,22 @@ class Wiki.Views.Pages extends Backbone.View
     @toggleEdit(true)
 
   save: ->
-    text = @editor.getValue()
-    @model.save({'content' : text}, {success: -> location.reload()})
+    newcontent = @editor.getValue()
+    if newcontent != @model.get('content')
+      $(@el).find("#topeditbar .loading-indicator").css('visibility', 'visible')
+    @model.save({'content' : newcontent}, {success: -> location.reload()})
 
   cancel: (button) ->
     @toggleEdit(false)
     @fillEditor()
 
   delete: ->
-    @model.destroy(success: -> document.location.href = '/')
+    @model.destroy(success: ->
+      if history.length > 1
+        history.back()
+      else
+        document.location.href = '/wiki'
+    )
 
   toggleEdit: (open) ->
     self = @
@@ -233,19 +247,23 @@ class Wiki.Views.Pages extends Backbone.View
       $(@el).find('#sections').animate({marginLeft: '-100%'}, 300)
       $(@el).find('#sections-source').css(height: '400px')
       $(@el).find('#pageeditor').css(height: '400px')
-      @editb.find("i").attr("class", "icon-ok")
-      @editb.find('strong').text("Save")
-      @editb.unbind('click').bind('click', -> self.save())
-      @canelb.show()
-      @newsectionb.hide()
+      @cancelb.show()
+      @saveb.show()
+      @actionsb.hide()
     else
       $(@el).find('#sections').animate({marginLeft: '0%'}, 300)
       $(@el).find('#sections-source').css(height: '0px')
       $(@el).find('#pageeditor').css(height: '0px')
-      @editb.find('strong').text("Edit")
-      @editb.unbind('click').bind('click', -> self.edit())
-      @canelb.hide()
-      @newsectionb.show()
+      @cancelb.hide()
+      @saveb.hide()
+      @actionsb.show()
 
-  saveSectionEdit: ->
-    @model.save()
+  saveSectionEdit: (section) ->
+    @model.set('content', '')
+    index = @model.get('sections').indexOf(section)
+    indicator = $(@el).find('#sections .loading-indicator')[index]
+    $(indicator).css('visibility', 'visible')
+    @model.save({},
+      success: -> $(indicator).css('visibility', 'hidden')
+      error: -> $(indicator).css('visibility', 'hidden')
+    )

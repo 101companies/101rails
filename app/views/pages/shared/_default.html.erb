@@ -1,6 +1,7 @@
 <script type="text/javascript">
 
     Wiki.page = new Wiki.Models.Page({title: <%= j @page.title.to_json.html_safe -%>});
+    Wiki.page.set('content', <%= j @page.content.to_json.html_safe -%>)
     Wiki.page.set('sections',new Wiki.Models.Sections(<%= j @page.sections.to_json.html_safe -%>));
     Wiki.page.set('categories',<%= j @page.categories.to_json.html_safe -%>);
     Wiki.page.set('backlinks',<%= j @page.backlinks.to_json.html_safe -%>);

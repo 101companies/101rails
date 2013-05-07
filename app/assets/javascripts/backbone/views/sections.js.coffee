@@ -123,7 +123,7 @@ class Wiki.Views.Sections extends Backbone.View
       @canelb.hide()
 
   fold: ->
-      $(@el).find('.section-content-container').toggle(100)
+      $(@el).find('.section-content').toggle(100)
       $(@foldb).find('i').toggleClass('icon-resize-small icon-resize-full')
 
   error: (model, err, options) ->

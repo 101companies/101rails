@@ -102,3 +102,5 @@ gem 'newrelic_rpm', '3.6.0.83'
 gem 'redis', '3.0.3'
 gem 'redis-store', '1.1.3'
 gem 'redis-rails', '3.2.3'
+
+gem 'aced_rails'

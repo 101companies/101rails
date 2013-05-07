@@ -236,6 +236,21 @@ p {
 
 .editorbutton {
 	float: right;
+	margin-top: 20px;
+}
+
+
+.loading-indicator {
+	float: right;
+	width: 16px;
+	height: 16px;
+	margin-top: 1px;
+	margin-right: 10px;
+	visibility: hidden;
+}
+
+#topeditbar .loading-indicator {
+	margin-top: 20px;
 }
 
 .cancelbutton, #pageCancelButton {
@@ -243,17 +258,18 @@ p {
 	display: none;
 }
 
+#pageSaveButton {
+display: none;
+}
+
 .editorbutton a:visted{
 	float: right;
 }
 
 .foldbutton {
-
 	width: 20px;
 	height: 20px;
-
-	margin-top: 5px;
-
+	margin-top: 20px;
 	margin-right: 5px;
 }
 
@@ -526,6 +542,7 @@ font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', 'Droid Sans Mono', 'Consolas', mo
 	float: left;
 }
 #topeditbar {
+	margin-top: 20px;
 	float: right;
 	height: 20px;
 }

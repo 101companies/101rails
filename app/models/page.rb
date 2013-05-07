@@ -20,7 +20,9 @@ class Page
 
   has_and_belongs_to_many :users
 
-  attr_accessible :user_ids, :title, :created_at, :updated_at
+  belongs_to :contribution
+
+  attr_accessible :user_ids, :title, :created_at, :updated_at, :contribution_id
 
   def create(title)
 
@@ -108,7 +110,7 @@ class Page
 
   def sections
     sec = []
-    @wiki.sections.first.children.each { |s| sec.push({'title' => s.title, 'content' => s.wikitext})  }
+    @wiki.sections.first.children.each { |s| sec.push({'title' => s.title, 'content' => s.wikitext.sub(/\s+\Z/, "")})  }
     return sec
   end
 

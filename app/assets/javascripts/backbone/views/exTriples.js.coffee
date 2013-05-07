@@ -6,8 +6,11 @@ class Wiki.Views.ExTriples extends Backbone.View
 
   decode: (str, toLower) ->
     resBase = "http://101companies.org/resource/"
-    str = decodeURIComponent(str.replace(resBase,"").replace("-3A",":").replace("Property:", "").replace(/_/g, " ").replace(/-/g, '%'))
-    str = _.last(str.split("/"))
+    str = decodeURIComponent(str.replace(resBase,"").replace(/-3A/g,":").replace("Property:", "").replace(/_/g, " ").replace(/-/g, '%'))
+    split = str.split("/")
+    str = _.last(split)
+    if str.replace(/\s/g, '') == ''
+      str = split[split.length - 2]
     if toLower
       firstLetter = str.substr(0, 1)
       firstLetter.toLowerCase() + str.substr(1)
@@ -23,7 +26,7 @@ class Wiki.Views.ExTriples extends Backbone.View
       fullName = key
     $('#resources').show()
     place = $('#resources').find('.' + fullName)
-    info = {'full' : @model.get('node'), 'chapter': _.last(@model.get('node').split('/')).replace('%28', '(').replace('%29', ')').replace('_', ' ').replace('_', ' ')}
+    info = {'full' : @model.get('node'), 'chapter': @decode(@model.get('node'), false)}
     if place.length
       $(place).find('.resourcebar').append($(self.resourceBoxTemplate(cat:'primary', link:info, predicate: @decode(@model.get('predicate')))).tooltip("show"))
     else

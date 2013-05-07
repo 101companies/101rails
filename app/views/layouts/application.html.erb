@@ -17,6 +17,30 @@
 </head>
 <body>
 
+  <% flash.each do |name, msg| %>
+
+    <div class="flash-rails modal hide fade" tabindex="-1"
+       role="dialog"
+       aria-labelledby="myModalLabel"
+       aria-hidden="true">
+
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h3><%= name %></h3>
+      </div>
+
+      <div class="modal-body">
+        <p><%= msg %></p>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+      </div>
+
+    </div>
+
+  <% end %>
+
   <div class="navbar navbar-fixed-top">
     <div class="navbar-inner">
       <div class="container-fluid">
