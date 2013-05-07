@@ -1,8 +1,21 @@
 # RailsAdmin config file. Generated on February 25, 2013 20:47
 # See github.com/sferik/rails_admin for more informations
 
-RailsAdmin.config do |config|
+module RailsAdmin
+  module Config
+    module Fields
+      module Types
+        class Datetime
+          def value
+            bindings[:object].send(name)
+          end
+        end
+      end
+    end
+  end
+end
 
+RailsAdmin.config do |config|
 
   ################  Global configuration  ################
 
@@ -67,17 +80,17 @@ RailsAdmin.config do |config|
 
   #   # Found associations:
 
-  #     configure :user, :belongs_to_association 
+  #     configure :user, :belongs_to_association
 
   #   # Found columns:
 
-  #     configure :_type, :text         # Hidden 
-  #     configure :_id, :bson_object_id 
-  #     configure :created_at, :datetime 
-  #     configure :updated_at, :datetime 
-  #     configure :provider, :string 
-  #     configure :uid, :string 
-  #     configure :user_id, :bson_object_id         # Hidden 
+  #     configure :_type, :text         # Hidden
+  #     configure :_id, :bson_object_id
+  #     configure :created_at, :datetime
+  #     configure :updated_at, :datetime
+  #     configure :provider, :string
+  #     configure :uid, :string
+  #     configure :user_id, :bson_object_id         # Hidden
 
   #   # Cross-section configuration:
 
@@ -113,29 +126,29 @@ RailsAdmin.config do |config|
 
   #   # Found associations:
 
-  #     configure :authentications, :has_many_association 
+  #     configure :authentications, :has_many_association
 
   #   # Found columns:
 
-  #     configure :_type, :text         # Hidden 
-  #     configure :_id, :bson_object_id 
-  #     configure :created_at, :datetime 
-  #     configure :updated_at, :datetime 
-  #     configure :email, :text 
-  #     configure :password, :password         # Hidden 
-  #     configure :password_confirmation, :password         # Hidden 
-  #     configure :reset_password_token, :text         # Hidden 
-  #     configure :reset_password_sent_at, :datetime 
-  #     configure :remember_created_at, :datetime 
-  #     configure :sign_in_count, :integer 
-  #     configure :current_sign_in_at, :datetime 
-  #     configure :last_sign_in_at, :datetime 
-  #     configure :current_sign_in_ip, :text 
-  #     configure :last_sign_in_ip, :text 
-  #     configure :confirmation_token, :text 
-  #     configure :confirmed_at, :datetime 
-  #     configure :confirmation_sent_at, :datetime 
-  #     configure :name, :string 
+  #     configure :_type, :text         # Hidden
+  #     configure :_id, :bson_object_id
+  #     configure :created_at, :datetime
+  #     configure :updated_at, :datetime
+  #     configure :email, :text
+  #     configure :password, :password         # Hidden
+  #     configure :password_confirmation, :password         # Hidden
+  #     configure :reset_password_token, :text         # Hidden
+  #     configure :reset_password_sent_at, :datetime
+  #     configure :remember_created_at, :datetime
+  #     configure :sign_in_count, :integer
+  #     configure :current_sign_in_at, :datetime
+  #     configure :last_sign_in_at, :datetime
+  #     configure :current_sign_in_ip, :text
+  #     configure :last_sign_in_ip, :text
+  #     configure :confirmation_token, :text
+  #     configure :confirmed_at, :datetime
+  #     configure :confirmation_sent_at, :datetime
+  #     configure :name, :string
 
   #   # Cross-section configuration:
 
