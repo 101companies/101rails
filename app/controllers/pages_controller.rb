@@ -9,8 +9,17 @@ class PagesController < ApplicationController
     if title == nil
       return
     end
-    if title.include?(" ")
-      title = title.tr!(" ", "_")
+
+    # save params title
+    title_wiki = title
+
+    # convert to wiki-uri format, upcase for first char
+    title = MediaWiki::send :upcase_first_char, (MediaWiki::wiki_to_uri title)
+
+    # redirect, if title was changed
+    # Important: during the redirect will be automatically unescaped url
+    # so we avoid endless loop for 'escaping/unenscaping' url during redirect_to by previous unescaping for title
+    if title_wiki != CGI.unescape(title)
       redirect_to "/wiki/#{title}"
     end
   end
@@ -52,7 +61,7 @@ class PagesController < ApplicationController
     title = params[:pagetitle]
     wiki = WikiCloth::Parser.new(:data => content, :noedit => true)
     page = Page.new.create title
-    WikiParser.context = page.context
+    WikiCloth::Parser.context = page.context
 
     html = wiki.to_html
     wiki.internal_links.each do |link|
@@ -154,12 +163,5 @@ class PagesController < ApplicationController
     respond_with section.to_json
   end
 
-  private
-    def gateway
-      if @_gateway == nil
-        @_gateway = MediaWiki::Gateway.new('http://mediawiki.101companies.org/api.php')
-      else
-        return @_gateway
-      end
-    end
 end
+
