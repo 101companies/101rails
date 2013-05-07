@@ -105,12 +105,12 @@ header {
 	background-image: url(/assets/logo2.jpg)
 }
 
-
+@import url(http://fonts.googleapis.com/css?family=Leckerli+One);
 #pagename {
 	float: left;
 	font-size: 16px;
 	color: rgb(20,20,40);
-	font-family: sketchRockwell;
+	font-family: 'Lobster';
 	padding: 20px 0px 0px 20px;
 	text-shadow: rgba(0,0,0,0.5) -1px 0, rgba(0,0,0,0.3) 0 -1px, rgba(255,255,255,0.5) 0 1px, rgba(0,0,0,0.3) -1px -1px;
 }
@@ -215,10 +215,6 @@ p {
 	border-color: #999;
 }
 
-@font-face {
-	font-family: sketchRockwell;
-	src: url('/assets/Strato-linked.ttf');
-}
 .container {
 	//background-color: #FFFFFF;
 	-webkit-border-radius: 2px;
@@ -282,13 +278,13 @@ display: none;
 .brandname {
   display: block;
   float: left;
-  padding: 13px 20px 10px;
+  padding: 10px 20px 10px 0px;
   margin-left: 20px;
-  text-shadow: 0 4px 0 #ffffff;
-  font-family: sketchRockwell;
+  text-shadow: 0 4px 0 #dddddd;
+  font-family: 'Leckerli One';
   color: #333;
   color: #B62424;
-  font-size: 15px;
+  font-size: 18px;
 }
 
 .brandname:hover {
