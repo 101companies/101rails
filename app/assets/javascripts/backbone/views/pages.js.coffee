@@ -9,6 +9,7 @@ class Wiki.Views.Pages extends Backbone.View
     'click #pageCancelButton' : 'cancel'
     'click #pageDeleteButton' : 'delete'
     'click #pageSaveButton' : 'save'
+    'mouseover a': 'tooltipHeadline'
 
   internalTripleCount: 0
   linksCount: 0
@@ -110,6 +111,10 @@ class Wiki.Views.Pages extends Backbone.View
 
     # temporary fixes
     $('a[href^=imported]').remove()
+
+    # enable tooltips
+    $('a', @el).tooltip(delay: {show: 250})
+
 
   escapeURI: (uri) ->
     result = decodeURIComponent(uri
@@ -267,3 +272,21 @@ class Wiki.Views.Pages extends Backbone.View
       success: -> $(indicator).css('visibility', 'hidden')
       error: -> $(indicator).css('visibility', 'hidden')
     )
+
+  tooltipHeadline: (event) ->
+    target = $(event.target)
+    if (target.attr('data-original-title') == '')
+      target.attr('data-original-title', 'Loading headline...')
+      linkDiscovery = new Wiki.Models.PageDiscovery(title: target.attr('href').replace('/wiki/', ''))
+      linkDiscovery.fetch({
+      dataType: 'jsonp'
+      jsonpCallback: 'discovery_callback'
+      success: (model) ->
+          headline = model.get('headline').charAt(0).toUpperCase() + model.get('headline').slice(1);
+          target.attr('data-original-title', headline)
+      error: ->
+          target.attr('data-original-title', "Page does not exist.")
+      })
+
+
+
