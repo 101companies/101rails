@@ -2,8 +2,7 @@ class Wiki.Models.PageDiscovery extends Backbone.Model
 
   defaults:
     title: ""
-    headine: ""
-
+    headline: ""
 
   sync: (method, model, options) ->
     options.dataType = "jsonp"

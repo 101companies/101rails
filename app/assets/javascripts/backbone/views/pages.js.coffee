@@ -287,6 +287,3 @@ class Wiki.Views.Pages extends Backbone.View
       error: ->
           target.attr('data-original-title', "Page does not exist.")
       })
-
-
-
