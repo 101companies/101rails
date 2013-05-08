@@ -288,7 +288,9 @@ class Wiki.Views.Pages extends Backbone.View
           if $target.hasClass('hovered')
             $target.tooltip('show')
       error: ->
-          $target.attr('data-original-title', "Page does not exist.")
+          $target.attr('title', "Page not found.").tooltip('fixTitle')
+          if $target.hasClass('hovered')
+            $target.tooltip('show')
       })
 
   tooltipLeft: (event) ->
