@@ -283,10 +283,7 @@ class Wiki.Views.Pages extends Backbone.View
       jsonpCallback: 'discovery_callback'
       success: (model) ->
           headline = model.get('headline').charAt(0).toUpperCase() + model.get('headline').slice(1);
-          $(target).tooltip('hide')
-            .attr('data-original-title', headline)
-            .tooltip('fixTitle')
-            .tooltip('show')
+          $(target).attr('title', headline).tooltip('fixTitle').tooltip('show')
       error: ->
           target.attr('data-original-title', "Page does not exist.")
       })
