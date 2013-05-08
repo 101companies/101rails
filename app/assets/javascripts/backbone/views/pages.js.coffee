@@ -282,7 +282,6 @@ class Wiki.Views.Pages extends Backbone.View
       linkDiscovery = new Wiki.Models.PageDiscovery(title: $target.attr('href').replace('/wiki/', ''))
       linkDiscovery.fetch({
       dataType: 'jsonp'
-      jsonpCallback: 'discovery_callback'
       success: (model) ->
           headline = model.get('headline').charAt(0).toUpperCase() + model.get('headline').slice(1);
           $target.attr('title', headline).tooltip('fixTitle')
