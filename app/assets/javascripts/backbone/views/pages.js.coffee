@@ -10,6 +10,7 @@ class Wiki.Views.Pages extends Backbone.View
     'click #pageDeleteButton' : 'delete'
     'click #pageSaveButton' : 'save'
     'mouseover a': 'tooltipHeadline'
+    'mouseleave a' :'tooltipLeft'
 
   internalTripleCount: 0
   linksCount: 0
@@ -274,16 +275,22 @@ class Wiki.Views.Pages extends Backbone.View
     )
 
   tooltipHeadline: (event) ->
-    target = $(event.target)
-    if (target.attr('data-original-title') == '')
-      target.attr('data-original-title', 'Loading headline...')
-      linkDiscovery = new Wiki.Models.PageDiscovery(title: target.attr('href').replace('/wiki/', ''))
+    $target = $(event.target)
+    $target.addClass('hovered')
+    if ($target.attr('data-original-title') == '')
+      $target.attr('data-original-title', 'Loading headline...')
+      linkDiscovery = new Wiki.Models.PageDiscovery(title: $target.attr('href').replace('/wiki/', ''))
       linkDiscovery.fetch({
       dataType: 'jsonp'
       jsonpCallback: 'discovery_callback'
       success: (model) ->
           headline = model.get('headline').charAt(0).toUpperCase() + model.get('headline').slice(1);
-          $(target).attr('title', headline).tooltip('fixTitle').tooltip('show')
+          $target.attr('title', headline).tooltip('fixTitle')
+          if $target.hasClass('hovered')
+            $target.tooltip('show')
       error: ->
-          target.attr('data-original-title', "Page does not exist.")
+          $target.attr('data-original-title', "Page does not exist.")
       })
+
+  tooltipLeft: (event) ->
+    $(event.target).removeClass("hovered")
