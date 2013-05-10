@@ -279,7 +279,8 @@ class Wiki.Views.Pages extends Backbone.View
     $target.addClass('hovered')
     if ($target.attr('data-original-title') == '')
       $target.attr('data-original-title', 'Loading headline...')
-      linkDiscovery = new Wiki.Models.PageDiscovery(title: $target.attr('href').replace('/wiki/', ''))
+      linkTitle = $target.attr('href').replace('/wiki/', '').replace(/^\s+|\s+$/g, '')
+      linkDiscovery = new Wiki.Models.PageDiscovery(title: linkTitle)
       linkDiscovery.fetch({
       dataType: 'jsonp'
       success: (model) ->
