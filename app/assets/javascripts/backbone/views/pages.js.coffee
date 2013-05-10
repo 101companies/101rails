@@ -157,7 +157,6 @@ class Wiki.Views.Pages extends Backbone.View
     tripleview = new Wiki.Views.Triples(model: triple, el: el)
     tripleview.render()
 
-
   addExternalTriple: (triple) ->
     tripleview = new Wiki.Views.ExTriples(model: triple)
     tripleview.render()
@@ -203,8 +202,8 @@ class Wiki.Views.Pages extends Backbone.View
     sourceview.render()
 
   addSourceLinks: ->
-    $('#sourcelinks').find('.dropdown-menu').html('')
     self = @
+    $('#sourcelinks').find('.dropdown-menu').html('')
     $.each @model.get('sourceLinks').models, (i, link) ->
       self.addSourceLink(link)
 
@@ -282,13 +281,13 @@ class Wiki.Views.Pages extends Backbone.View
       linkTitle = $target.attr('href').replace('/wiki/', '').replace(/^\s+|\s+$/g, '')
       linkDiscovery = new Wiki.Models.PageDiscovery(title: linkTitle)
       linkDiscovery.fetch({
-      dataType: 'jsonp'
-      success: (model) ->
+        dataType: 'jsonp'
+        success: (model) ->
           headline = model.get('headline').charAt(0).toUpperCase() + model.get('headline').slice(1);
           $target.attr('title', headline).tooltip('fixTitle')
           if $target.hasClass('hovered')
             $target.tooltip('show')
-      error: ->
+        error: ->
           $target.attr('title', "Page not found.").tooltip('fixTitle')
           if $target.hasClass('hovered')
             $target.tooltip('show')
