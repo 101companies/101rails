@@ -284,6 +284,8 @@ class Wiki.Views.Pages extends Backbone.View
         dataType: 'jsonp'
         success: (model) ->
           headline = model.get('headline').charAt(0).toUpperCase() + model.get('headline').slice(1);
+          if headline == ''
+            headline = "Page does not have a headline."
           $target.attr('title', headline).tooltip('fixTitle')
           if $target.hasClass('hovered')
             $target.tooltip('show')
