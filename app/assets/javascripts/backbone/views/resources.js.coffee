@@ -14,7 +14,6 @@ class Wiki.Views.Resources extends Backbone.View
       $(@el).find('.resourcename').mouseenter( ->
         $(self.el).find('.resourcebar').first().collapse('show')
       )
-      console.log(@el)
       $(@el).mouseleave( ->
           $(self.el).find('.resourcebar').first().collapse('hide')
       )
