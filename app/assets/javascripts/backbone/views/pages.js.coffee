@@ -44,41 +44,14 @@ class Wiki.Views.Pages extends Backbone.View
     else
     $("#title h1").text(niceTitle)
 
-    # add sections
+    # add sub-views
     @addSections()
-
-    # add backlinks-continued
     @addBacklinks()
+    @fetchTriples()
+    @fetchResources()
+    @fetchSourceLinks()
 
-    # fetch triples
-    @model.get('triples').fetch({
-      url: self.model.get('triples').urlBase + self.escapeURI(self.model.get('title'))
-      dataType: 'jsonp'
-      jsonpCallback: 'callback'
-      success: (data,res,o) ->
-          self.addTriples()
-    })
-
-     # fetch resources
-    @model.get('resources').fetch({
-      url: self.model.get('resources').urlBase + self.escapeURI(self.model.get('title')) + '.jsonp'
-      dataType: 'jsonp'
-      jsonpCallback: 'resourcecallback'
-      success: (data,res,o) ->
-        self.addResources()
-    })
-
-    # fetch source links
-    contribPrefix = "contribution:"
-    if @model.get('title').toLowerCase().substring(0, contribPrefix.length) == contribPrefix
-      @model.get('sourceLinks').fetch({
-        url: self.model.get('sourceLinks').urlBase + self.model.get('title').substring(contribPrefix.length) + '.jsonp'
-        dataType: 'jsonp'
-        jsonpCallback: 'sourcelinkscallback'
-        success: (data, res, o) ->
-          self.addSourceLinks()
-      })
-
+    # add discovery tab
     upperTitle = @model.get('title').charAt(0).toUpperCase() + @model.get('title').slice(1);
     $('#discovery-tab-link').attr('href', 'http://101companies.org/resources?format=html&wikititle=' + upperTitle)
 
@@ -101,17 +74,48 @@ class Wiki.Views.Pages extends Backbone.View
     # temporary fixes
     $('a[href^=imported]').remove()
 
-    # enable tooltips
+    # enable tool-tips
     $('a[href^="/wiki/"]', @el).tooltip(delay: {show: 250})
 
 
+  fetchTriples: ->
+    self = @
+    @model.get('triples').fetch({
+      url: self.model.get('triples').urlBase + self.escapeURI(self.model.get('title'))
+      dataType: 'jsonp'
+      jsonpCallback: 'callback'
+      success: (data,res,o) ->
+          self.addTriples()
+    })
+
+  fetchResources: ->
+    self = @
+    @model.get('resources').fetch({
+      url: self.model.get('resources').urlBase + self.escapeURI(self.model.get('title')) + '.jsonp'
+      dataType: 'jsonp'
+      jsonpCallback: 'resourcecallback'
+      success: (data,res,o) ->
+        self.addResources()
+    })
+
+  fetchSourceLinks: ->
+    self = @
+    contribPrefix = "contribution:"
+    if @model.get('title').toLowerCase().substring(0, contribPrefix.length) == contribPrefix
+      @model.get('sourceLinks').fetch({
+        url: self.model.get('sourceLinks').urlBase + self.model.get('title').substring(contribPrefix.length) + '.jsonp'
+        dataType: 'jsonp'
+        jsonpCallback: 'sourcelinkscallback'
+        success: (data, res, o) ->
+          self.addSourceLinks()
+      })
+
   escapeURI: (uri) ->
-    result = decodeURIComponent(uri
+    decodeURIComponent(uri
       .replace(/\-/g, '-2D')
       .replace(/\:/g, "-3A")
       .replace(/\s/g, '_')
     )
-    result
 
   addSection: (section, sections, options) ->
     sectionview = new Wiki.Views.Sections(model: section)
