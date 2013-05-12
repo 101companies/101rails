@@ -9,8 +9,8 @@ class Wiki.Views.Pages extends Backbone.View
     'click #pageCancelButton' : 'cancel'
     'click #pageDeleteButton' : 'delete'
     'click #pageSaveButton' : 'save'
-    'mouseover a': 'tooltipHeadline'
-    'mouseleave a' :'tooltipLeft'
+    'mouseover a[href^="/wiki/"]': 'tooltipHeadline'
+    'mouseleave a[href^="/wiki/"]' :'tooltipLeft'
 
   internalTripleCount: 0
   linksCount: 0
@@ -47,7 +47,7 @@ class Wiki.Views.Pages extends Backbone.View
     # add sections
     @addSections()
 
-    # add backlinks
+    # add backlinks-continued
     @addBacklinks()
 
     # fetch triples
@@ -102,7 +102,7 @@ class Wiki.Views.Pages extends Backbone.View
     $('a[href^=imported]').remove()
 
     # enable tooltips
-    $('a', @el).tooltip(delay: {show: 250})
+    $('a[href^="/wiki/"]', @el).tooltip(delay: {show: 250})
 
 
   escapeURI: (uri) ->
