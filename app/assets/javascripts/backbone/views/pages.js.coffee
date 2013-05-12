@@ -33,45 +33,33 @@ class Wiki.Views.Pages extends Backbone.View
 
   render: ->
     self = @
+
     # add page title
-    cleanTitle = @model.get('title').replace(/_/g, ' ')
-    colonSplit = cleanTitle.split(":")
+    niceTitle = @model.get('title').replace(/_/g, ' ')
+    colonSplit = niceTitle.split(":")
     if colonSplit.length > 1
       $('#title h1')
         .append($('<span class="title-prefix">').text(colonSplit[0] + ":"))
         .append(colonSplit[1])
     else
-      $("#title h1").text(cleanTitle)
-
-    # add backlinks
-    $.each @model.get('backlinks'), (i,bl) ->
-      if i < 21
-        target = '#backlinks-body'
-      else
-        if i == 21
-          $('#backlinks')
-            .append($("<br>"))
-            .append(self.expandableTemplate(name: 'backlinks-continued'))
-        target = '#backlinks-continued'
-      $(target).append(
-        $('<a>').attr('href', '/wiki/' + bl.replace(/\s/g, '_')).html(
-          $('<div>').html($('<span>').addClass('label').text(bl.replace(/_/g, ' ')))
-        ).append(' ')
-      )
+    $("#title h1").text(niceTitle)
 
     # add sections
-    @addAllSections()
+    @addSections()
 
-    # add triples
+    # add backlinks
+    @addBacklinks()
+
+    # fetch triples
     @model.get('triples').fetch({
       url: self.model.get('triples').urlBase + self.escapeURI(self.model.get('title'))
       dataType: 'jsonp'
       jsonpCallback: 'callback'
       success: (data,res,o) ->
-          self.addAllTriples()
+          self.addTriples()
     })
 
-     # add resources
+     # fetch resources
     @model.get('resources').fetch({
       url: self.model.get('resources').urlBase + self.escapeURI(self.model.get('title')) + '.jsonp'
       dataType: 'jsonp'
@@ -80,7 +68,7 @@ class Wiki.Views.Pages extends Backbone.View
         self.addResources()
     })
 
-    # add source links
+    # fetch source links
     contribPrefix = "contribution:"
     if @model.get('title').toLowerCase().substring(0, contribPrefix.length) == contribPrefix
       @model.get('sourceLinks').fetch({
@@ -129,7 +117,7 @@ class Wiki.Views.Pages extends Backbone.View
     sectionview = new Wiki.Views.Sections(model: section)
     sectionview.render(options)
 
-  addAllSections: ->
+  addSections: ->
     self = @
     $('#sposition').html('')
     $('#sposition').append($('<option>').text('(before first section)'))
@@ -137,6 +125,23 @@ class Wiki.Views.Pages extends Backbone.View
       if section.get('title') != "Metadata"
         $('#sposition').append($('<option>').text(section.get('title')))
       self.addSection(section)
+
+  addBacklinks: ->
+    self = @
+    $.each @model.get('backlinks'), (i,bl) ->
+      if i < 21
+        target = '#backlinks-body'
+      else
+        if i == 21
+          $('#backlinks')
+            .append($("<br>"))
+            .append(self.expandableTemplate(name: 'backlinks-continued'))
+        target = '#backlinks-continued'
+      $(target).append(
+        $('<a>').attr('href', '/wiki/' + bl.replace(/\s/g, '_')).html(
+          $('<div>').html($('<span>').addClass('label').text(bl.replace(/_/g, ' ')))
+        ).append(' ')
+      )
 
   newSectionModal: ->
     $('#creationmodal').modal()
@@ -177,7 +182,7 @@ class Wiki.Views.Pages extends Backbone.View
     else
       0
 
-  addAllTriples: ->
+  addTriples: ->
     self = @
     $.each @model.get('triples').models.sort(self.tripleOrdering), (i, triple) ->
       if self.is101Triple(triple)
