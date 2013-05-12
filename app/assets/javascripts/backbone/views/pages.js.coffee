@@ -85,7 +85,9 @@ class Wiki.Views.Pages extends Backbone.View
       dataType: 'jsonp'
       jsonpCallback: 'callback'
       success: (data,res,o) ->
-          self.addTriples()
+        $('#metasection .section-content-parsed').fadeTo(200, 1)
+        $('#metasection .loading-indicator').css('visibility', 'hidden')
+        self.addTriples()
     })
 
   fetchResources: ->
@@ -129,6 +131,10 @@ class Wiki.Views.Pages extends Backbone.View
       if section.get('title') != "Metadata"
         $('#sposition').append($('<option>').text(section.get('title')))
       self.addSection(section)
+
+  refetchMetadata: ->
+    @internalTripleCount = 0
+    @fetchTriples()
 
   addBacklinks: ->
     self = @
@@ -188,6 +194,7 @@ class Wiki.Views.Pages extends Backbone.View
 
   addTriples: ->
     self = @
+    $('#metasection .section-content-parsed').html('')
     $.each @model.get('triples').models.sort(self.tripleOrdering), (i, triple) ->
       if self.is101Triple(triple)
         self.internalTripleCount++;
@@ -273,12 +280,17 @@ class Wiki.Views.Pages extends Backbone.View
       @actionsb.show()
 
   saveSectionEdit: (section) ->
+    self = @
     @model.set('content', '')
     index = @model.get('sections').indexOf(section)
     indicator = $(@el).find('#sections .loading-indicator')[index]
     $(indicator).css('visibility', 'visible')
     @model.save({},
-      success: -> $(indicator).css('visibility', 'hidden')
+      success: ->
+        if section.get('title') == 'Metadata'
+          self.refetchMetadata()
+        else
+          $(indicator).css('visibility', 'hidden')
       error: -> $(indicator).css('visibility', 'hidden')
     )
 

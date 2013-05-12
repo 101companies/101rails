@@ -90,7 +90,9 @@ class Wiki.Views.Sections extends Backbone.View
         url: "/api/parse/"
         data: {content: text, pagetitle: Wiki.page.get('title')}
         success: (data) ->
-          unless self.model.get('title') == 'Metadata'
+          if self.model.get('title') == 'Metadata'
+            $(self.el).find('.section-content-parsed').fadeTo(500, 0.2)
+          else
             self.insertHTML(data.html)
           self.model.set('content': self.editor.getValue(), 'title': newheadline)
           self.model.set()
