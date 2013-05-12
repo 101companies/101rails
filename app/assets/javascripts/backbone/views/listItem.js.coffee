@@ -1,4 +1,4 @@
-class Wiki.Views.ListItems extends Backbone.View
+class Wiki.Views.ListItem extends Backbone.View
   template: JST['backbone/templates/listItem']
 
   events: {

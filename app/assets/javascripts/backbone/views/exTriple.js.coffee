@@ -1,4 +1,4 @@
-class Wiki.Views.ExTriples extends Backbone.View
+class Wiki.Views.ExTriple extends Backbone.View
   resourceTemplate : JST['backbone/templates/resource']
   resourceBoxTemplate : JST['backbone/templates/resourcebox']
 

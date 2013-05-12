@@ -1,4 +1,4 @@
-class Wiki.Views.Sections extends Backbone.View
+class Wiki.Views.Section extends Backbone.View
   template : JST['backbone/templates/section']
 
   events:

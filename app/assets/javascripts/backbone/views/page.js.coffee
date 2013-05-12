@@ -1,4 +1,4 @@
-class Wiki.Views.Pages extends Backbone.View
+class Wiki.Views.Page extends Backbone.View
   el: "#page"
 
   expandableTemplate : JST['backbone/templates/expandable']
@@ -120,7 +120,7 @@ class Wiki.Views.Pages extends Backbone.View
     )
 
   addSection: (section, sections, options) ->
-    sectionview = new Wiki.Views.Sections(model: section)
+    sectionview = new Wiki.Views.Section(model: section)
     sectionview.render(options)
 
   addSections: ->
@@ -169,11 +169,11 @@ class Wiki.Views.Pages extends Backbone.View
       if @internalTripleCount == 13
         $('#metasection').append(@expandableTemplate(name: "metasection-continued"))
       el = "#metasection-continued"
-    tripleview = new Wiki.Views.Triples(model: triple, el: el)
+    tripleview = new Wiki.Views.Triple(model: triple, el: el)
     tripleview.render()
 
   addExternalTriple: (triple) ->
-    tripleview = new Wiki.Views.ExTriples(model: triple)
+    tripleview = new Wiki.Views.ExTriple(model: triple)
     tripleview.render()
 
   is101Triple: (triple) ->

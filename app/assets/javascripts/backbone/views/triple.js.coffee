@@ -1,4 +1,4 @@
-class Wiki.Views.Triples extends Backbone.View
+class Wiki.Views.Triple extends Backbone.View
   template : JST['backbone/templates/triple']
 
   decode: (str, toLower) ->
