@@ -45,6 +45,9 @@ class Wiki.Views.Page extends Backbone.View
     $("#title h1").text(niceTitle)
 
     # add sub-views
+    new Wiki.Views.Triples(model: @model.get('triples'))
+
+    # render collections (FIXME)
     @addSections()
     @addBacklinks()
     @fetchTriples()
@@ -84,10 +87,10 @@ class Wiki.Views.Page extends Backbone.View
       url: self.model.get('triples').urlBase + self.escapeURI(self.model.get('title'))
       dataType: 'jsonp'
       jsonpCallback: 'callback'
+      reset: true
       success: (data,res,o) ->
         $('#metasection .section-content-parsed').fadeTo(200, 1)
         $('#metasection .loading-indicator').css('visibility', 'hidden')
-        self.addTriples()
     })
 
   fetchResources: ->
@@ -161,46 +164,6 @@ class Wiki.Views.Page extends Backbone.View
     newtitle = $('#sname').val()
     newsection = new Wiki.Models.Section({title: newtitle, content: "==" + newtitle + "=="})
     @model.get('sections').add([newsection], {at: document.getElementById('sposition').selectedIndex})
-
-  addInternalTriple: (triple) ->
-    if @internalTripleCount < 13
-      el = '#metasection .section-content-parsed'
-    else
-      if @internalTripleCount == 13
-        $('#metasection').append(@expandableTemplate(name: "metasection-continued"))
-      el = "#metasection-continued"
-    tripleview = new Wiki.Views.Triple(model: triple, el: el)
-    tripleview.render()
-
-  addExternalTriple: (triple) ->
-    tripleview = new Wiki.Views.ExTriple(model: triple)
-    tripleview.render()
-
-  is101Triple: (triple) ->
-    internalPrefix = 'http://101companies.org/'
-    triple.get('node').substring(0, internalPrefix.length) == internalPrefix
-
-  tripleOrdering: (a,b) ->
-    if a.get('predicate') < b.get('predicate')
-      -1
-    else if a.get('predicate') > b.get('predicate')
-      1
-    else if a.get('node') < b.get('node')
-      -1
-    else if a.get('node') > b.get('node')
-      1
-    else
-      0
-
-  addTriples: ->
-    self = @
-    $('#metasection .section-content-parsed').html('')
-    $.each @model.get('triples').models.sort(self.tripleOrdering), (i, triple) ->
-      if self.is101Triple(triple)
-        self.internalTripleCount++;
-        self.addInternalTriple(triple)
-      else
-        self.addExternalTriple(triple)
 
   addResource: (resource) ->
     resourceview = new Wiki.Views.Resources(model: resource)
