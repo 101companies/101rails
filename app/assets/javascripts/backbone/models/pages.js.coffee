@@ -1,8 +1,9 @@
 class Wiki.Models.Page extends Backbone.Model
 
-  idAttribute: 'title'
+  idAttribute: 'idtitle'
 
   defaults:
+    idtitle: ''                           # used for renaming (i.e. change "title" but keep "idtitle" for the server to know)
     title: ""
     sections: null
     backlinks: null
