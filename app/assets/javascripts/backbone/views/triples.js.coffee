@@ -12,7 +12,6 @@ class Wiki.Views.Triples extends Backbone.View
       url: self.model.urlBase + self.escapeURI(Wiki.page.get('title'))
       dataType: 'jsonp'
       jsonpCallback: 'callback'
-      reset: true
       success: ->
         self.addAll()
     })
