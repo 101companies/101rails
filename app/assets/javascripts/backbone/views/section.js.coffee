@@ -20,6 +20,7 @@ class Wiki.Views.Section extends Backbone.View
 
       # collect prerendered content nodes
       $set = $()
+
       if preRendered[0]
         nxt = preRendered[0].nextSibling
         while nxt
@@ -32,7 +33,11 @@ class Wiki.Views.Section extends Backbone.View
       # replace prerendered section by template
       preRendered.after($section).remove()
       @setElement($section)
-      @insertHTML($set)
+      if @subview
+        _.each $set, (x,y) ->
+          $(x).remove()
+      else
+        @insertHTML($set)
 
     else
       $section = $(@template(title: @model.get('title')))
