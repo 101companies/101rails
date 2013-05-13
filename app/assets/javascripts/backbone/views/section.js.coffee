@@ -32,8 +32,7 @@ class Wiki.Views.Section extends Backbone.View
       # replace prerendered section by template
       preRendered.after($section).remove()
       @setElement($section)
-      unless @subview
-        @insertHTML($set)
+      @insertHTML($set)
 
     else
       $section = $(@template(title: @model.get('title')))
