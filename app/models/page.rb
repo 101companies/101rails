@@ -33,6 +33,32 @@ class Page
     if !page_from_db.nil?
       self.users = page_from_db.users
     else
+      begin
+        # else retrieve users from old wiki
+        @base_uri = 'http://mediawiki.101companies.org/api.php'
+        a = Mechanize.new
+        # get all authors of page in json format, 500 last revisions
+        authors= a.get @base_uri + "?action=query&prop=revisions&titles=#{title}&rvprop=user&rvlimit=500&format=json"
+        # parse json
+        authors = JSON.parse authors.body
+        # retrieve body of data from response => all revisions
+        authors = authors['query']['pages'].first[1]['revisions'].to_a.uniq
+        # go through authors and assign to page
+        authors.each do |author|
+          old_wiki_user = OldWikiUser.where(:name => author['user']).first
+          # if matched user from old wiki
+          if !old_wiki_user.nil?
+            # and we have matching user from new wiki
+            if !old_wiki_user.user.nil?
+              # add him to authors of this page
+              self.users << old_wiki_user.user
+            end
+          end
+        end
+      rescue
+        # TODO: some rescue message?
+      end
+      # save page to db
       self.save
     end
 
