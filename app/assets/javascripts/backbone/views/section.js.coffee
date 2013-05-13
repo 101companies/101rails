@@ -5,8 +5,11 @@ class Wiki.Views.Section extends Backbone.View
     'click .foldbutton' : 'fold'
     'click .cancelbutton': 'cancel'
 
-  initialize: ->
+  initialize:  (attrs) ->
+    @subview = attrs.subview
+    @subId = attrs.subId
     @model.bind('error', @error, @)
+    @model.bind('sync', @rerender, @)
 
   render: (options) ->
     self = @
@@ -44,10 +47,10 @@ class Wiki.Views.Section extends Backbone.View
             '/wiki/' + match.toUpperCase())
           )
 
-    # hide metadata section
-    if @model.get('title') == "Metadata"
-      $(@el).find('.section-content-parsed').html("")
-      $(@el).attr('id','metasection')
+    # use sub-view if provided
+    if @subview
+      $(@el).attr('id', @subId)
+      @subview.render()
 
     # buttons and handlers
     @editb = $(@el).find('.editbutton')
@@ -57,6 +60,10 @@ class Wiki.Views.Section extends Backbone.View
       @editb.css("display", "none")
     else
       @editb.click( -> self.initedit())
+
+  rerender: ->
+    if @subview
+      @subview.render()
 
   insertHTML : (html) ->
     $(@el).find('.section-content-parsed').html(html).find("h2").remove()
@@ -90,9 +97,7 @@ class Wiki.Views.Section extends Backbone.View
         url: "/api/parse/"
         data: {content: text, pagetitle: Wiki.page.get('title')}
         success: (data) ->
-          if self.model.get('title') == 'Metadata'
-            $(self.el).find('.section-content-parsed').fadeTo(500, 0.2)
-          else
+          unless self.subview
             self.insertHTML(data.html)
           self.model.set('content': self.editor.getValue(), 'title': newheadline)
           self.model.set()

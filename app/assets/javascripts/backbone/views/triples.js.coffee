@@ -1,7 +1,28 @@
 class Wiki.Views.Triples extends Backbone.View
 
-  initialize: ->
-    @model.bind('reset', @render, @)
+  expandableTemplate : JST['backbone/templates/expandable']
+
+  render: ->
+    self = @
+    @setElement('#metasection')
+    @internalTripleCount = 0
+    $(@el).find('.section-content-parsed').fadeTo(200, 1)
+    $(@el).find(' .loading-indicator').css('visibility', 'hidden')
+    @model.fetch({
+      url: self.model.urlBase + self.escapeURI(Wiki.page.get('title'))
+      dataType: 'jsonp'
+      jsonpCallback: 'callback'
+      reset: true
+      success: ->
+        self.addAll()
+    })
+
+  escapeURI: (uri) ->
+    decodeURIComponent(uri
+      .replace(/\-/g, '-2D')
+      .replace(/\:/g, "-3A")
+      .replace(/\s/g, '_')
+    )
 
   is101Triple: (triple) ->
     internalPrefix = 'http://101companies.org/'
@@ -19,17 +40,13 @@ class Wiki.Views.Triples extends Backbone.View
     else
       0
 
-  render: ->
-    @internalTripleCount = 0
-    @addAll()
-
   addInternalTriple: (triple) ->
     if @internalTripleCount < 13
       el = '#metasection .section-content-parsed'
     else
       if @internalTripleCount == 13
-        $('#metasection').append(@expandableTemplate(name: "metasection-continued"))
-      el = "#metasection-continued"
+        $(@el).append(@expandableTemplate(name: "metasection-continued"))
+      el =  '#metasection-continued'
     tripleview = new Wiki.Views.Triple(model: triple, el: el)
     tripleview.render()
 
@@ -46,7 +63,7 @@ class Wiki.Views.Triples extends Backbone.View
 
   addAll: ->
     self = @
-    $('#metasection .section-content-parsed').html('')
+    $(@el).find('.section-content-parsed').html('')
     $.each @model.models.sort(self.tripleOrdering), (i, triple) ->
       self.addTriple(triple)
 

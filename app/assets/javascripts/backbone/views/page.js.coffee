@@ -12,7 +12,6 @@ class Wiki.Views.Page extends Backbone.View
     'mouseover a[href^="/wiki/"]': 'tooltipHeadline'
     'mouseleave a[href^="/wiki/"]' :'tooltipLeft'
 
-  internalTripleCount: 0
   linksCount: 0
 
   initialize: ->
@@ -44,13 +43,10 @@ class Wiki.Views.Page extends Backbone.View
     else
     $("#title h1").text(niceTitle)
 
-    # add sub-views
-    new Wiki.Views.Triples(model: @model.get('triples'))
 
-    # render collections (FIXME)
+    # add sub-views (FIXME: Add collection views for other model collections)
     @addSections()
     @addBacklinks()
-    @fetchTriples()
     @fetchResources()
     @fetchSourceLinks()
 
@@ -79,19 +75,6 @@ class Wiki.Views.Page extends Backbone.View
 
     # enable tool-tips
     $('a[href^="/wiki/"]', @el).tooltip(delay: {show: 250})
-
-
-  fetchTriples: ->
-    self = @
-    @model.get('triples').fetch({
-      url: self.model.get('triples').urlBase + self.escapeURI(self.model.get('title'))
-      dataType: 'jsonp'
-      jsonpCallback: 'callback'
-      reset: true
-      success: (data,res,o) ->
-        $('#metasection .section-content-parsed').fadeTo(200, 1)
-        $('#metasection .loading-indicator').css('visibility', 'hidden')
-    })
 
   fetchResources: ->
     self = @
@@ -123,7 +106,11 @@ class Wiki.Views.Page extends Backbone.View
     )
 
   addSection: (section, sections, options) ->
-    sectionview = new Wiki.Views.Section(model: section)
+    args = {model: section}
+    if section.get('title') == 'Metadata'
+        args.subview = new Wiki.Views.Triples(model: @model.get('triples'))
+        args.subId = 'metasection'
+    sectionview = new Wiki.Views.Section(args)
     sectionview.render(options)
 
   addSections: ->
@@ -134,10 +121,6 @@ class Wiki.Views.Page extends Backbone.View
       if section.get('title') != "Metadata"
         $('#sposition').append($('<option>').text(section.get('title')))
       self.addSection(section)
-
-  refetchMetadata: ->
-    @internalTripleCount = 0
-    @fetchTriples()
 
   addBacklinks: ->
     self = @
@@ -248,12 +231,14 @@ class Wiki.Views.Page extends Backbone.View
     index = @model.get('sections').indexOf(section)
     indicator = $(@el).find('#sections .loading-indicator')[index]
     $(indicator).css('visibility', 'visible')
+    isMetasection = section.get('title') == 'Metadata'
+    if isMetasection
+      $('#metasection .section-content-parsed').fadeTo(0, 0.2)
     @model.save({},
       success: ->
-        if section.get('title') == 'Metadata'
-          self.refetchMetadata()
-        else
+        unless isMetasection
           $(indicator).css('visibility', 'hidden')
+        section.trigger('sync')
       error: -> $(indicator).css('visibility', 'hidden')
     )
 
