@@ -50,6 +50,7 @@ class Wiki.Views.Section extends Backbone.View
     # use sub-view if provided
     if @subview
       $(@el).attr('id', @subId)
+      alert(@model.get('title'))
       @subview.render()
 
     # buttons and handlers
