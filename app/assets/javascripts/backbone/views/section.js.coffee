@@ -32,7 +32,8 @@ class Wiki.Views.Section extends Backbone.View
       # replace prerendered section by template
       preRendered.after($section).remove()
       @setElement($section)
-      @insertHTML($set)
+      unless @subview
+        @insertHTML($set)
 
     else
       $section = $(@template(title: @model.get('title')))
@@ -50,7 +51,6 @@ class Wiki.Views.Section extends Backbone.View
     # use sub-view if provided
     if @subview
       $(@el).attr('id', @subId)
-      alert(@model.get('title'))
       @subview.render()
 
     # buttons and handlers
