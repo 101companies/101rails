@@ -63,7 +63,7 @@ class Wiki.Views.Page extends Backbone.View
     @notEditingButtons = $('#top .notEditing')
     @editingButtons = $('#top .editing')
     if not _.contains(Wiki.currentUser.get('actions'), "Edit")
-      @notEditingButtons.css("display", "none")
+      @notEditingButtons.hide()
 
     # temporary fixes
     $('a[href^=imported]').remove()
