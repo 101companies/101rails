@@ -233,30 +233,36 @@ p {
 	height: 16px;
 	margin-top: 1px;
 	margin-right: 10px;
-	visibility: hidden;
+
 }
 
-#topeditbar .loading-indicator {
-	margin-top: 20px;
+.editBar {
+  float: right;
 }
 
-.cancelbutton, #pageCancelButton {
-	margin-right: 10px;
-	display: none;
+.editBar .loading-indicator {
+  margin-top: 10px;
+  float: left;
+  display: none;
 }
 
-#pageSaveButton {
-display: none;
+
+.editBar .editing {
+  display: none;
+}
+
+.editBar div {
+  float : left;
 }
 
 .editorbutton a:visted{
 	float: right;
 }
 
-.foldbutton {
+.foldButton {
 	width: 20px;
 	height: 20px;
-	margin-top: 20px;
+	margin-top: 10px;
 	margin-right: 5px;
 }
 
@@ -363,7 +369,7 @@ display: none;
 
 .editor,  #pageeditor {
 	float: left;
-	width: 60%;
+	width: 80%;
 	height: 0px;
 }
 .ace_content {
@@ -530,14 +536,18 @@ font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', 'Droid Sans Mono', 'Consolas', mo
 	height: 2px;
 }
 
+#top .btn-toolbar {
+  float: right;
+}
+
+#top .btn-group {
+  float: left;
+}
+
 #title {
 	float: left;
 }
-#topeditbar {
-	margin-top: 20px;
-	float: right;
-	height: 20px;
-}
+
 
 .topButton {
 	margin: 2px;

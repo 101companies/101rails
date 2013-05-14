@@ -1,31 +1,44 @@
 <div class="section">
-	<div class="headlinecontainer">
-		<h2 class="headline"><%= title %></h2>
-		<div class="sectioneditbar">
-			<div class="editbutton editorbutton btn btn-small">
-	  			<i class="icon-pencil"></i>
-	  			<strong class="editbuttontext">Edit</strong>
-			</div>
-			<div class="cancelbutton editorbutton btn btn-small">
-				<i class="icon-remove"></i>
-	  			<strong class="editbuttontext">Cancel</strong>
-			</div>
-			<div class="loading-indicator">
-				<img src="/assets/ajax-loader.gif"/>
-			</div>
-			<div class="foldbutton editorbutton">
-				<i class="icon-resize-small"></i>
-			</div>
-		</div>
-	</div>
-	<div class="section-content-container">
-		<div class="section-content">
-			<div class="section-content-parsed"/>
-			<div class="section-content-source">
-				<div class="editor"/>
-			</div>
-
-		</div>
-	</div>
+<div class="headlinecontainer">
+  <h2 class="headline"><%= title %></h2>
+  <div class="sectionEditBar editBar">
+    <div class="loading-indicator">
+      <img src="/assets/ajax-loader.gif"/>
+    </div>
+    <div class="notEditing">
+      <div class="foldButton">
+        <i class="icon-resize-small"></i>
+      </div>
+      <div class="btn-toolbar">
+        <div class="btn-group">
+          <button class="editButton  btn btn-small">
+          <i class="icon-pencil"></i>
+          <strong class="editbuttontext"> Edit</strong>
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="btn-toolbar editing">
+      <div class="btn-group">
+        <div class="cancelButton btn btn-small">
+          <i class="icon-remove"></i>
+          <strong>Cancel</strong>
+        </div>
+        <div class="saveButton btn btn-small">
+          <i class="icon-ok"></i>
+          <strong>Save</strong>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="section-content-container">
+<div class="section-content">
+  <div class="section-content-parsed"/>
+    <div class="section-content-source">
+      <div class="editor"/>
+      </div>
+    </div>
+  </div>
 </div>
 <br>

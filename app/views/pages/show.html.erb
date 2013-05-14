@@ -1,147 +1,130 @@
-
-<div class="row-fluid">
-
-</div>
-
-<ul class="nav nav-tabs">
-  <li class="active"><a href="" data-toggle="tab">Wiki</a></li>
-  <li ><a href="" id="discovery-tab-link">Discover</a></li>
-  <li class="dropdown" id="sourcelinks">
-    <a class="dropdown-toggle" id="drop4" role="button" data-toggle="dropdown" href="#">
-      Code<b class="caret"></b>
-    </a>
-    <ul id="menu1" class="dropdown-menu" role="menu"></ul>
-  </li>
-</ul>
-
-<div id="page">
-  <div class="modal hide fade" id="creationmodal">
-  <div class="modal-header">
-    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-    <h4>Create new section...</h4>
-  </div>
-    <div class="modal-body">
-      <p>Name:</p>
-      <input id="sname" name="sname" type="text">
-      <p>Insert after:</p>
-      <select id="sposition"></select>
-  </div>
-  <div class="modal-footer">
-    <a href="#" class="btn btn-primary" id="createSection">Create</a>
-  </div>
-</div>
-  <div id="top">
-    <div id="title">
-      <h1></h1>
+    <div class="row-fluid">
     </div>
-    <div id="topeditbar">
-      <div class="btn btn-small topButton" id="pageCancelButton">
-            <i class="icon-remove"></i>
-            <strong>Cancel</strong>
+    <ul class="nav nav-tabs">
+      <li class="active"><a href="" data-toggle="tab">Wiki</a></li>
+      <li ><a href="" id="discovery-tab-link">Discover</a></li>
+      <li class="dropdown" id="sourcelinks">
+        <a class="dropdown-toggle" id="drop4" role="button" data-toggle="dropdown" href="#">
+          Code<b class="caret"></b>
+        </a>
+        <ul id="menu1" class="dropdown-menu" role="menu"></ul>
+      </li>
+    </ul>
+    <div id="page">
+      <div class="modal hide fade" id="creationmodal">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+          <h4>Create new section...</h4>
+        </div>
+        <div class="modal-body">
+          <p>Name:</p>
+          <input id="sname" name="sname" type="text">
+          <p>Insert after:</p>
+          <select id="sposition"></select>
+        </div>
+        <div class="modal-footer">
+          <a href="#" class="btn btn-primary" id="createSection">Create</a>
+        </div>
       </div>
-      <div class="btn btn-small topButton" id="pageSaveButton">
-              <i class="icon-pencil"></i>
-              <strong>Save</strong>
-            </a>
+      <div id="top">
+        <div id="topEditBar" class="editBar">
+          <div class="btn-toolbar notEditing">
+            <div class="btn-group">
+              <button class="editbutton  btn btn-small" id="pageEditButton">
+                <i class="icon-pencil"></i>
+                <strong class="editbuttontext"> Edit page</strong>
+              </button>
+              <button class="editbutton  btn btn-small" id="pageDeleteButton">
+                <i class="icon-trash"></i><strong> Delete page</strong>
+              </button>
+              <button class="editbutton  btn btn-small" id="sectionAddButton">
+                <i class="icon-plus"></i><strong> Add Section</strong>
+              </button>
+            </div>
+          </div>
+          <div class="loading-indicator">
+            <img src="/assets/ajax-loader.gif"/>
+          </div>
+          <div class="btn-toolbar editing">
+            <div class="btn-group">
+              <div class="editButton btn btn-small" id="pageCancelButton">
+                <i class="icon-remove"></i>
+                <strong>Cancel</strong>
+              </div>
+              <div class="editButton btn btn-small" id="pageSaveButton">
+                <i class="icon-ok"></i>
+                <strong>Save</strong>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div id="title">
+          <h1></h1>
+        </div>
       </div>
-      <div class="loading-indicator">
-        <img src="/assets/ajax-loader.gif"/>
+      <div id="sections">
+        <div id="sections-parsed">
+          <%= parse(@page) -%>
+        </div>
+        <div id="sections-source">
+          <div id="pageeditor"></div>
+        </div>
       </div>
-      <div class="btn-group">
-        <button id="pageActions" class="btn btn-small dropdown-toggle" data-toggle="dropdown"><strong>Page actions </strong><span class="caret"></span></button>
-        <ul class="dropdown-menu">
-          <li id="pageEditButton">
-            <a href="javascript:;">
-              <i class="icon-pencil"></i>Edit page
-            </a>
-          </li>
-          <li id="pageDeleteButton">
-            <a href="javascript:;">
-              <i class="icon-remove"></i>Delete page
-            </a>
-          </li>
-          <li id="sectionAddButton">
-            <a href="javascript:;">
-              <i class="icon-plus"></i>Add Section
-            </a>
-          </li>
-        </ul>
-      </div>
-    </div>
- </div>
- <div id="sections">
-  <div id="sections-parsed">
-    <%= parse(@page) -%>
-  </div>
-  <div id="sections-source">
-        <div id="pageeditor"></div>
-  </div>
- </div>
- <div class="addtional-sections">
-   <div class="section" id="backlinks">
-        <h2>Links</h2>
-        <div id="backlinks-body"></div>
-      </div>
-    </div>
-      <div class="addtional-sections" id="last-section">
-    <div class="section" id="resources">
+      <div class="addtional-sections">
+        <div class="section" id="backlinks">
+         <h2>Links</h2>
+         <div id="backlinks-body"></div>
+       </div>
+     </div>
+     <div class="addtional-sections" id="last-section">
+      <div class="section" id="resources">
         <h2>Resources</h2>
+      </div>
     </div>
+    <hr>
   </div>
-  <hr>
-</div>
-
-
-
-
-
-<%= render "/pages/shared/default" %>
-<br>
-    <div id="infofooter">
-      <div id="innerfooter">
-    	| <i class="icon-user"></i> <a href="#">
-
-<% if @page.history.user?  -%>
-    <%= @page.history.user.email %></a>
-<% else -%>
-<% end -%>
-
-    	| <i class="icon-calendar"></i>
-
-<% if signed_in? -%>
-  <%= @page.history.updated_at %>
-<% else -%>
-<% end -%>
-
-     <!-- | <i class="icon-comment"></i> <a href="#">3 Comments</a>
-      | <i class="icon-share"></i> <a href="#">39 Shares</a> -->
-      <hr>
+  <%= render "/pages/shared/default" %>
+  <br>
+  <div id="infofooter">
+    <div id="innerfooter">
+      | <i class="icon-user"></i> <a href="#">
+      <% if @page.history.user?  -%>
+      <%= @page.history.user.email %></a>
+      <% else -%>
+      <% end -%>
+      | <i class="icon-calendar"></i>
+      <% if signed_in? -%>
+      <%= @page.history.updated_at %>
+      <% else -%>
+      <% end -%>
+        <!-- | <i class="icon-comment"></i> <a href="#">3 Comments</a>
+        | <i class="icon-share"></i> <a href="#">39 Shares</a> -->
+        <hr>
+      </div>
     </div>
-  </div>
+    <div class="modal fade" id="modal">
+      <div class="modal-header">
+        <a class="close" data-dismiss="modal">&times;</a>
+      </div>
+      <h3>
+        <div id="modal_body"></div>
+      </h3>
+    </div>
+    <div id="disqus_thread"></div>
+    <div id="disqus_loader" style="text-align: center">
+      <button class="btn" onclick='$.ajaxSetup({cache:true});$.getScript("http://101companies.disqus.com/embed.js");$.ajaxSetup({cache:false});$("#disqus_loader").remove();'><strong>Load Disqus Comments</strong></button>
+    </div>
+    <!--
+      <script type="text/javascript">
+      /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+                  var disqus_shortname = '101companies'; // required: replace example with your forum shortname
 
-<div class="modal fade" id="modal">
-  <div class="modal-header">
-    <a class="close" data-dismiss="modal">&times;</a>
-  </div>
-  <h3><div id="modal_body"></div></h3>
-</div>
-
-
-<div id="disqus_thread"></div>
-<div id="disqus_loader" style="text-align: center">
-  <button class="btn" onclick='$.ajaxSetup({cache:true});$.getScript("http://101companies.disqus.com/embed.js");$.ajaxSetup({cache:false});$("#disqus_loader").remove();'><strong>Load Disqus Comments</strong></button>
-</div>
-<!--
-<script type="text/javascript">
-/* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
-            var disqus_shortname = '101companies'; // required: replace example with your forum shortname
-
-            /* * * DON'T EDIT BELOW THIS LINE * * */
-            (function() {
-                var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-                dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
-                (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-            })();
-            </script>
-            <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-            <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>-->
+                  /* * * DON'T EDIT BELOW THIS LINE * * */
+                  (function() {
+                      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                      dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+                      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+                  })();
+                  </script>
+                  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+                  <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>-->

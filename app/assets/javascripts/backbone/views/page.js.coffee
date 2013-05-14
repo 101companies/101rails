@@ -59,16 +59,11 @@ class Wiki.Views.Page extends Backbone.View
 
     # add handlers
     @editb = $('#pageEditButton')
-    @actionsb = $('#pageActions')
-    @saveb = $('#pageSaveButton')
     @editb.click( -> self.initedit())
-    @cancelb = $('#pageCancelButton')
-    @deleteb = $('#pageDeleteButton')
-    @newsectionb = $('#sectionAddButton')
+    @notEditingButtons = $('#top .notEditing')
+    @editingButtons = $('#top .editing')
     if not _.contains(Wiki.currentUser.get('actions'), "Edit")
-      @actionsb.css("display", "none")
-    else
-      @editb.click( -> self.initedit())
+      @editingButtons.css("display", "none")
 
     # temporary fixes
     $('a[href^=imported]').remove()
@@ -193,7 +188,7 @@ class Wiki.Views.Page extends Backbone.View
   save: ->
     newcontent = @editor.getValue()
     if newcontent != @model.get('content')
-      $(@el).find("#topeditbar .loading-indicator").css('visibility', 'visible')
+      $(@el).find("#top .loading-indicator").show()
     @model.save({'content' : newcontent}, {success: -> location.reload()})
 
   cancel: (button) ->
@@ -214,32 +209,31 @@ class Wiki.Views.Page extends Backbone.View
       $(@el).find('#sections').animate({marginLeft: '-100%'}, 300)
       $(@el).find('#sections-source').css(height: '400px')
       $(@el).find('#pageeditor').css(height: '400px')
-      @cancelb.show()
-      @saveb.show()
-      @actionsb.hide()
+      $(@notEditingButtons).hide()
+      $(@editingButtons).show()
     else
       $(@el).find('#sections').animate({marginLeft: '0%'}, 300)
       $(@el).find('#sections-source').css(height: '0px')
       $(@el).find('#pageeditor').css(height: '0px')
-      @cancelb.hide()
-      @saveb.hide()
-      @actionsb.show()
+      $(@editingButtons).hide()
+      $(@notEditingButtons).show()
 
   saveSectionEdit: (section) ->
     self = @
     @model.set('content', '')
     index = @model.get('sections').indexOf(section)
     indicator = $(@el).find('#sections .loading-indicator')[index]
-    $(indicator).css('visibility', 'visible')
+    console.log($(@el).find('#sections .loading-indicator')[index])
+    $(indicator).show()
     isMetasection = section.get('title') == 'Metadata'
     if isMetasection
       $('#metasection .section-content-parsed').fadeTo(0, 0.2)
     @model.save({},
       success: ->
         unless isMetasection
-          $(indicator).css('visibility', 'hidden')
+          $(indicator).hide()
         section.trigger('sync')
-      error: -> $(indicator).css('visibility', 'hidden')
+      error: -> $(indicator).hide()
     )
 
   tooltipHeadline: (event) ->

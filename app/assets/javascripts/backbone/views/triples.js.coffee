@@ -7,7 +7,7 @@ class Wiki.Views.Triples extends Backbone.View
     @setElement('#metasection')
     @internalTripleCount = 0
     $(@el).find('.section-content-parsed').fadeTo(200, 1)
-    $(@el).find(' .loading-indicator').css('visibility', 'hidden')
+    $(@el).find(' .loading-indicator').hide()
     @model.fetch({
       url: self.model.urlBase + self.escapeURI(Wiki.page.get('title'))
       dataType: 'jsonp'

@@ -2,8 +2,9 @@ class Wiki.Views.Section extends Backbone.View
   template : JST['backbone/templates/section']
 
   events:
-    'click .foldbutton' : 'fold'
-    'click .cancelbutton': 'cancel'
+    'click .foldButton' : 'fold'
+    'click .cancelButton': 'cancel'
+    'click .saveButton': 'save'
 
   initialize:  (attrs) ->
     @subview = attrs.subview
@@ -58,11 +59,12 @@ class Wiki.Views.Section extends Backbone.View
       @subview.render()
 
     # buttons and handlers
-    @editb = $(@el).find('.editbutton')
-    @canelb = $(@el).find('.cancelbutton')
-    @foldb = $(@el).find('.foldbutton')
+    @editb = $(@el).find('.editButton')
+    @foldb = $(@el).find('.foldButton')
+    @notEditingButtons = $(@el).find('.notEditing')
+    @editingButtons = $(@el).find('.editing')
     if not _.contains(Wiki.currentUser.get('actions'), "Edit")
-      @editb.css("display", "none")
+      @editb.hide()
     else
       @editb.click( -> self.initedit())
 
@@ -75,6 +77,7 @@ class Wiki.Views.Section extends Backbone.View
 
   initedit: ->
     self = @
+    @editb.unbind('click').bind('click', -> self.edit())
     @toggleEdit(true)
     editordiv = $(@el).find('.editor')[0]
     editorid = @model.get('title').replace(' ', '-') + 'editor'
@@ -121,18 +124,15 @@ class Wiki.Views.Section extends Backbone.View
       $(@el).find('.section-content').animate({marginLeft: '-100%'}, 300)
       $(@el).find('.section-content-source').css(height: '400px')
       $(@el).find('.editor').css(height: '400px')
-      @editb.find("i").attr("class", "icon-ok")
-      @editb.find('strong').text("Save")
-      @editb.unbind('click').bind('click', -> self.save())
-      @canelb.show()
+      $(@notEditingButtons).hide()
+      $(@editingButtons).show()
+
     else
       $(@el).find('.section-content').animate({marginLeft: '0%'}, 300)
       $(@el).find('.section-content-source').css(height: '0px')
       $(@el).find('.editor').css(height: '0px')
-      @editb.find("i").attr("class", "icon-pencil")
-      @editb.find('strong').text("Edit")
-      @editb.unbind('click').bind('click', -> self.edit())
-      @canelb.hide()
+      $(@editingButtons).hide()
+      $(@notEditingButtons).show()
 
   fold: ->
       $(@el).find('.section-content').toggle(100)
