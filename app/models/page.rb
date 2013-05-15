@@ -111,9 +111,12 @@ class Page
     content.scan(/((\[\[:?)([^:\]\[]+::)?(#{Regexp.escape(from.gsub(" ", "_"))})(\s*)(\|[^\[\]]+)?(\]\]))/i) do |link|
       link[2] = link[2] || ""
       link[5] = link[5] || ""
+      if link[3][0].downcase == link[3][0]
+        to = to[0,1].downcase + to[1..-1]
+      end
       old_link = link[0]
       new_link = link[1..2].join() + to + link[4..6].join()
-      logger.debug "> Found #{link[0]} -> #{new_link}"
+      logger.debug "> Found #{old_link} -> #{new_link}"
       newcontent = newcontent.gsub(old_link, new_link)
     end
     change(newcontent)
