@@ -26,16 +26,35 @@
           <a href="#" class="btn btn-primary" id="createSection">Create</a>
         </div>
       </div>
+      <div class="modal hide fade" id="renamemodal">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+          <h4>Rename page</h4>
+        </div>
+        <div class="modal-body">
+          <p>New title:</p>
+          <input id="newTitle" name="newTitle" type="text">
+        </div>
+        <div class="modal-footer">
+          <a href="javascript:;" class="btn btn-primary" id="pageRenameSubmit"><div class="loading-indicator">
+            <img src="/assets/ajax-loader.gif"/>
+          </div>Rename</a>
+        </div>
+      </div>
       <div id="top">
         <div id="topEditBar" class="editBar">
           <div class="btn-toolbar notEditing">
             <div class="btn-group">
               <button class="editbutton  btn btn-small" id="pageEditButton">
                 <i class="icon-pencil"></i>
-                <strong class="editbuttontext"> Edit page</strong>
+                <strong class="editbuttontext"> Edit</strong>
+              </button>
+              <button class="editbutton  btn btn-small" id="pageRenameButton">
+                <i class="icon-share-alt"></i>
+                <strong class="editbuttontext"> Rename</strong>
               </button>
               <button class="editbutton  btn btn-small" id="pageDeleteButton">
-                <i class="icon-trash"></i><strong> Delete page</strong>
+                <i class="icon-trash"></i><strong> Delete</strong>
               </button>
               <button class="editbutton  btn btn-small" id="sectionAddButton">
                 <i class="icon-plus"></i><strong> Add Section</strong>

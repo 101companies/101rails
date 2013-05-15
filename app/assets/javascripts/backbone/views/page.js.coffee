@@ -9,6 +9,8 @@ class Wiki.Views.Page extends Backbone.View
     'click #pageCancelButton' : 'cancel'
     'click #pageDeleteButton' : 'delete'
     'click #pageSaveButton' : 'save'
+    'click #pageRenameButton' : 'initRename'
+    'click #pageRenameSubmit' : 'rename'
     'mouseover a[href^="/wiki/"]': 'tooltipHeadline'
     'mouseleave a[href^="/wiki/"]' :'tooltipLeft'
 
@@ -23,9 +25,10 @@ class Wiki.Views.Page extends Backbone.View
     $(document).ajaxComplete((event, res, settings) ->
       if settings.url.lastIndexOf("/api/pages/", 0) == 0
         unless res.status == 200
+          errorMessage = JSON.parse(res.responseText).error
           $('#modal_body').html(
             $('<div>').addClass('alert alert-error')
-              .text("Something went wrong: " + res.statusText))
+              .text("Something went wrong: " + errorMessage))
           $('#modal').modal()
     )
     @render()
@@ -99,6 +102,20 @@ class Wiki.Views.Page extends Backbone.View
       .replace(/\:/g, "-3A")
       .replace(/\s/g, '_')
     )
+
+  initRename: ->
+    $('#renamemodal').modal()
+
+
+  rename: ->
+    newtitle = $('#newTitle').val()
+    unless newtitle == ''
+      $("#renamemodal").modal('hide')
+      $(@el).find("#top .loading-indicator").show()
+      @model.save({'title' : newtitle},
+        success: (model, res) ->
+          window.location = res.newtitle
+      )
 
   addSection: (section, sections, options) ->
     args = {model: section}
@@ -189,7 +206,10 @@ class Wiki.Views.Page extends Backbone.View
     newcontent = @editor.getValue()
     if newcontent != @model.get('content')
       $(@el).find("#top .loading-indicator").show()
-    @model.save({'content' : newcontent}, {success: -> location.reload()})
+    @model.save({'content' : newcontent},
+      success: (model, res) ->
+        location.reload()
+    )
 
   cancel: (button) ->
     @toggleEdit(false)

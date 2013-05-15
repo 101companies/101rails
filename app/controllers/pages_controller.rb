@@ -153,8 +153,30 @@ class PagesController < ApplicationController
         user: current_user
       )
     end
+    if title != params[:title]
+      rename
+    else
+      render :json => {:success => true}
+    end
+  end
 
-    render :json => {:success => true}
+  def rename
+    if cannot? :update, Page.where(:title => params[:title]).first
+      render :json => {:success => false} and return
+    end
+    begin
+      from = params[:idtitle]
+      to = params[:title]
+      gw = MediaWiki::Gateway.new('http://mediawiki.101companies.org/api.php')
+      gw.login(ENV['WIKIUSER'], ENV['WIKIPASSWORD'])
+      gw.move(from, to)
+      oldpage = Page.new.create(from)
+      oldpage.delete
+      render :json => {:success => true, :newtitle => to}
+    rescue MediaWiki::APIError
+      @error_message="#{$!.info}"
+      render :json => {:success => false, :error => @error_message}, :status => 409
+    end
   end
 
   def section
