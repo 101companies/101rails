@@ -104,6 +104,28 @@ class Page
     @ctx
   end
 
+  def rewrite_internal_link(from, to)
+    Rails.logger = Logger.new(STDOUT)
+    logger.debug "Rewriting #{from} -> #{to} on #{self.title}"
+    newcontent = self.content
+    content.scan(/((\[\[:?)([^:\]\[]+::)?(#{Regexp.escape(from.gsub(" ", "_"))})(\s*)(\|[^\[\]]+)?(\]\]))/i) do |link|
+      link[2] = link[2] || ""
+      link[5] = link[5] || ""
+      old_link = link[0]
+      new_link = link[1..2].join() + to + link[4..6].join()
+      logger.debug "> Found #{link[0]} -> #{new_link}"
+      newcontent = newcontent.gsub(old_link, new_link)
+    end
+    change(newcontent)
+  end
+
+  def rewrite_backlinks(to)
+    backlinks.each do |backlink|
+      bl_page = Page.new.create(backlink)
+      bl_page.rewrite_internal_link(self.title, to)
+    end
+  end
+
   def change(content)
     Rails.cache.write(self.title, content)
     Rails.cache.delete(self.title + "_html")

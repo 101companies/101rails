@@ -167,11 +167,27 @@ class PagesController < ApplicationController
     begin
       from = params[:idtitle]
       to = params[:title]
+      old_page = Page.new.create(from)
+      old_page.rewrite_backlinks(to)
       gw = MediaWiki::Gateway.new('http://mediawiki.101companies.org/api.php')
       gw.login(ENV['WIKIUSER'], ENV['WIKIPASSWORD'])
-      gw.move(from, to)
-      oldpage = Page.new.create(from)
-      oldpage.delete
+      old_page.delete
+      new_page = Page.new.create(to)
+      new_page.change(params[:content])
+
+      if History.where(:page => to).exists?
+        history = History.where(:page => to).first
+        history.update_attributes(
+          version: history.version + 1,
+          user: current_user
+        )
+      else
+        History.create!(
+          page: to,
+          version: 1,
+          user: current_user
+        )
+      end
       render :json => {:success => true, :newtitle => to}
     rescue MediaWiki::APIError
       @error_message="#{$!.info}"
