@@ -97,6 +97,10 @@ header {
 	height: 57.3px;
 }
 
+.modal-footer .loading-indicator {
+  float: left;
+}
+
 #logo {
 	height: 107.3px;
 	width: 180px;
@@ -233,6 +237,7 @@ p {
 	height: 16px;
 	margin-top: 1px;
 	margin-right: 10px;
+      display: none;
 
 }
 

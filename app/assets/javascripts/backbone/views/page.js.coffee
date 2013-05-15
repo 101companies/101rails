@@ -110,10 +110,10 @@ class Wiki.Views.Page extends Backbone.View
   rename: ->
     newtitle = $('#newTitle').val()
     unless newtitle == ''
-      $("#renamemodal").modal('hide')
-      $(@el).find("#top .loading-indicator").show()
+      $(@el).find("#renamemodal .loading-indicator").show()
       @model.save({'title' : newtitle},
         success: (model, res) ->
+          $("#renamemodal").modal('hide')
           window.location = res.newtitle
       )
 
