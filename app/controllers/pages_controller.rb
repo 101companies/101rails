@@ -168,11 +168,10 @@ class PagesController < ApplicationController
       from = params[:idtitle]
       to = params[:title]
       old_page = Page.new.create(from)
+      new_page = Page.new.create(to)
+      new_page.change(old_page.content)
       old_page.rewrite_backlinks(to)
       old_page.delete
-      new_page = Page.new.create(to)
-      new_page.change(params[:content])
-
       if History.where(:page => to).exists?
         history = History.where(:page => to).first
         history.update_attributes(
