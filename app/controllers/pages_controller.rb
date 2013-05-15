@@ -126,10 +126,10 @@ class PagesController < ApplicationController
 
   def update
     # check if operation is not permitted
-    if cannot? :update, Page.where(:title => params[:title]).first
+    if cannot? :update, Page.where(:title => params[:idtitle]).first
       render :json => {:success => false} and return
     end
-    title = params[:title]
+    title = params[:idtitle]
     sections = params[:sections]
     page = Page.new.create(title)
     if params.has_key?('content') and params[:content] != ""
