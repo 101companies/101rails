@@ -169,8 +169,6 @@ class PagesController < ApplicationController
       to = params[:title]
       old_page = Page.new.create(from)
       old_page.rewrite_backlinks(to)
-      gw = MediaWiki::Gateway.new('http://mediawiki.101companies.org/api.php')
-      gw.login(ENV['WIKIUSER'], ENV['WIKIPASSWORD'])
       old_page.delete
       new_page = Page.new.create(to)
       new_page.change(params[:content])
