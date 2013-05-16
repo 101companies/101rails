@@ -36,16 +36,36 @@ The application is configured to send emails using a Gmail account.
 
 h2. Getting Started
 
-Install ruby (version 1.9.3) and gem bundle. (by using *gem install bundler*)
-Then go to application folder and do
+h3. Preparation for Ubuntu only
+
+Before installing all, you need to install some dependecies:
+
+@sudo apt-get install redis-server curl nodejs build-essenstial libxslt-dev libxml2-dev mongodb@
+
+If you are using Ubuntu, you can install ruby via rvm:http://rvm.io
+
+@rvm install 1.9.3@
+@rvm use 1.9.3-p429 --default@
+
+h3. Preparation for OSX only
+
+Install ruby (version 1.9.3) using rvm:http://rvm.io or rbenv:https://github.com/sstephenson/rbenv/
+And install dependencies for project:
+
+@brew install mongodb node redis@
+
+h3. Common part of installation
+
+First of all you need to install gem bundler.
+@sudo gem install bundler@
+
+Now you need go to project folder.
+
+If you will have only 1 ruby/rails project you can globally install all gems
+@bundle install@
+
+If you want to have all gems ready per project only:
 @bundle install --path vendor/bundle@
-
-Now you need to install mongodb.
-If you are using OSX it could very helpful to use homebrew for this purposes:
-@brew install mongodb@
-
-If you will test this application locally in production mode, you also need to install Redis
-@brew install redis@
 
 To apply index for mongodb you need to execute
 @bundle exec rake db:mongoid:create_indexes@
@@ -59,6 +79,15 @@ After installing mongodb start this database and then launch application with:
 If you want to see all models of app you need to execute next:
 @be railroady -M -e app/models/ability.rb | neato -Tpng > controllers.png@
 It will be generated a picture in root of the app named *controllers.png*
+
+To be signed in you need to have github account with public email.
+
+If you have been successfully signed in, you can set another role to your user:
+
+@bundle exec rake change_role@
+
+You will be asked about your email and new role.
+Just type email from your github account and role 'admin'
 
 h2. Contributing
 
