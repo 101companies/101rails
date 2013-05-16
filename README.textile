@@ -18,8 +18,8 @@ h2. Requirements
 
 This application requires:
 
-* Ruby version 1.9.3
-* Rails version 3.2.8
+* Ruby
+* Rails
 * MongoDB
 * Redis (for production mode)
 
