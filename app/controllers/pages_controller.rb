@@ -52,7 +52,18 @@ class PagesController < ApplicationController
      @page.history = History.where(:page => @title).first
     end
 
-    respond_with @page
+    #respond_with @page
+
+    respond_to do |format|
+      format.html { render :html => @page }
+      format.json { render :json => {
+        'id'        => @page._id,
+        'title'     => @page.title,
+        'sections'  => @page.sections,
+        'history'   => @page.history,
+        'backlinks' => @page.backlinks
+        } }
+    end
   end
 
   def parse
