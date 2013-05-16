@@ -44,7 +44,7 @@ Before installing all, you need to install some dependecies:
 
 If you are using Ubuntu, you can install ruby via "rvm":http://rvm.io
 
-@rvm install 1.9.3@
+@rvm install 1.9.3-p429@
 @rvm use 1.9.3-p429 --default@
 
 h3. Preparation for OSX only
