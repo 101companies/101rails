@@ -7,6 +7,8 @@ class Wiki.Views.Section extends Backbone.View
     'click .foldButton' : 'fold'
     'click .cancelButton': 'cancel'
     'click .saveButton': 'save'
+    'mouseover a[href^="/wiki/"]': 'tooltipHeadline'
+    'mouseleave a[href^="/wiki/"]' :'tooltipLeft'
 
   initialize:  (attrs) ->
     @subview = attrs.subview
@@ -18,12 +20,10 @@ class Wiki.Views.Section extends Backbone.View
     self = @
     # check if template is already in place
     if not self.templateIn
-      html = $(self.template({title: self.model.get('title')}))
+      html = $(@template({title: @model.get('title')}))
       $('#sections-parsed').append(html)
-      self.setElement(html)
-      self.bindHanders()
-      self.fixLinks()
-      self.templateIn = true
+      @setElement($(html))
+      @templateIn = true
     if @subview
         @renderSubView()
     else
@@ -33,7 +33,8 @@ class Wiki.Views.Section extends Backbone.View
           data: {content: self.model.get('content'), pagetitle: Wiki.pageTitle}
           success: (data) ->
             self.insertHTML(data.html)
-
+            self.fixLinks()
+            self.bindHanders()
         })
 
   renderSubView: ->
@@ -58,6 +59,8 @@ class Wiki.Views.Section extends Backbone.View
       @editb.hide()
     else
       @editb.click( -> self.initedit())
+    # enable tool-tips
+    $('a[href^="/wiki/"]', @el).tooltip(delay: {show: 250})
 
   insertHTML : (html) ->
     $(@el).find('.section-content-parsed').html(html).find("h2").remove()
@@ -134,3 +137,27 @@ class Wiki.Views.Section extends Backbone.View
         .text(err))
     $('#modal').modal()
 
+  tooltipHeadline: (event) ->
+    $target = $(event.target)
+    $target.addClass('hovered')
+    if ($target.attr('data-original-title') == '')
+      $target.attr('data-original-title', 'Loading headline...')
+      linkTitle = $target.attr('href').replace('/wiki/', '').replace(/^\s+|\s+$/g, '')
+      linkDiscovery = new Wiki.Models.PageDiscovery(title: linkTitle)
+      linkDiscovery.fetch({
+        dataType: 'jsonp'
+        success: (model) ->
+          headline = model.get('headline').charAt(0).toUpperCase() + model.get('headline').slice(1);
+          if headline == ''
+            headline = "Page does not have a headline."
+          $target.attr('title', headline).tooltip('fixTitle')
+          if $target.hasClass('hovered')
+            $target.tooltip('show')
+        error: ->
+          $target.attr('title', "Page not found.").tooltip('fixTitle')
+          if $target.hasClass('hovered')
+            $target.tooltip('show')
+      })
+
+  tooltipLeft: (event) ->
+    $(event.target).removeClass("hovered")

@@ -11,8 +11,6 @@ class Wiki.Views.Page extends Backbone.View
     'click #pageSaveButton' : 'save'
     'click #pageRenameButton' : 'initRename'
     'click #pageRenameSubmit' : 'rename'
-    'mouseover a[href^="/wiki/"]': 'tooltipHeadline'
-    'mouseleave a[href^="/wiki/"]' :'tooltipLeft'
 
   linksCount: 0
 
@@ -76,11 +74,6 @@ class Wiki.Views.Page extends Backbone.View
 
     # temporary fixes
     $('a[href^=imported]').remove()
-
-    # enable tool-tips
-    $('a[href^="/wiki/"]', @el).tooltip(delay: {show: 250})
-
-    console.log(@model.get('sections').toJSON())
 
   fetchResources: ->
     self = @
@@ -264,28 +257,3 @@ class Wiki.Views.Page extends Backbone.View
         section.trigger('sync')
       error: -> $(indicator).hide()
     )
-
-  tooltipHeadline: (event) ->
-    $target = $(event.target)
-    $target.addClass('hovered')
-    if ($target.attr('data-original-title') == '')
-      $target.attr('data-original-title', 'Loading headline...')
-      linkTitle = $target.attr('href').replace('/wiki/', '').replace(/^\s+|\s+$/g, '')
-      linkDiscovery = new Wiki.Models.PageDiscovery(title: linkTitle)
-      linkDiscovery.fetch({
-        dataType: 'jsonp'
-        success: (model) ->
-          headline = model.get('headline').charAt(0).toUpperCase() + model.get('headline').slice(1);
-          if headline == ''
-            headline = "Page does not have a headline."
-          $target.attr('title', headline).tooltip('fixTitle')
-          if $target.hasClass('hovered')
-            $target.tooltip('show')
-        error: ->
-          $target.attr('title', "Page not found.").tooltip('fixTitle')
-          if $target.hasClass('hovered')
-            $target.tooltip('show')
-      })
-
-  tooltipLeft: (event) ->
-    $(event.target).removeClass("hovered")
