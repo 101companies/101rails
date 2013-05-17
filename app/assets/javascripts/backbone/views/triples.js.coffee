@@ -9,10 +9,11 @@ class Wiki.Views.Triples extends Backbone.View
     $(@el).find('.section-content-parsed').fadeTo(200, 1)
     $(@el).find(' .loading-indicator').hide()
     @model.fetch({
-      url: self.model.urlBase + self.escapeURI(Wiki.page.get('title'))
+      url: self.model.urlBase + self.escapeURI(Wiki.pageTitle)
       dataType: 'jsonp'
       jsonpCallback: 'callback'
-      success: ->
+      success: (model) ->
+        console.log(model)
         self.addAll()
     })
 

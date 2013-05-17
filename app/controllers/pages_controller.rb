@@ -36,10 +36,20 @@ class PagesController < ApplicationController
 
   def show
     @title = params[:title]
+    logger.debug(">>>>>>>>>")
+    logger.debug(@title)
     if @title == nil
-      @title = "101companies:Project"
+      if params[:id].nil?
+        @title = "101companies:Project"
+      else
+        @title = params[:id]
+      end
     end
     @page = Page.new.create @title
+    logger.debug(@page.title)
+    logger.debug(">>>>>>")
+    logger.debug(@page.sections)
+    logger.debug("<<<<<<")
 
     @page.instance_eval { class << self; self end }.send(:attr_accessor, "history")
     if not History.where(:page => @title).exists?
@@ -52,7 +62,20 @@ class PagesController < ApplicationController
      @page.history = History.where(:page => @title).first
     end
 
-    respond_with @page
+    #respond_with @page
+
+    respond_to do |format|
+      format.html { render :html => @page }
+      format.json { render :json => {
+        'id'        => @page._id,
+        'idtitle'     => @page.title,
+        'content' => @page.content,
+        'title'     => @page.title,
+        'sections'  => @page.sections,
+        'history'   => @page.history,
+        'backlinks' => @page.backlinks
+        } }
+    end
   end
 
   def parse
