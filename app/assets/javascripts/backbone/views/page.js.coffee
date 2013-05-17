@@ -144,7 +144,7 @@ class Wiki.Views.Page extends Backbone.View
 
   addBacklinks: ->
     self = @
-    if @mode.get('backlinks').length > 0
+    if @model.get('backlinks').length > 0
       $('#backlinks').show()
     $.each @model.get('backlinks'), (i,bl) ->
       if i < 21
