@@ -1,6 +1,8 @@
 class Wiki.Views.Section extends Backbone.View
   template : JST['backbone/templates/section']
 
+  templateIn: false
+
   events:
     'click .foldButton' : 'fold'
     'click .cancelButton': 'cancel'
@@ -10,55 +12,44 @@ class Wiki.Views.Section extends Backbone.View
     @subview = attrs.subview
     @subId = attrs.subId
     @model.bind('error', @error, @)
-    @model.bind('sync', @rerender, @)
+    @model.bind('sync', @render, @)
 
   render: (options) ->
     self = @
-    # get prerendered headline node
-    preRendered = $('#' + @model.get('title').replace(/\s/g, '_')).parent()
-    $section = $(@template(title: @model.get('title')))
-    unless options
-
-      # collect prerendered content nodes
-      $set = $()
-
-      if preRendered[0]
-        nxt = preRendered[0].nextSibling
-        while nxt
-          unless $(nxt).is('h2') or not nxt.nextSibling
-            $set.push nxt
-            nxt = nxt.nextSibling
-          else
-            break
-
-      # replace prerendered section by template
-      preRendered.after($section).remove()
-      @setElement($section)
-      if @subview
-        _.each $set, (x,y) ->
-          $(x).remove()
-      else
-        @insertHTML($set)
-
+    # check if template is already in place
+    if not self.templateIn
+      html = $(self.template({title: self.model.get('title')}))
+      $('#sections-parsed').append(html)
+      self.setElement(html)
+      self.bindHanders()
+      self.fixLinks()
+      self.templateIn = true
+    if @subview
+        @renderSubView()
     else
-      $section = $(@template(title: @model.get('title')))
-      index = 3 + 2 * options.at
-      $('#sections .section:nth-child('+ index + ')').before($section)
-      @setElement($section)
+      $.ajax({
+          type: "POST"
+          url: "/api/parse/"
+          data: {content: self.model.get('content'), pagetitle: Wiki.pageTitle}
+          success: (data) ->
+            self.insertHTML(data.html)
 
-    # fix links
-    $.each $(@el).find('a') , (a) ->
-        if $(@).attr('href')
-          $(@).attr('href', $(@).attr('href').replace(/\/wiki\/(\b[a-z])/g, (s,match) ->
-            '/wiki/' + match.toUpperCase())
-          )
+        })
 
-    # use sub-view if provided
+  renderSubView: ->
     if @subview
       $(@el).attr('id', @subId)
       @subview.render()
 
-    # buttons and handlers
+  fixLinks: ->
+    $.each $(@el).find('a') , (a) ->
+      if $(@).attr('href')
+        $(@).attr('href', $(@).attr('href').replace(/\/wiki\/(\b[a-z])/g, (s,match) ->
+          '/wiki/' + match.toUpperCase())
+        )
+
+  bindHanders: ->
+    self = @
     @editb = $(@el).find('.editButton')
     @foldb = $(@el).find('.foldButton')
     @notEditingButtons = $(@el).find('.notEditing')
@@ -67,10 +58,6 @@ class Wiki.Views.Section extends Backbone.View
       @editb.hide()
     else
       @editb.click( -> self.initedit())
-
-  rerender: ->
-    if @subview
-      @subview.render()
 
   insertHTML : (html) ->
     $(@el).find('.section-content-parsed').html(html).find("h2").remove()
@@ -103,7 +90,7 @@ class Wiki.Views.Section extends Backbone.View
       $.ajax({
         type: "POST"
         url: "/api/parse/"
-        data: {content: text, pagetitle: Wiki.page.get('title')}
+        data: {content: text, pagetitle: Wiki.pageTitle}
         success: (data) ->
           unless self.subview
             self.insertHTML(data.html)

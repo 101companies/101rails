@@ -17,7 +17,14 @@ class Wiki.Views.Page extends Backbone.View
   linksCount: 0
 
   initialize: ->
+    self = @
     @inedit = false
+    @model.fetch(success: (model) ->
+      self.bind()
+      self.render()
+    )
+
+  bind: ->
     @model.get('sections').bind('add', @addSection, @)
     #@model.bind('change', @render, @)
     @model.get('sections').bind('change', @saveSectionEdit, @)
@@ -31,11 +38,10 @@ class Wiki.Views.Page extends Backbone.View
               .text("Something went wrong: " + errorMessage))
           $('#modal').modal()
     )
-    @render()
 
   render: ->
     self = @
-
+    $('#sections-parsed').html('')
     # add page title
     niceTitle = @model.get('title').replace(/_/g, ' ')
     colonSplit = niceTitle.split(":")
@@ -73,6 +79,8 @@ class Wiki.Views.Page extends Backbone.View
 
     # enable tool-tips
     $('a[href^="/wiki/"]', @el).tooltip(delay: {show: 250})
+
+    console.log(@model.get('sections').toJSON())
 
   fetchResources: ->
     self = @
@@ -136,6 +144,8 @@ class Wiki.Views.Page extends Backbone.View
 
   addBacklinks: ->
     self = @
+    if @mode.get('backlinks').length > 0
+      $('#backlinks').show()
     $.each @model.get('backlinks'), (i,bl) ->
       if i < 21
         target = '#backlinks-body'
@@ -243,7 +253,6 @@ class Wiki.Views.Page extends Backbone.View
     @model.set('content', '')
     index = @model.get('sections').indexOf(section)
     indicator = $(@el).find('#sections .loading-indicator')[index]
-    console.log($(@el).find('#sections .loading-indicator')[index])
     $(indicator).show()
     isMetasection = section.get('title') == 'Metadata'
     if isMetasection

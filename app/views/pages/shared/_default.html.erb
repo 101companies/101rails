@@ -1,15 +1,6 @@
 <script type="text/javascript">
 
-    Wiki.page = new Wiki.Models.Page({idtitle: <%= j @page.title.to_json.html_safe -%>});
-    Wiki.page.set('title',<%= j @page.title.to_json.html_safe -%>)
-    Wiki.page.set('content', <%= j @page.content.to_json.html_safe -%>)
-    Wiki.page.set('sections',new Wiki.Models.Sections(<%= j @page.sections.to_json.html_safe -%>));
-    Wiki.page.set('categories',<%= j @page.categories.to_json.html_safe -%>);
-    Wiki.page.set('backlinks',<%= j @page.backlinks.to_json.html_safe -%>);
-    Wiki.page.set('triples', new Wiki.Models.Triples());
-    Wiki.page.set('resources', new Wiki.Models.Resources());
-    Wiki.page.set('sourceLinks', new Wiki.Models.SourceLinks());
-    Wiki.page.set('history', <%= j @page.history.to_json.html_safe -%> );
+    Wiki.pageTitle =  <%= j @page.title.to_json.html_safe -%>
 
     <% if current_user -%>
 
@@ -29,7 +20,7 @@
     <% end -%>
 
     jQuery(document).ready(function ($){
-        window.router = new Wiki.Routers.PagesRouter(Wiki.Views.Page);
+        window.router = new Wiki.Routers.PagesRouter();
         Backbone.history.start();
     })
 
