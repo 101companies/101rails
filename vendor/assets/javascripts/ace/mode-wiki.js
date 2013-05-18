@@ -1,4 +1,4 @@
-
+// based on https://github.com/danmichaelo/acewiki
 define('ace/mode/wiki', function(require, exports, module) {
 
   var oop = require("../lib/oop");
@@ -11,7 +11,7 @@ define('ace/mode/wiki', function(require, exports, module) {
     this.$tokenizer = new Tokenizer(highlighter.getRules());
   };
   oop.inherits(Mode, TextMode);
-  
+
   exports.Mode = Mode;
 });
 
@@ -34,7 +34,7 @@ define('ace/mode/wiki_highlight_rules', ['require', 'exports', 'module' , 'ace/l
                 // Curly and square braces
                 token : "rparen",
                 regex : "[\\])}]"
-            }, 
+            },
              {
                 // Templates {{ ... }}
                 token : "template",
@@ -104,7 +104,7 @@ define('ace/mode/wiki_highlight_rules', ['require', 'exports', 'module' , 'ace/l
                 merge : true,
                 regex : "[^\\]]+"
             }],
-        comment : [ 
+        comment : [
             {
                 token : "comment",
                 regex : ".*?-->",
@@ -114,7 +114,7 @@ define('ace/mode/wiki_highlight_rules', ['require', 'exports', 'module' , 'ace/l
                 merge : true,
                 regex : ".+"
             }],
-        nowiki : [ 
+        nowiki : [
             {
                 token : "comment",
                 regex : ".*?</nowiki>",
@@ -124,7 +124,7 @@ define('ace/mode/wiki_highlight_rules', ['require', 'exports', 'module' , 'ace/l
                 merge : true,
                 regex : ".+"
             }],
-        table : [ 
+        table : [
             {
                 token : "table",
                 regex : ".*?\\|}",
@@ -133,8 +133,8 @@ define('ace/mode/wiki_highlight_rules', ['require', 'exports', 'module' , 'ace/l
                 token : "table",
                 merge : true,
                 regex : ".+"
-            }], 
-        template : [ 
+            }],
+        template : [
             {
                 token : "template.sub",
                 merge : true,
@@ -152,7 +152,7 @@ define('ace/mode/wiki_highlight_rules', ['require', 'exports', 'module' , 'ace/l
                 merge : true,
                 regex : "[^{}– ]+"
             }],
-        subtemplate : [ 
+        subtemplate : [
             {
                 token : "template.sub",
                 regex : "[^– ]*?}}",

@@ -1,3 +1,4 @@
+// based on Dan Michael O. Heggø (https://github.com/danmichaelo/acewiki)
 define('ace/theme/wiki', ['require', 'exports', 'module' , 'ace/lib/dom'], function(require, exports, module) {
 
 exports.isDark = false;
