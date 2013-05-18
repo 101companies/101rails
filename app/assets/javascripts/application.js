@@ -25,6 +25,8 @@
 //= require ace/ext-searchbox
 //= require ace/theme-chrome
 //= require ace/theme-textmate
+//= require ace/theme-wiki
+//= require ace/mode-wiki
 
 // rails flash messages using bootstrap modal dialog
 $(function(){
