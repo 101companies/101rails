@@ -307,7 +307,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  aced_rails!
+  aced_rails (= 0.2.1)!
   bcrypt-ruby (= 3.0.1)
   better_errors (= 0.8.0)
   binding_of_caller (= 0.7.1)
