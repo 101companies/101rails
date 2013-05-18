@@ -18,13 +18,12 @@ class Wiki.Views.Page extends Backbone.View
     self = @
     @inedit = false
     @model.fetch(success: (model) ->
-      self.bind()
+      self.bindHanders()
       self.render()
     )
 
-  bind: ->
+  bindHanders: ->
     @model.get('sections').bind('add', @addSection, @)
-    #@model.bind('change', @render, @)
     @model.get('sections').bind('change', @saveSectionEdit, @)
     # modal for completed ajax
     $(document).ajaxComplete((event, res, settings) ->
@@ -40,7 +39,6 @@ class Wiki.Views.Page extends Backbone.View
   render: ->
     self = @
     $('#sections-parsed').html('')
-    # add page title
     niceTitle = @model.get('title').replace(/_/g, ' ')
     colonSplit = niceTitle.split(":")
     if colonSplit.length > 1
@@ -106,7 +104,6 @@ class Wiki.Views.Page extends Backbone.View
 
   initRename: ->
     $('#renamemodal').modal()
-
 
   rename: ->
     newtitle = $('#newTitle').val()
