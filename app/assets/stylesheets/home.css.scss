@@ -384,8 +384,10 @@ p {
 }
 .ace_content {
 font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', 'Droid Sans Mono', 'Consolas', monospace;
+}
 
-
+.ace_content span {
+font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', 'Droid Sans Mono', 'Consolas', monospace;
 }
 
 #categories {

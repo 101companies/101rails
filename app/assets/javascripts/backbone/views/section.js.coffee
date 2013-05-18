@@ -73,8 +73,8 @@ class Wiki.Views.Section extends Backbone.View
     editorid = @model.get('title').replace(' ', '-') + 'editor'
     $(editordiv).attr('id', editorid)
     @editor = ace.edit(editordiv)
-    @editor.setTheme("ace/theme/chrome")
-    @editor.getSession().setMode("ace/mode/text")
+    @editor.setTheme("ace/theme/wiki")
+    @editor.getSession().setMode("ace/mode/wiki")
     @editor.getSession().setUseWrapMode(true)
     @editor.setValue(@model.get('content'))
     @editor.navigateFileStart()

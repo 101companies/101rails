@@ -192,8 +192,8 @@ class Wiki.Views.Page extends Backbone.View
     @toggleEdit(true)
     editorid = 'pageeditor'
     @editor = ace.edit(editorid)
-    @editor.setTheme("ace/theme/chrome")
-    @editor.getSession().setMode("ace/mode/text")
+    @editor.setTheme("ace/theme/wiki")
+    @editor.getSession().setMode("ace/mode/wiki")
     @editor.getSession().setUseWrapMode(true)
     @fillEditor()
     @editor.navigateFileStart()
