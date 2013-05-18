@@ -7,11 +7,16 @@ GIT
       expression_parser
       rinku
 
-GEM
-  remote: https://rubygems.org/
+GIT
+  remote: https://github.com/tschmorleiz/aced_rails/
+  revision: 9d1bbd209e2d8125f1ef560e08f8b479e80bb0bc
   specs:
     aced_rails (0.2.1)
       rails (~> 3.2)
+
+GEM
+  remote: https://rubygems.org/
+  specs:
     actionmailer (3.2.13)
       actionpack (= 3.2.13)
       mail (~> 2.5.3)
@@ -302,7 +307,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  aced_rails (= 0.2.1)
+  aced_rails (= 0.2.1)!
   bcrypt-ruby (= 3.0.1)
   better_errors (= 0.8.0)
   binding_of_caller (= 0.7.1)

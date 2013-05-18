@@ -104,4 +104,4 @@ gem 'redis', '3.0.4'
 gem 'redis-store', '1.1.3'
 gem 'redis-rails', '3.2.3'
 
-gem 'aced_rails', '0.2.1'
+gem 'aced_rails', '0.2.1', :git => "https://github.com/tschmorleiz/aced_rails/"
