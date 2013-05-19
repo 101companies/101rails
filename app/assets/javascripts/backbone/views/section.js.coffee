@@ -48,6 +48,7 @@ class Wiki.Views.Section extends Backbone.View
         $(@).attr('href', $(@).attr('href').replace(/\/wiki\/(\b[a-z])/g, (s,match) ->
           '/wiki/' + match.toUpperCase())
         )
+      $(@).text(Wiki.Utils.atTo101($(@).text()))
 
   bindHanders: ->
     self = @

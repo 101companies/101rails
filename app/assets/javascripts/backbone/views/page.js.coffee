@@ -39,7 +39,7 @@ class Wiki.Views.Page extends Backbone.View
   render: ->
     self = @
     $('#sections-parsed').html('')
-    niceTitle = @model.get('title').replace(/_/g, ' ')
+    niceTitle = Wiki.Utils.atTo101(@model.get('title').replace(/_/g, ' '))
     colonSplit = niceTitle.split(":")
     if colonSplit.length > 1
       $('#title h1')
@@ -47,7 +47,6 @@ class Wiki.Views.Page extends Backbone.View
         .append(colonSplit[1])
     else
     $("#title h1").text(niceTitle)
-
 
     # add sub-views (FIXME: Add collection views for other model collections)
     @addSections()
