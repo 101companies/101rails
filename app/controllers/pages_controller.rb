@@ -36,8 +36,6 @@ class PagesController < ApplicationController
 
   def show
     @title = params[:title]
-    logger.debug(">>>>>>>>>")
-    logger.debug(@title)
     if @title == nil
       if params[:id].nil?
         @title = "@project"
@@ -46,10 +44,6 @@ class PagesController < ApplicationController
       end
     end
     @page = Page.new.create @title
-    logger.debug(@page.title)
-    logger.debug(">>>>>>")
-    logger.debug(@page.sections)
-    logger.debug("<<<<<<")
 
     @page.instance_eval { class << self; self end }.send(:attr_accessor, "history")
     if not History.where(:page => @title).exists?
