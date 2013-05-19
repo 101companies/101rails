@@ -111,8 +111,9 @@ class Wiki.Views.Page extends Backbone.View
       $(@el).find("#renamemodal .loading-indicator").show()
       @model.save({'title' : newtitle},
         success: (model, res) ->
+          console.log(res)
           $("#renamemodal").modal('hide')
-          window.location = res.newtitle
+          window.location = '/wiki/' + res.newtitle
       )
 
   addSection: (section, sections, options) ->
