@@ -33,7 +33,6 @@ class Wiki.Views.Section extends Backbone.View
           data: {content: self.model.get('content'), pagetitle: Wiki.pageTitle}
           success: (data) ->
             self.insertHTML(data.html)
-            self.fixLinks()
             self.bindHanders()
         })
 
@@ -65,6 +64,7 @@ class Wiki.Views.Section extends Backbone.View
 
   insertHTML : (html) ->
     $(@el).find('.section-content-parsed').html(html).find("h2").remove()
+    @fixLinks()
 
   initedit: ->
     self = @
