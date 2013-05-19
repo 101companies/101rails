@@ -40,7 +40,7 @@ class PagesController < ApplicationController
     logger.debug(@title)
     if @title == nil
       if params[:id].nil?
-        @title = "101companies:Project"
+        @title = "@project"
       else
         @title = params[:id]
       end
