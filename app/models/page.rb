@@ -107,8 +107,9 @@ class Page
   def rewrite_internal_link(from, to)
     Rails.logger = Logger.new(STDOUT)
     logger.debug "Rewriting #{from} -> #{to} on #{self.title}"
-    newcontent = self.content
-    content.scan(/((\[\[:?)([^:\]\[]+::)?(#{Regexp.escape(from.gsub("_", " "))})(\s*)(\|[^\[\]]+)?(\]\]))/i) do |link|
+    new_content = self.content
+    normalized_content = content.gsub("_", " ")
+    normalized_content.scan(/((\[\[:?)([^:\]\[]+::)?(#{Regexp.escape(from.gsub("_", " "))})(\s*)(\|[^\[\]]+)?(\]\]))/i) do |link|
       link[2] = link[2] || ""
       link[5] = link[5] || ""
       if link[3][0].downcase == link[3][0]
@@ -117,9 +118,10 @@ class Page
       old_link = link[0]
       new_link = link[1..2].join() + to.gsub("_", " ") + link[4..6].join()
       logger.debug "> Found #{old_link} -> #{new_link}"
-      newcontent = newcontent.gsub(old_link, new_link)
+      pos = normalized_content.index(old_link)
+      new_content = new_content[0 .. pos - 1] + new_link + new_content[pos + old_link.length .. -1]
     end
-    change(newcontent)
+    change(new_content)
   end
 
   def rewrite_backlinks(to)
