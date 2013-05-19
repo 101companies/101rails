@@ -22,6 +22,11 @@ class PagesController < ApplicationController
     if title_wiki != CGI.unescape(title)
       redirect_to "/wiki/#{title}"
     end
+    gw = MediaWiki::Gateway.new('http://mediawiki.101companies.org/api.php')
+    if gw.redirect?(title)
+      @redirect_page = Page.new.create title
+      redirect_to "/wiki/" + @redirect_page.redirect_target
+    end
   end
 
   def delete
@@ -43,7 +48,9 @@ class PagesController < ApplicationController
         @title = params[:id]
       end
     end
+
     @page = Page.new.create @title
+
 
     @page.instance_eval { class << self; self end }.send(:attr_accessor, "history")
     if not History.where(:page => @title).exists?

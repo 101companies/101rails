@@ -104,6 +104,10 @@ class Page
     @ctx
   end
 
+  def redirect_target
+    content.match(/#REDIRECT \[\[([^\[\]]+)\]\]/)[1]
+  end
+
   def rewrite_internal_link(from, to)
     Rails.logger = Logger.new(STDOUT)
     logger.debug "Rewriting #{from} -> #{to} on #{self.title}"
