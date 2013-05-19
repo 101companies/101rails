@@ -40,6 +40,7 @@ class Wiki.Views.Page extends Backbone.View
     self = @
     $('#sections-parsed').html('')
     niceTitle = Wiki.Utils.atTo101(@model.get('title').replace(/_/g, ' '))
+    document.title = niceTitle
     colonSplit = niceTitle.split(":")
     if colonSplit.length > 1
       $('#title h1')

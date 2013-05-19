@@ -22,10 +22,13 @@ class PagesController < ApplicationController
     if title_wiki != CGI.unescape(title)
       redirect_to "/wiki/#{title}"
     end
-    gw = MediaWiki::Gateway.new('http://mediawiki.101companies.org/api.php')
-    if gw.redirect?(title)
-      @redirect_page = Page.new.create title
-      redirect_to "/wiki/" + @redirect_page.redirect_target
+    begin
+      gw = MediaWiki::Gateway.new('http://mediawiki.101companies.org/api.php')
+      if gw.redirect?(title)
+        @redirect_page = Page.new.create title
+        redirect_to "/wiki/" + @redirect_page.redirect_target
+      end
+    rescue MediaWiki::APIError
     end
   end
 
