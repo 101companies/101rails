@@ -136,7 +136,38 @@ class Page
     end
   end
 
+  def namespace
+    colon_split = title.split(":")
+    if colon_split.length == 1
+      if title.start_with?('@')
+        '101'
+      else
+        'Concept'
+      end
+    else
+      colon_split[0]
+    end
+  end
+
+  def add_triple(content, triple)
+    content.sub(/\s+\Z/, '') + "\n* " + triple
+  end
+
+  def remove_namespace_triples(content)
+    content.sub(/\*\s*\[\[instanceOf::Namespace:([^\[\]]+)\]\]/, '')
+  end
+
+  def add_namespace_triple(content)
+    namespace_triple = '[[instanceOf::Namespace:' + namespace + ']]'
+    unless content.include?(namespace_triple)
+        content = add_triple(content, namespace_triple)
+    end
+    return content
+  end
+
   def change(content)
+    content = remove_namespace_triples(content)
+    content = add_namespace_triple(content)
     Rails.cache.write(self.title, content)
     Rails.cache.delete(self.title + "_html")
     gw = self.gateway
