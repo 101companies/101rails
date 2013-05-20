@@ -78,6 +78,7 @@ class Wiki.Views.Section extends Backbone.View
     @editor.getSession().setMode("ace/mode/wiki")
     @editor.getSession().setUseWrapMode(true)
     @editor.setValue(@model.get('content'))
+    @editor.on('change', -> self.editor.replaceAll('[[@', needle: '[[101'))
     @editor.navigateFileStart()
     enable_spellcheck(editorid)
 
