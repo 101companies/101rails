@@ -81,7 +81,6 @@ class Wiki.Views.Section extends Backbone.View
     @editor.on('change', -> self.editor.replaceAll('[[@', needle: '[[101'))
     @editor.navigateFileStart()
     enable_spellcheck(editorid)
-    alert("BAR")
 
   edit: ->
     @toggleEdit(true)
