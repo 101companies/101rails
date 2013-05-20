@@ -2,6 +2,7 @@ class Wiki.Views.Page extends Backbone.View
   el: "#page"
 
   expandableTemplate : JST['backbone/templates/expandable']
+  editormenuTemplate: JST['backbone/templates/editormenu']
 
   events:
     'click #sectionAddButton' : 'newSectionModal'
@@ -11,6 +12,9 @@ class Wiki.Views.Page extends Backbone.View
     'click #pageSaveButton' : 'save'
     'click #pageRenameButton' : 'initRename'
     'click #pageRenameSubmit' : 'rename'
+
+    #editor
+    'click #pageeditor button' : "helpEditor"
 
   linksCount: 0
 
@@ -188,21 +192,37 @@ class Wiki.Views.Page extends Backbone.View
     else
       allcontents = @model.get('sections').models.reduce(((agg, cur) -> agg + cur.get('content') + "\n\n"), '')
     @editor.setValue(allcontents)
+    @editor.navigateFileStart()
+
+  helpEditor: (options) ->
+    self = @
+    helps =
+      'bold': {start: "'''", end: "'''"}
+      'italic': {start: "''", end: "''"}
+      'headline': {start: "==", end: "=="}
+      'link': {start: "[[", end: "]]"}
+    toInsert = $(options.currentTarget).attr('data-editoraction')
+    help = helps[toInsert]
+    toWrap = @editor.getSession().getTextRange(@editor.getSelectionRange())
+    @editor.getSession().replace(@editor.getSelectionRange(), help.start + toWrap + help.end)
+    @editor.navigateRight(help.end.length)
+
 
   initedit: ->
     self = @
+    @editb.unbind('click').bind('click', -> self.edit())
     @toggleEdit(true)
-    editorid = 'pageeditor'
+    editorid = 'pageeditor-content'
     @editor = ace.edit(editorid)
     @editor.setTheme("ace/theme/wiki")
     @editor.getSession().setMode("ace/mode/wiki")
     @editor.getSession().setUseWrapMode(true)
-    @editor.on('change', -> self.editor.replaceAll('[[@', needle: '[[101'))
-    @fillEditor()
-    @editor.navigateFileStart()
     enable_spellcheck(editorid)
+    $(@el).find('#pageeditor').prepend(@editormenuTemplate())
+    @fillEditor()
 
   edit: ->
+    @fillEditor()
     @toggleEdit(true)
 
   save: ->
@@ -231,13 +251,13 @@ class Wiki.Views.Page extends Backbone.View
     if open
       $(@el).find('#sections').animate({marginLeft: '-100%'}, 300)
       $(@el).find('#sections-source').css(height: '400px')
-      $(@el).find('#pageeditor').css(height: '400px')
+      $(@el).find('#pageeditor').show()
       $(@notEditingButtons).hide()
       $(@editingButtons).show()
     else
       $(@el).find('#sections').animate({marginLeft: '0%'}, 300)
       $(@el).find('#sections-source').css(height: '0px')
-      $(@el).find('#pageeditor').css(height: '0px')
+      $(@el).find('#pageeditor').hide()
       $(@editingButtons).hide()
       $(@notEditingButtons).show()
 

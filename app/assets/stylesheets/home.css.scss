@@ -231,6 +231,13 @@ p {
 	margin-top: 20px;
 }
 
+.editormenu {
+  margin-bottom: 15px;
+}
+
+.editormenu button {
+   font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', 'Droid Sans Mono', 'Consolas', monospace;
+}
 
 .loading-indicator {
 	float: right;
@@ -377,10 +384,10 @@ p {
 	margin-bottom: 7px;
 }
 
-.editor,  #pageeditor {
+.editor, #pageeditor, #pageeditor-content {
 	float: left;
 	width: 80%;
-	height: 0px;
+	height: 100%;
 }
 .ace_content {
 font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', 'Droid Sans Mono', 'Consolas', monospace;
