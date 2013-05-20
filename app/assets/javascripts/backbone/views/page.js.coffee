@@ -148,7 +148,7 @@ class Wiki.Views.Page extends Backbone.View
         target = '#backlinks-continued'
       $(target).append(
         $('<a>').attr('href', '/wiki/' + bl.replace(/\s/g, '_')).html(
-          $('<div>').html($('<span>').addClass('label').text(bl.replace(/_/g, ' ')))
+          $('<div>').html($('<span>').addClass('label').text(Wiki.Utils.atTo101(bl.replace(/_/g, ' '))))
         ).append(' ')
       )
 
@@ -198,6 +198,7 @@ class Wiki.Views.Page extends Backbone.View
     @editor.getSession().setUseWrapMode(true)
     @fillEditor()
     @editor.navigateFileStart()
+    new Tokezniz
     enable_spellcheck(editorid)
 
   edit: ->

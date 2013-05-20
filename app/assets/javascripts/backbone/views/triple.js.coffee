@@ -7,9 +7,9 @@ class Wiki.Views.Triple extends Backbone.View
     str = _.last(str.split("/"))
     if toLower
       firstLetter = str.substr(0, 1)
-      firstLetter.toLowerCase() + str.substr(1)
+      Wiki.Utils.atTo101(firstLetter.toLowerCase() + str.substr(1))
     else
-      str
+      Wiki.Utils.atTo101(str)
 
   render: ->
     self = @
