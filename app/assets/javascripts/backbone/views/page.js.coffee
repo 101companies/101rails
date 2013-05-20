@@ -198,7 +198,6 @@ class Wiki.Views.Page extends Backbone.View
     @editor.getSession().setUseWrapMode(true)
     @fillEditor()
     @editor.navigateFileStart()
-    new Tokezniz
     enable_spellcheck(editorid)
 
   edit: ->
