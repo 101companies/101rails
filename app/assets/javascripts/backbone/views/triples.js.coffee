@@ -1,6 +1,6 @@
 class Wiki.Views.Triples extends Backbone.View
 
-  expandableTemplate : JST['backbone/templates/expandable']
+  expandableTemplate: JST['backbone/templates/expandable']
 
   render: ->
     self = @
@@ -41,11 +41,15 @@ class Wiki.Views.Triples extends Backbone.View
       0
 
   addInternalTriple: (triple) ->
-    if @internalTripleCount < 13
+    @internalTripleCount++;
+    if @internalTripleCount < 15
       el = '#metasection .section-content-parsed'
     else
-      if @internalTripleCount == 13
-        $(@el).append(@expandableTemplate(name: "metasection-continued"))
+      if @internalTripleCount == 15
+        $(@el).find('.section-content-parsed').append(@expandableTemplate(name: "metasection-continued"))
+        offset = $(@el).find('.section-content-parsed > div.triple').slice(-7)
+        _.each offset, (x) ->
+          $('#metasection-continued').append($(x))
       el =  '#metasection-continued'
     tripleview = new Wiki.Views.Triple(model: triple, el: el)
     tripleview.render()
@@ -56,7 +60,6 @@ class Wiki.Views.Triples extends Backbone.View
 
   addTriple: (triple) ->
     if @is101Triple(triple)
-      @internalTripleCount++;
       @addInternalTriple(triple)
     else
       @addExternalTriple(triple)
