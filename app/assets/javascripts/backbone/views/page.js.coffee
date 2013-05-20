@@ -51,7 +51,7 @@ class Wiki.Views.Page extends Backbone.View
         .append($('<span class="title-prefix">').text(colonSplit[0] + ":"))
         .append(colonSplit[1])
     else
-    $("#title h1").text(niceTitle)
+      $("#title h1").text(niceTitle)
 
     # add sub-views (FIXME: Add collection views for other model collections)
     @addSections()
