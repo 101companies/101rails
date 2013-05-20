@@ -89,12 +89,27 @@ class PagesController < ApplicationController
     wiki = WikiCloth::Parser.new(:data => content, :noedit => true)
     page = Page.new.create title
     WikiCloth::Parser.context = page.context
-
     html = wiki.to_html
+    gw = MediaWiki::Gateway.new('http://mediawiki.101companies.org/api.php')
+    all_pages = gw.list('')
     wiki.internal_links.each do |link|
       link = link.capitalize
-      html.gsub!("<a href=\"#{link}\"", "<a href=\"/wiki/#{link}\"")
-      html.gsub!("<a href=\"#{link.camelize(:lower)}\"", "<a href=\"/wiki/#{link}\"")
+      colon_split = link.split(':')
+      lower_link = link.camelize(:lower)
+      upper_split_link = link.capitalize
+      lower_split_link = link.camelize(:lower)
+      if colon_split.length > 1
+        lower_split_link = colon_split[0] + ':' + colon_split[1].camelize(:lower)
+        upper_split_link = colon_split[0] + ':' + colon_split[1].capitalize
+      end
+      class_attribute = ''
+      unless all_pages.include?(upper_split_link)
+        class_attribute = 'class="missing-link"'
+      end
+      html.gsub!("<a href=\"#{link}\"", "<a " + class_attribute + " href=\"/wiki/#{link}\"")
+      html.gsub!("<a href=\"#{lower_link}\"", "<a " + class_attribute + " href=\"/wiki/#{link}\"")
+      html.gsub!("<a href=\"#{upper_split_link}\"", "<a " + class_attribute + " href=\"/wiki/#{upper_split_link}\"")
+      html.gsub!("<a href=\"#{lower_split_link}\"", "<a " + class_attribute + " href=\"/wiki/#{upper_split_link}\"")
     end
     render :json => {:success => true, :html => html.html_safe}
   end
