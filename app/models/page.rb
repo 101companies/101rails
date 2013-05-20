@@ -124,6 +124,7 @@ class Page
       logger.debug "> Found #{old_link} -> #{new_link}"
       pos = normalized_content.index(old_link)
       new_content = new_content[0 .. pos - 1] + new_link + new_content[pos + old_link.length .. -1]
+      normalized_content = new_content.gsub("_", " ")
     end
     change(new_content)
   end
