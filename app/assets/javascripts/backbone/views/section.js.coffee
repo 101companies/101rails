@@ -24,17 +24,19 @@ class Wiki.Views.Section extends Backbone.View
       $('#sections-parsed').append(html)
       @setElement($(html))
       @templateIn = true
-    if @subview
-        @renderSubView()
-    else
       $.ajax({
           type: "POST"
           url: "/api/parse/"
           data: {content: self.model.get('content'), pagetitle: Wiki.pageTitle}
           success: (data) ->
-            self.insertHTML(data.html)
             self.bindHanders()
+            if self.subview
+              self.renderSubView()
+            else
+              self.insertHTML(data.html)
         })
+    else
+      @renderSubView()
 
   renderSubView: ->
     if @subview
@@ -92,6 +94,7 @@ class Wiki.Views.Section extends Backbone.View
     if matches
       `newheadline = matches[0].replace(/==/g,'').trim()`
       $(@el).find('.headline').text(newheadline)
+      $(@el).find('.loading-indicator').show()
       $.ajax({
         type: "POST"
         url: "/api/parse/"

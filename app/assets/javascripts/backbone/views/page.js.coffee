@@ -266,7 +266,6 @@ class Wiki.Views.Page extends Backbone.View
     @model.set('content', '')
     index = @model.get('sections').indexOf(section)
     indicator = $(@el).find('#sections .loading-indicator')[index]
-    $(indicator).show()
     isMetasection = section.get('title') == 'Metadata'
     if isMetasection
       $('#metasection .section-content-parsed').fadeTo(0, 0.2)
