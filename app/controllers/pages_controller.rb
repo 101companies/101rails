@@ -94,6 +94,7 @@ class PagesController < ApplicationController
     wiki.internal_links.each do |link|
       link = link.capitalize
       html.gsub!("<a href=\"#{link}\"", "<a href=\"/wiki/#{link}\"")
+      html.gsub!("<a href=\"#{link.camelize(:lower)}\"", "<a href=\"/wiki/#{link}\"")
     end
     render :json => {:success => true, :html => html.html_safe}
   end
