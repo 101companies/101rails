@@ -29,11 +29,11 @@ class Wiki.Views.Section extends Backbone.View
           url: "/api/parse/"
           data: {content: self.model.get('content'), pagetitle: Wiki.pageTitle}
           success: (data) ->
-            self.bindHanders()
             if self.subview
               self.renderSubView()
             else
               self.insertHTML(data.html)
+            self.bindHanders()
         })
     else
       @renderSubView()
