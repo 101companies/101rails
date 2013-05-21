@@ -217,6 +217,7 @@ class Wiki.Views.Page extends Backbone.View
     @editor.setTheme("ace/theme/wiki")
     @editor.getSession().setMode("ace/mode/wiki")
     @editor.getSession().setUseWrapMode(true)
+    @editor.on('change', -> self.editor.replaceAll('[[@', needle: '[[101'))
     enable_spellcheck(editorid)
     $(@el).find('#pageeditor').prepend(@editormenuTemplate())
     @fillEditor()
