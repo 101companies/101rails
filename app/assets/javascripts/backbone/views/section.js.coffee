@@ -57,10 +57,10 @@ class Wiki.Views.Section extends Backbone.View
     @foldb = $(@el).find('.foldButton')
     @notEditingButtons = $(@el).find('.notEditing')
     @editingButtons = $(@el).find('.editing')
-    if not _.contains(Wiki.currentUser.get('actions'), "Edit")
-      @editb.hide()
-    else
+    if _.contains(Wiki.currentUser.get('actions'), "Edit")
       @editb.click( -> self.initedit())
+      @editb.show()
+
     # enable tool-tips
     $('a[href^="/wiki/"]', @el).tooltip(delay: {show: 250})
 

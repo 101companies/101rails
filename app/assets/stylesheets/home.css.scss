@@ -340,6 +340,10 @@ p {
 	margin-bottom: -5px;
 }
 
+.section .editButton {
+  display: none;
+}
+
 .content-loading {
     color: #a0a0a0;
 }
@@ -566,6 +570,10 @@ font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', 'Droid Sans Mono', 'Consolas', mo
 
 #top .btn-group {
   float: left;
+}
+
+#top .notEditing {
+  display: none;
 }
 
 #title {

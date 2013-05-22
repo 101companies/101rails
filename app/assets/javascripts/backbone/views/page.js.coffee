@@ -68,11 +68,11 @@ class Wiki.Views.Page extends Backbone.View
 
     # add handlers
     @editb = $('#pageEditButton')
-    @editb.click( -> self.initedit())
     @notEditingButtons = $('#top .notEditing')
     @editingButtons = $('#top .editing')
-    if not _.contains(Wiki.currentUser.get('actions'), "Edit")
-      @notEditingButtons.hide()
+    if _.contains(Wiki.currentUser.get('actions'), "Edit")
+      @notEditingButtons.show()
+      @editb.click( -> self.initedit())
 
     # temporary fixes
     $('a[href^=imported]').remove()
