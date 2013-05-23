@@ -82,7 +82,6 @@ class Wiki.Views.Page extends Backbone.View
     @model.get('resources').fetch({
       url: self.model.get('resources').urlBase + self.escapeURI(self.model.get('title')) + '.jsonp'
       dataType: 'jsonp'
-      jsonpCallback: 'resourcecallback'
       success: (data,res,o) ->
         self.addResources()
     })
@@ -94,7 +93,6 @@ class Wiki.Views.Page extends Backbone.View
       @model.get('sourceLinks').fetch({
         url: self.model.get('sourceLinks').urlBase + self.model.get('title').substring(contribPrefix.length) + '.jsonp'
         dataType: 'jsonp'
-        jsonpCallback: 'sourcelinkscallback'
         success: (data, res, o) ->
           self.addSourceLinks()
       })
