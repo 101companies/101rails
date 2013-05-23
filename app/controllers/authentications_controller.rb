@@ -33,6 +33,7 @@ class AuthenticationsController < ApplicationController
     else
       # New user data not valid, try again
       session[:omniauth] = omniauth.except('extra')
+      flash[:notice] = 'Please specify a public email address on your github profile before sign up'
       redirect_to new_user_registration_url
     end
   end
