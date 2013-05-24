@@ -187,6 +187,7 @@ class Page
   def internal_links
     puts "internal_links "
     puts @wiki
+    @wiki.to_html
     @wiki.internal_links
   end
 
