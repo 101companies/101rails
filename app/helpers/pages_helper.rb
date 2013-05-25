@@ -4,12 +4,11 @@ module PagesHelper
   require 'wikicloth'
   require 'pygments.rb'
 
-	def parse(page)
+  def parse(page)
     wiki = page.wiki
     html = page.html
     wiki.internal_links.each do |link|
       html.gsub!("<a href=\"#{link}\"", "<a href=\"/wiki/#{link}\"")
-      #html.gsub!(":Category:","/wiki/Category:")
     end
     return html.html_safe
   end
@@ -21,10 +20,26 @@ module PagesHelper
     string.enum_for(:scan, substring).map { $~.offset(0)[0] }
   end
 
-  def json_escape(s)
-    result = s.to_s.gsub('/', '\/')
-    s.html_safe? ? result.html_safe : result
+  def update_history(pagename)
+    if History.where(:page => pagename).exists?
+      history = History.where(:page => pagename).first
+      history.update_attributes(
+        version: history.version + 1,
+        user: current_user
+        )
+    else
+      History.create!(
+        page: pagename,
+        version: 1,
+        user: current_user
+        )
+    end
   end
 
-  alias j json_escape
-end
+    def json_escape(s)
+      result = s.to_s.gsub('/', '\/')
+      s.html_safe? ? result.html_safe : result
+    end
+
+    alias j json_escape
+  end

@@ -246,20 +246,7 @@ class PagesController < ApplicationController
       sections.each { |s| content += s['content'] + "\n" }
       page.change(content)
     end
-
-    if History.where(:page => title).exists?
-      history = History.where(:page => title).first
-      history.update_attributes(
-        version: history.version + 1,
-        user: current_user
-      )
-    else
-      History.create!(
-        page: title,
-        version: 1,
-        user: current_user
-      )
-    end
+    update_history(title)
     if title != params[:title]
       rename
     else
@@ -279,19 +266,7 @@ class PagesController < ApplicationController
       new_page.change(old_page.content)
       old_page.rewrite_backlinks(to)
       old_page.delete
-      if History.where(:page => to).exists?
-        history = History.where(:page => to).first
-        history.update_attributes(
-          version: history.version + 1,
-          user: current_user
-        )
-      else
-        History.create!(
-          page: to,
-          version: 1,
-          user: current_user
-        )
-      end
+      update_history(to)
       render :json => {:success => true, :newtitle => to}
     rescue MediaWiki::APIError
       @error_message="#{$!.info}"
