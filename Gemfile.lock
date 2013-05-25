@@ -1,4 +1,12 @@
 GIT
+  remote: git://github.com/avaranovich/rdf-sesame.git
+  revision: dc9a63ddd27b89d32e88fee0620caed1da6c4fcc
+  specs:
+    rdf-sesame (0.4.2)
+      json_pure (~> 1.4)
+      rdf (~> 1.0.6)
+
+GIT
   remote: git://github.com/avaranovich/wikicloth.git
   revision: 3df7055c45124f6e09ed7e6f2d5a3cc0ef55db96
   specs:
@@ -23,15 +31,7 @@ GIT
       addressable (>= 2.2)
 
 GIT
-  remote: git@github.com:avaranovich/rdf-sesame.git
-  revision: dc9a63ddd27b89d32e88fee0620caed1da6c4fcc
-  specs:
-    rdf-sesame (0.4.2)
-      json_pure (~> 1.4)
-      rdf (~> 1.0.6)
-
-GIT
-  remote: https://github.com/tschmorleiz/aced_rails/
+  remote: git://github.com/tschmorleiz/aced_rails.git
   revision: c0fa590fea58500e124e3d79771d2f00064f99fa
   specs:
     aced_rails (0.2.1)

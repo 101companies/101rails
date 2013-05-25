@@ -93,7 +93,7 @@ gem 'wikicloth', :git => 'git://github.com/avaranovich/wikicloth.git'
 #rdf support
 gem 'rdf', :git => 'git://github.com/ruby-rdf/rdf.git'
 gem 'rdf-rdfxml', :git => 'git://github.com/ruby-rdf/rdf-rdfxml.git'
-gem 'rdf-sesame', :git => 'git@github.com:avaranovich/rdf-sesame.git'
+gem 'rdf-sesame', :git => 'git://github.com/avaranovich/rdf-sesame.git'
 
 # source text highlighting
 gem 'pygments.rb', '0.5.0'
@@ -109,4 +109,4 @@ gem 'redis', '3.0.4'
 gem 'redis-store', '1.1.3'
 gem 'redis-rails', '3.2.3'
 
-gem 'aced_rails', '0.2.1', :git => "https://github.com/tschmorleiz/aced_rails/"
+gem 'aced_rails', '0.2.1', :git => 'git://github.com/tschmorleiz/aced_rails.git'
