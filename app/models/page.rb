@@ -139,11 +139,7 @@ class Page
  def namespace
   colon_split = title.split(":")
   if colon_split.length == 1
-    if title.start_with?('@')
-      '101'
-    else
-      'Concept'
-    end
+    title.start_with?('@') ? '101' : 'Concept'
   else
     colon_split[0]
   end
