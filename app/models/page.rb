@@ -184,6 +184,11 @@ class Page
     # TODO: remove from db page entity
   end
 
+  def semantic_links
+    @wiki.to_html
+    @wiki.internal_links.find_all{|item| item.include? "::" }
+  end
+
   def internal_links
     puts "internal_links "
     puts @wiki

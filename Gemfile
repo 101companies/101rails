@@ -90,6 +90,11 @@ gem 'mechanize', '2.6.0'
 gem 'mediawiki-gateway', '0.5.1'
 gem 'wikicloth', :git => 'git://github.com/avaranovich/wikicloth.git'
 
+#rdf support
+gem 'rdf', :git => 'git://github.com/ruby-rdf/rdf.git'
+gem 'rdf-rdfxml', :git => 'git://github.com/ruby-rdf/rdf-rdfxml.git'
+gem 'rdf-sesame', :git => 'git@github.com:avaranovich/rdf-sesame.git'
+
 # source text highlighting
 gem 'pygments.rb', '0.5.0'
 gem 'closure-compiler', '1.1.8'

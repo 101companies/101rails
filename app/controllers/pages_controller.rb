@@ -1,6 +1,9 @@
 class PagesController < ApplicationController
   include PagesHelper
   require 'media_wiki'
+  require 'rdf'
+  require 'rdf/ntriples'
+  require 'rdf/sesame'
   before_filter :check_uri
   respond_to :json, :html
 
@@ -30,6 +33,53 @@ class PagesController < ApplicationController
       end
     rescue MediaWiki::APIError
     end
+  end
+
+  def semantic_properties
+     {'dependsOn'  => 'http://101companies.org/property/dependsOn',
+     'instanceOf' => 'http://101companies.org/property/instanceOf',
+     'identifies' => 'http://101companies.org/property/identifies',
+     'linksTo'    => 'http://101companies.org/property/linksTo' }
+  end
+
+  def get_rdf
+     #   public static DEPENDS_ON = 'http://101companies.org/property/dependsOn'
+     #   public static IDENTIFIES = 'http://101companies.org/property/identifies'
+     #   public static LINKS_TO = 'http://101companies.org/property/linksTo'
+     #   public static CITES = 'http://101companies.org/property/cites'
+     #   public static USES = 'http://101companies.org/property/uses'
+     #   public static IMPLEMENTS = 'http://101companies.org/property/implements'
+     #   public static INSTANCE_OF = 'http://101companies.org/property/instanceOf'
+     #   public static IS_A = 'http://101companies.org/property/isA'
+     #   public static DEVELOPED_BY = 'http://101companies.org/property/developedBy'
+     #   public static REVIEWED_BY = 'http://101companies.org/property/reviewedBy'
+     #   public static RELATES_TO = 'http://101companies.org/property/relatesTo'
+     #   public static LABEL = 'http://www.w3.org/2000/01/rdf-schema#label'
+     #   public static PAGE = 'http://semantic-mediawiki.org/swivt/1.0#page'
+     #   public static TYPE = 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type'
+     title = params[:id]
+     @page = Page.new.create(title)
+
+     v101 = RDF::Vocabulary.new("http://101companies.org/property/")
+     uri = RDF::URI.new("http://101companies.org/resources/contribution/haskellStarter")
+     graph = RDF::Graph.new << [uri, RDF::RDFS.title, "haskellStarter"]
+
+     context   = RDF::URI.new("http://101companies.org")
+
+     server = RDF::Sesame::Server.new RDF::URI("http://triples.101companies.org/openrdf-sesame")
+     repository = server.repository("test")
+
+     @page.semantic_links.each { |l| 
+      subject = uri
+      predicate = RDF::URI.new(self.semantic_properties[l.split('::')[0]])
+      object =  l.split('::')[1]
+      statement =  RDF::Statement.new(subject, predicate, object, :context => context) 
+      graph << statement
+      repository.delete statement
+      repository.insert statement
+    }
+
+     respond_with graph.dump(:ntriples)
   end
 
   def delete
@@ -130,7 +180,7 @@ class PagesController < ApplicationController
     begin
       GC.disable
       title = params[:id]
-      page = Page.new.create(title)
+      page = Page.new.create title
       render :json => {:sections => page.sections, :internal_links => page.internal_links}
     rescue
       @error_message="#{$!}"
