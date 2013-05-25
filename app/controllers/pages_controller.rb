@@ -238,15 +238,11 @@ class PagesController < ApplicationController
       render :json => {:success => false} and return
     end
     begin
-      from = params[:idtitle]
-      to = params[:title]
-      old_page = Page.new.create(from)
-      new_page = Page.new.create(to)
-      new_page.change(old_page.content)
-      old_page.rewrite_backlinks(to)
-      old_page.delete
-      update_history(to)
-      render :json => {:success => true, :newtitle => to}
+      new_title = params[:title]
+      page = Page.new.create(params[:idtitle])
+      page.rename(new_title)
+      update_history(new_title)
+      render :json => {:success => true, :newtitle => new_title}
     rescue MediaWiki::APIError
       @error_message="#{$!.info}"
       render :json => {:success => false, :error => @error_message}, :status => 409

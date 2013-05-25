@@ -24,7 +24,7 @@ class Page
 
     # create a context from NS:TITLE
     @ctx = title.split(':').length == 2 ?
-        {ns: title.split(':')[0].downcase, title: title.split(':')[1]} : {ns: 'concept', title: title.split(':')[0]}
+    {ns: title.split(':')[0].downcase, title: title.split(':')[1]} : {ns: 'concept', title: title.split(':')[0]}
 
     self.title = title
 
@@ -71,7 +71,7 @@ class Page
       @wiki.internal_links.each do |link|
         @html.gsub!("<a href=\"#{link}\"", "<a href=\"/wiki/#{link}\"")
         #html.gsub!(":Category:","/wiki/Category:")
-     end
+      end
       #convert <p>http://foo.com</p> into <p><a href="http://foo.com">http://foo.com</a>
       #@html.gsub!(/\b([\w]+?:\/\/[\w]+[^ \"\r\n\t<]*)/i, '<a href="\1">\1</a>')
       Rails.cache.write(title + "_html", @html)
@@ -137,51 +137,58 @@ class Page
     end
   end
 
-  def namespace
-    colon_split = title.split(":")
-    if colon_split.length == 1
-      if title.start_with?('@')
-        '101'
-      else
-        'Concept'
-      end
+  def rename(to)
+   new_page = Page.new.create(to)
+   new_page.change(content)
+   rewrite_backlinks(to)
+   delete
+ end
+
+ def namespace
+  colon_split = title.split(":")
+  if colon_split.length == 1
+    if title.start_with?('@')
+      '101'
     else
-      colon_split[0]
+      'Concept'
     end
+  else
+    colon_split[0]
   end
+end
 
-  def add_triple(content, triple)
-    content.sub(/\s+\Z/, '') + "\n* " + triple
+def add_triple(content, triple)
+  content.sub(/\s+\Z/, '') + "\n* " + triple
+end
+
+def remove_namespace_triples(content)
+  content.sub(/\*\s*\[\[instanceOf::Namespace:([^\[\]]+)\]\]/, '')
+end
+
+def add_namespace_triple(content)
+  namespace_triple = '[[instanceOf::Namespace:' + namespace + ']]'
+  unless content.include?(namespace_triple)
+    content = add_triple(content, namespace_triple)
   end
+  return content
+end
 
-  def remove_namespace_triples(content)
-    content.sub(/\*\s*\[\[instanceOf::Namespace:([^\[\]]+)\]\]/, '')
-  end
+def change(content)
+  content = remove_namespace_triples(content)
+  content = add_namespace_triple(content)
+  Rails.cache.write(self.title, content)
+  Rails.cache.delete(self.title + "_html")
+  gw = self.gateway
+  gw.login(ENV['WIKIUSER'], ENV['WIKIPASSWORD'])
+  gw.edit(self.title, content)
+end
 
-  def add_namespace_triple(content)
-    namespace_triple = '[[instanceOf::Namespace:' + namespace + ']]'
-    unless content.include?(namespace_triple)
-        content = add_triple(content, namespace_triple)
-    end
-    return content
-  end
-
-  def change(content)
-    content = remove_namespace_triples(content)
-    content = add_namespace_triple(content)
-    Rails.cache.write(self.title, content)
-    Rails.cache.delete(self.title + "_html")
-    gw = self.gateway
-    gw.login(ENV['WIKIUSER'], ENV['WIKIPASSWORD'])
-    gw.edit(self.title, content)
-  end
-
-  def delete
-    gw = self.gateway
-    gw.login(ENV['WIKIUSER'], ENV['WIKIPASSWORD'])
-    gw.delete(self.title)
-    Rails.cache.delete(self.title + "_html")
-    Rails.cache.delete(self.title)
+def delete
+  gw = self.gateway
+  gw.login(ENV['WIKIUSER'], ENV['WIKIPASSWORD'])
+  gw.delete(self.title)
+  Rails.cache.delete(self.title + "_html")
+  Rails.cache.delete(self.title)
     # TODO: remove from db page entity
   end
 
