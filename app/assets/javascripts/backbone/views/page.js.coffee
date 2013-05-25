@@ -239,7 +239,7 @@ class Wiki.Views.Page extends Backbone.View
 
   delete: ->
     @model.destroy(success: ->
-      if history.length > 1
+      if history.length > 2
         history.back()
       else
         document.location.href = '/wiki'
