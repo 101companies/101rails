@@ -20,22 +20,6 @@ module PagesHelper
     string.enum_for(:scan, substring).map { $~.offset(0)[0] }
   end
 
-  def update_history(pagename)
-    if History.where(:page => pagename).exists?
-      history = History.where(:page => pagename).first
-      history.update_attributes(
-        version: history.version + 1,
-        user: current_user
-        )
-    else
-      History.create!(
-        page: pagename,
-        version: 1,
-        user: current_user
-        )
-    end
-  end
-
   def to_wiki_links(parsed_page)
     html = parsed_page.to_html
     all_pages = MediaWiki::Gateway.new('http://mediawiki.101companies.org/api.php').list('')

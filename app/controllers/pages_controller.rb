@@ -36,7 +36,7 @@ class PagesController < ApplicationController
   end
 
   def semantic_properties
-     {'dependsOn'  => 'http://101companies.org/property/dependsOn',
+   {'dependsOn'  => 'http://101companies.org/property/dependsOn',
      'instanceOf'  => 'http://101companies.org/property/instanceOf',
      'identifies'  => 'http://101companies.org/property/identifies',
      'linksTo'     => 'http://101companies.org/property/linksTo',
@@ -48,11 +48,11 @@ class PagesController < ApplicationController
      'developedBy' => 'http://101companies.org/property/developedBy',
      'reviewedBy'  => 'http://101companies.org/property/reviewedBy',
      'relatesTo'   => 'http://101companies.org/property/relatesTo' }
-  end
+   end
 
-  def page_to_resource(title)
+   def page_to_resource(title)
     @ctx = title.split(':').length == 2 ?
-        {ns: title.split(':')[0].downcase, title: title.split(':')[1]} : {ns: 'concept', title: title.split(':')[0]}
+    {ns: title.split(':')[0].downcase, title: title.split(':')[1]} : {ns: 'concept', title: title.split(':')[0]}
     RDF::URI.new("http://101companies.org/resources/#{@ctx[:ns].pluralize}/#{@ctx[:title]}")
   end
 
@@ -93,7 +93,7 @@ class PagesController < ApplicationController
       repository.insert statement
     }
 
-     respond_with graph.dump(:ntriples)
+    respond_with graph.dump(:ntriples)
   end
 
   def delete
@@ -125,10 +125,10 @@ class PagesController < ApplicationController
         user: current_user,
         page: @title,
         version: 1
-      )
+        )
     else
      @page.history = History.where(:page => @title).first
-    end
+   end
 
     #respond_with @page
 
@@ -143,11 +143,11 @@ class PagesController < ApplicationController
         'history'   => @page.history,
         'backlinks' => @page.backlinks
         } }
+      end
     end
-  end
 
-  def parse
-    content = params[:content]
+    def parse
+      content = params[:content]
     #we use the title to get the context of the page
     title = params[:pagetitle]
     parsed_page = WikiCloth::Parser.new(:data => content, :noedit => true)
@@ -207,6 +207,22 @@ class PagesController < ApplicationController
     rescue
       @error_message="#{$!}"
       render :json => {:success => false, :error => @error_message}
+    end
+  end
+
+  def update_history(pagename)
+    if History.where(:page => pagename).exists?
+      history = History.where(:page => pagename).first
+      history.update_attributes(
+        version: history.version + 1,
+        user: current_user
+        )
+    else
+      History.create!(
+        page: pagename,
+        version: 1,
+        user: current_user
+        )
     end
   end
 
