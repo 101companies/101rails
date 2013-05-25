@@ -37,9 +37,17 @@ class PagesController < ApplicationController
 
   def semantic_properties
      {'dependsOn'  => 'http://101companies.org/property/dependsOn',
-     'instanceOf' => 'http://101companies.org/property/instanceOf',
-     'identifies' => 'http://101companies.org/property/identifies',
-     'linksTo'    => 'http://101companies.org/property/linksTo' }
+     'instanceOf'  => 'http://101companies.org/property/instanceOf',
+     'identifies'  => 'http://101companies.org/property/identifies',
+     'linksTo'     => 'http://101companies.org/property/linksTo',
+     'cites'       => 'http://101companies.org/property/cites',
+     'uses'        => 'http://101companies.org/property/uses',
+     'implements'  => 'http://101companies.org/property/implements',
+     'instanceOf'  => 'http://101companies.org/property/instanceOf',
+     'isA'         => 'http://101companies.org/property/isA',
+     'developedBy' => 'http://101companies.org/property/developedBy',
+     'reviewedBy'  => 'http://101companies.org/property/reviewedBy',
+     'relatesTo'   => 'http://101companies.org/property/relatesTo' }
   end
 
   def get_rdf
