@@ -113,10 +113,7 @@ class Page
     logger.debug "Rewriting #{from} -> #{to} on #{self.title}"
     regex = /(\[\[:?)([^:\]\[]+::)?(#{Regexp.escape(from.gsub("_", " "))})(\s*)(\|[^\[\]]+)?(\]\])/i
     new_content = content.gsub("_", " ").gsub(regex) do |foo|
-      new_name = to
-      if $3[0].downcase == $3[0]
-        new_name = to[0,1].downcase + to[1..-1]
-      end
+      new_name = $3[0].downcase == $3[0] ? to : to[0,1].downcase + to[1..-1]
       "#{$1}#{$2}#{new_name}#{$4}#{$5}#{$6}"
     end
     change(new_content)
