@@ -217,12 +217,11 @@ class PagesController < ApplicationController
     end
     title = params[:idtitle]
     sections = params[:sections]
-    page = Page.new.create(title)
     content = params[:content]
-    if params[:content] == ""
-      content = ""
+    if content == ""
       sections.each { |s| content += s['content'] + "\n" }
     end
+    page = Page.new.create(title)
     page.change(content)
     update_history(title)
     if title != params[:title]
