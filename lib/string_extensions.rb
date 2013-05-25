@@ -5,7 +5,6 @@ module StringExtensions
   # when this module is included.
   def self.included(base)
     String.extend StringExtensions::ClassMethods
-    String.send :include, InstanceMethods
   end
 
   # Class-methods for String
@@ -23,36 +22,4 @@ module StringExtensions
     end
   end
 
-  # Instance-methods for String-objects
-  module InstanceMethods
-
-    # Replace ' and " with * and blanks with _ to make the string
-    # usable for URLs
-    def txt_to_url
-      self.gsub( / /, '_').gsub(/"/,"**").gsub(/'/,'*').downcase
-    end
-
-    # Replace _ with blanks, ** with " and * with '
-    def url_to_txt
-      self.gsub(/\*\*/,'"').gsub(/\*/,"'").gsub(/_/,' ').humanize
-    end
-
-    # Don't hanldle $ in the URL as an RegEx $-sign
-    def escape_regex
-      self.gsub(/\$/,"\\$")
-    end
-
-    # Split the string into paragraphs (\n)
-    # "Par 1\nPar 2".paragraphs => ['Par 1', 'Par 2']
-    # "Par 1\nPar 2\nPar 3".paragraphs(0..1) => "Par 1\nPar 2"
-    def paragraphs(range=nil)
-      unless range
-        self.split("\n")
-      else
-        truncated = self.split("\n")[range].join("\n")
-        truncated += "..." if (truncated.length < self.length)
-        truncated
-      end
-    end
-  end
 end

@@ -1,5 +1,3 @@
-require 'mongoid'
-
 class History
   include Mongoid::Document
   include Mongoid::Timestamps
