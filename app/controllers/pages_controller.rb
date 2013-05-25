@@ -218,13 +218,12 @@ class PagesController < ApplicationController
     title = params[:idtitle]
     sections = params[:sections]
     page = Page.new.create(title)
-    if params.has_key?('content') and params[:content] != ""
-      page.change(params[:content])
-    else
+    content = params[:content]
+    if params[:content] == ""
       content = ""
       sections.each { |s| content += s['content'] + "\n" }
-      page.change(content)
     end
+    page.change(content)
     update_history(title)
     if title != params[:title]
       rename
@@ -234,9 +233,6 @@ class PagesController < ApplicationController
   end
 
   def rename
-    if cannot? :update, Page.where(:title => params[:title]).first
-      render :json => {:success => false} and return
-    end
     begin
       new_title = params[:title]
       page = Page.new.create(params[:idtitle])
