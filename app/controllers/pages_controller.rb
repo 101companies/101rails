@@ -50,6 +50,12 @@ class PagesController < ApplicationController
      'relatesTo'   => 'http://101companies.org/property/relatesTo' }
   end
 
+  def page_to_resource(title)
+    @ctx = title.split(':').length == 2 ?
+        {ns: title.split(':')[0].downcase, title: title.split(':')[1]} : {ns: 'concept', title: title.split(':')[0]}
+    RDF::URI.new("http://101companies.org/resources/#{@ctx[:ns].pluralize}/#{@ctx[:title]}")   
+  end
+
   def get_rdf
      #   public static DEPENDS_ON = 'http://101companies.org/property/dependsOn'
      #   public static IDENTIFIES = 'http://101companies.org/property/identifies'
@@ -68,8 +74,8 @@ class PagesController < ApplicationController
      title = params[:id]
      @page = Page.new.create(title)
 
+     uri = self.page_to_resource title
      v101 = RDF::Vocabulary.new("http://101companies.org/property/")
-     uri = RDF::URI.new("http://101companies.org/resources/contribution/haskellStarter")
      graph = RDF::Graph.new << [uri, RDF::RDFS.title, "haskellStarter"]
 
      context   = RDF::URI.new("http://101companies.org")
@@ -81,7 +87,7 @@ class PagesController < ApplicationController
       subject = uri
       predicate = RDF::URI.new(self.semantic_properties[l.split('::')[0]])
       object =  l.split('::')[1]
-      statement =  RDF::Statement.new(subject, predicate, object, :context => context) 
+      statement =  RDF::Statement.new(subject, predicate, page_to_resource(object), :context => context) 
       graph << statement
       repository.delete statement
       repository.insert statement
