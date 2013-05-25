@@ -108,13 +108,16 @@ class Page
     content.match(/#REDIRECT \[\[([^\[\]]+)\]\]/)[1]
   end
 
-  def rewrite_internal_link(from, to)
+  def rewrite_link_name(from, to)
+    from[0].downcase == from[0] ? to : to[0,1].downcase + to[1..-1]
+  end
+
+  def rewrite_internal_links(from, to)
     Rails.logger = Logger.new(STDOUT)
     logger.debug "Rewriting #{from} -> #{to} on #{self.title}"
     regex = /(\[\[:?)([^:\]\[]+::)?(#{Regexp.escape(from.gsub("_", " "))})(\s*)(\|[^\[\]]+)?(\]\])/i
-    new_content = content.gsub("_", " ").gsub(regex) do |foo|
-      new_name = $3[0].downcase == $3[0] ? to : to[0,1].downcase + to[1..-1]
-      "#{$1}#{$2}#{new_name}#{$4}#{$5}#{$6}"
+    new_content = content.gsub("_", " ").gsub(regex) do |link|
+      "#{$1}#{$2}#{rewrite_link_name($3, to)}#{$4}#{$5}#{$6}"
     end
     change(new_content)
   end
@@ -122,7 +125,7 @@ class Page
   def rewrite_backlinks(to)
     backlinks.each do |backlink|
       bl_page = Page.new.create(backlink)
-      bl_page.rewrite_internal_link(self.title, to)
+      bl_page.rewrite_internal_links(self.title, to)
     end
   end
 
