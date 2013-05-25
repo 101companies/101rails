@@ -111,21 +111,13 @@ class Page
   def rewrite_internal_link(from, to)
     Rails.logger = Logger.new(STDOUT)
     logger.debug "Rewriting #{from} -> #{to} on #{self.title}"
-    new_content = self.content
-    normalized_content = content.gsub("_", " ")
-    regex = /((\[\[:?)([^:\]\[]+::)?(#{Regexp.escape(from.gsub("_", " "))})(\s*)(\|[^\[\]]+)?(\]\]))/i
-    normalized_content.scan(regex) do |link|
-      link[2] = link[2] || ""
-      link[5] = link[5] || ""
-      if link[3][0].downcase == link[3][0]
-        to = to[0,1].downcase + to[1..-1]
+    regex = /(\[\[:?)([^:\]\[]+::)?(#{Regexp.escape(from.gsub("_", " "))})(\s*)(\|[^\[\]]+)?(\]\])/i
+    new_content = content.gsub("_", " ").gsub(regex) do |foo|
+      new_name = to
+      if $3[0].downcase == $3[0]
+        new_name = to[0,1].downcase + to[1..-1]
       end
-      old_link = link[0]
-      new_link = link[1..2].join() + to.gsub("_", " ") + link[4..6].join()
-      logger.debug "> Found #{old_link} -> #{new_link}"
-      pos = normalized_content.index(old_link)
-      new_content = new_content[0 .. pos - 1] + new_link + new_content[pos + old_link.length .. -1]
-      normalized_content = new_content.gsub("_", " ")
+      "#{$1}#{$2}#{new_name}#{$4}#{$5}#{$6}"
     end
     change(new_content)
   end
