@@ -113,7 +113,8 @@ class Page
     logger.debug "Rewriting #{from} -> #{to} on #{self.title}"
     new_content = self.content
     normalized_content = content.gsub("_", " ")
-    normalized_content.scan(/((\[\[:?)([^:\]\[]+::)?(#{Regexp.escape(from.gsub("_", " "))})(\s*)(\|[^\[\]]+)?(\]\]))/i) do |link|
+    regex = /((\[\[:?)([^:\]\[]+::)?(#{Regexp.escape(from.gsub("_", " "))})(\s*)(\|[^\[\]]+)?(\]\]))/i
+    normalized_content.scan(regex) do |link|
       link[2] = link[2] || ""
       link[5] = link[5] || ""
       if link[3][0].downcase == link[3][0]

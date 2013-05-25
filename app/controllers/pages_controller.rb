@@ -53,7 +53,7 @@ class PagesController < ApplicationController
   def page_to_resource(title)
     @ctx = title.split(':').length == 2 ?
         {ns: title.split(':')[0].downcase, title: title.split(':')[1]} : {ns: 'concept', title: title.split(':')[0]}
-    RDF::URI.new("http://101companies.org/resources/#{@ctx[:ns].pluralize}/#{@ctx[:title]}")   
+    RDF::URI.new("http://101companies.org/resources/#{@ctx[:ns].pluralize}/#{@ctx[:title]}")
   end
 
   def get_rdf
@@ -83,11 +83,11 @@ class PagesController < ApplicationController
      server = RDF::Sesame::Server.new RDF::URI("http://triples.101companies.org/openrdf-sesame")
      repository = server.repository("test")
 
-     @page.semantic_links.each { |l| 
+     @page.semantic_links.each { |l|
       subject = uri
       predicate = RDF::URI.new(self.semantic_properties[l.split('::')[0]])
       object =  l.split('::')[1]
-      statement =  RDF::Statement.new(subject, predicate, page_to_resource(object), :context => context) 
+      statement =  RDF::Statement.new(subject, predicate, page_to_resource(object), :context => context)
       graph << statement
       repository.delete statement
       repository.insert statement
@@ -150,31 +150,10 @@ class PagesController < ApplicationController
     content = params[:content]
     #we use the title to get the context of the page
     title = params[:pagetitle]
-    wiki = WikiCloth::Parser.new(:data => content, :noedit => true)
+    parsed_page = WikiCloth::Parser.new(:data => content, :noedit => true)
     page = Page.new.create title
     WikiCloth::Parser.context = page.context
-    html = wiki.to_html
-    gw = MediaWiki::Gateway.new('http://mediawiki.101companies.org/api.php')
-    all_pages = gw.list('')
-    wiki.internal_links.each do |link|
-      link = link.capitalize
-      colon_split = link.split(':')
-      lower_link = link.camelize(:lower)
-      upper_split_link = link.capitalize
-      lower_split_link = link.camelize(:lower)
-      if colon_split.length > 1
-        lower_split_link = colon_split[0] + ':' + colon_split[1].camelize(:lower)
-        upper_split_link = colon_split[0] + ':' + colon_split[1].capitalize
-      end
-      class_attribute = ''
-      unless all_pages.include?(upper_split_link)
-        class_attribute = 'class="missing-link"'
-      end
-      html.gsub!("<a href=\"#{link}\"", "<a " + class_attribute + " href=\"/wiki/#{link}\"")
-      html.gsub!("<a href=\"#{lower_link}\"", "<a " + class_attribute + " href=\"/wiki/#{link}\"")
-      html.gsub!("<a href=\"#{upper_split_link}\"", "<a " + class_attribute + " href=\"/wiki/#{upper_split_link}\"")
-      html.gsub!("<a href=\"#{lower_split_link}\"", "<a " + class_attribute + " href=\"/wiki/#{upper_split_link}\"")
-    end
+    html = to_wiki_links(parsed_page)
     render :json => {:success => true, :html => html.html_safe}
   end
 
