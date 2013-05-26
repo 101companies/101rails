@@ -14,7 +14,6 @@ class Wiki.Views.SourceLinks extends Backbone.View
         self.addAll()
     })
 
-
   addOne: (link) ->
     sourceview = new Wiki.Views.SourceLink(model: link)
     sourceview.render()

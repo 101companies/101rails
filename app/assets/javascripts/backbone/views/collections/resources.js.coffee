@@ -22,4 +22,3 @@ class Wiki.Views.Resources extends Backbone.View
     if resources
       $.each resources, (i,resource) ->
         self.addOne(resource)
-

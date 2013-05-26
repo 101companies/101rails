@@ -61,4 +61,3 @@ class Wiki.Views.Triples extends Backbone.View
     $(@el).find('.section-content-parsed').html('')
     $.each @model.models.sort(self.tripleOrdering), (i, triple) ->
       self.addTriple(triple)
-
