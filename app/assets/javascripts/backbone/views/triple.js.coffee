@@ -3,7 +3,12 @@ class Wiki.Views.Triple extends Backbone.View
 
   decode: (str, toLower, atTo101) ->
     resBase = "http://101companies.org/resource/"
-    str = decodeURIComponent(str.replace(resBase,"").replace("-3A",":").replace("Property:", "").replace(/_/g, " ").replace(/-/g, '%'))
+    str = decodeURIComponent(str.replace(resBase,"")
+        .replace("-3A",":")
+        .replace("Property:", "")
+        .replace(/_/g, " ")
+        .replace(/-/g, '%')
+    )
     str = _.last(str.split("/"))
     if toLower
       firstLetter = str.substr(0, 1)
