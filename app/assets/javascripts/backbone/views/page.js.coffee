@@ -56,8 +56,8 @@ class Wiki.Views.Page extends Backbone.View
     # add sub-views (FIXME: Add collection views for other model collections)
     @addSections()
     @addBacklinks()
-    @fetchResources()
-    @fetchSourceLinks()
+    new Wiki.Views.Resources(model: @model.get('resources'))
+    new Wiki.Views.SourceLinks(model: @model.get('sourceLinks'))
 
     # add discovery tab
     upperTitle = @model.get('title').charAt(0).toUpperCase() + @model.get('title').slice(1);
@@ -74,35 +74,7 @@ class Wiki.Views.Page extends Backbone.View
       @notEditingButtons.show()
       @editb.click( -> self.initedit())
 
-    # temporary fixes
     $('a[href^=imported]').remove()
-
-  fetchResources: ->
-    self = @
-    @model.get('resources').fetch({
-      url: self.model.get('resources').urlBase + self.escapeURI(self.model.get('title')) + '.jsonp'
-      dataType: 'jsonp'
-      success: (data,res,o) ->
-        self.addResources()
-    })
-
-  fetchSourceLinks: ->
-    self = @
-    contribPrefix = "contribution:"
-    if @model.get('title').toLowerCase().substring(0, contribPrefix.length) == contribPrefix
-      @model.get('sourceLinks').fetch({
-        url: self.model.get('sourceLinks').urlBase + self.model.get('title').substring(contribPrefix.length) + '.jsonp'
-        dataType: 'jsonp'
-        success: (data, res, o) ->
-          self.addSourceLinks()
-      })
-
-  escapeURI: (uri) ->
-    decodeURIComponent(uri
-      .replace(/\-/g, '-2D')
-      .replace(/\:/g, "-3A")
-      .replace(/\s/g, '_')
-    )
 
   initRename: ->
     $('#renamemodal').modal()
@@ -163,27 +135,6 @@ class Wiki.Views.Page extends Backbone.View
     newsection = new Wiki.Models.Section({title: newtitle, content: "==" + newtitle + "=="})
     @model.get('sections').add([newsection], {at: document.getElementById('sposition').selectedIndex})
 
-  addResource: (resource) ->
-    resourceview = new Wiki.Views.Resources(model: resource)
-    resourceview.render()
-
-  addResources: ->
-    self = @
-    resources = _.filter(@model.get('resources').models, (r) -> not r.get('error'))
-    if resources
-      $.each resources, (i,r) ->
-        self.addResource(r)
-
-  addSourceLink: (link) ->
-    sourceview = new Wiki.Views.SourceLink(model: link)
-    sourceview.render()
-
-  addSourceLinks: ->
-    self = @
-    $('#sourcelinks').find('.dropdown-menu').html('')
-    $.each @model.get('sourceLinks').models, (i, link) ->
-      self.addSourceLink(link)
-
   fillEditor: ->
     if @model.get('sections').models.length == 0
       allcontents = @model.get('content')
@@ -204,7 +155,6 @@ class Wiki.Views.Page extends Backbone.View
     toWrap = @editor.getSession().getTextRange(@editor.getSelectionRange())
     @editor.getSession().replace(@editor.getSelectionRange(), help.start + toWrap + help.end)
     @editor.navigateRight(help.end.length)
-
 
   initedit: ->
     self = @

@@ -1,19 +1,25 @@
 class Wiki.Views.Resources extends Backbone.View
-  resourceTemplate : JST['backbone/templates/resource']
-  resourceBoxTemplate : JST['backbone/templates/resourcebox']
+
+  initialize: ->
+    @render()
 
   render: ->
     self = @
-    if @model.get('isLinkable')
-      $('#resources').show()
-      @setElement($(@resourceTemplate(@model.toJSON())))
-      $.each ['primary', 'secondary'], (i, cat) ->
-        $.each self.model.get(cat), (i, target) ->
-          $(self.el).find('.resourcebar').append($(self.resourceBoxTemplate(cat:cat, link:target)))
-      $('#resources').append(@el)
-      $(@el).find('.resourcename').mouseenter( ->
-        $(self.el).find('.resourcebar').first().collapse('show')
-      )
-      $(@el).mouseleave( ->
-          $(self.el).find('.resourcebar').first().collapse('hide')
-      )
+    @model.fetch({
+      url: self.model.urlBase + Wiki.Utils.escapeURI(Wiki.pageTitle) + '.jsonp'
+      dataType: 'jsonp'
+      success: (data,res,o) ->
+        self.addAll()
+    })
+
+  addOne: (resource) ->
+    resourceview = new Wiki.Views.Resource(model: resource)
+    resourceview.render()
+
+  addAll: ->
+    self = @
+    resources = _.filter(@model.models, (r) -> not r.get('error'))
+    if resources
+      $.each resources, (i,resource) ->
+        self.addOne(resource)
+

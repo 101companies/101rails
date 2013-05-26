@@ -9,20 +9,12 @@ class Wiki.Views.Triples extends Backbone.View
     $(@el).find('.section-content-parsed').fadeTo(200, 1)
     $(@el).find(' .loading-indicator').hide()
     @model.fetch({
-      url: self.model.urlBase + self.escapeURI(Wiki.pageTitle)
+      url: self.model.urlBase + Wiki.Utils.escapeURI(Wiki.pageTitle)
       dataType: 'jsonp'
       jsonpCallback: 'callback'
       success: (model) ->
-        console.log(model)
         self.addAll()
     })
-
-  escapeURI: (uri) ->
-    decodeURIComponent(uri
-      .replace(/\-/g, '-2D')
-      .replace(/\:/g, "-3A")
-      .replace(/\s/g, '_')
-    )
 
   is101Triple: (triple) ->
     internalPrefix = 'http://101companies.org/'
