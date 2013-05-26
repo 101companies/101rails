@@ -22,9 +22,10 @@ module PagesHelper
 
   def to_wiki_links(parsed_page)
     html = parsed_page.to_html
-    all_pages = MediaWiki::Gateway.new('http://mediawiki.101companies.org/api.php').list('')
+    api_url = 'http://mediawiki.101companies.org/api.php'
+    all_pages = MediaWiki::Gateway.new(api_url).list('').map {|x| x.downcase}
     parsed_page.internal_links.each do |link|
-      link = link.capitalize
+      normed_link = link.strip.downcase
       colon_split = link.split(':')
       upper_split_link = link.capitalize
       lower_split_link = link.camelize(:lower)
@@ -32,7 +33,7 @@ module PagesHelper
         upper_split_link = colon_split[0] + ':' + colon_split[1].capitalize
         lower_split_link = colon_split[0] + ':' + colon_split[1].camelize(:lower)
       end
-      class_attribute = all_pages.include?(upper_split_link) ?  '' : 'class="missing-link"'
+      class_attribute = all_pages.include?(normed_link) ?  '' : 'class="missing-link"'
       html.gsub!("<a href=\"#{link}\"", "<a " + class_attribute + " href=\"/wiki/#{link}\"")
       html.gsub!("<a href=\"#{link.camelize(:lower)}\"", "<a " + class_attribute + " href=\"/wiki/#{link}\"")
       html.gsub!("<a href=\"#{upper_split_link}\"", "<a " + class_attribute + " href=\"/wiki/#{upper_split_link}\"")
