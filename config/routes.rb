@@ -30,12 +30,14 @@ Wiki::Application.routes.draw do
   scope 'api', :format => :json do
     post 'classify' => 'classification#classify'
     post 'parse' => 'pages#parse'
+    
+    get 'pages' => 'pages#all'
 
     resources :pages, :constraints => { :id => /[^\/]+/ }, :only => [:section,:show] do
       member do
-        get "/" => "pages#show"
-        put "/" => "pages#update"
-        get 'rdf' => "pages#get_rdf"
+        get "/" => 'pages#show'
+        put "/" => 'pages#update'
+        get 'rdf' => 'pages#get_rdf'
         delete '/' => 'pages#delete'
         get 'sections' => 'pages#sections'
         get 'internal_links' => 'pages#internal_links'
