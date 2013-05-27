@@ -56,15 +56,19 @@ class PagesController < ApplicationController
     elsif title.starts_with?('http') 
       @ctx = {title: title}
     else
-        @ctx = {ns: 'concept', title: title.split(':')[0]} 
+      @ctx = {ns: 'concept', title: title.split(':')[0]} 
     end  
-      
+
     if @ctx[:title].starts_with?('http') 
       @ctx[:title]
     else   
       RDF::URI.new("http://101companies.org/resources/#{@ctx[:ns].pluralize}/#{@ctx[:title]}") 
     end  
   end
+
+ def all
+   respond_with all_pages
+ end
 
   def get_rdf
      #   public static DEPENDS_ON = 'http://101companies.org/property/dependsOn'
@@ -101,14 +105,14 @@ class PagesController < ApplicationController
       graph << statement
       #repository.delete statement
       #repository.insert statement
-     }
-      
-     server = RDF::Sesame::Server.new RDF::URI("http://triples.101companies.org/openrdf-sesame")
-     repository = server.repository("wiki101") 
-     res = repository.query(:object => RDF::URI.new('http://101companies.org/resource/Monad'))
-     res.each do |solution|
+    }
+
+    server = RDF::Sesame::Server.new RDF::URI("http://triples.101companies.org/openrdf-sesame")
+    repository = server.repository("wiki101") 
+    res = repository.query(:object => RDF::URI.new('http://101companies.org/resource/Monad'))
+    res.each do |solution|
       graph << solution
-     end
+    end
 
     respond_with graph.dump(:ntriples)
   end
@@ -145,8 +149,7 @@ class PagesController < ApplicationController
         )
     else
      @page.history = History.where(:page => @title).first
-   end
-
+    end 
     #respond_with @page
 
     respond_to do |format|
@@ -161,9 +164,9 @@ class PagesController < ApplicationController
         'backlinks' => @page.backlinks
         } }
       end
-    end
+  end
 
-    def parse
+  def parse
       content = params[:content]
     #we use the title to get the context of the page
     title = params[:pagetitle]
@@ -282,6 +285,5 @@ class PagesController < ApplicationController
     section = {'content' => p.section(params[:title])}
     respond_with section.to_json
   end
-
 end
 
