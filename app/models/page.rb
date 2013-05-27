@@ -156,6 +156,10 @@ end
 def add_namespace_triple(content)
   namespace_triple = '[[instanceOf::Namespace:' + namespace + ']]'
   unless content.include?(namespace_triple)
+    metaheader = '== Metadata =='
+    unless content.gsub(/\s+/, '').include?(metaheader.gsub(/\s+/, ''))
+      content.concat("\n" + metaheader)
+    end
     content = add_triple(content, namespace_triple)
   end
   return content
