@@ -162,7 +162,7 @@ def add_namespace_triple(content)
 end
 
 def change(content)
-  if self.content = ''
+  if self.content == ''
     Rails.cache.delete('all_pages')
   end
   content = remove_namespace_triples(content)
