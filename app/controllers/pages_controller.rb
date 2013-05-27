@@ -151,6 +151,7 @@ class PagesController < ApplicationController
     #we use the title to get the context of the page
     title = params[:pagetitle]
     parsed_page = WikiCloth::Parser.new(:data => content, :noedit => true)
+    parsed_page.sections.first.auto_toc = false
     page = Page.new.create title
     WikiCloth::Parser.context = page.context
     html = to_wiki_links(parsed_page)
