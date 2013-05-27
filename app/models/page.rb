@@ -162,6 +162,9 @@ def add_namespace_triple(content)
 end
 
 def change(content)
+  if self.content = ''
+    Rails.cache.delete('all_pages')
+  end
   content = remove_namespace_triples(content)
   content = add_namespace_triple(content)
   Rails.cache.write(self.title, content)
@@ -177,6 +180,7 @@ def delete
   gw.delete(self.title)
   Rails.cache.delete(self.title + "_html")
   Rails.cache.delete(self.title)
+  Rails.cache.delete('all_pages')
     # TODO: remove from db page entity
   end
 
