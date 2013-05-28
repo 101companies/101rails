@@ -8,6 +8,7 @@ class Wiki.Views.Page extends Backbone.View
     'click #sectionAddButton' : 'newSectionModal'
     'click #createSection' : 'createSection'
     'click #pageCancelButton' : 'cancel'
+    'click #pageSourceButton' : 'showSource'
     'click #pageDeleteButton' : 'delete'
     'click #pageSaveButton' : 'save'
     'click #pageRenameButton' : 'initRename'
@@ -70,9 +71,17 @@ class Wiki.Views.Page extends Backbone.View
     @editb = $('#pageEditButton')
     @notEditingButtons = $('#top .notEditing')
     @editingButtons = $('#top .editing')
+    @sourceButton = $('#pageSourceButton')
+    @saveButton = $('#pageSaveButton')
+
+    # set up buttons depending on whether user is logged-in
     if _.contains(Wiki.currentUser.get('actions'), "Edit")
+      @editb.click( -> self.initEditor(false))
       @notEditingButtons.show()
-      @editb.click( -> self.initedit())
+      @sourceButton.remove()
+    else
+      @notEditingButtons.remove()
+      @saveButton.remove()
 
     $('a[href^=imported]').remove()
 
@@ -156,18 +165,24 @@ class Wiki.Views.Page extends Backbone.View
     @editor.getSession().replace(@editor.getSelectionRange(), help.start + toWrap + help.end)
     @editor.navigateRight(help.end.length)
 
-  initedit: ->
+  showSource: ->
+    @initEditor(true)
+
+  initEditor: (readOnly) ->
     self = @
-    @editb.unbind('click').bind('click', -> self.edit())
+
     @toggleEdit(true)
     editorid = 'pageeditor-content'
     @editor = ace.edit(editorid)
     @editor.setTheme("ace/theme/wiki")
     @editor.getSession().setMode("ace/mode/wiki")
     @editor.getSession().setUseWrapMode(true)
+    @editor.setReadOnly(readOnly)
     @editor.on('change', -> self.editor.replaceAll('[[@', needle: '[[101'))
-    enable_spellcheck(editorid)
-    $(@el).find('#pageeditor').prepend(@editormenuTemplate())
+    if not readOnly
+      @editb.unbind('click').bind('click', -> self.edit())
+      $(@el).find('#pageeditor').prepend(@editormenuTemplate())
+      enable_spellcheck(editorid)
     @fillEditor()
 
   edit: ->
@@ -202,6 +217,7 @@ class Wiki.Views.Page extends Backbone.View
       $(@el).find('#sections-source').css(height: '400px')
       $(@el).find('#pageeditor').show()
       $(@notEditingButtons).hide()
+      $(@sourceButton).hide()
       $(@editingButtons).show()
     else
       $(@el).find('#sections').animate({marginLeft: '0%'}, 300)
@@ -209,6 +225,7 @@ class Wiki.Views.Page extends Backbone.View
       $(@el).find('#pageeditor').hide()
       $(@editingButtons).hide()
       $(@notEditingButtons).show()
+      $(@sourceButton).show()
 
   saveSectionEdit: (section) ->
     self = @
