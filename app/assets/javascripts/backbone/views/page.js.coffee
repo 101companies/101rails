@@ -1,7 +1,8 @@
 class Wiki.Views.Page extends Backbone.View
   el: "#page"
 
-  expandableTemplate : JST['backbone/templates/expandable']
+  pageTemplate: JST['backbone/templates/page']
+  expandableTemplate: JST['backbone/templates/expandable']
   editormenuTemplate: JST['backbone/templates/editormenu']
 
   events:
@@ -43,16 +44,16 @@ class Wiki.Views.Page extends Backbone.View
 
   render: ->
     self = @
-    $('#sections-parsed').html('')
     niceTitle = Wiki.Utils.atTo101(@model.get('title').replace(/_/g, ' '))
     document.title = niceTitle
     colonSplit = niceTitle.split(":")
     if colonSplit.length > 1
-      $('#title h1')
-        .append($('<span class="title-prefix">').text(colonSplit[0] + ":"))
-        .append(colonSplit[1])
-    else
-      $("#title h1").text(niceTitle)
+      niceTitle = $('<span class="title-prefix">')
+        .text(colonSplit[0])
+        .prop('outerHTML') + ":" + colonSplit[1]
+
+    $(@el).html($(@pageTemplate(title: niceTitle)))
+    $('#sections-parsed').html('')
 
     # add sub-views (FIXME: Add collection views for other model collections)
     @addSections()
@@ -63,9 +64,6 @@ class Wiki.Views.Page extends Backbone.View
     # add discovery tab
     upperTitle = @model.get('title').charAt(0).toUpperCase() + @model.get('title').slice(1);
     $('#discovery-tab-link').attr('href', 'http://101companies.org/resources?format=html&wikititle=' + upperTitle)
-
-    # remove TOC
-    $('#toc').remove()
 
     # add handlers
     @editb = $('#pageEditButton')
