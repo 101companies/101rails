@@ -17,7 +17,7 @@ Wiki::Application.routes.draw do
   get '/current_git_state' => 'application#current_git_state'
 
   root :to => "home#index"
-  get '/data' => 'home#data'
+  get '/login_intro' => 'home#login_intro'
   get '/wiki' => 'pages#show'
   get '/search' => 'pages#search'
   match '/wiki/:title' => 'pages#show', :constraints => { :title => /[^\/]+/ }
