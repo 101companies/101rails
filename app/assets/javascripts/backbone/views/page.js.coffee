@@ -168,7 +168,6 @@ class Wiki.Views.Page extends Backbone.View
 
   initEditor: (readOnly) ->
     self = @
-
     @toggleEdit(true)
     editorid = 'pageeditor-content'
     @editor = ace.edit(editorid)

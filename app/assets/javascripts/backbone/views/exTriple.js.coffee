@@ -2,14 +2,15 @@ class Wiki.Views.ExTriple extends Backbone.View
   resourceTemplate : JST['backbone/templates/resource']
   resourceBoxTemplate : JST['backbone/templates/resourcebox']
 
+  resBase = "http://101companies.org/resource/"
   prefixToName : {  'www.haskell.org': 'HaskellWiki', 'en.wikipedia.org': 'Wikipedia', 'en.wikibooks.org': 'Wikibooks', 'www.youtube.com': "YouTube", 'github.com': 'GitHub'}
   # which parts of the '/'-split of the URL to show
   prefixToSplit : {'github.com': {'pick': [4], 'tail': 7}}
 
   decode: (str, toLower) ->
     self = @
-    resBase = "http://101companies.org/resource/"
-    str = decodeURIComponent(str.replace(resBase,"").replace(/-3A/g,":").replace("Property:", "").replace(/_/g, " "))
+
+    str = decodeURIComponent(str.replace(@resBase,"").replace(/-3A/g,":").replace("Property:", "").replace(/_/g, " "))
     split = str.split("/")
     key = split[2].trim()
     if key of @prefixToSplit
@@ -35,11 +36,12 @@ class Wiki.Views.ExTriple extends Backbone.View
     $('#resources').show()
     place = $('#resources').find('.' + fullName)
     info = {'full' : @model.get('node'), 'chapter': @decode(@model.get('node'), false)}
+    templateOps = {cat: 'primary', link: info, predicate: @decode(@model.get('predicate'))}
     if place.length
-      $(place).find('.resourcebar').append($(self.resourceBoxTemplate(cat:'primary', link:info, predicate: @decode(@model.get('predicate')))).tooltip("show"))
+      $(place).find('.resourcebar').append($(self.resourceBoxTemplate(templateOps)).tooltip("show"))
     else
       @setElement($(@resourceTemplate(fullName: fullName, name: fullName.replace(/\w/, ''))))
-      $(@el).find('.resourcebar').append($(self.resourceBoxTemplate(cat:'primary', link:info, predicate: @decode(@model.get('predicate')))).tooltip("show"))
+      $(@el).find('.resourcebar').append($(self.resourceBoxTemplate(templateOps)).tooltip("show"))
       $('#resources').append(@el)
       $(@el).find('.resourcename').mouseenter( ->
         $(self.el).find('.resourcebar').first().collapse('show')
