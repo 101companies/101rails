@@ -2,15 +2,23 @@ class Wiki.Views.ExTriple extends Backbone.View
   resourceTemplate : JST['backbone/templates/resource']
   resourceBoxTemplate : JST['backbone/templates/resourcebox']
 
-  prefixToName : {'www.haskell.org': 'HaskellWiki', 'en.wikipedia.org' : 'Wikipedia', 'en.wikibooks.org': 'Wikibooks', 'www.youtube.com' : "YouTube"}
+  prefixToName : {  'www.haskell.org': 'HaskellWiki', 'en.wikipedia.org': 'Wikipedia', 'en.wikibooks.org': 'Wikibooks', 'www.youtube.com': "YouTube", 'github.com': 'GitHub'}
+  # which parts of the '/'-split of the URL to show
+  prefixToSplit : {'github.com': {'pick': [4], 'tail': 7}}
 
   decode: (str, toLower) ->
+    self = @
     resBase = "http://101companies.org/resource/"
     str = decodeURIComponent(str.replace(resBase,"").replace(/-3A/g,":").replace("Property:", "").replace(/_/g, " "))
     split = str.split("/")
-    str = _.last(split)
-    if str.replace(/\s/g, '') == ''
-      str = split[split.length - 2]
+    key = split[2].trim()
+    if key of @prefixToSplit
+      str = split.filter((x,i) -> _.contains(self.prefixToSplit[key].pick, i)).join('/')
+      str += '/' + split.slice(@prefixToSplit[key].tail).join('/')
+    else
+      str = _.last(split)
+      if str.replace(/\s/g, '') == ''
+        str = split[split.length - 2]
     if toLower
       firstLetter = str.substr(0, 1)
       firstLetter.toLowerCase() + str.substr(1)
