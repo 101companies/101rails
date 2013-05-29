@@ -1,8 +1,4 @@
-# -*- encoding : utf-8 -*-
-require 'json'
-require 'pp'
 require 'media_wiki'
-require 'wikicloth'
 
 class Page
 

@@ -1,9 +1,6 @@
 class PagesController < ApplicationController
   include PagesHelper
   require 'media_wiki'
-  require 'rdf'
-  require 'rdf/ntriples'
-  require 'rdf/sesame'
   before_filter :check_uri
   respond_to :json, :html
 

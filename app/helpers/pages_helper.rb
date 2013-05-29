@@ -1,9 +1,6 @@
 # -*- encoding : utf-8 -*-
 
 module PagesHelper
-  require 'wikicloth'
-  require 'pygments.rb'
-
   def parse(page)
     wiki = page.wiki
     html = page.html
@@ -12,9 +9,6 @@ module PagesHelper
     end
     return html.html_safe
   end
-
-  #      highlighted.gsub!('<pre>', '!START!')
-  #    highlighted.gsub!('</pre>', '!END!')
 
   def substring_positions(substring, string)
     string.enum_for(:scan, substring).map { $~.offset(0)[0] }
