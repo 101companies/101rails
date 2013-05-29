@@ -3,7 +3,8 @@ class HomeController < ApplicationController
     render :layout => 'landing'
   end
 
-  def not_authorized
+  def login_intro
+    #TODO: check -> already logged in
   end
 
 end

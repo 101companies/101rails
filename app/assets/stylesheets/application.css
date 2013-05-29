@@ -15,6 +15,7 @@
  *= require pygments
  *= require home
  *= require contribution
+ *= require login_intro
 */
 
 /* set default font */

@@ -1,0 +1,62 @@
+@import url("http://fonts.googleapis.com/css?family=Arvo:400italic,700italic,800italic,400,700,800")g
+
+#help_login
+
+  $main_width: 900px
+  $nice_font: Arvo, helvetica, sans-serif
+
+  width: $main_width
+  margin-left: auto
+  margin-right: auto
+  font-family: $nice_font
+  font-size: 24px
+  line-height: 1.5em
+  text-align: justify
+
+  a
+    text-decoration: underline
+
+  a, input, h1
+    font-family: $nice_font
+
+  $margin_h1: 50px
+
+  h1
+    text-align: center
+    font-size: 48px
+    margin-top: $margin_h1
+    margin-bottom: $margin_h1
+
+  .step
+    width: $main_width
+    clear: both
+
+  #step1
+
+    vertical-align: middle
+    height: 300px
+
+    $step1_left_width: 320px
+
+    .half-left
+      height: 300px
+      width: $step1_left_width
+      float: left
+
+    .half-right
+      height: 300px
+      width: $main_width - $step1_left_width
+      float: right
+      margin-top: 55px
+
+  $start_contributing_button_width: $main_width/2
+  $start_contributing_button_height: $start_contributing_button_width/6
+
+  #step3
+    input
+      min-height: $start_contributing_button_height
+      min-width: $start_contributing_button_width
+      height: $start_contributing_button_height
+      width: $start_contributing_button_width
+      font-size: 36px
+      margin-left: ( $main_width - $start_contributing_button_width ) / 2
