@@ -11,7 +11,7 @@ class User
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
 
-  ROLE_OPTIONS = %w[admin editor guest]
+  ROLE_OPTIONS = %w[admin editor guest banned nobody]
 
   ## Database authenticatable
   field :email,              :type => String, :default => ""

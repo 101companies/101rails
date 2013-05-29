@@ -31,7 +31,7 @@ Wiki::Application.routes.draw do
     post 'classify' => 'classification#classify'
     post 'parse' => 'pages#parse'
     get 'pages' => 'pages#all'
-    resources :pages, :constraints => { :id => /[^\/]+/ }, :only => [:section,:show] do
+    resources :pages, :only => [:section,:show] do
       member do
         get "/" => 'pages#show'
         put "/" => 'pages#update'

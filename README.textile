@@ -3,18 +3,6 @@ h1. 101companies Wiki
 
 This application was generated with the "rails_apps_composer":https://github.com/RailsApps/rails_apps_composer gem provided by the "RailsApps Project":http://railsapps.github.com/.
 
-Learn more about "Installing Rails":http://railsapps.github.com/installing-rails.html.
-
-h2. Diagnostics
-
-This application was built with recipes that are known to work together.
-
-Recipes:
-["controllers", "core", "email", "extras", "frontend", "gems", "git", "init", "models", "prelaunch", "railsapps", "readme", "routes", "setup", "testing", "views"]
-
-Preferences:
-{:git=>true, :railsapps=>"rails3-mongoid-devise", :database=>"mongodb", :orm=>"mongoid", :unit_test=>"rspec", :integration=>"cucumber", :fixtures=>"factory_girl", :frontend=>"none", :email=>"gmail", :authentication=>"devise", :devise_modules=>"default", :authorization=>"none", :starter_app=>"users_app", :form_builder=>"none", :dev_webserver=>"webrick", :templates=>"erb", :ban_spiders=>true}
-
 h2. Requirements
 
 This application requires:
@@ -78,8 +66,8 @@ After installing mongodb start this database and then launch application with:
 @bundle exec rails s@
 
 If you want to see all models of app you need to execute next:
-@be railroady -M -e app/models/ability.rb | neato -Tpng > controllers.png@
-It will be generated a picture in root of the app named *controllers.png*
+@be railroady -M -e app/models/ability.rb | neato -Tpng > models.png@
+It will be generated a picture in root of the app named *models.png*
 
 To be signed in you need to have github account with public email.
 
