@@ -46,7 +46,7 @@ module PagesHelper
         lower_split_link = colon_split[0] + ':' + colon_split[1].camelize(:lower)
       end
       class_attribute = all_pages.include?(normed_link) ?  '' : 'class="missing-link"'
-      html.gsub!("<a href=\"#{link}\"", "<a " + class_attribute + " href=\"/wiki/#{link}\"")
+      html.gsub!("<a href=\"#{link}\"", "<a " + class_attribute + " href=\"/wiki/#{link.capitalize}\"")
       html.gsub!("<a href=\"#{link.camelize(:lower)}\"", "<a " + class_attribute + " href=\"/wiki/#{link}\"")
       html.gsub!("<a href=\"#{upper_split_link}\"", "<a " + class_attribute + " href=\"/wiki/#{upper_split_link}\"")
       html.gsub!("<a href=\"#{lower_split_link}\"", "<a " + class_attribute + " href=\"/wiki/#{upper_split_link}\"")

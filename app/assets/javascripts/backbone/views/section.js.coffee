@@ -45,10 +45,6 @@ class Wiki.Views.Section extends Backbone.View
 
   fixLinks: ->
     $.each $(@el).find('a') , (a) ->
-      if $(@).attr('href')
-        $(@).attr('href', $(@).attr('href').replace(/\/wiki\/(\b[a-z])/g, (s,match) ->
-          '/wiki/' + match.toUpperCase())
-        )
       $(@).text(Wiki.Utils.atTo101($(@).text()))
 
   bindHanders: ->
