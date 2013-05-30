@@ -53,17 +53,17 @@ class PagesController < ApplicationController
   def page_to_resource(title)
     if ((title.split(':').length == 2) and (title.starts_with?('http') == false))
       @ctx  = {ns: title.split(':')[0].downcase, title: title.split(':')[1]}
-    elsif title.starts_with?('http') 
+    elsif title.starts_with?('http')
       @ctx = {title: title}
     else
-      @ctx = {ns: 'concept', title: title.split(':')[0]} 
-    end  
+      @ctx = {ns: 'concept', title: title.split(':')[0]}
+    end
 
-    if @ctx[:title].starts_with?('http') 
+    if @ctx[:title].starts_with?('http')
       @ctx[:title]
-    else   
-      RDF::URI.new("http://101companies.org/resources/#{@ctx[:ns].pluralize}/#{@ctx[:title]}") 
-    end  
+    else
+      RDF::URI.new("http://101companies.org/resources/#{@ctx[:ns].pluralize}/#{@ctx[:title]}")
+    end
   end
 
  def all
@@ -108,7 +108,7 @@ class PagesController < ApplicationController
     }
 
     server = RDF::Sesame::Server.new RDF::URI("http://triples.101companies.org/openrdf-sesame")
-    repository = server.repository("wiki101") 
+    repository = server.repository("wiki101")
     res = repository.query(:object => RDF::URI.new('http://101companies.org/resource/Monad'))
     res.each do |solution|
       graph << solution
@@ -149,7 +149,7 @@ class PagesController < ApplicationController
         )
     else
      @page.history = History.where(:page => @title).first
-    end 
+    end
     #respond_with @page
 
     respond_to do |format|
@@ -160,7 +160,7 @@ class PagesController < ApplicationController
         'content' => @page.content,
         'title'     => @page.title,
         'sections'  => @page.sections,
-        'history'   => @page.history,
+        'history'   => @page.history.to_json(:include => {:user => { :except => [:role, :github_name]}}),
         'backlinks' => @page.backlinks
         } }
       end
