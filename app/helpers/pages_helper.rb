@@ -38,18 +38,11 @@ module PagesHelper
     all_pages = self.all_pages
     parsed_page.internal_links.each do |link|
       normed_link = link.strip.downcase
-      colon_split = link.split(':')
-      upper_split_link = link.capitalize
-      lower_split_link = link.camelize(:lower)
-      if colon_split.length > 1
-        upper_split_link = colon_split[0] + ':' + colon_split[1].capitalize
-        lower_split_link = colon_split[0] + ':' + colon_split[1].camelize(:lower)
-      end
+      upper_link = link
+      upper_link[0] = upper_link[0].capitalize
       class_attribute = all_pages.include?(normed_link) ?  '' : 'class="missing-link"'
-      html.gsub!("<a href=\"#{link}\"", "<a " + class_attribute + " href=\"/wiki/#{link.capitalize}\"")
-      html.gsub!("<a href=\"#{link.camelize(:lower)}\"", "<a " + class_attribute + " href=\"/wiki/#{link}\"")
-      html.gsub!("<a href=\"#{upper_split_link}\"", "<a " + class_attribute + " href=\"/wiki/#{upper_split_link}\"")
-      html.gsub!("<a href=\"#{lower_split_link}\"", "<a " + class_attribute + " href=\"/wiki/#{upper_split_link}\"")
+      html.gsub!("<a href=\"#{link}\"", "<a " + class_attribute + " href=\"/wiki/#{upper_link}\"")
+      html.gsub!("<a href=\"#{link.camelize(:lower)}\"", "<a " + class_attribute + " href=\"/wiki/#{upper_link}\"")
     end
     return html
   end
