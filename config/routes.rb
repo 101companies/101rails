@@ -13,14 +13,11 @@ Wiki::Application.routes.draw do
     root :to => 'home#index'
   end
 
-  # get actual commit hash
-  get '/current_git_state' => 'application#current_git_state'
-
   root :to => "home#index"
   get '/login_intro' => 'home#login_intro'
   get '/wiki' => 'pages#show'
   get '/search' => 'pages#search'
-  match '/wiki/:title' => 'pages#show', :constraints => { :title => /[^\/]+/ }
+  match '/wiki/:title' => 'pages#show'
 
   #users
   match 'registrations' => 'users#index', :as => 'registrations'
