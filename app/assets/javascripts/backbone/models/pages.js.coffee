@@ -20,13 +20,21 @@ class Wiki.Models.Page extends Backbone.Model
 
   parse: (res) ->
     if res.sections
+      console.log(res.sections)
       res.sections = new Wiki.Models.Sections(res.sections)
+    if res.history
+      console.log(res.history)
+      console.log("\n")
+      console.log("\n")
+      console.log("\n")
+      res.history = new Wiki.Models.History(res.history)
     return res
 
   model:
       sections: Wiki.Models.Sections
       triples: Wiki.Models.Triples
       resources: Wiki.Models.Resources
+      history: Wiki.Models.History
 
   urlRoot : ->
     "/api/pages"

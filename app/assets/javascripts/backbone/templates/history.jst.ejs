@@ -1,0 +1,11 @@
+  <% if (model) { %>
+    <b>Version</b>: <%= model.version %> |
+    <% if (model.user) { %>
+      <b>Last edit</b>:
+      <i class="icon-user"></i>
+      <%= model.user.name %> (<a href="#"><%= model.user.email %></a>)
+    <% } %>
+    | <i class="icon-calendar"></i>
+    <%= model.user.updated_at %>
+  <% } %>
+<hr>

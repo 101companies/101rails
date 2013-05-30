@@ -144,6 +144,7 @@ class PagesController < ApplicationController
     else
      @page.history = History.where(:page => @title).first
     end
+
     respond_to do |format|
       format.html { render :html => @page }
       format.json { render :json => {
@@ -152,7 +153,7 @@ class PagesController < ApplicationController
         'content' => @page.content,
         'title'     => @page.title,
         'sections'  => @page.sections,
-        'history'   => @page.history.to_json(:include => {:user => { :except => [:role, :github_name]}}),
+        'history'   => @page.history.as_json(:include => {:user => { :except => [:role, :github_name]}}),
         'backlinks' => @page.backlinks
         }
       }

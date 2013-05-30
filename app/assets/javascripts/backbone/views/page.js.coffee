@@ -55,7 +55,7 @@ class Wiki.Views.Page extends Backbone.View
     $(@el).html($(@pageTemplate(title: niceTitle)))
     $('#sections-parsed').html('')
 
-    # add sub-views (FIXME: Add collection views for other model collections)
+    new Wiki.Views.History(model: @model.get('history'))
     @addSections()
     @addBacklinks()
     new Wiki.Views.Resources(model: @model.get('resources'))
