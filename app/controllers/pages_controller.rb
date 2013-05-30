@@ -133,10 +133,7 @@ class PagesController < ApplicationController
         @title = params[:id]
       end
     end
-
     @page = Page.new.create @title
-
-
     @page.instance_eval { class << self; self end }.send(:attr_accessor, "history")
     if not History.where(:page => @title).exists?
       @page.history = History.create!(
@@ -147,8 +144,6 @@ class PagesController < ApplicationController
     else
      @page.history = History.where(:page => @title).first
     end
-    #respond_with @page
-
     respond_to do |format|
       format.html { render :html => @page }
       format.json { render :json => {
@@ -159,12 +154,13 @@ class PagesController < ApplicationController
         'sections'  => @page.sections,
         'history'   => @page.history.to_json(:include => {:user => { :except => [:role, :github_name]}}),
         'backlinks' => @page.backlinks
-        } }
+        }
+      }
       end
   end
 
   def parse
-      content = params[:content]
+    content = params[:content]
     #we use the title to get the context of the page
     title = params[:pagetitle]
     parsed_page = WikiCloth::Parser.new(:data => content, :noedit => true)
