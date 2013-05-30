@@ -145,8 +145,8 @@ class Page
   end
 end
 
-def add_triple(content, triple)
-  content.sub(/\s+\Z/, '') + "\n* " + triple
+def add_triple_link(content, triple)
+  content.sub(/\s+\Z/, '') + "\n* " + '[[' + triple + ']]'
 end
 
 def remove_namespace_triples(content)
@@ -154,13 +154,15 @@ def remove_namespace_triples(content)
 end
 
 def add_namespace_triple(content)
-  namespace_triple = '[[instanceOf::Namespace:' + namespace + ']]'
-  unless content.include?(namespace_triple)
+  parsed_page = WikiCloth::Parser.new(:data => content, :noedit => true)
+  parsed_page.to_html
+  namespace_triple = 'instanceOf::Namespace:' + namespace
+  unless parsed_page.internal_links.include?(namespace_triple)
     metaheader = '== Metadata =='
     unless content.gsub(/\s+/, '').include?(metaheader.gsub(/\s+/, ''))
       content.concat("\n" + metaheader)
     end
-    content = add_triple(content, namespace_triple)
+    content = add_triple_link(content, namespace_triple)
   end
   return content
 end
