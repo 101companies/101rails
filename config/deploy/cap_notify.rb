@@ -59,7 +59,9 @@ class Notifier < ActionMailer::Base
   default :from => ENV['GMAIL_USERNAME']
   def deploy_notification(cap_vars)
     now = Time.now
-    msg = "Performed a deploy operation on #{now.strftime("%m/%d/%Y")} at #{now.strftime("%I:%M %p")} for 101rails"
+    last_commit = %x( git rev-parse HEAD).to_s
+    msg = "Performed a deploy operation on #{now.strftime("%m/%d/%Y")} at #{now.strftime("%I:%M %p")} for 101rails. " +
+      "Link to last deployed commit https://github.com/101companies/101rails/commit/#{last_commit}"
     mail(:to => cap_vars.notify_emails,
          :subject => "Deployed 101rails") do |format|
       format.text { render :text => msg}
