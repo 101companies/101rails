@@ -1,5 +1,17 @@
- require 'bundler/capistrano'
- load 'deploy/assets'
+require 'bundler/capistrano'
+load 'deploy/assets'
+
+# added sending email after deploy
+load 'config/deploy/cap_notify.rb'
+set :notify_emails, ["lashyn@uni-koblenz.de", "arkadi@uni-koblenz.de", "dotnetby@gmail.com", "tschmorleiz@gmail.com"]
+# TODO: uncomment this line after adding GMAIL_PASSWORD and GMAIL_USERNAME to env variables
+#after :deploy, 'deploy:send_notification'
+namespace :deploy do
+  desc "Send email notification"
+  task :send_notification do
+    Notifier.deploy_notification(self).deliver
+  end
+end
 
 logger.level = Logger::DEBUG
 
@@ -30,7 +42,7 @@ set :user, "user101"
 set :deploy_to, "/home/user101/wiki"
 set :deploy_via, :remote_cache
 ssh_options[:forward_agent] = true
-ssh_options[:keys] = [File.join(ENV["HOME"], ".ssh", "id_rsa")] 
+ssh_options[:keys] = [File.join(ENV["HOME"], ".ssh", "id_rsa")]
 
 # if you want to clean up old releases on each deploy uncomment this:
 after "deploy:assets", "deploy:restart", "deploy:cleanup"
