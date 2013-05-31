@@ -10,4 +10,5 @@ Wiki.Utils.escapeURI = (uri) ->
     .replace(/\-/g, '-2D')
     .replace(/\:/g, "-3A")
     .replace(/\s/g, '_')
+    .replace(/\'/g, '-27')
   )
