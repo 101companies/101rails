@@ -1,0 +1,11 @@
+<div class="tour">
+  <h1><%= title %></h1>
+  <h2>Author</h2>
+  <input class="span2" id="" type="text" value="<%= author %>" disabled>
+  <h2>Pages</h2>
+  <div id="pages">
+    <% _.each(pages, function(p) { %>
+    <li><a href="/wiki/<%= p %>"><%= p.replace(/_/g, ' ') %></li>
+    <% }); %>
+  </div>
+</div>
