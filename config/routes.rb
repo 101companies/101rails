@@ -16,8 +16,10 @@ Wiki::Application.routes.draw do
   root :to => "home#index"
   get '/login_intro' => 'home#login_intro'
   get '/wiki' => 'pages#show'
+  get '/tours' => 'tours#index'
   get '/search' => 'pages#search'
   match '/wiki/:title' => 'pages#show'
+  match '/tours/:title' => 'tours#show'
 
   #users
   match 'registrations' => 'users#index', :as => 'registrations'
