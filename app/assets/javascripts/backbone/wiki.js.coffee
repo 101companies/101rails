@@ -11,3 +11,10 @@ window.Wiki =
   Routers: {}
   Views: {}
   Utils: {}
+
+# wiki tours
+window.Tours =
+  Models: {}
+  Collections: {}
+  Routers: {}
+  Views: {}
