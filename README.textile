@@ -15,7 +15,7 @@ This application requires:
 h2. Development
 
 * Template Engine: ERB, HAML
-* Front-end Framework: jQuery, backbone.js
+* Front-end Framework: jQuery, backbone.js, Bootstrap
 * Authentication: Devise
 * Authorization: Omniauth, Cancan
 
