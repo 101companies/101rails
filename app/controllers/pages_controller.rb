@@ -157,8 +157,8 @@ class PagesController < ApplicationController
     json = []
     rdf = self.get_rdf_graph(title) 
     rdf.each do |resource|
-      json.append ["#{resource.subject.scheme}:/#{resource.subject.host}#{resource.subject.path}", 
-                    resource.predicate.fragment == nil ? resource.predicate.path.sub('/property/','') : resource.predicate.fragment, 
+      json.append ["#{resource.subject.scheme}://#{resource.subject.host}#{resource.subject.path}", 
+                    "#{resource.predicate.scheme}://#{resource.predicate.host}#{resource.predicate.path}",
                     resource.object.kind_of?(RDF::Literal) ? resource.object.object : "#{resource.object.scheme}:/#{resource.object.host}#{resource.object.path}", ]
     end     
     respond_with json
