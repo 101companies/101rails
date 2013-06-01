@@ -3,6 +3,7 @@
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title><%= content_for?(:title) ? yield(:title) : "101wiki" %></title>
+  <link rel="dns-prefetch" href="//fonts.googleapis.com">
   <meta name="description" content="<%= content_for?(:description) ? yield(:description) : "Wiki" %>">
   <%= stylesheet_link_tag "application", :media => "all" %>
   <%= stylesheet_link_tag "style", :media => "all" %>
