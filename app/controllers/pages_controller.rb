@@ -47,7 +47,7 @@ class PagesController < ApplicationController
      'relatesTo'   => 'http://101companies.org/property/relatesTo' }
    end
 
-  def page_to_resource(title)
+  def get_context_for(title)
     if ((title.split(':').length == 2) and (title.starts_with?('http') == false))
       @ctx  = {ns: title.split(':')[0].downcase, title: title.split(':')[1]}
     elsif title.starts_with?('http')
@@ -56,6 +56,12 @@ class PagesController < ApplicationController
       @ctx = {ns: 'concept', title: title.split(':')[0]}
     end
 
+    return @ctx
+  end 
+
+  def page_to_resource(title)
+    @ctx = get_context_for(title)
+
     if @ctx[:title].starts_with?('http')
       @ctx[:title]
     else
@@ -63,11 +69,11 @@ class PagesController < ApplicationController
     end
   end
 
- def all
-   respond_with all_pages
- end
+  def all
+    respond_with all_pages
+  end
 
-  def get_rdf
+  def get_rdf_graph(title)
      #   public static DEPENDS_ON = 'http://101companies.org/property/dependsOn'
      #   public static IDENTIFIES = 'http://101companies.org/property/identifies'
      #   public static LINKS_TO = 'http://101companies.org/property/linksTo'
@@ -82,12 +88,11 @@ class PagesController < ApplicationController
      #   public static LABEL = 'http://www.w3.org/2000/01/rdf-schema#label'
      #   public static PAGE = 'http://semantic-mediawiki.org/swivt/1.0#page'
      #   public static TYPE = 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type'
-     title = params[:id]
      @page = Page.new.create(title)
 
      uri = self.page_to_resource title
      v101 = RDF::Vocabulary.new("http://101companies.org/property/")
-     graph = RDF::Graph.new << [uri, RDF::RDFS.title, "haskellStarter"]
+     graph = RDF::Graph.new #<< [uri, RDF::RDFS.title, title]
 
      context   = RDF::URI.new("http://101companies.org")
 
@@ -106,12 +111,57 @@ class PagesController < ApplicationController
 
     server = RDF::Sesame::Server.new RDF::URI("http://triples.101companies.org/openrdf-sesame")
     repository = server.repository("wiki101")
-    res = repository.query(:object => RDF::URI.new('http://101companies.org/resource/Monad'))
+    title = title.sub(':', '-3A')
+    res = repository.query(:object => RDF::URI.new("http://101companies.org/resource/#{title}"))
     res.each do |solution|
-      graph << solution
+      graph << patch_resource(solution)
     end
 
+    return graph
+  end
+
+  def patch_resource(resource)
+    resource.subject.path.sub!('resource', 'resources')
+    resource.object.path.sub!('resource', 'resources')
+
+    resource.subject.path = patch_path(resource.subject.path)
+    resource.object.path = patch_path(resource.object.path)
+    resource
+  end  
+
+  def patch_path(path)
+    item = path.split("/").last  
+    fixed_item = item
+
+    if (fixed_item.split('-3A').length == 2)
+      ns = fixed_item.split('-3A')[0]
+      title = fixed_item.split('-3A')[1]
+      fixed_item = "#{ns.downcase.pluralize}/#{title}"
+    else
+      fixed_item = "concepts/#{fixed_item}"
+    end  
+
+    path.sub!(item, fixed_item)
+    path
+  end
+
+  def get_rdf
+    title = params[:id]
+    graph = self.get_rdf_graph(title)
+
     respond_with graph.dump(:ntriples)
+  end
+
+  def get_json
+    title = params[:id]
+    json = []
+    rdf = self.get_rdf_graph(title) 
+    rdf.each do |resource|
+      json.append ["#{resource.subject.scheme}:/#{resource.subject.host}#{resource.subject.path}", 
+                    resource.predicate.fragment == nil ? resource.predicate.path.sub('/property/','') : resource.predicate.fragment, 
+                    resource.object.kind_of?(RDF::Literal) ? resource.object.object : "#{resource.object.scheme}:/#{resource.object.host}#{resource.object.path}", ]
+    end     
+    respond_with json
   end
 
   def delete

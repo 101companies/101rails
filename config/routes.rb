@@ -35,6 +35,7 @@ Wiki::Application.routes.draw do
         get "/" => 'pages#show'
         put "/" => 'pages#update'
         get 'rdf' => 'pages#get_rdf'
+        get 'json' => 'pages#get_json'
         delete '/' => 'pages#delete'
         get 'sections' => 'pages#sections'
         get 'internal_links' => 'pages#internal_links'
