@@ -1,8 +1,13 @@
 <div id="tour"></div>
+<% if @tour.nil? %>
+<h1>Tour "<%= @title %>" does not exist</h1>
+<button class="btn btn-mini" type="button"><i class="icon-pencil"></i> Create new tour</button>
+<% else %>
 <script type="text/javascript">
   jQuery(document).ready(function ($){
     Tours.tour  = new Tours.Models.Tour(<%= j @tour.to_json.html_safe -%>)
     new Tours.Routers.ToursRouter(Tours.Views.Tour);
     Backbone.history.start();
   })
+<% end %>
 </script>
