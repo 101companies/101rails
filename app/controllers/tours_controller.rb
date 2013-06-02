@@ -9,8 +9,8 @@ class ToursController < ApplicationController
   def show
     @title = params[:title]
     @tour = Tour.where(title: @title).first
-    if @tour.nil?
-       render :html => {:success => false}, :status => 404
+    if @tour.nil? 
+      respond_with @tour
     else
       respond_with @tour
     end
