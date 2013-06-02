@@ -1,5 +1,7 @@
 <h2>List of all guided tours:</h2>
-<ul id="tourlist"></ul>
+<div id="tours">
+<ul id="tourlist" style="list-style-type: none"></ul>
+</div>
 <script type="text/javascript">
   jQuery(document).ready(function ($){
     Tours.tours  = new Tours.Models.ToursList(<%= j @tours.to_json.html_safe -%>)

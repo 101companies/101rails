@@ -27,6 +27,12 @@ Wiki::Application.routes.draw do
   resources :users, :only => [:show, :index]
 
   scope 'api', :format => :json do
+    scope 'tours' do
+      #get ':_id' => 'employees#get'
+      delete ':title' => 'tours#delete'
+      put ':title' => 'tours#update'
+    end
+
     post 'classify' => 'classification#classify'
     post 'parse' => 'pages#parse'
     get 'pages' => 'pages#all'
@@ -45,8 +51,7 @@ Wiki::Application.routes.draw do
 
   scope 'endpoint', :format => :json do
     get ':id/rdf' => 'pages#get_rdf', :constraints => { :id => /.*/ }
-    get ':id/json' => 'pages#get_json', :constraints => { :id => /.*/ }, :directions => false
-    get ':id/json/directions' => 'pages#get_json', :constraints => { :id => /.*/ }, :directions => true
+    get ':id/json' => 'pages#get_json', :constraints => { :id => /.*/ }
   end
 
   devise_for :users, :controllers => { :registrations => 'registrations' }
