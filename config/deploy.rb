@@ -12,6 +12,11 @@ namespace :deploy do
   end
 end
 
+# keep 10 last revisions of app
+set :keep_releases, 10
+# automatically remove old revisions, except last 10, after deploy
+after "deploy:update", "deploy:cleanup"
+
 logger.level = Logger::DEBUG
 
 set :application, "101wiki"
