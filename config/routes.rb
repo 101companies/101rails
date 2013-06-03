@@ -34,8 +34,6 @@ Wiki::Application.routes.draw do
       member do
         get "/" => 'pages#show'
         put "/" => 'pages#update'
-        get 'rdf' => 'pages#get_rdf'
-        get 'json' => 'pages#get_json'
         delete '/' => 'pages#delete'
         get 'sections' => 'pages#sections'
         get 'internal_links' => 'pages#internal_links'
@@ -44,6 +42,11 @@ Wiki::Application.routes.draw do
       end
     end
   end
+
+  scope 'endpoint', :format => :json do
+    get ':id/rdf' => 'pages#get_rdf', :constraints => { :id => /.*/ }
+    get ':id/json' => 'pages#get_json', :constraints => { :id => /.*/ }
+  end  
 
   devise_for :users, :controllers => { :registrations => 'registrations' }
   resources :users, :only => [:show,:destroy]
