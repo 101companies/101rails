@@ -16,5 +16,11 @@ class ToursController < ApplicationController
     respond_with @tour
     #end
   end
+  
+  def update
+    @tour = Tour.find_or_create_by(_title: params[:_title])
+    @tour.update_attributes(params[:tour])
+    render :json => {:success => true}
+  end
 
 end

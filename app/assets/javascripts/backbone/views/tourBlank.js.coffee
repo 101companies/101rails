@@ -17,7 +17,7 @@ class Tours.Views.TourBlank extends Backbone.View
     $(@el).html(html)
     
   createNewTour: (a, b, c) ->
-    newTour = new Tours.Models.Tour(title: @title)
-    console.log(newTour.toJSON())
-    newTour.initialize(title: newTour.get('title'), author: newTour.get('author'), pages: newTour.get('pages'))
-    newTour.save()
+    @newTour = new Tours.Models.Tour(title: @title, author: 'uknown')
+    console.log(@newTour.toJSON())
+    @newTour.save()
+    window.location.reload()

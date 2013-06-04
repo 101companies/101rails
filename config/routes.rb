@@ -27,6 +27,12 @@ Wiki::Application.routes.draw do
   resources :users, :only => [:show, :index]
 
   scope 'api', :format => :json do
+    scope 'tours' do
+      #get ':_id' => 'employees#get'
+      delete ':_title' => 'tours#delete'
+      put ':_title' => 'tours#update'
+    end
+    
     post 'classify' => 'classification#classify'
     post 'parse' => 'pages#parse'
     get 'pages' => 'pages#all'
