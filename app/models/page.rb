@@ -105,7 +105,7 @@ class Page
   end
 
   def rewrite_link_name(from, to)
-    from[0].downcase == from[0] ? to : to[0,1].downcase + to[1..-1]
+    from[0].downcase == from[0] ? to[0,1].downcase + to[1..-1] : to
   end
 
   def rewrite_internal_links(from, to)
