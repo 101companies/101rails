@@ -4,9 +4,8 @@ class PagesController < ApplicationController
 
   respond_to :json, :html
 
-  before_filter :check_uri, :only => [:show, :page_to_resource, :get_rdf_graph, :get_rdf,
-                                      :get_json, :delete, :parse, :summary, :sections, :internal_link, :update_history,
-                                      :update, :rename, :section]
+  before_filter :check_uri
+
   def check_uri
 
     # get page title
@@ -184,7 +183,6 @@ class PagesController < ApplicationController
   def get_rdf
     title = params[:id]
     graph = self.get_rdf_graph(title)
-
     respond_with graph.dump(:ntriples)
   end
 
