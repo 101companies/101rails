@@ -49,6 +49,8 @@ gem 'cancan', '1.6.10'
 group :development do
   # faster start for rake and rails commands
   gem 'zeus',  '0.13.3'
+  # profiling
+  gem 'ruby-prof'
   # for work with rails panel
   gem 'meta_request', '0.2.6'
   #gem 'debugger', '1.5.0'
