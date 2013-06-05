@@ -64,8 +64,9 @@ class PagesController < ApplicationController
     end
   end
 
+  # get all title as json
   def all
-    render :json => Page.all
+    render :json => Page.all.map { |p| p.full_title}
   end
 
   def get_rdf_graph(title, directions=false)
