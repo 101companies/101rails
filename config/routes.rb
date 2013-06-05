@@ -18,7 +18,7 @@ Wiki::Application.routes.draw do
   get '/wiki' => 'pages#show'
   get '/tours' => 'tours#index'
   get '/search' => 'pages#search'
-  match '/wiki/:title' => 'pages#show'
+  match '/wiki/:title' => 'pages#show' , :constraints => { :id => /.*/ }
   match '/tours/:title' => 'tours#show'
 
   #users
@@ -36,11 +36,10 @@ Wiki::Application.routes.draw do
     post 'classify' => 'classification#classify'
     post 'parse' => 'pages#parse'
     get 'pages' => 'pages#all'
-    resources :pages, :only => [:section,:show] do
+    resources :pages, :constraints => { :id => /.*/ }, :only => [:section,:show] do
       member do
         get "/" => 'pages#show'
         put "/" => 'pages#update'
-        get 'rdf' => 'pages#get_rdf'
         delete '/' => 'pages#delete'
         get 'sections' => 'pages#sections'
         get 'internal_links' => 'pages#internal_links'
@@ -49,6 +48,11 @@ Wiki::Application.routes.draw do
       end
     end
   end
+
+  scope 'endpoint', :format => :json do
+    get ':id/rdf' => 'pages#get_rdf', :constraints => { :id => /.*/ }
+    get ':id/json' => 'pages#get_json', :constraints => { :id => /.*/ }
+  end  
 
   devise_for :users, :controllers => { :registrations => 'registrations' }
   resources :users, :only => [:show,:destroy]

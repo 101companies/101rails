@@ -73,8 +73,9 @@ Wiki::Application.configure do
 
   config.action_mailer.smtp_settings = {
     address: "smtp.gmail.com",
-    # TODO: check openssl installation? Otherwise change to 25
     port: 587,
+    # prevent openssl error -> http://mentalized.net/journal/2012/05/08/rails_3_actionmailer_and_google_apps_for_domains/
+    tls: false,
     domain: "101companies.org",
     authentication: "plain",
     enable_starttls_auto: true,

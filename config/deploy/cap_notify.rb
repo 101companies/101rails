@@ -45,10 +45,10 @@ require "action_mailer"
 ActionMailer::Base.delivery_method = :smtp
 ActionMailer::Base.smtp_settings = {
   :enable_starttls_auto => true,
+  # preventing openssl error -> http://mentalized.net/journal/2012/05/08/rails_3_actionmailer_and_google_apps_for_domains/
   :tls => false,
   :address => "smtp.gmail.com",
-  # TODO: if openssl works -> change to 587 and set :tls => true
-  :port => 25,
+  :port => 587,
   :domain => "gmail.com",
   :authentication => "plain",
   :user_name => ENV['GMAIL_USERNAME'],

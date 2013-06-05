@@ -24,6 +24,24 @@ body, p, h1, h2, ul, a, span, strong {
   font-family: 'Open Sans', sans-serif;
 }
 
+#page-nav .navbar-inner  {
+  padding-left: 17.9%;
+  padding-right: 16.6%;
+}
+
+#page-nav .container-fluid {
+  padding-left: 0px;
+}
+
+#main101 {
+  margin-top: 70px;
+  overflow: hidden;
+}
+
+#main101 p {
+  text-align: justify;
+}
+
 /* error handling for fragments */
 .error {
   overflow: hidden;

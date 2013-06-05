@@ -67,8 +67,8 @@ class Wiki.Views.Page extends Backbone.View
 
     # add handlers
     @editb = $('#pageEditButton')
-    @notEditingButtons = $('#top .notEditing')
-    @editingButtons = $('#top .editing')
+    @notEditingButtons = $('#contentTop .notEditing')
+    @editingButtons = $('#contentTop .editing')
     @sourceButton = $('#pageSourceButton')
     @saveButton = $('#pageSaveButton')
 
@@ -82,6 +82,8 @@ class Wiki.Views.Page extends Backbone.View
       @saveButton.remove()
 
     $('a[href^=imported]').remove()
+
+    $('#disqus-loader').show()
 
   initRename: ->
     $('#renamemodal').modal()
@@ -189,7 +191,7 @@ class Wiki.Views.Page extends Backbone.View
   save: ->
     newcontent = @editor.getValue()
     if newcontent != @model.get('content')
-      $(@el).find("#top .loading-indicator").show()
+      $(@el).find("#contentTop .loading-indicator").show()
     @model.save({'content' : newcontent},
       success: (model, res) ->
         location.reload()
