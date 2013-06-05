@@ -80,6 +80,9 @@ gem 'rdf-sesame', :git => 'git://github.com/avaranovich/rdf-sesame.git'
 gem 'pygments.rb', '0.5.0'
 gem 'closure-compiler', '1.1.8'
 
+# gritter
+gem 'gritter', :git => 'git@github.com:burgua/gritter.git', :branch => 'vendor_dir'
+
 # deploy with Capistrano
 gem 'capistrano', '2.15.4'
 

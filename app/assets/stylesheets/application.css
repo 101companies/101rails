@@ -16,6 +16,7 @@
  *= require home
  *= require contribution
  *= require login_intro
+ *= require gritter
 */
 
 /* set default font */
