@@ -12,3 +12,6 @@ class Tours.Models.Tour extends Backbone.Model
 
 class Tours.Models.ToursList extends Backbone.Collection
   model: Tours.Models.Tour
+
+  url: ->
+    '/api/tours/' + @get('title')
