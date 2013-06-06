@@ -45,8 +45,9 @@ Wiki::Application.routes.draw do
 
   scope 'endpoint', :format => :json do
     get ':id/rdf' => 'pages#get_rdf', :constraints => { :id => /.*/ }
-    get ':id/json' => 'pages#get_json', :constraints => { :id => /.*/ }
-  end  
+    get ':id/json' => 'pages#get_json', :constraints => { :id => /.*/ }, :directions => false
+    get ':id/json/directions' => 'pages#get_json', :constraints => { :id => /.*/ }, :directions => true
+  end
 
   devise_for :users, :controllers => { :registrations => 'registrations' }
   resources :users, :only => [:show,:destroy]

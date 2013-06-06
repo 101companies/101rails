@@ -57,7 +57,7 @@ class PagesController < ApplicationController
     end
 
     return @ctx
-  end 
+  end
 
   def page_to_resource(title)
     @ctx = get_context_for(title)
@@ -73,7 +73,7 @@ class PagesController < ApplicationController
     respond_with all_pages
   end
 
-  def get_rdf_graph(title)
+  def get_rdf_graph(title,directions=false)
      #   public static DEPENDS_ON = 'http://101companies.org/property/dependsOn'
      #   public static IDENTIFIES = 'http://101companies.org/property/identifies'
      #   public static LINKS_TO = 'http://101companies.org/property/linksTo'
@@ -100,7 +100,11 @@ class PagesController < ApplicationController
      repository = server.repository("test")
 
      @page.semantic_links.each { |l|
-      subject = uri
+      if directions
+        subject = RDF::Literal.new("OUT")
+      else
+        subject = uri
+      end
       predicate = RDF::URI.new(self.semantic_properties[l.split('::')[0]])
       object =  l.split('::')[1]
       statement =  RDF::Statement.new(subject, predicate, page_to_resource(object), :context => context)
@@ -114,23 +118,31 @@ class PagesController < ApplicationController
     title = title.sub(':', '-3A')
     res = repository.query(:object => RDF::URI.new("http://101companies.org/resource/#{title}"))
     res.each do |solution|
-      graph << patch_resource(solution)
+      if directions
+          solution.object = solution.subject
+          solution.subject = RDF::Literal("IN")
+      end
+      graph << patch_resource(solution, !directions)
     end
 
     return graph
   end
 
-  def patch_resource(resource)
-    resource.subject.path.sub!('resource', 'resources')
+  def patch_resource(resource, both=true)
+    if both
+      resource.subject.path.sub!('resource', 'resources')
+    end
     resource.object.path.sub!('resource', 'resources')
 
-    resource.subject.path = patch_path(resource.subject.path)
+    if both
+      resource.subject.path = patch_path(resource.subject.path)
+    end
     resource.object.path = patch_path(resource.object.path)
     resource
-  end  
+  end
 
   def patch_path(path)
-    item = path.split("/").last  
+    item = path.split("/").last
     fixed_item = item
 
     if (fixed_item.split('-3A').length == 2)
@@ -139,7 +151,7 @@ class PagesController < ApplicationController
       fixed_item = "#{ns.downcase.pluralize}/#{title}"
     else
       fixed_item = "concepts/#{fixed_item}"
-    end  
+    end
 
     path.sub!(item, fixed_item)
     path
@@ -154,13 +166,24 @@ class PagesController < ApplicationController
 
   def get_json
     title = params[:id]
+    directions = params[:directions]
     json = []
-    rdf = self.get_rdf_graph(title) 
+    rdf = self.get_rdf_graph(title, directions)
     rdf.each do |resource|
-      json.append ["#{resource.subject.scheme}://#{resource.subject.host}#{resource.subject.path}", 
-                    "#{resource.predicate.scheme}://#{resource.predicate.host}#{resource.predicate.path}",
-                    resource.object.kind_of?(RDF::Literal) ? resource.object.object : "#{resource.object.scheme}:/#{resource.object.host}#{resource.object.path}", ]
-    end     
+      p = "#{resource.predicate.scheme}://#{resource.predicate.host}#{resource.predicate.path}"
+      o = resource.object.kind_of?(RDF::Literal) ? resource.object.object : "#{resource.object.scheme}://#{resource.object.host}#{resource.object.path}"
+      if directions
+        s = "#{resource.subject}"
+        json.push ({
+          :direction => s,
+          :predicate => p,
+          :node => o
+        })
+      else
+        s = "#{resource.subject.scheme}://#{resource.subject.host}#{resource.subject.path}"
+        json.append [s,p,o]
+      end
+    end
     respond_with json
   end
 
