@@ -9,5 +9,5 @@ class Tours.Views.Index extends Backbone.View
 
   addTour: (tour) ->
    view = new Tours.Views.ToursPreview(model: tour)
-   $("#tourlist").append(view.render())
+   view.render()
 
