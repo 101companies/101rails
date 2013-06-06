@@ -23,4 +23,11 @@ class ToursController < ApplicationController
     render :json => {:success => true}
   end
 
+  def delete
+    @_title = params[:_title]
+    @tour = Tour.find(_title: @_title)
+    @tour.delete()
+    render :json => {:success => true}
+  end
+
 end

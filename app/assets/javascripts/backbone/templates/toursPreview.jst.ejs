@@ -1,8 +1,6 @@
-<div class="tour-item">
-  <div>
+<li class="tour-item" id="<%= title %>">
     <a href="/tours/<%= title %>"><%= title %> by <%= author %> (<%= numOfPages %>)</a>
-    <button class="btn btn-mini" type="button"><i class="icon-remove"></i></button>
-    <button class="btn btn-mini" type="button"><i class="icon-pencil"></i></button>
-    <hr>
-  </div>
-</div>
+    <button class="btn btn-mini tourStart" type="button" title="Start tour"><i class="icon-play"> Start</i></button>
+    <button class="btn btn-mini tourDelete" type="button" title="Delete tour"><i class="icon-remove"></i></button>
+	<hr>
+</li>
