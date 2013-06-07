@@ -21,6 +21,12 @@ Wiki::Application.routes.draw do
   match '/wiki/:title' => 'pages#show' , :constraints => { :id => /.*/ }
   match '/tours/:title' => 'tours#show'
 
+  scope 'api/tours' do
+    get ':title' => 'tours#show'
+    put ':title' => 'tours#update'
+    delete ':title' => 'tours#delete'
+  end
+
   #users
   match 'registrations' => 'users#index', :as => 'registrations'
   devise_for :users, :controllers => { :registrations => 'registrations' }
