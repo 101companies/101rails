@@ -38,7 +38,6 @@ Wiki::Application.routes.draw do
         get 'sections' => 'pages#sections'
         get 'internal_links' => 'pages#internal_links'
         get 'sections/:title' => 'pages#section'
-        get 'summary' => 'pages#summary'
       end
     end
   end
@@ -47,6 +46,7 @@ Wiki::Application.routes.draw do
     get ':id/rdf' => 'pages#get_rdf', :constraints => { :id => /.*/ }
     get ':id/json' => 'pages#get_json', :constraints => { :id => /.*/ }, :directions => false
     get ':id/json/directions' => 'pages#get_json', :constraints => { :id => /.*/ }, :directions => true
+    get ':id/summary' => 'pages#summary', :constraints => { :id => /.*/ }
   end
 
   devise_for :users, :controllers => { :registrations => 'registrations' }
