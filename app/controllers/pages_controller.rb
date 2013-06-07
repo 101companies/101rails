@@ -112,18 +112,20 @@ class PagesController < ApplicationController
       object =  l.split('::')[1]
       statement =  RDF::Statement.new(subject, predicate, page_to_resource(object), :context => context)
       graph << statement
-      repository.delete statement
-      repository.insert statement
+      unless directions
+        repository.delete statement
+        repository.insert statement
+      end
     }
 
-    @page.internal_links.each { |l| 
+    @page.internal_links.each { |l|
       #we're not interested in semantic links
       if (l.split('::').length == 1)
         predicate =  RDF::URI.new(self.semantic_properties['mentions'])
         subject = uri
         statement =  RDF::Statement.new(subject, predicate, page_to_resource(l), :context => context)
         graph << statement
-      end  
+      end
     }
 
     server = RDF::Sesame::Server.new RDF::URI("http://triples.101companies.org/openrdf-sesame")
