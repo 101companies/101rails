@@ -16,6 +16,13 @@ GIT
       rinku
 
 GIT
+  remote: git://github.com/burgua/gritter.git
+  revision: d1f57d255c16ef0b3df66ada9fe930d2edae8b8e
+  branch: vendor_dir
+  specs:
+    gritter (1.0.3)
+
+GIT
   remote: git://github.com/ruby-rdf/rdf-rdfxml.git
   revision: f06e2f5721b8c4fc634a9d4d96a5d27f516945f1
   specs:
@@ -36,13 +43,6 @@ GIT
   specs:
     aced_rails (0.2.1)
       rails (~> 3.2)
-
-GIT
-  remote: git@github.com:burgua/gritter.git
-  revision: d1f57d255c16ef0b3df66ada9fe930d2edae8b8e
-  branch: vendor_dir
-  specs:
-    gritter (1.0.3)
 
 GEM
   remote: https://rubygems.org/
