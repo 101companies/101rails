@@ -19,8 +19,7 @@ class PagesController < ApplicationController
     # 'wikify' title param
     full_title = MediaWiki::send :upcase_first_char, (MediaWiki::wiki_to_uri full_title)
 
-    # replace default id param (page title) with wikified title
-    # TODO: redirect to good url
+    # replace default id param (page title) with 'wikified' title
     params[:id] = full_title
 
   end
