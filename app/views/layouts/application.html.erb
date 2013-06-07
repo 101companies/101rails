@@ -12,29 +12,10 @@
   <%= yield(:head) %>
 </head>
 <body>
-
-  <% flash.each do |name, msg| %>
-
-    <div class="flash-rails modal hide fade" tabindex="-1"
-       role="dialog"
-       aria-labelledby="myModalLabel"
-       aria-hidden="true">
-
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-        <h3><%= name %></h3>
-      </div>
-
-      <div class="modal-body">
-        <p><%= msg %></p>
-      </div>
-
-      <div class="modal-footer">
-        <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
-      </div>
-
-    </div>
-
+  <!-- growl like notifications (popups) for flash messages -->
+  <%= extend_gritter :time => 3000, :fade_out_speed => 500, :fade_in_speed => 'fast' %>
+  <% flash.each do |key, msg| %>
+    <%= js add_gritter(msg, :image => flash_class(key), :title => key.to_s.capitalize) %>
   <% end %>
 
   <div id="page-nav" class="navbar navbar-fixed-top">

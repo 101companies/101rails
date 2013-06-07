@@ -27,11 +27,4 @@
 //= require ace/theme-textmate
 //= require ace/theme-wiki
 //= require ace/mode-wiki
-
-// rails flash messages using bootstrap modal dialog
-$(function(){
-  $('.flash-rails').modal({
-      show: true
-  });
-});
-
+//= require gritter
