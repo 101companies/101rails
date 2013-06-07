@@ -88,6 +88,8 @@ class PagesController < ApplicationController
      #   public static LABEL = 'http://www.w3.org/2000/01/rdf-schema#label'
      #   public static PAGE = 'http://semantic-mediawiki.org/swivt/1.0#page'
      #   public static TYPE = 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type'
+     title.gsub!(' ', '_')
+     puts title
      @page = Page.new.create(title)
 
      uri = self.page_to_resource title
@@ -105,8 +107,8 @@ class PagesController < ApplicationController
       object =  l.split('::')[1]
       statement =  RDF::Statement.new(subject, predicate, page_to_resource(object), :context => context)
       graph << statement
-      #repository.delete statement
-      #repository.insert statement
+      repository.delete statement
+      repository.insert statement
     }
 
     server = RDF::Sesame::Server.new RDF::URI("http://triples.101companies.org/openrdf-sesame")
