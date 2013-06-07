@@ -44,7 +44,8 @@ class PagesController < ApplicationController
      'isA'         => 'http://101companies.org/property/isA',
      'developedBy' => 'http://101companies.org/property/developedBy',
      'reviewedBy'  => 'http://101companies.org/property/reviewedBy',
-     'relatesTo'   => 'http://101companies.org/property/relatesTo' }
+     'relatesTo'   => 'http://101companies.org/property/relatesTo',
+     'mentions'    => 'http://101companies.org/property/mentions' }
    end
 
   def get_context_for(title)
@@ -113,6 +114,16 @@ class PagesController < ApplicationController
       graph << statement
       repository.delete statement
       repository.insert statement
+    }
+
+    @page.internal_links.each { |l| 
+      #we're not interested in semantic links
+      if (l.split('::').length == 1)
+        predicate =  RDF::URI.new(self.semantic_properties['mentions'])
+        subject = uri
+        statement =  RDF::Statement.new(subject, predicate, page_to_resource(l), :context => context)
+        graph << statement
+      end  
     }
 
     server = RDF::Sesame::Server.new RDF::URI("http://triples.101companies.org/openrdf-sesame")
