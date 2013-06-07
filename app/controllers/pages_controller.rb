@@ -73,7 +73,7 @@ class PagesController < ApplicationController
     respond_with all_pages
   end
 
-  def get_rdf_graph(title,directions=false)
+  def get_rdf_graph(title, directions=false)
      #   public static DEPENDS_ON = 'http://101companies.org/property/dependsOn'
      #   public static IDENTIFIES = 'http://101companies.org/property/identifies'
      #   public static LINKS_TO = 'http://101companies.org/property/linksTo'
