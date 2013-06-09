@@ -122,19 +122,21 @@ class PagesController < ApplicationController
       end
     }
 
-    @page.internal_links.each { |l|
-      #we're not interested in semantic links
-      if (l.split('::').length == 1)
-        predicate =  RDF::URI.new(self.semantic_properties['mentions'])
-        subject = uri
-        object = l
-        unless directions
-          object = page_to_resource(object)
+    unless directions
+      @page.internal_links.each { |l|
+        #we're not interested in semantic links
+        if (l.split('::').length == 1)
+          predicate =  RDF::URI.new(self.semantic_properties['mentions'])
+          subject = uri
+          object = l
+          unless directions
+            object = page_to_resource(object)
+          end
+          statement =  RDF::Statement.new(subject, predicate, object, :context => context)
+          graph << statement
         end
-        statement =  RDF::Statement.new(subject, predicate, object, :context => context)
-        graph << statement
-      end
-    }
+      }
+    end
 
     server = RDF::Sesame::Server.new RDF::URI("http://triples.101companies.org/openrdf-sesame")
     repository = server.repository("wiki101")
@@ -143,37 +145,44 @@ class PagesController < ApplicationController
     res.each do |solution|
       if directions
           solution.object = solution.subject
+
           solution.subject = RDF::Literal("IN")
       end
-      graph << patch_resource(solution, !directions)
+      graph << patch_resource(solution, directions)
     end
 
     return graph
   end
 
-  def patch_resource(resource, both=true)
-    if both
+  def patch_resource(resource, directions)
+    unless directions
       resource.subject.path.sub!('resource', 'resources')
     end
     resource.object.path.sub!('resource', 'resources')
 
-    if both
+    unless directions
       resource.subject.path = patch_path(resource.subject.path)
     end
-    resource.object.path = patch_path(resource.object.path)
+    resource.object.path = patch_path(resource.object.path, directions)
     resource
   end
 
-  def patch_path(path)
+  def patch_path(path, directions=false)
     item = path.split("/").last
     fixed_item = item
 
     if (fixed_item.split('-3A').length == 2)
       ns = fixed_item.split('-3A')[0]
       title = fixed_item.split('-3A')[1]
-      fixed_item = "#{ns.downcase.pluralize}/#{title}"
+      if directions
+        fixed_item = "#{ns}:#{title}"
+      else
+        fixed_item = "#{ns.downcase.pluralize}/#{title}"
+      end
     else
-      fixed_item = "concepts/#{fixed_item}"
+      unless directions
+        fixed_item = "concepts/#{fixed_item}"
+      end
     end
 
     path.sub!(item, fixed_item)
@@ -200,7 +209,7 @@ class PagesController < ApplicationController
         json.push ({
           :direction => s,
           :predicate => p,
-          :node => o
+          :node => o.sub('http://101companies.org/resources/', '')
         })
       else
         s = "#{resource.subject.scheme}://#{resource.subject.host}#{resource.subject.path}"
