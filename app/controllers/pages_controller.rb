@@ -110,7 +110,10 @@ class PagesController < ApplicationController
       end
       predicate = RDF::URI.new(self.semantic_properties[l.split('::')[0]])
       object =  l.split('::')[1]
-      statement =  RDF::Statement.new(subject, predicate, page_to_resource(object), :context => context)
+      unless directions
+        object = page_to_resource(object)
+      end
+      statement =  RDF::Statement.new(subject, predicate, object, :context => context)
       graph << statement
       unless directions
         repository.delete statement
@@ -123,7 +126,11 @@ class PagesController < ApplicationController
       if (l.split('::').length == 1)
         predicate =  RDF::URI.new(self.semantic_properties['mentions'])
         subject = uri
-        statement =  RDF::Statement.new(subject, predicate, page_to_resource(l), :context => context)
+        object = l
+        unless directions
+          object = page_to_resource(object)
+        end
+        statement =  RDF::Statement.new(subject, predicate, object, :context => context)
         graph << statement
       end
     }
