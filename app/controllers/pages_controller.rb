@@ -45,6 +45,7 @@ class PagesController < ApplicationController
      'developedBy' => 'http://101companies.org/property/developedBy',
      'reviewedBy'  => 'http://101companies.org/property/reviewedBy',
      'relatesTo'   => 'http://101companies.org/property/relatesTo',
+     'implies'   => 'http://101companies.org/property/implies',
      'mentions'    => 'http://101companies.org/property/mentions' }
    end
 
