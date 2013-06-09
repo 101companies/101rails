@@ -10,9 +10,9 @@ class Wiki.Views.Triple extends Backbone.View
         .replace(/-/g, '%')
     )
     str = _.last(str.split("/"))
-    if toLower
-      firstLetter = str.substr(0, 1)
-      str = firstLetter.toLowerCase() + str.substr(1)
+    str1 = str.substr(0, 1)
+    str1 = if toLower then str1.toLowerCase() else str1.toUpperCase()
+    str = str1 + str.substr(1)
     if atTo101
       Wiki.Utils.atTo101(str)
     else
