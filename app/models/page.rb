@@ -7,16 +7,19 @@ class Page
 
   field :title, type: String
   # namespace for page, need to be set
-  field :namespace, type: String, :default => ""
+  field :namespace, type: String
 
   # relations here
   has_and_belongs_to_many :users
   belongs_to :contribution
 
+  # added index as composite key, paar title+namespace
+  index({title: 1, namespace: 1}, {unique: true})
+
   attr_accessible :user_ids, :namespace, :title, :created_at, :updated_at, :contribution_id
 
   # uri for using mediawiki gateway
-  @base_uri = 'http://mediawiki.101companies.org/api.php'
+  @@base_uri = 'http://mediawiki.101companies.org/api.php'
 
   # get fullname with namespace and  title
   def full_title
@@ -30,11 +33,11 @@ class Page
 
   # get authorship of old wiki users for page
   def retrieve_old_wiki_users
-    begin
+    #begin
       # else retrieve users from old wiki
       a = Mechanize.new
       # get all authors of page in json format, 500 last revisions
-      authors= a.get @base_uri +
+      authors= a.get @@base_uri +
                          "?action=query&prop=revisions&titles=#{self.full_title}&rvprop=user&rvlimit=500&format=json"
       # parse json
       authors = JSON.parse authors.body
@@ -52,8 +55,8 @@ class Page
           end
         end
       end
-    rescue
-    end
+    #rescue
+    #end
   end
 
   # if no namespace given
@@ -250,7 +253,7 @@ class Page
 
   def self.gateway
     if @gateway == nil
-      @gateway = MediaWiki::Gateway.new(@base_uri)
+      @gateway = MediaWiki::Gateway.new(@@base_uri)
     end
     @gateway
   end
