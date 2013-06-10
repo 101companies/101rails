@@ -27,7 +27,7 @@ class Wiki.Views.Section extends Backbone.View
       $.ajax({
           type: "POST"
           url: "/api/parse/"
-          data: {content: self.model.get('content'), pagetitle: Wiki.pageTitle}
+          data: {content: self.model.get('content'), id: Wiki.pageTitle}
           success: (data) ->
             if self.subview
               self.renderSubView()
@@ -95,7 +95,7 @@ class Wiki.Views.Section extends Backbone.View
       $.ajax({
         type: "POST"
         url: "/api/parse/"
-        data: {content: text, pagetitle: Wiki.pageTitle}
+        data: {content: text, id: Wiki.pageTitle}
         success: (data) ->
           unless self.subview
             self.insertHTML(data.html)

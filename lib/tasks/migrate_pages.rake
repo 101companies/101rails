@@ -56,6 +56,8 @@ task :migrate_pages => :environment do
 
   pages.each do |page|
     Page.find_or_create_page page
+    #nt = Page.retrieve_namespace_and_title page
+    #Page.find_or_create_by(:title => nt['title'], :namespace => nt['namespace'])
     counter = counter + 1
     puts "#{Page.all.count} / #{pages.count} pages created, last page : " + page
   end

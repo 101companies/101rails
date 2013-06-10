@@ -19,8 +19,7 @@ class PagesController < ApplicationController
     # 'wikify' title param
     full_title = MediaWiki::send :upcase_first_char, (MediaWiki::wiki_to_uri full_title)
 
-    # replace default id param (page title) with 'wikified' title
-    params[:id] = full_title
+    @page = Page.find_or_create_page full_title
 
   end
 
@@ -210,9 +209,7 @@ class PagesController < ApplicationController
 
   def delete
     if current_user and (current_user.role=="admin")
-      title = params[:id]
-      page = Page.find_or_create_page(title)
-      page.delete
+      @page.delete
       render :json => {:success => true} and return
     end
     render :json => {:success => false}
@@ -220,9 +217,6 @@ class PagesController < ApplicationController
 
   def show
 
-    full_title = MediaWiki::uri_to_wiki params[:id]
-
-    @page = Page.find_or_create_page full_title
 
     @page.instance_eval { class << self; self end }.send(:attr_accessor, "history")
 
@@ -253,11 +247,9 @@ class PagesController < ApplicationController
 
   def parse
     content = params[:content]
-    full_title = params[:pagetitle]
     parsed_page = WikiCloth::Parser.new(:data => content, :noedit => true)
     parsed_page.sections.first.auto_toc = false
-    page = Page.find_or_create_page full_title
-    WikiCloth::Parser.context = page.namespace
+    WikiCloth::Parser.context = @page.namespace
     html = to_wiki_links(parsed_page)
     render :json => {:success => true, :html => html.html_safe}
   end
@@ -274,9 +266,7 @@ class PagesController < ApplicationController
 
   def summary
     begin
-      full_title = params[:id]
-      page = Page.find_or_create_page full_title
-      render :json => {:sections => page.sections, :internal_links => page.internal_links}
+      render :json => {:sections => @page.sections, :internal_links => @page.internal_links}
     rescue
       @error_message="#{$!}"
       render :json => {:success => false, :error => @error_message}
@@ -287,10 +277,7 @@ class PagesController < ApplicationController
   # get all sections for a page
   def sections
     begin
-      full_title = params[:id]
-      page = Page.find_or_create_page full_title
-      sections = page.sections
-      respond_with sections
+      respond_with @page.sections
     rescue
       @error_message="#{$!}"
       render :json => {:success => false, :error => @error_message}
@@ -300,9 +287,7 @@ class PagesController < ApplicationController
   # get all internal links for the page
   def internal_links
     begin
-      full_title = params[:id]
-      page = Page.find_or_create_page(full_title)
-      respond_with page.internal_links
+      respond_with @page.internal_links
     rescue
       @error_message="#{$!}"
       render :json => {:success => false, :error => @error_message}
@@ -366,10 +351,7 @@ class PagesController < ApplicationController
   end
 
   def section
-    full_title = params[:id]
-    p = Page.find_or_create_page(full_title)
-    section = {'content' => p.section(params[:full_title])}
-    respond_with section.to_json
+    respond_with ({:content => @page.section(params[:full_title])}).to_json
   end
 end
 
