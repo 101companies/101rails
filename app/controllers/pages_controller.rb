@@ -220,14 +220,14 @@ class PagesController < ApplicationController
 
     @page.instance_eval { class << self; self end }.send(:attr_accessor, "history")
 
-    if not History.where(:page => full_title).exists?
+    if not History.where(:page => @page.full_title).exists?
       @page.history = History.create!(
         user: current_user,
-        page: full_title,
+        page:@page.full_title,
         version: 1
         )
     else
-      @page.history = History.where(:page => full_title).first
+      @page.history = History.where(:page => @page.full_title).first
     end
 
     respond_to do |format|
