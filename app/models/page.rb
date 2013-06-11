@@ -4,6 +4,7 @@ class Page
 
   include Mongoid::Document
   include Mongoid::Timestamps
+  include Mongoid::Paranoia
 
   field :title, type: String
   # namespace for page, need to be set
