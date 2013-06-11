@@ -55,7 +55,9 @@ task :migrate_pages => :environment do
   counter = 0
 
   pages.each do |page|
+    page = MediaWiki::uri_to_wiki page
     Page.find_or_create_page page
+    # for quick testing
     #nt = Page.retrieve_namespace_and_title page
     #Page.find_or_create_by(:title => nt['title'], :namespace => nt['namespace'])
     counter = counter + 1

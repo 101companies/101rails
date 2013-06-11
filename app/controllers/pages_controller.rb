@@ -17,8 +17,9 @@ class PagesController < ApplicationController
     end
 
     # 'wikify' title param
-    full_title = MediaWiki::send :upcase_first_char, (MediaWiki::wiki_to_uri full_title)
+    full_title = MediaWiki::send :upcase_first_char, (MediaWiki::uri_to_wiki full_title)
 
+    # check permissions
     @page = Page.find_or_create_page full_title
 
   end
@@ -63,7 +64,7 @@ class PagesController < ApplicationController
 
   # get all title as json
   def all
-    render :json => Page.all.map { |p| p.full_title}
+    render :json => Page.all.map { |p| MediaWiki::wiki_to_uri p.full_title}
   end
 
   def get_rdf_graph(title, directions=false)
@@ -217,7 +218,6 @@ class PagesController < ApplicationController
 
   def show
 
-
     @page.instance_eval { class << self; self end }.send(:attr_accessor, "history")
 
     if not History.where(:page => @page.full_title).exists?
@@ -294,6 +294,7 @@ class PagesController < ApplicationController
     end
   end
 
+  # TODO: does it actually work?
   def update_history(pagename)
     if History.where(:page => pagename).exists?
       history = History.where(:page => pagename).first
