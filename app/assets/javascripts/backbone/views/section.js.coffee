@@ -46,6 +46,7 @@ class Wiki.Views.Section extends Backbone.View
   fixLinks: ->
     $.each $(@el).find('a') , (a) ->
       $(@).text(Wiki.Utils.atTo101($(@).text()))
+      $(@).text($(@).text().replace(/_/g, ' '))
 
   bindHanders: ->
     self = @

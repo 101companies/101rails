@@ -19,7 +19,7 @@ module PagesHelper
     if all_pages.nil?
       puts "NOT FROM CACHE"
       api_url = 'http://mediawiki.101companies.org/api.php'
-      all_pages = MediaWiki::Gateway.new(api_url).list('').map {|x| x.downcase}
+      all_pages = MediaWiki::Gateway.new(api_url).list('').map {|x| x.downcase.gsub(' ', '_')}
       Rails.cache.write('all_pages', all_pages)
     else
       puts "FROM CACHE"
@@ -31,7 +31,7 @@ module PagesHelper
     html = parsed_page.to_html
     all_pages = self.all_pages
     parsed_page.internal_links.each do |link|
-      normed_link = link.strip.downcase
+      normed_link = link.strip.downcase.gsub(' ', '_')
       upper_link = link
       upper_link[0] = upper_link[0].capitalize
       class_attribute = all_pages.include?(normed_link) ?  '' : 'class="missing-link"'

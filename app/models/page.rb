@@ -109,6 +109,7 @@ class Page
   end
 
   def rewrite_internal_links(from, to)
+    to.gsub!("_", " ")
     Rails.logger = Logger.new(STDOUT)
     logger.debug "Rewriting #{from} -> #{to} on #{self.title}"
     regex = /(\[\[:?)([^:\]\[]+::)?(#{Regexp.escape(from.gsub("_", " "))})(\s*)(\|[^\[\]]+)?(\]\])/i
