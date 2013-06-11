@@ -116,7 +116,7 @@ class Page
     namespace_and_title = retrieve_namespace_and_title full_title
 
     # find page from db
-    page = Page.where(:title => namespace_and_title['title'], :namespace => namespace_and_title['namespace']).first
+    page = Page.find_by_full_title full_title
 
     if page.nil?
       page = Page.new
