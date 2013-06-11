@@ -1,17 +1,10 @@
-class Tours.Models.Tour extends Backbone.Model
+class Tours.Models.TourPage extends Backbone.Model
 
-  idAttribute: 'title'
+  idAttribute: 'name'
 
   defaults:
     title: ""
-    author: ""
-    pages: []
+    sections: []
 
-  url: ->
-    '/api/tours/' + @get('title')
-
-class Tours.Models.ToursList extends Backbone.Collection
-  model: Tours.Models.Tour
-
-  url: ->
-    '/api/tours/' + @get('title')
+  #url: ->
+  #  '/api/toursPage/' + @get('title')
