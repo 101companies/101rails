@@ -41,7 +41,6 @@ body, p, h1, h2, ul, a, span, strong {
 
 #main101 p {
   text-align: justify;
-  line-height: 24px;
 }
 
 /* error handling for fragments */
