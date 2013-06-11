@@ -64,7 +64,7 @@ class PagesController < ApplicationController
 
   # get all title as json
   def all
-    render :json => Page.all.map { |p| MediaWiki::wiki_to_uri p.full_title}
+    render :json => all_links
   end
 
   def get_rdf_graph(title, directions=false)
