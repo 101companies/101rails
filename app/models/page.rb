@@ -93,6 +93,17 @@ class Page
     }
   end
 
+  # find page without creating
+  def self.find_by_full_title(full_title)
+    nt = Page.retrieve_namespace_and_title full_title
+    page = Page.where(:title => nt['title'], :namespace => nt['namespace']).first
+    # if page was found create wiki parser
+    if !page.nil?
+      page.create_wiki_parser
+    end
+    return page
+  end
+
   # static method for getting page if already exist in db
   # or creating using mediawiki api
   def self.find_or_create_page(full_title)
