@@ -205,12 +205,12 @@ class Page
     content = add_namespace_triple(content)
     Rails.cache.write(self.title, content)
     Rails.cache.delete(self.title + "_html")
-    gateway_and_login.edit(self.title, content)
+    Page.gateway_and_login.edit(self.title, content)
   end
 
   def delete
     # delete wiki page
-    gateway_and_login.delete(self.full_title)
+    Page.gateway_and_login.delete(self.full_title)
     # delete cache
     Rails.cache.delete(self.full_title + "_html")
     Rails.cache.delete(self.full_title)
