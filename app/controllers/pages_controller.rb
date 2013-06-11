@@ -1,6 +1,5 @@
 class PagesController < ApplicationController
   include PagesHelper
-  require 'media_wiki'
 
   respond_to :json, :html
 
@@ -20,7 +19,7 @@ class PagesController < ApplicationController
     end
 
     # 'wikify' title param
-    full_title = MediaWiki::send :upcase_first_char, (MediaWiki::uri_to_wiki full_title)
+    full_title = Page.unescape_wiki_url full_title
 
     # if user can create page -> create new
     if can? :create, Page.new
@@ -353,7 +352,7 @@ class PagesController < ApplicationController
   def rename
     begin
       # convert uri to normal wiki url
-      new_full_title = MediaWiki::send :upcase_first_char, (MediaWiki::uri_to_wiki params[:new_id])
+      new_full_title = Page.unescape_wiki_url params[:new_id]
       # create new page
 
       # copy content from old page
@@ -364,9 +363,8 @@ class PagesController < ApplicationController
       # TODO: has it worked at all?
       #update_history(new_full_title)
       render :json => {:success => true, :newtitle => new_full_title}
-    rescue MediaWiki::APIError
-      @error_message="#{$!.info}"
-      render :json => {:success => false, :error => @error_message}, :status => 409
+    rescue
+      render :json => {:success => false, :error => 'Renamed failed'}, :status => 409
     end
   end
 

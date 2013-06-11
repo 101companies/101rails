@@ -237,6 +237,14 @@ class Page
     self.clear_wiki_cache
   end
 
+  def self.escape_wiki_url(full_title)
+    MediaWiki::send :upcase_first_char, (MediaWiki::wiki_to_uri full_title)
+  end
+
+  def self.unescape_wiki_url(full_title)
+    MediaWiki::send :upcase_first_char, (MediaWiki::uri_to_wiki full_title)
+  end
+
   def semantic_links
     # TODO: to_html -> some fix for producing non-empty internal_links, remove later
     self.wiki.to_html
