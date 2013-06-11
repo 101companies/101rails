@@ -18,6 +18,11 @@ class Ability
       user.role == 'admin' or user.role == 'editor' or page.users.include? user
     end
 
+    # cache can be updated, if user is admin or editor, or user owns the page
+    can :clean_cache, Page do |page|
+      user.role == 'admin' or user.role == 'editor' or page.users.include? user
+    end
+
     # page can be renamed, if user is admin or editor
     can :rename, Page do
       user.role == 'admin' or user.role == 'editor'
