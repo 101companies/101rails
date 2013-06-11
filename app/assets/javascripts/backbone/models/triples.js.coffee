@@ -7,6 +7,6 @@ class Wiki.Models.Triple extends Backbone.Model
 
 class Wiki.Models.Triples extends Backbone.Collection
   model: Wiki.Models.Triple
-  url: (title) -> 'http://localhost:3000/endpoint/' + title + '/json/directions'
+  url: (title) -> 'http://101companies.org/endpoint/' + title + '/json/directions'
 
 

@@ -44,7 +44,9 @@ class PagesController < ApplicationController
      'isA'         => 'http://101companies.org/property/isA',
      'developedBy' => 'http://101companies.org/property/developedBy',
      'reviewedBy'  => 'http://101companies.org/property/reviewedBy',
-     'relatesTo'   => 'http://101companies.org/property/relatesTo' }
+     'relatesTo'   => 'http://101companies.org/property/relatesTo',
+     'implies'   => 'http://101companies.org/property/implies',
+     'mentions'    => 'http://101companies.org/property/mentions' }
    end
 
   def get_context_for(title)
@@ -73,7 +75,7 @@ class PagesController < ApplicationController
     respond_with all_pages
   end
 
-  def get_rdf_graph(title,directions=false)
+  def get_rdf_graph(title, directions=false)
      #   public static DEPENDS_ON = 'http://101companies.org/property/dependsOn'
      #   public static IDENTIFIES = 'http://101companies.org/property/identifies'
      #   public static LINKS_TO = 'http://101companies.org/property/linksTo'
@@ -88,6 +90,8 @@ class PagesController < ApplicationController
      #   public static LABEL = 'http://www.w3.org/2000/01/rdf-schema#label'
      #   public static PAGE = 'http://semantic-mediawiki.org/swivt/1.0#page'
      #   public static TYPE = 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type'
+     title.gsub!(' ', '_')
+     puts title
      @page = Page.new.create(title)
 
      uri = self.page_to_resource title
@@ -107,11 +111,32 @@ class PagesController < ApplicationController
       end
       predicate = RDF::URI.new(self.semantic_properties[l.split('::')[0]])
       object =  l.split('::')[1]
-      statement =  RDF::Statement.new(subject, predicate, page_to_resource(object), :context => context)
+      unless directions
+        object = page_to_resource(object)
+      end
+      statement =  RDF::Statement.new(subject, predicate, object, :context => context)
       graph << statement
-      #repository.delete statement
-      #repository.insert statement
+      unless directions
+        repository.delete statement
+        repository.insert statement
+      end
     }
+
+    unless directions
+      @page.internal_links.each { |l|
+        #we're not interested in semantic links
+        if (l.split('::').length == 1)
+          predicate =  RDF::URI.new(self.semantic_properties['mentions'])
+          subject = uri
+          object = l
+          unless directions
+            object = page_to_resource(object)
+          end
+          statement =  RDF::Statement.new(subject, predicate, object, :context => context)
+          graph << statement
+        end
+      }
+    end
 
     server = RDF::Sesame::Server.new RDF::URI("http://triples.101companies.org/openrdf-sesame")
     repository = server.repository("wiki101")
@@ -120,37 +145,44 @@ class PagesController < ApplicationController
     res.each do |solution|
       if directions
           solution.object = solution.subject
+
           solution.subject = RDF::Literal("IN")
       end
-      graph << patch_resource(solution, !directions)
+      graph << patch_resource(solution, directions)
     end
 
     return graph
   end
 
-  def patch_resource(resource, both=true)
-    if both
+  def patch_resource(resource, directions)
+    unless directions
       resource.subject.path.sub!('resource', 'resources')
     end
     resource.object.path.sub!('resource', 'resources')
 
-    if both
+    unless directions
       resource.subject.path = patch_path(resource.subject.path)
     end
-    resource.object.path = patch_path(resource.object.path)
+    resource.object.path = patch_path(resource.object.path, directions)
     resource
   end
 
-  def patch_path(path)
+  def patch_path(path, directions=false)
     item = path.split("/").last
     fixed_item = item
 
     if (fixed_item.split('-3A').length == 2)
       ns = fixed_item.split('-3A')[0]
       title = fixed_item.split('-3A')[1]
-      fixed_item = "#{ns.downcase.pluralize}/#{title}"
+      if directions
+        fixed_item = "#{ns}:#{title}"
+      else
+        fixed_item = "#{ns.downcase.pluralize}/#{title}"
+      end
     else
-      fixed_item = "concepts/#{fixed_item}"
+      unless directions
+        fixed_item = "concepts/#{fixed_item}"
+      end
     end
 
     path.sub!(item, fixed_item)
@@ -177,7 +209,7 @@ class PagesController < ApplicationController
         json.push ({
           :direction => s,
           :predicate => p,
-          :node => o
+          :node => o.sub('http://101companies.org/resources/', '')
         })
       else
         s = "#{resource.subject.scheme}://#{resource.subject.host}#{resource.subject.path}"

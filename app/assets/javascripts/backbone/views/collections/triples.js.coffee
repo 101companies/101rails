@@ -15,8 +15,8 @@ class Wiki.Views.Triples extends Backbone.View
     })
 
   is101Triple: (triple) ->
-    internalPrefix = 'http://101companies.org/'
-    triple.get('node').substring(0, internalPrefix.length) == internalPrefix
+    internalPrefix = 'http://'
+    triple.get('node').substring(0, internalPrefix.length) != internalPrefix
 
   tripleOrdering: (a,b) ->
     if a.get('predicate') < b.get('predicate')

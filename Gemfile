@@ -1,3 +1,8 @@
+if RUBY_VERSION =~ /1.9/
+  Encoding.default_external = Encoding::UTF_8
+  Encoding.default_internal = Encoding::UTF_8
+end
+
 # DO NOT ENTER GEMS WITHOUT GEM NUMBER!
 # OR I WILL CUT YOUR FINGER!
 
@@ -80,8 +85,8 @@ gem 'rdf-sesame', :git => 'git://github.com/avaranovich/rdf-sesame.git'
 gem 'pygments.rb', '0.5.0'
 gem 'closure-compiler', '1.1.8'
 
-# gritter
-gem 'gritter', :git => 'git@github.com:burgua/gritter.git', :branch => 'vendor_dir'
+# growl-like notifications
+gem 'gritter', :git => 'git://github.com/burgua/gritter.git', :branch => 'vendor_dir'
 
 # deploy with Capistrano
 gem 'capistrano', '2.15.4'
