@@ -31,6 +31,7 @@ class PagesController < ApplicationController
 
     # check page existence
     if @page == nil
+      flash[:error] = "Page wasn't not found. Redirected to main wiki page"
       # TODO: different formats
       redirect_to '/wiki'
     end
