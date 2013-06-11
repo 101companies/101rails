@@ -18,6 +18,21 @@ class Ability
       user.role == 'admin' or user.role == 'editor' or page.users.include? user
     end
 
+    # page can be renamed, if user is admin or editor
+    can :rename, Page do
+      user.role == 'admin' or user.role == 'editor'
+    end
+
+    # page can be renamed, if user is admin or editor
+    can :delete, Page do
+      user.role == 'admin' or user.role == 'editor'
+    end
+
+    # page can be created, if user is admin or editor
+    can :create, Page do
+      user.role == 'admin' or user.role == 'editor'
+    end
+
   end
 
 end
