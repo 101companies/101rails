@@ -117,8 +117,8 @@ class PagesController < ApplicationController
       statement =  RDF::Statement.new(subject, predicate, object, :context => context)
       graph << statement
       unless directions
-        repository.delete statement
-        repository.insert statement
+        #repository.delete statement
+        #repository.insert statement
       end
     }
 
