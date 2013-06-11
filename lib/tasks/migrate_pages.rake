@@ -1,3 +1,6 @@
+# before starting this task you need to have csv-file with list of all
+# pages in Rails, in this case all was exported with SequelPro
+
 task :migrate_pages => :environment do
 
   require 'csv'
