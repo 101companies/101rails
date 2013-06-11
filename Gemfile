@@ -51,7 +51,7 @@ group :development do
   gem 'zeus',  '0.13.3'
   #gem 'debugger', '1.5.0'
   gem 'better_errors', '0.8.0'
-  gem 'binding_of_caller', '0.7.1'
+  #gem 'binding_of_caller', '0.7.1'
   # web server
   gem 'thin', '1.5.1'
   # gem for creating db/controller diagrams
