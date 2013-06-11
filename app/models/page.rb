@@ -124,13 +124,18 @@ class Page
       # save page at end of changes
       page.save
     end
-    # TODO: change, very dirty!, dup
-    page.instance_eval { class << self; self end }.send(:attr_accessor, "wiki")
-    page.wiki = WikiCloth::Parser.new(:data => page.content, :noedit => true)
-    # set namespace for work with wiki
-    WikiCloth::Parser.context = page.namespace
-    # return page at the end
+    page.create_wiki_parser
     page
+  end
+
+  def create_wiki_parser
+    # TODO: change, very dirty!, dup
+    self.instance_eval { class << self; self end }.send(:attr_accessor, "wiki")
+    self.wiki = WikiCloth::Parser.new(:data => self.content, :noedit => true)
+    # set namespace for work with wiki
+    # TODO: self.wiki.context =
+    WikiCloth::Parser.context = self.namespace
+    return self.wiki
   end
 
   def content
@@ -246,7 +251,7 @@ class Page
 
   def sections
     sec = []
-    self.wiki.sections.first.children.each do |s|
+    self.create_wiki_parser.sections.first.children.each do |s|
       sec.push({'title' => s.title, 'content' => s.wikitext.sub(/\s+\Z/, "")})
     end
     sec
@@ -261,7 +266,7 @@ class Page
   end
 
   def self.gateway_and_login
-    gw = gateway
+    gw = Page.gateway
     gw.login(ENV['WIKIUSER'], ENV['WIKIPASSWORD'])
     return gw
   end

@@ -4,14 +4,17 @@ class PagesController < ApplicationController
 
   respond_to :json, :html
 
-  before_filter :check_uri
+  # methods, that need to check permissions
+  load_and_authorize_resource :only => [:delete, :rename, :update]
 
-  def check_uri
+  before_filter :get_the_page
+
+  def get_the_page
 
     # get page title
     full_title = params[:id]
 
-    # if not title -> set default wiki startpage '@project'
+    # if no title -> set default wiki startpage '@project'
     if full_title == nil
       full_title = '@project'
     end
@@ -19,8 +22,19 @@ class PagesController < ApplicationController
     # 'wikify' title param
     full_title = MediaWiki::send :upcase_first_char, (MediaWiki::uri_to_wiki full_title)
 
-    # check permissions
-    @page = Page.find_or_create_page full_title
+    # if user can create page -> create new
+    if can? :create, Page.new
+      @page = Page.find_or_create_page full_title
+    # else this page doesn't exist
+    else
+      @page = Page.find_by_full_title full_title
+    end
+
+    # check page existence
+    if @page == nil
+      # TODO: different formats
+      redirect_to '/wiki'
+    end
 
   end
 
@@ -60,7 +74,7 @@ class PagesController < ApplicationController
   end
 
   def page_to_resource(title)
-    page = Page.find_or_create_page(title)
+    page = Page.find_by_full_title(title)
     if page.title.starts_with?('http')
       page.title
     else
@@ -88,7 +102,7 @@ class PagesController < ApplicationController
      #   public static LABEL = 'http://www.w3.org/2000/01/rdf-schema#label'
      #   public static PAGE = 'http://semantic-mediawiki.org/swivt/1.0#page'
      #   public static TYPE = 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type'
-     @page = Page.find_or_create_page(title)
+     @page = Page.find_by_full_title(title)
 
      uri = self.page_to_resource title
      v101 = RDF::Vocabulary.new("http://101companies.org/property/")
@@ -215,15 +229,16 @@ class PagesController < ApplicationController
   end
 
   def delete
-    if current_user and (current_user.role=="admin")
-      @page.delete
-      render :json => {:success => true} and return
-    end
-    render :json => {:success => false}
+    # remove page from mediawiki
+    @page.delete_from_mediawiki
+    # remove the object itself
+    @page.delete
+    render :json => {:success => true}
   end
 
   def show
 
+    # TODO: rework history
     @page.instance_eval { class << self; self end }.send(:attr_accessor, "history")
 
     if not History.where(:page => @page.full_title).exists?
@@ -240,15 +255,15 @@ class PagesController < ApplicationController
       format.html { render :html => @page }
       format.json { render :json => {
         'id'        => @page._id,
-        'idtitle'     => @page.full_title,
-        'content' => @page.content,
+        'content'   => @page.content,
         'title'     => @page.full_title,
         'sections'  => @page.sections,
+        # TODO: to much entries about versions
         'history'   => @page.history.as_json(:include => {:user => { :except => [:role, :github_name]}}),
         'backlinks' => @page.backlinks
-        }
-      }
-      end
+      }}
+
+    end
   end
 
   def parse
@@ -318,12 +333,7 @@ class PagesController < ApplicationController
   end
 
   def update
-    # check if operation is not permitted
-    if cannot? :update, Page.create_or_find_page(params[:idtitle])
-      render :json => {:success => false} and return
-    end
 
-    full_title = params[:idtitle]
     sections = params[:sections]
     content = params[:content]
 
@@ -331,25 +341,28 @@ class PagesController < ApplicationController
       sections.each { |s| content += s['content'] + "\n" }
     end
 
-    page = Page.find_or_create_page(full_title)
+    @page.change(content)
 
-    page.change(content)
+    # TODO: has it worked at all?
+    #update_history(title)
 
-    update_history(title)
-    if full_title != params[:title]
-      rename
-    else
-      render :json => {:success => true}
-    end
+    render :json => {:success => true}
 
   end
 
   def rename
     begin
-      new_full_title = params[:title]
-      page = Page.find_or_create_page(params[:idtitle])
-      page.rename(new_full_title)
-      update_history(new_full_title)
+      # convert uri to normal wiki url
+      new_full_title = MediaWiki::send :upcase_first_char, (MediaWiki::uri_to_wiki params[:new_id])
+      # create new page
+
+      # copy content from old page
+      #new_page
+      # remove old page
+
+      @page.rename(new_full_title)
+      # TODO: has it worked at all?
+      #update_history(new_full_title)
       render :json => {:success => true, :newtitle => new_full_title}
     rescue MediaWiki::APIError
       @error_message="#{$!.info}"
