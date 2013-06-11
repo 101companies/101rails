@@ -45,21 +45,23 @@ class PagesController < ApplicationController
   end
 
   def semantic_properties
-   {'dependsOn'  => 'http://101companies.org/property/dependsOn',
-     'instanceOf'  => 'http://101companies.org/property/instanceOf',
-     'identifies'  => 'http://101companies.org/property/identifies',
-     'linksTo'     => 'http://101companies.org/property/linksTo',
-     'cites'       => 'http://101companies.org/property/cites',
-     'uses'        => 'http://101companies.org/property/uses',
-     'implements'  => 'http://101companies.org/property/implements',
-     'instanceOf'  => 'http://101companies.org/property/instanceOf',
-     'isA'         => 'http://101companies.org/property/isA',
-     'developedBy' => 'http://101companies.org/property/developedBy',
-     'reviewedBy'  => 'http://101companies.org/property/reviewedBy',
-     'relatesTo'   => 'http://101companies.org/property/relatesTo',
-     'implies'   => 'http://101companies.org/property/implies',
-     'mentions'    => 'http://101companies.org/property/mentions' }
-   end
+    {
+      'dependsOn'  => 'http://101companies.org/property/dependsOn',
+      'instanceOf'  => 'http://101companies.org/property/instanceOf',
+      'identifies'  => 'http://101companies.org/property/identifies',
+      'linksTo'     => 'http://101companies.org/property/linksTo',
+      'cites'       => 'http://101companies.org/property/cites',
+      'uses'        => 'http://101companies.org/property/uses',
+      'implements'  => 'http://101companies.org/property/implements',
+      'instanceOf'  => 'http://101companies.org/property/instanceOf',
+      'isA'         => 'http://101companies.org/property/isA',
+      'developedBy' => 'http://101companies.org/property/developedBy',
+      'reviewedBy'  => 'http://101companies.org/property/reviewedBy',
+      'relatesTo'   => 'http://101companies.org/property/relatesTo',
+      'implies'   => 'http://101companies.org/property/implies',
+      'mentions'    => 'http://101companies.org/property/mentions'
+    }
+  end
 
   def get_context_for(title)
     if ((title.split(':').length == 2) and (title.starts_with?('http') == false))
@@ -82,7 +84,7 @@ class PagesController < ApplicationController
     end
   end
 
-  # get all title as json
+  # get all titles as json
   def all
     render :json => all_links
   end
@@ -271,7 +273,19 @@ class PagesController < ApplicationController
     parsed_page = WikiCloth::Parser.new(:data => content, :noedit => true)
     parsed_page.sections.first.auto_toc = false
     WikiCloth::Parser.context = @page.namespace
-    html = to_wiki_links(parsed_page)
+
+    # define links pointing to pages without content
+    html = parsed_page.to_html
+    all_page_uris = all_links
+    parsed_page.internal_links.each do |link|
+      # nice link -> link-uri converted to readable words
+      nice_link = Page.unescape_wiki_url link
+      # if in list of all pages doesn't exists link -> define css class missing-link
+      class_attribute = all_page_uris.include?(nice_link) ?  '' : 'class="missing-link"'
+      html.gsub!("<a href=\"#{link}\"", "<a " + class_attribute + " href=\"/wiki/#{nice_link}\"")
+      html.gsub!("<a href=\"#{link.camelize(:lower)}\"", "<a " + class_attribute + " href=\"/wiki/#{nice_link}\"")
+    end
+
     render :json => {:success => true, :html => html.html_safe}
   end
 
