@@ -28,6 +28,7 @@ Wiki::Application.routes.draw do
 
   # pages routes
   get '/wiki' => 'pages#show'
+  match '/wiki/clean_cache/:id' => 'pages#clean_cache' , :constraints => { :id => /.*/ }
   match '/wiki/:id' => 'pages#show' , :constraints => { :id => /.*/ }
 
   # json api requests for pages

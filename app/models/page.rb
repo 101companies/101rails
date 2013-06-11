@@ -209,13 +209,16 @@ class Page
     Page.gateway_and_login.edit(self.title, content)
   end
 
-  def delete
+  def clear_wiki_cache
+    Rails.cache.delete(self.full_title + "_html")
+    Rails.cache.delete(self.full_title)
+  end
+
+  def delete_from_mediawiki
     # delete wiki page
     Page.gateway_and_login.delete(self.full_title)
     # delete cache
-    Rails.cache.delete(self.full_title + "_html")
-    Rails.cache.delete(self.full_title)
-    # TODO: remove from db page entity
+    self.clear_wiki_cache
   end
 
   def semantic_links

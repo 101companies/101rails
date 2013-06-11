@@ -24,6 +24,12 @@ class PagesController < ApplicationController
 
   end
 
+  def clean_cache
+    @page.clear_wiki_cache
+    flash[:notice] = "Cache for page "+@page.full_title+" successfully cleared"
+    redirect_to :action => 'show', :id => @page.full_title
+  end
+
   def semantic_properties
    {'dependsOn'  => 'http://101companies.org/property/dependsOn',
      'instanceOf'  => 'http://101companies.org/property/instanceOf',
