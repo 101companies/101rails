@@ -34,6 +34,7 @@ class Page
 
   # get authorship of old wiki users for page
   def retrieve_old_wiki_users
+    #TODO: restore exception check
     #begin
       # else retrieve users from old wiki
       a = Mechanize.new
@@ -58,6 +59,10 @@ class Page
       end
     #rescue
     #end
+  end
+
+  def self.get_all_pages
+    Page.all.map { |p| p.full_title}
   end
 
   # if no namespace given

@@ -1,5 +1,4 @@
 class PagesController < ApplicationController
-  include PagesHelper
 
   respond_to :json, :html
 
@@ -86,7 +85,7 @@ class PagesController < ApplicationController
 
   # get all titles as json
   def all
-    render :json => all_links
+    render :json => Page.get_all_pages
   end
 
   def get_rdf_graph(title, directions=false)
@@ -263,7 +262,7 @@ class PagesController < ApplicationController
 
     # define links pointing to pages without content
     html = parsed_page.to_html
-    all_page_uris = all_links
+    all_page_uris = Page.get_all_pages
     parsed_page.internal_links.each do |link|
       # nice link -> link-uri converted to readable words
       nice_link = Page.unescape_wiki_url link
