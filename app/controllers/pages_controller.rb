@@ -101,7 +101,7 @@ class PagesController < ApplicationController
      context   = RDF::URI.new("http://101companies.org")
 
      server = RDF::Sesame::Server.new RDF::URI("http://triples.101companies.org/openrdf-sesame")
-     repository = server.repository("test")
+     repository = server.repository("wiki2")
 
      @page.semantic_links.each { |l|
       if directions
