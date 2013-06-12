@@ -4,7 +4,7 @@ load 'deploy/assets'
 # added sending email after deploy
 load 'config/deploy/cap_notify.rb'
 set :notify_emails, ["aleksey.lashin@gmail.com", "arkadi@uni-koblenz.de", "dotnetby@gmail.com", "tschmorleiz@gmail.com"]
-after :deploy, 'deploy:send_notification'
+#after :deploy, 'deploy:send_notification'
 namespace :deploy do
   desc "Send email notification"
   task :send_notification do
