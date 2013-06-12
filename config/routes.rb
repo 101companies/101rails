@@ -47,6 +47,7 @@ Wiki::Application.routes.draw do
     end
   end
 
+  # TODO: speak with Andrei
   scope 'endpoint', :format => :json do
     get ':id/rdf' => 'pages#get_rdf', :constraints => { :id => /.*/ }
     get ':id/json' => 'pages#get_json', :constraints => { :id => /.*/ }, :directions => false

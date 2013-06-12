@@ -85,7 +85,7 @@ class PagesController < ApplicationController
 
   # get all titles as json
   def all
-    render :json => Page.get_all_pages
+    render :json => Page.get_all_pages_uris
   end
 
   def get_rdf_graph(title, directions=false)
@@ -262,10 +262,10 @@ class PagesController < ApplicationController
 
     # define links pointing to pages without content
     html = parsed_page.to_html
-    all_page_uris = Page.get_all_pages
+    all_page_uris = Page.get_all_pages_uris
     parsed_page.internal_links.each do |link|
       # nice link -> link-uri converted to readable words
-      nice_link = Page.unescape_wiki_url link
+      nice_link = Page.escape_wiki_url link
       # if in list of all pages doesn't exists link -> define css class missing-link
       class_attribute = all_page_uris.include?(nice_link) ?  '' : 'class="missing-link"'
       html.gsub!("<a href=\"#{link}\"", "<a " + class_attribute + " href=\"/wiki/#{nice_link}\"")
@@ -344,7 +344,7 @@ class PagesController < ApplicationController
     @page.change(content)
 
     # TODO: has it worked at all?
-    #update_history(title)
+    update_history(title)
 
     render :json => {:success => true}
 
@@ -362,7 +362,7 @@ class PagesController < ApplicationController
 
       @page.rename(new_full_title)
       # TODO: has it worked at all?
-      #update_history(new_full_title)
+      update_history(new_full_title)
       render :json => {:success => true, :newtitle => new_full_title}
     rescue
       render :json => {:success => false, :error => 'Renamed failed'}, :status => 409

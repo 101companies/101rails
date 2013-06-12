@@ -61,8 +61,8 @@ class Page
     end
   end
 
-  def self.get_all_pages
-    Page.all.map { |p| p.full_title}
+  def self.get_all_pages_uris
+    Page.all.map {|p| Page.escape_wiki_url p.full_title}
   end
 
   # if no namespace given
