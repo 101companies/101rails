@@ -49,9 +49,13 @@ gem 'cancan', '1.6.10'
 group :development do
   # faster start for rake and rails commands
   gem 'zeus',  '0.13.3'
+  # profiling
+  gem 'ruby-prof', '0.13.0'
+  # for work with rails panel
+  gem 'meta_request', '0.2.6'
   #gem 'debugger', '1.5.0'
   gem 'better_errors', '0.8.0'
-  gem 'binding_of_caller', '0.7.1'
+  #gem 'binding_of_caller', '0.7.1'
   # web server
   gem 'thin', '1.5.1'
   # gem for creating db/controller diagrams
@@ -62,7 +66,7 @@ end
 gem 'gravatar_image_tag', '1.1.3'
 
 # admin interface
-gem 'rails_admin', '0.4.8'
+gem 'rails_admin', '0.4.9'
 
 # web-scraping
 gem 'json_pure', '1.8.0'

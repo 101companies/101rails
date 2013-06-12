@@ -1,15 +1,13 @@
 class Wiki.Models.Page extends Backbone.Model
 
-  idAttribute: 'idtitle'
-
   initialize: ->
     @set('triples', new Wiki.Models.Triples())
     @set('sourceLinks', new Wiki.Models.SourceLinks())
     @set('resources', new Wiki.Models.Resources())
 
   defaults:
-    idtitle: ''                           # used for renaming (i.e. change "title" but keep "idtitle" for the server to know)
-    title: ""
+    id: ''                           # used for renaming (i.e. change "title" but keep "idtitle" for the server to know)
+    newTitle: ""
     sections: null
     backlinks: null
     triples: null

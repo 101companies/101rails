@@ -27,7 +27,7 @@ class Wiki.Views.Section extends Backbone.View
       $.ajax({
           type: "POST"
           url: "/api/parse/"
-          data: {content: self.model.get('content'), pagetitle: Wiki.pageTitle}
+          data: {content: self.model.get('content'), id: Wiki.pageTitle}
           success: (data) ->
             if self.subview
               self.renderSubView()
@@ -95,7 +95,7 @@ class Wiki.Views.Section extends Backbone.View
       $.ajax({
         type: "POST"
         url: "/api/parse/"
-        data: {content: text, pagetitle: Wiki.pageTitle}
+        data: {content: text, id: Wiki.pageTitle}
         success: (data) ->
           unless self.subview
             self.insertHTML(data.html)
@@ -142,7 +142,8 @@ class Wiki.Views.Section extends Backbone.View
   tooltipHeadline: (event) ->
     $target = $(event.target)
     $target.addClass('hovered')
-    if ($target.attr('data-original-title') == '')
+    targetMissing = $target.attr('class').indexOf("missing-link") != -1
+    if (not targetMissing and $target.attr('data-original-title') == '')
       $target.attr('data-original-title', 'Loading headline...')
       linkTitle = $target.attr('href').replace('/wiki/', '').replace(/^\s+|\s+$/g, '')
       linkDiscovery = new Wiki.Models.PageDiscovery(title: linkTitle)
