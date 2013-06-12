@@ -1,6 +1,7 @@
 # RailsAdmin config file. Generated on February 25, 2013 20:47
 # See github.com/sferik/rails_admin for more informations
 
+# real timezone for rails_admin
 module RailsAdmin
   module Config
     module Fields

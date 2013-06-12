@@ -3,8 +3,8 @@
 // You should configure these classes.
 //var editor = "theeditor"; // This should be the id of your editor element.
 var lang = "en_US";
-var dicPath = "../assets/en_US.dic";
-var affPath = "../assets/en_US.aff.txt";
+var dicPath = "/assets/en_US.dic";
+var affPath = "/assets/en_US.aff.txt";
 
 // Make red underline for gutter and words.
 $("<style type='text/css'>.ace_marker-layer .misspelled { position: absolute; z-index: -2; border-bottom: 1px solid red; margin-bottom: -1px; }</style>").appendTo("head");

@@ -1,6 +1,6 @@
 <script type="text/javascript">
 
-    Wiki.pageTitle =  <%= j @page.title.to_json.html_safe -%>
+    Wiki.pageTitle =  <%= j @page.full_title.to_json.html_safe -%>
 
     <% if current_user -%>
 

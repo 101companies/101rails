@@ -50,9 +50,6 @@ First of all you need to install gem bundler.
 
 Now you need go to project folder.
 
-If you will have only 1 ruby/rails project you can globally install all gems
-@bundle install@
-
 If you want to have all gems ready per project only:
 @bundle install --path vendor/bundle@
 
@@ -63,7 +60,7 @@ Indexes are using for unique keys in db.
 Creating indexes need to be done after adding any new model with indexes or changing old models with indexes.
 
 After installing mongodb start this database and then launch application with:
-@bundle exec rails s@
+@bundle exec rails server@
 
 If you want to see all models of app you need to execute next:
 @bundle exec railroady -M -e app/models/ability.rb | neato -Tpng > models.png@

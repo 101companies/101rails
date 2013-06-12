@@ -1,53 +1,66 @@
 class PagesController < ApplicationController
-  include PagesHelper
-  require 'media_wiki'
-  before_filter :check_uri
+
   respond_to :json, :html
 
-  def check_uri
-    title = params[:title]
-    if title == nil
-      return
+  # methods, that need to check permissions
+  #load_and_authorize_resource :only => [:delete, :rename, :update]
+
+  before_filter :get_the_page
+
+  def get_the_page
+
+    # get page title
+    full_title = params[:id]
+
+    # if no title -> set default wiki startpage '@project'
+    if full_title == nil
+      full_title = '@project'
     end
 
-    # save params title
-    title_wiki = title
+    # 'wikify' title param
+    full_title = Page.unescape_wiki_url full_title
 
-    # convert to wiki-uri format, upcase for first char
-    title = MediaWiki::send :upcase_first_char, (MediaWiki::wiki_to_uri title)
+    # if user can create page -> create new
+    if can? :create, Page.new
+      @page = Page.find_or_create_page full_title
+    # else this page doesn't exist
+    else
+      @page = Page.find_by_full_title full_title
+    end
 
-    # redirect, if title was changed
-    # Important: during the redirect will be automatically unescaped url
-    # so we avoid endless loop for 'escaping/unenscaping' url during redirect_to by previous unescaping for title
-    if title_wiki != CGI.unescape(title)
-      redirect_to "/wiki/#{title}"
+    # check page existence
+    if @page == nil
+      flash[:error] = "Page wasn't not found. Redirected to main wiki page"
+      # TODO: different formats
+      redirect_to '/wiki'
     end
-    begin
-      gw = MediaWiki::Gateway.new('http://mediawiki.101companies.org/api.php')
-      if gw.redirect?(title)
-        @redirect_page = Page.new.create title
-        redirect_to "/wiki/" + @redirect_page.redirect_target
-      end
-    rescue MediaWiki::APIError
-    end
+
+  end
+
+  def clean_cache
+    @page.clear_wiki_cache
+    flash[:notice] = "Cache for page "+@page.full_title+" successfully cleared"
+    redirect_to :action => 'show', :id => @page.full_title
   end
 
   def semantic_properties
-   {'dependsOn'  => 'http://101companies.org/property/dependsOn',
-     'instanceOf'  => 'http://101companies.org/property/instanceOf',
-     'identifies'  => 'http://101companies.org/property/identifies',
-     'linksTo'     => 'http://101companies.org/property/linksTo',
-     'cites'       => 'http://101companies.org/property/cites',
-     'uses'        => 'http://101companies.org/property/uses',
-     'implements'  => 'http://101companies.org/property/implements',
-     'instanceOf'  => 'http://101companies.org/property/instanceOf',
-     'isA'         => 'http://101companies.org/property/isA',
-     'developedBy' => 'http://101companies.org/property/developedBy',
-     'reviewedBy'  => 'http://101companies.org/property/reviewedBy',
-     'relatesTo'   => 'http://101companies.org/property/relatesTo',
-     'implies'   => 'http://101companies.org/property/implies',
-     'mentions'    => 'http://101companies.org/property/mentions' }
-   end
+    {
+      'dependsOn'  => 'http://101companies.org/property/dependsOn',
+      'instanceOf'  => 'http://101companies.org/property/instanceOf',
+      'identifies'  => 'http://101companies.org/property/identifies',
+      'linksTo'     => 'http://101companies.org/property/linksTo',
+      'cites'       => 'http://101companies.org/property/cites',
+      'uses'        => 'http://101companies.org/property/uses',
+      'implements'  => 'http://101companies.org/property/implements',
+      'instanceOf'  => 'http://101companies.org/property/instanceOf',
+      'isA'         => 'http://101companies.org/property/isA',
+      'developedBy' => 'http://101companies.org/property/developedBy',
+      'reviewedBy'  => 'http://101companies.org/property/reviewedBy',
+      'relatesTo'   => 'http://101companies.org/property/relatesTo',
+      'implies'   => 'http://101companies.org/property/implies',
+      'mentions'    => 'http://101companies.org/property/mentions'
+    }
+  end
 
   def get_context_for(title)
     if ((title.split(':').length == 2) and (title.starts_with?('http') == false))
@@ -62,39 +75,24 @@ class PagesController < ApplicationController
   end
 
   def page_to_resource(title)
-    @ctx = get_context_for(title)
-
-    if @ctx[:title].starts_with?('http')
-      @ctx[:title]
+    page = Page.find_by_full_title(title)
+    if page.title.starts_with?('http')
+      page.title
     else
-      RDF::URI.new("http://101companies.org/resources/#{@ctx[:ns].pluralize}/#{@ctx[:title]}")
+      RDF::URI.new("http://101companies.org/resources/#{page.namespace.pluralize}/#{page.title}")
     end
   end
 
+  # get all titles as json
   def all
-    respond_with all_pages
+    render :json => Page.get_all_pages_uris
   end
 
   def get_rdf_graph(title, directions=false)
-     #   public static DEPENDS_ON = 'http://101companies.org/property/dependsOn'
-     #   public static IDENTIFIES = 'http://101companies.org/property/identifies'
-     #   public static LINKS_TO = 'http://101companies.org/property/linksTo'
-     #   public static CITES = 'http://101companies.org/property/cites'
-     #   public static USES = 'http://101companies.org/property/uses'
-     #   public static IMPLEMENTS = 'http://101companies.org/property/implements'
-     #   public static INSTANCE_OF = 'http://101companies.org/property/instanceOf'
-     #   public static IS_A = 'http://101companies.org/property/isA'
-     #   public static DEVELOPED_BY = 'http://101companies.org/property/developedBy'
-     #   public static REVIEWED_BY = 'http://101companies.org/property/reviewedBy'
-     #   public static RELATES_TO = 'http://101companies.org/property/relatesTo'
-     #   public static LABEL = 'http://www.w3.org/2000/01/rdf-schema#label'
-     #   public static PAGE = 'http://semantic-mediawiki.org/swivt/1.0#page'
-     #   public static TYPE = 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type'
-     title.gsub!(' ', '_')
-     puts title
-     @page = Page.new.create(title)
+     @page = Page.find_by_full_title(title)
 
      uri = self.page_to_resource title
+     #TODO: unused variable
      v101 = RDF::Vocabulary.new("http://101companies.org/property/")
      graph = RDF::Graph.new #<< [uri, RDF::RDFS.title, title]
 
@@ -192,7 +190,6 @@ class PagesController < ApplicationController
   def get_rdf
     title = params[:id]
     graph = self.get_rdf_graph(title)
-
     respond_with graph.dump(:ntriples)
   end
 
@@ -220,60 +217,60 @@ class PagesController < ApplicationController
   end
 
   def delete
-    logger.debug(current_user.role)
-    if current_user and (current_user.role=="admin")
-      title = params[:id]
-      page = Page.new.create(title)
-      page.delete
-    end
+    # remove page from mediawiki
+    @page.delete_from_mediawiki
+    # remove the object itself
+    @page.delete
     render :json => {:success => true}
   end
 
   def show
-    @title = params[:title]
-    if @title == nil
-      if params[:id].nil?
-        @title = "@project"
-      else
-        @title = params[:id]
-      end
-    end
-    @page = Page.new.create @title
+
+    # TODO: rework history
     @page.instance_eval { class << self; self end }.send(:attr_accessor, "history")
-    if not History.where(:page => @title).exists?
+
+    if not History.where(:page => @page.full_title).exists?
       @page.history = History.create!(
         user: current_user,
-        page: @title,
+        page:@page.full_title,
         version: 1
         )
     else
-     @page.history = History.where(:page => @title).first
+      @page.history = History.where(:page => @page.full_title).first
     end
 
     respond_to do |format|
       format.html { render :html => @page }
       format.json { render :json => {
-        'id'        => @page._id,
-        'idtitle'     => @page.title,
-        'content' => @page.content,
-        'title'     => @page.title,
+        'id'        => @page.full_title,
+        'content'   => @page.content,
         'sections'  => @page.sections,
+        # TODO: to much entries about versions
         'history'   => @page.history.as_json(:include => {:user => { :except => [:role, :github_name]}}),
         'backlinks' => @page.backlinks
-        }
-      }
-      end
+      }}
+
+    end
   end
 
   def parse
     content = params[:content]
-    #we use the title to get the context of the page
-    title = params[:pagetitle]
     parsed_page = WikiCloth::Parser.new(:data => content, :noedit => true)
     parsed_page.sections.first.auto_toc = false
-    page = Page.new.create title
-    WikiCloth::Parser.context = page.context
-    html = to_wiki_links(parsed_page)
+    WikiCloth::Parser.context = @page.namespace
+
+    # define links pointing to pages without content
+    html = parsed_page.to_html
+    all_page_uris = Page.get_all_pages_uris
+    parsed_page.internal_links.each do |link|
+      # nice link -> link-uri converted to readable words
+      nice_link = Page.escape_wiki_url link
+      # if in list of all pages doesn't exists link -> define css class missing-link
+      class_attribute = all_page_uris.include?(nice_link) ?  '' : 'class="missing-link"'
+      html.gsub!("<a href=\"#{link}\"", "<a " + class_attribute + " href=\"/wiki/#{nice_link}\"")
+      html.gsub!("<a href=\"#{link.camelize(:lower)}\"", "<a " + class_attribute + " href=\"/wiki/#{nice_link}\"")
+    end
+
     render :json => {:success => true, :html => html.html_safe}
   end
 
@@ -281,36 +278,26 @@ class PagesController < ApplicationController
     @query_string = params[:q]
     if @query_string == ''
       redirect_to "/wiki/"
+      flash[:notice] = 'Please write something, if you want to search something'
     else
-      gw = MediaWiki::Gateway.new('http://mediawiki.101companies.org/api.php')
-      gw.login(ENV['WIKIUSER'], ENV['WIKIPASSWORD'])
-      @search_results = gw.search(@query_string)
-      respond_with @search_results
+      respond_with Page.gateway_and_login.search(@query_string)
     end
   end
 
   def summary
     begin
-      GC.disable
-      title = params[:id]
-      page = Page.new.create title
-      render :json => {:sections => page.sections, :internal_links => page.internal_links}
+      render :json => {:sections => @page.sections, :internal_links => @page.internal_links}
     rescue
       @error_message="#{$!}"
       render :json => {:success => false, :error => @error_message}
     ensure
-      GC.enable
-      GC.start
     end
   end
 
   # get all sections for a page
   def sections
     begin
-      title = params[:id]
-      page = Page.new.create(title)
-      sections = page.sections
-      respond_with sections
+      respond_with @page.sections
     rescue
       @error_message="#{$!}"
       render :json => {:success => false, :error => @error_message}
@@ -320,15 +307,14 @@ class PagesController < ApplicationController
   # get all internal links for the page
   def internal_links
     begin
-      title = params[:id]
-      page = Page.new.create(title)
-      respond_with page.internal_links
+      respond_with @page.internal_links
     rescue
       @error_message="#{$!}"
       render :json => {:success => false, :error => @error_message}
     end
   end
 
+  # TODO: does it actually work?
   def update_history(pagename)
     if History.where(:page => pagename).exists?
       history = History.where(:page => pagename).first
@@ -346,44 +332,31 @@ class PagesController < ApplicationController
   end
 
   def update
-    # check if operation is not permitted
-    if cannot? :update, Page.where(:title => params[:idtitle]).first
-      render :json => {:success => false} and return
-    end
-    title = params[:idtitle]
     sections = params[:sections]
     content = params[:content]
-    if content == ""
-      sections.each { |s| content += s['content'] + "\n" }
-    end
-    page = Page.new.create(title)
-    page.change(content)
-    update_history(title)
-    if title != params[:title]
-      rename
-    else
-      render :json => {:success => true}
-    end
+    new_full_title = Page.unescape_wiki_url params[:newTitle]
+    @page.update_or_rename_page new_full_title, content, sections
+    # TODO: has it worked at all?
+    #update_history(title)
+    render :json => {:success => true}
   end
 
   def rename
     begin
-      new_title = params[:title]
-      page = Page.new.create(params[:idtitle])
-      page.rename(new_title)
-      update_history(new_title)
-      render :json => {:success => true, :newtitle => new_title}
-    rescue MediaWiki::APIError
-      @error_message="#{$!.info}"
-      render :json => {:success => false, :error => @error_message}, :status => 409
+      new_full_title = Page.unescape_wiki_url params[:newTitle]
+      sections = params[:sections]
+      content = params[:content]
+      @page.update_or_rename_page new_full_title, content, sections
+      # TODO: has it worked at all?
+      #update_history(new_full_title)
+      render :json => {:success => true, :newtitle => new_full_title}
+    rescue
+      render :json => {:success => false, :error => 'Renamed failed'}, :status => 409
     end
   end
 
   def section
-    title = params[:id]
-    p = Page.new.create(title)
-    section = {'content' => p.section(params[:title])}
-    respond_with section.to_json
+    respond_with ({:content => @page.section(params[:full_title])}).to_json
   end
 end
 
