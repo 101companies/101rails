@@ -75,10 +75,13 @@ class PagesController < ApplicationController
   end
 
   def page_to_resource(title)
-    page = Page.find_by_full_title(Page.unescape_wiki_url(title))
-    if page.title.starts_with?('http')
-      page.title
+    if title.starts_with?('http')
+      title
     else
+      page = Page.find_by_full_title Page.unescape_wiki_url title
+      if page.nil?
+        return nil
+      end
       RDF::URI.new("http://101companies.org/resources/#{page.namespace.pluralize}/#{page.title}")
     end
   end
@@ -112,12 +115,15 @@ class PagesController < ApplicationController
       unless directions
         object = page_to_resource(object)
       end
-      statement =  RDF::Statement.new(subject, predicate, object, :context => context)
-      graph << statement
-      unless directions
-        repository.delete statement
-        repository.insert statement
+      if !object.nil?
+        statement =  RDF::Statement.new(subject, predicate, object, :context => context)
+        graph << statement
+        unless directions
+          repository.delete statement
+          repository.insert statement
+        end
       end
+
     }
 
     unless directions
@@ -130,10 +136,12 @@ class PagesController < ApplicationController
           unless directions
             object = page_to_resource(object)
           end
-          statement =  RDF::Statement.new(subject, predicate, object, :context => context)
-          graph << statement
-          repository.delete statement
-          repository.insert statement
+          if !object.nil?
+            statement =  RDF::Statement.new(subject, predicate, object, :context => context)
+            graph << statement
+            repository.delete statement
+            repository.insert statement
+          end
         end
       }
     end
