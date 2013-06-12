@@ -14,4 +14,4 @@ class Wiki.Routers.PagesRouter extends Backbone.Router
     if @ViewClass
       new @ViewClass(model: Wiki.page)
     else
-      new Wiki.Views.Page(model: new Wiki.Models.Page(title: Wiki.pageTitle, idtitle: Wiki.pageTitle))
+      new Wiki.Views.Page(model: new Wiki.Models.Page(id: Wiki.pageTitle, newTitle: Wiki.pageTitle))

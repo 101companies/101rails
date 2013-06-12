@@ -3,7 +3,7 @@ class PagesController < ApplicationController
   respond_to :json, :html
 
   # methods, that need to check permissions
-  load_and_authorize_resource :only => [:delete, :rename, :update]
+  #load_and_authorize_resource :only => [:delete, :rename, :update]
 
   before_filter :get_the_page
 
@@ -242,9 +242,8 @@ class PagesController < ApplicationController
     respond_to do |format|
       format.html { render :html => @page }
       format.json { render :json => {
-        'id'        => @page._id,
+        'id'        => @page.full_title,
         'content'   => @page.content,
-        'title'     => @page.full_title,
         'sections'  => @page.sections,
         # TODO: to much entries about versions
         'history'   => @page.history.as_json(:include => {:user => { :except => [:role, :github_name]}}),
@@ -333,36 +332,23 @@ class PagesController < ApplicationController
   end
 
   def update
-
     sections = params[:sections]
     content = params[:content]
-
-    if content == ""
-      sections.each { |s| content += s['content'] + "\n" }
-    end
-
-    @page.change(content)
-
+    new_full_title = Page.unescape_wiki_url params[:newTitle]
+    @page.update_or_rename_page new_full_title, content, sections
     # TODO: has it worked at all?
-    update_history(title)
-
+    #update_history(title)
     render :json => {:success => true}
-
   end
 
   def rename
     begin
-      # convert uri to normal wiki url
-      new_full_title = Page.unescape_wiki_url params[:new_id]
-      # create new page
-
-      # copy content from old page
-      #new_page
-      # remove old page
-
-      @page.rename(new_full_title)
+      new_full_title = Page.unescape_wiki_url params[:newTitle]
+      sections = params[:sections]
+      content = params[:content]
+      @page.update_or_rename_page new_full_title, content, sections
       # TODO: has it worked at all?
-      update_history(new_full_title)
+      #update_history(new_full_title)
       render :json => {:success => true, :newtitle => new_full_title}
     rescue
       render :json => {:success => false, :error => 'Renamed failed'}, :status => 409

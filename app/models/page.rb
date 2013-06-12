@@ -98,6 +98,44 @@ class Page
     }
   end
 
+  def update_or_rename_page(new_title, content, sections)
+
+    # if content is empty -> populate content with sections
+    if content == ""
+      sections.each { |s| content += s['content'] + "\n" }
+    end
+
+    # unescape new title to nice readable url
+    new_title = Page.unescape_wiki_url new_title
+
+    # if title was changes -> rename page
+    if new_title!=self.full_title
+      #TODO: remove old page
+      nt = Page.retrieve_namespace_and_title new_title
+      self.title = nt['title']
+      self.namespace = nt['namespace']
+    end
+
+    # rewrite triples for content
+    content = remove_namespace_triples(content)
+    content = add_namespace_triple(content)
+
+    self.clear_wiki_cache
+
+    # save page to wiki
+    Page.gateway_and_login.edit(self.full_title, content)
+
+    #new_page = Page.find_or_create_page(to)
+    #new_page.change(content)
+    #rewrite_backlinks(to)
+    #new_page.retrieve_namespace_and_title to
+    #new_page.save
+
+    # save changes
+    self.save
+
+  end
+
   # find page without creating
   def self.find_by_full_title(full_title)
     nt = Page.retrieve_namespace_and_title full_title
@@ -138,7 +176,8 @@ class Page
     self.instance_eval { class << self; self end }.send(:attr_accessor, "wiki")
     self.wiki = WikiCloth::Parser.new(:data => self.content, :noedit => true)
     # set namespace for work with wiki
-    # TODO: self.wiki.context =
+    # TODO: self.wiki.context = ?
+    # variable of parser for every instance?
     WikiCloth::Parser.context = self.namespace
     return self.wiki
   end
@@ -192,14 +231,6 @@ class Page
     end
   end
 
-  def rename(to)
-    new_page = Page.find_or_create_page(to)
-    new_page.change(content)
-    rewrite_backlinks(to)
-    new_page.retrieve_namespace_and_title to
-    new_page.save
-  end
-
   def add_triple_link(content, triple)
     content.sub(/\s+\Z/, '') + "\n* " + '[[' + triple + ']]'
   end
@@ -220,14 +251,6 @@ class Page
       content = add_triple_link(content, namespace_triple)
     end
     content
-  end
-
-  def change(content)
-    content = remove_namespace_triples(content)
-    content = add_namespace_triple(content)
-    Rails.cache.write(self.title, content)
-    Rails.cache.delete(self.title + "_html")
-    Page.gateway_and_login.edit(self.title, content)
   end
 
   def clear_wiki_cache
