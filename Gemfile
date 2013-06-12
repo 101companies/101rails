@@ -66,7 +66,7 @@ end
 gem 'gravatar_image_tag', '1.1.3'
 
 # admin interface
-gem 'rails_admin', '0.4.8'
+gem 'rails_admin', '0.4.9'
 
 # web-scraping
 gem 'json_pure', '1.8.0'
