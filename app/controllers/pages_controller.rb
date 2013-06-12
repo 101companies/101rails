@@ -82,7 +82,7 @@ class PagesController < ApplicationController
       if page.nil?
         return nil
       end
-      RDF::URI.new("http://101companies.org/resources/#{page.namespace.pluralize}/#{page.title}")
+      RDF::URI.new("http://101companies.org/resources/#{page.namespace.downcase.pluralize}/#{page.title.sub(' ', '_')}")
     end
   end
 

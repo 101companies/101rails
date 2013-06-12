@@ -1,5 +1,10 @@
 require 'bundler/capistrano'
+require 'yaml'
+require 'pathname'
 load 'deploy/assets'
+
+set :sync_backups, 3
+set :db_file, "mongoid.yml"
 
 # added sending email after deploy
 load 'config/deploy/cap_notify.rb'
@@ -33,7 +38,7 @@ set :scm, :git
 
 role :web, "101companies.org"                          # Your HTTP server, Apache/etc
 role :app, "101companies.org"                          # This may be the same as your `Web` server
-role :db,  "101companies.org", :primary => true # This is where Rails migrations will run
+role :db,  "db.101companies.org", :primary => true # This is where Rails migrations will run
 
 set :user, "user101"
 set :host, '101companies.org'
@@ -83,4 +88,62 @@ namespace :assets do
       logger.info "#{changed_asset_count} assets have changed. Skipping asset pre-compilation"
     end
   end
+end
+
+namespace :sync do
+  namespace :down do
+       task :db, :roles => :db, :only => { :primary => true } do
+        filename = "database.production.#{Time.now.strftime '%Y-%m-%d_%H-%M-%S'}.sql.bz2"
+        on_rollback { delete "#{shared_path}/sync/#{filename}" }
+        username, password, database, host = database_config('production')
+        production_database = database
+ 
+        run "mongodump -db #{database}"
+        run "tar -cjf /home/user101/#{filename} dump/#{database}"
+        run "rm -rf dump"
+        
+        download "/home/user101/#{filename}", "tmp/#{filename}"
+        
+        username, password, database = database_config('development')
+        system "tar -xjvf tmp/#{filename}"
+        
+        system "mongorestore #{fetch(:db_drop, '')} -db #{database} dump/#{production_database}"
+        
+        system "rm -f tmp/#{filename} | rm -rf dump"
+        
+        logger.important "sync database from the 'production' to local finished"
+    end  
+  end 
+end  
+
+#
+# Reads the database credentials from the local config/database.yml file
+# +db+ the name of the environment to get the credentials for
+# Returns username, password, database
+#
+def database_config(db)
+  database = YAML::load_file('config/mongoid.yml')
+  return database["#{db}"]['sessions']['default']['username'], 
+         database["#{db}"]['sessions']['default']['password'], 
+         database["#{db}"]['sessions']['default']['database'], 
+         database["#{db}"]['sessions']['default']['host']
+end
+
+
+#
+# Reads the database credentials from the remote config/database.yml file
+# +db+ the name of the environment to get the credentials for
+# Returns username, password, database
+#
+def remote_database_config(db)
+  remote_config = capture("cat #{shared_path}/config/#{fetch(:db_file, 'mongoid.yml')}")
+  database = YAML::load(remote_config)
+  return database["#{db}"]['username'], database["#{db}"]['password'], database["#{db}"]['database'], database["#{db}"]['host']
+end
+
+#
+# Returns the actual host name to sync and port
+#
+def host_and_port
+  return roles[:web].servers.first.host, ssh_options[:port] || roles[:web].servers.first.port || 22
 end
