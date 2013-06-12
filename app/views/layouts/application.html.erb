@@ -53,7 +53,8 @@
       <% else %>
           <div class="btn-group pull-right">
             <a class="btn dropdown-toggle" data-toggle="dropdown" href="">
-              <i class="icon-user"></i> <%= current_user.email %> <span class="caret"></span>
+              <i class="icon-user"></i> <%= current_user.email %> <b>(<%= current_user.role %> )</b>
+              <span class="caret"></span>
             </a>
             <ul class="dropdown-menu">
               <li>

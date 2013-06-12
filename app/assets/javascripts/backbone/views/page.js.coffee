@@ -44,7 +44,7 @@ class Wiki.Views.Page extends Backbone.View
 
   render: ->
     self = @
-    niceTitle = Wiki.Utils.atTo101(@model.get('title').replace(/_/g, ' '))
+    niceTitle = Wiki.Utils.atTo101(@model.get('id').replace(/_/g, ' '))
     document.title = niceTitle
     colonSplit = niceTitle.split(":")
     if colonSplit.length > 1
@@ -62,7 +62,7 @@ class Wiki.Views.Page extends Backbone.View
     new Wiki.Views.SourceLinks(model: @model.get('sourceLinks'))
 
     # add discovery tab
-    upperTitle = @model.get('title').charAt(0).toUpperCase() + @model.get('title').slice(1);
+    upperTitle = @model.get('id').charAt(0).toUpperCase() + @model.get('id').slice(1);
     $('#discovery-tab-link').attr('href', 'http://101companies.org/resources?format=html&wikititle=' + upperTitle)
 
     # add handlers
@@ -89,14 +89,14 @@ class Wiki.Views.Page extends Backbone.View
     $('#renamemodal').modal()
 
   rename: ->
-    newtitle = $('#newTitle').val()
-    unless newtitle == ''
+    newTitle = $('#newTitle').val()
+    unless newTitle == ''
       $(@el).find("#renamemodal .loading-indicator").show()
-      @model.save({'title' : newtitle.replace(/\s/g, '_')},
+      @model.save({'newTitle' : newTitle.replace(/\s/g, '_')},
         success: (model, res) ->
           console.log(res)
           $("#renamemodal").modal('hide')
-          window.location = '/wiki/' + res.newtitle
+          window.location = '/wiki/' + res.newTitle
       )
 
   addSection: (section, sections, options) ->
