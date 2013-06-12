@@ -34,8 +34,7 @@ class Page
 
   # get authorship of old wiki users for page
   def retrieve_old_wiki_users
-    #TODO: restore exception check
-    #begin
+    begin
       # else retrieve users from old wiki
       a = Mechanize.new
       # get all authors of page in json format, 500 last revisions
@@ -57,8 +56,9 @@ class Page
           end
         end
       end
-    #rescue
-    #end
+    rescue
+      Rails.logger.info "Fetching histroy for page #{self.full_title} has failed"
+    end
   end
 
   def self.get_all_pages
