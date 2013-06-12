@@ -142,7 +142,8 @@ class Wiki.Views.Section extends Backbone.View
   tooltipHeadline: (event) ->
     $target = $(event.target)
     $target.addClass('hovered')
-    if ($target.attr('data-original-title') == '')
+    targetMissing = $target.attr('class').indexOf("missing-link") != -1
+    if (not targetMissing and $target.attr('data-original-title') == '')
       $target.attr('data-original-title', 'Loading headline...')
       linkTitle = $target.attr('href').replace('/wiki/', '').replace(/^\s+|\s+$/g, '')
       linkDiscovery = new Wiki.Models.PageDiscovery(title: linkTitle)
