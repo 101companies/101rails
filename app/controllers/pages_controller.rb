@@ -67,7 +67,8 @@ class PagesController < ApplicationController
     if @ctx[:title].starts_with?('http')
       @ctx[:title]
     else
-      RDF::URI.new("http://101companies.org/resources/#{@ctx[:ns].pluralize}/#{@ctx[:title]}")
+      title = MediaWiki::send :upcase_first_char, (MediaWiki::wiki_to_uri @ctx[:title])
+      RDF::URI.new("http://101companies.org/resources/#{@ctx[:ns].pluralize}/#{title}")
     end
   end
 
@@ -117,8 +118,8 @@ class PagesController < ApplicationController
       statement =  RDF::Statement.new(subject, predicate, object, :context => context)
       graph << statement
       unless directions
-        #repository.delete statement
-        #repository.insert statement
+        repository.delete statement
+        repository.insert statement
       end
     }
 
@@ -134,6 +135,8 @@ class PagesController < ApplicationController
           end
           statement =  RDF::Statement.new(subject, predicate, object, :context => context)
           graph << statement
+          repository.delete statement
+          repository.insert statement
         end
       }
     end
