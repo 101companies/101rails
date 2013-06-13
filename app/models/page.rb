@@ -240,7 +240,7 @@ class Page
   end
 
   def add_namespace_triple(content)
-    parsed_page = WikiCloth::Parser.new(:data => self.content, :noedit => true)
+    parsed_page = WikiCloth::Parser.new(:data => content, :noedit => true)
     parsed_page.to_html
     namespace_triple = 'instanceOf::Namespace:' + namespace
     unless parsed_page.internal_links.include?(namespace_triple)
