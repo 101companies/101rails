@@ -4,7 +4,8 @@ class Tours.Views.Tour extends Backbone.View
   el: '#tour'
   
   events:
-    'click .tourCreateNew' : 'createNewTour'
+    'click .tourViewEdit' : 'showEdit'
+    'click .tourViewDefault' : 'hideEdit'
     
   initialize: ->
     @model = Tours.tour
@@ -14,5 +15,46 @@ class Tours.Views.Tour extends Backbone.View
     html = @template(title: @model.get('title'), author: @model.get('author'), pages: @model.get('pages'))
     $(@el).html(html)
     
-  createNewTour: (a, b, c) ->
-    console.log(@model.toJSON())
+  showEdit: (a) ->
+    parent = a.target.parentNode.parentNode.parentNode
+    #console.log(parent)
+    
+    defaultBoxes = parent.getElementsByClassName('viewDefault')
+    #console.log(defaultBoxes)
+    for position, defaultBox of defaultBoxes
+      try
+        #console.log(defaultBox)
+        defaultBox.style.display = 'none'
+      catch error
+        console.log(error)
+      
+    editBoxes = parent.getElementsByClassName('viewEdit')
+    #console.log(editBoxes)
+    for position, editBox of editBoxes
+      try
+        #console.log(editBox)
+        editBox.style.display = 'block'
+      catch error
+        console.log(error)
+    
+  hideEdit: (a) ->
+    parent = a.target.parentNode.parentNode.parentNode
+    #console.log(parent)
+    
+    defaultBoxes = parent.getElementsByClassName('viewDefault')
+    #console.log(defaultBoxes)
+    for position, defaultBox of defaultBoxes
+      try
+        #console.log(defaultBox)
+        defaultBox.style.display = 'block'
+      catch error
+        console.log(error)
+      
+    editBoxes = parent.getElementsByClassName('viewEdit')
+    #console.log(editBoxes)
+    for position, editBox of editBoxes
+      try
+        #console.log(editBox)
+        editBox.style.display = 'none'
+      catch error
+        console.log(error)

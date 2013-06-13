@@ -1,11 +1,20 @@
 <div class="tour">
   <h1><%= title %></h1>
+  
   <h2>Author</h2>
-  <input class="span2" id="" type="text" value="<%= author %>" disabled>
-  <h2>Pages</h2>
-  <div id="pages">
-    <% _.each(pages, function(p) { %>
-    <li><a href="/wiki/<%= p %>"><%= p.replace(/_/g, ' ') %></li>
-    <% }); %>
+  <div>
+  	<div class="viewDefault"><%= author %> <button class="btn-mini tourViewEdit" type="button"><i class="icon-pencil"></i></button></div>
+  	<div class="viewEdit" style="display:none;"><input class="span2" id="" type="text" value="<%= author %>" disabled> <button class="btn-mini tourViewDefault" type="button"><i class="icon-pencil"> ok</i></button></div>
   </div>
+  
+  <h2>Pages</h2>
+  <ul id="pages">
+    <% _.each(pages, function(p) { %>
+    <li>
+      <div class="viewDefault"><a href="/wiki/<%= p %>"><%= p.replace(/_/g, ' ') %></div>
+      <div class="viewEdit"><a href="/wiki/<%= p %>"><%= p.replace(/_/g, ' ') %></div>
+    </li>
+    <% }); %>
+  </ul>
+  <button class="btn tourAddPage" type="button"><i class="icon-plus"></i> Add Page</button>
 </div>
