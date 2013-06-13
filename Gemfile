@@ -45,8 +45,9 @@ gem 'font-awesome-sass-rails', '3.0.2.2'
 # roles and permissions
 gem 'cancan', '1.6.10'
 
-# faster rails command
 group :development do
+# remove assets-logs in console
+  gem 'quiet_assets', '1.0.2'
   # faster start for rake and rails commands
   gem 'zeus',  '0.13.3'
   # profiling
