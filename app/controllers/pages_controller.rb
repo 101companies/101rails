@@ -268,7 +268,6 @@ class PagesController < ApplicationController
     parsed_page = WikiCloth::Parser.new(:data => content, :noedit => true)
     parsed_page.sections.first.auto_toc = false
     WikiCloth::Parser.context = @page.namespace
-
     # define links pointing to pages without content
     html = parsed_page.to_html
     all_page_uris = Page.get_all_pages_uris
@@ -277,8 +276,9 @@ class PagesController < ApplicationController
       nice_link = Page.escape_wiki_url link
       # if in list of all pages doesn't exists link -> define css class missing-link
       class_attribute = all_page_uris.include?(nice_link) ?  '' : 'class="missing-link"'
-      html.gsub!("<a href=\"#{link}\"", "<a " + class_attribute + " href=\"/wiki/#{nice_link}\"")
-      html.gsub!("<a href=\"#{link.camelize(:lower)}\"", "<a " + class_attribute + " href=\"/wiki/#{nice_link}\"")
+      # rewrite all links in html of wiki page
+      html.gsub!("<a href=\"#{link}\"", "<a " + class_attribute + " href=\"/wiki/#{Page.unescape_wiki_url link}\"")
+      html.gsub!("<a href=\"#{link.camelize(:lower)}\"", "<a " + class_attribute + " href=\"/wiki/#{Page.unescape_wiki_url link}\"")
     end
 
     render :json => {:success => true, :html => html.html_safe}
