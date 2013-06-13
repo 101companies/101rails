@@ -8,6 +8,9 @@ class PagesController < ApplicationController
   # methods, that need to check permissions
   load_and_authorize_resource :only => [:delete, :rename, :update, :clean_cache]
 
+  # methods, that need to check permissions
+  load_and_authorize_resource :only => [:delete, :rename, :update]
+
   def get_the_page
 
     # get page title
@@ -237,6 +240,7 @@ class PagesController < ApplicationController
     # remove page from mediawiki
     @page.delete_from_mediawiki
     # remove the object itself
+    flash[:notice] = 'Page ' + @page.full_title + ' was deleted'
     @page.delete
     render :json => {:success => true}
   end
