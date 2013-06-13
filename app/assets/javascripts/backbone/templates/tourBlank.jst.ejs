@@ -1,4 +1,42 @@
 <div class="tour">
   <h1>The tour "<%= title %>" does not exist</h1>
   <button class="btn tourCreateNew" type="button"><i class="icon-pencil"></i> Create new tour</button>
+<br />
+<br />
+  Author:<input  id="author" type="text"></input>
+<br />
+
+
 </div>
+
+<h2><a href="#" id="addBox">Add Another Page</a></h2>
+
+<div id="newPage">
+    <p>
+       Startpage: <label for="page"><input type="text" id="pages" size="20" class="task" value="" /></label>
+    </p>
+</div>
+
+
+<script> 
+
+$(function() {
+        var firstBox = $('#newPage');
+        var i = $('#newPage p').size() + 1;
+        
+        $('#addBox').live('click', function() {
+                $('<p><label for="page"><input type="text" id="pages'+i+'" size="20" class="task"   /></label> <a href="#" id="removeBox">Remove</a></p>').appendTo(firstBox);
+                i++;
+                return false;
+        });
+        
+        $('#removeBox').live('click', function() { 
+                if( i > 2 ) {
+                        $(this).parents('p').remove();
+                        i--;
+                }
+                return false;
+        });
+});
+
+</script>
