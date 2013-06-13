@@ -267,7 +267,7 @@ class PagesController < ApplicationController
     content = params[:content]
     parsed_page = WikiCloth::Parser.new(:data => content, :noedit => true)
     parsed_page.sections.first.auto_toc = false
-    WikiCloth::Parser.context = @page.namespace
+    WikiCloth::Parser.context = {:ns => @page.namespace, :title => @page.title}
     # define links pointing to pages without content
     html = parsed_page.to_html
     all_page_uris = Page.get_all_pages_uris

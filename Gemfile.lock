@@ -8,7 +8,7 @@ GIT
 
 GIT
   remote: git://github.com/avaranovich/wikicloth.git
-  revision: fae3aac05c55c9fda9d5fd2dc44a319b33ca730b
+  revision: 7a852103765aa47e4e5f494ee5a22cd414f0886f
   specs:
     wikicloth (0.8.0)
       builder
@@ -24,7 +24,7 @@ GIT
 
 GIT
   remote: git://github.com/ruby-rdf/rdf-rdfxml.git
-  revision: f06e2f5721b8c4fc634a9d4d96a5d27f516945f1
+  revision: 6bf918debc304cecf3d4efed5fc7eac7df2b0306
   specs:
     rdf-rdfxml (1.0.1)
       rdf (>= 1.0)
@@ -32,7 +32,7 @@ GIT
 
 GIT
   remote: git://github.com/ruby-rdf/rdf.git
-  revision: 1e4bd9a92deda37002cad4374b779017e993dcfc
+  revision: 3e228acb82b9cdbc6814f8ec9790b83ebc0d5d03
   specs:
     rdf (1.0.7)
       addressable (>= 2.2)
@@ -123,7 +123,7 @@ GEM
     expression_parser (0.9.0)
     faraday (0.8.7)
       multipart-post (~> 1.1)
-    font-awesome-rails (3.1.1.3)
+    font-awesome-rails (3.2.0.0)
       railties (>= 3.2, < 5.0)
     font-awesome-sass-rails (3.0.2.2)
       railties (>= 3.1.1)
@@ -205,7 +205,7 @@ GEM
     net-ssh-gateway (1.2.0)
       net-ssh (>= 2.6.5)
     newrelic_rpm (3.6.2.96)
-    nokogiri (1.5.9)
+    nokogiri (1.5.10)
     ntlm-http (0.1.1)
     oauth2 (0.8.1)
       faraday (~> 0.8)
