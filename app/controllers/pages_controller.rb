@@ -290,7 +290,8 @@ class PagesController < ApplicationController
       redirect_to "/wiki/"
       flash[:notice] = 'Please write something, if you want to search something'
     else
-      respond_with Page.gateway_and_login.search(@query_string)
+      @search_results = Page.gateway_and_login.search(@query_string)
+      respond_with @search_results
     end
   end
 
