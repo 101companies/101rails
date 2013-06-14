@@ -2,10 +2,11 @@ class PagesController < ApplicationController
 
   respond_to :json, :html
 
-  # methods, that need to check permissions
-  #load_and_authorize_resource :only => [:delete, :rename, :update]
-
+  # order of next two lines os very important!
+  # before_filter need to be before load_and_authorize_resource
   before_filter :get_the_page
+  # methods, that need to check permissions
+  load_and_authorize_resource :only => [:delete, :rename, :update, :clean_cache]
 
   def get_the_page
 
