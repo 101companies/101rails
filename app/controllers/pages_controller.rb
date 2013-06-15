@@ -92,7 +92,8 @@ class PagesController < ApplicationController
       if page.nil?
         return nil
       end
-      RDF::URI.new("http://101companies.org/resources/#{page.namespace.downcase.pluralize}/#{page.title.sub(' ', '_')}")
+      RDF::URI.new(
+          "http://101companies.org/resources/#{page.namespace.downcase.pluralize}/#{page.title.sub(' ', '_')}")
     end
   end
 
@@ -220,7 +221,8 @@ class PagesController < ApplicationController
     rdf = self.get_rdf_graph(title, directions)
     rdf.each do |resource|
       p = "#{resource.predicate.scheme}://#{resource.predicate.host}#{resource.predicate.path}"
-      o = resource.object.kind_of?(RDF::Literal) ? resource.object.object : "#{resource.object.scheme}://#{resource.object.host}#{resource.object.path}"
+      o = resource.object.kind_of?(RDF::Literal) ?
+          resource.object.object : "#{resource.object.scheme}://#{resource.object.host}#{resource.object.path}"
       if directions
         s = "#{resource.subject}"
         json.push ({
