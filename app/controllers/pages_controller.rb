@@ -284,8 +284,8 @@ class PagesController < ApplicationController
       # if in list of all pages doesn't exists link -> define css class missing-link
       class_attribute = all_page_uris.include?(nice_link) ?  '' : 'class="missing-link"'
       # rewrite all links in html of wiki page
-      html.gsub!("<a href=\"#{link}\"", "<a " + class_attribute + " href=\"/wiki/#{Page.unescape_wiki_url link}\"")
-      html.gsub!("<a href=\"#{link.camelize(:lower)}\"", "<a " + class_attribute + " href=\"/wiki/#{Page.unescape_wiki_url link}\"")
+      html.gsub!("<a href=\"#{link}\"", "<a " + class_attribute + " href=\"/wiki/#{Page.nice_wiki_url link}\"")
+      html.gsub!("<a href=\"#{link.camelize(:lower)}\"", "<a " + class_attribute + " href=\"/wiki/#{Page.nice_wiki_url link}\"")
     end
 
     render :json => {:success => true, :html => html.html_safe}

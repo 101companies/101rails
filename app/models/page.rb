@@ -171,6 +171,11 @@ class Page
     page
   end
 
+  # link for using in html rendering
+  def self.nice_wiki_url title
+    return (Page.unescape_wiki_url title).gsub(' ', '_')
+  end
+
   def create_wiki_parser
     # TODO: change, very dirty!, dup
     self.instance_eval { class << self; self end }.send(:attr_accessor, "wiki")
