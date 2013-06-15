@@ -31,9 +31,15 @@ class PagesController < ApplicationController
 
     # check page existence
     if @page == nil
-      flash[:error] = "Page wasn't not found. Redirected to main wiki page"
-      # TODO: different formats
-      redirect_to '/wiki'
+      respond_to do |format|
+        format.html {
+          flash[:error] = "Page wasn't not found. Redirected to main wiki page"
+          redirect_to '/wiki'
+        }
+        format.json {
+          render :json => {success: false}, :status => 404
+        }
+      end
     end
 
   end
