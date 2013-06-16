@@ -24,12 +24,12 @@ class PagesController < ApplicationController
     # if user can create page -> create new
     if can? :create, Page.new
       @page = Page.find_or_create_page full_title
-    # else this page doesn't exist
+    # else find existing page from db
     else
       @page = Page.find_by_full_title full_title
     end
 
-    # check page existence
+    # if no page created/found
     if @page == nil
       respond_to do |format|
         format.html {
