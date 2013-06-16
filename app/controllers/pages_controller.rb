@@ -34,7 +34,7 @@ class PagesController < ApplicationController
       respond_to do |format|
         format.html {
           flash[:error] = "Page wasn't not found. Redirected to main wiki page"
-          redirect_to '/wiki'
+          go_to_homepage
         }
         format.json {
           render :json => {success: false}, :status => 404
@@ -294,7 +294,7 @@ class PagesController < ApplicationController
   def search
     @query_string = params[:q]
     if @query_string == ''
-      redirect_to "/wiki/"
+      go_to_homepage
       flash[:notice] = 'Please write something, if you want to search something'
     else
       @search_results = Page.gateway_and_login.search(@query_string)

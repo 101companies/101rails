@@ -41,7 +41,7 @@ class AuthenticationsController < ApplicationController
     @authentication = current_user.authentications.find(params[:id])
     @authentication.destroy
     flash[:notice] = t(:successfully_destroyed_authentication)
-    redirect_to '/wiki'
+    go_to_homepage
   end
 
   # try again when authentication failed.

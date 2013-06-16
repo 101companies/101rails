@@ -27,7 +27,7 @@ Wiki::Application.routes.draw do
   resources :users, :only => [:show, :index]
 
   # pages routes
-  get '/wiki' => 'pages#show'
+  get '/wiki' => redirect("/wiki/@project")
   match '/wiki/clean_cache/:id' => 'pages#clean_cache' , :constraints => { :id => /.*/ }
   match '/wiki/:id' => 'pages#show' , :constraints => { :id => /.*/ }
 
