@@ -99,7 +99,7 @@ class PagesController < ApplicationController
   end
 
   def get_rdf_graph(title, directions=false)
-     @page = Page.find_by_full_title(title)
+     @page = Page.find_by_full_title Page.unescape_wiki_url title
 
      uri = self.page_to_resource title
      #TODO: unused variable
