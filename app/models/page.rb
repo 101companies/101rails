@@ -110,13 +110,35 @@ class Page
 
     # if title was changes -> rename page
     if new_title!=self.full_title
-      #TODO: remove old page
+      # save old title
+      old_title =  self.full_title
+      # set new title to page
       nt = Page.retrieve_namespace_and_title new_title
       self.title = nt['title']
       self.namespace = nt['namespace']
+      # rewrite backlinks
+      # TODO: rewrite clearer
+      Page.gateway.backlinks(Page.escape_wiki_url old_title).each do |backlink|
+        related_page = Page.find_by_full_title Page.unescape_wiki_url backlink
+        if !related_page.nil?
+          related_page.rewrite_internal_links old_title, self.full_title
+        else
+          Rails.logger.info "Couldn't find page with link " + backlink
+        end
+      end
+      # delete page in mediawiki by old title
+      Page.gateway_and_login.delete old_title
     end
 
-    # rewrite triples for content
+    # update content on mediawiki
+    self.update_wiki_content content
+
+    # save the changes to page
+    self.save
+
+  end
+
+  def update_wiki_content content
     content = remove_namespace_triples(content)
     content = add_namespace_triple(content)
 
@@ -124,15 +146,6 @@ class Page
 
     # save page to wiki
     Page.gateway_and_login.edit(self.full_title, content)
-
-    #new_page = Page.find_or_create_page(to)
-    #new_page.change(content)
-    #rewrite_backlinks(to)
-    #new_page.retrieve_namespace_and_title to
-    #new_page.save
-
-    # save changes
-    self.save
 
   end
 
@@ -217,33 +230,31 @@ class Page
     end
   end
 
+  # TODO: remove after content migration
   def rewrite_link_name(from, to)
     from[0].downcase == from[0] ? to[0,1].downcase + to[1..-1] : to
   end
 
+  # TODO: remove after content migration
   def rewrite_internal_links(from, to)
     regex = /(\[\[:?)([^:\]\[]+::)?(#{Regexp.escape(from.gsub("_", " "))})(\s*)(\|[^\[\]]+)?(\]\])/i
-    new_content = content.gsub("_", " ").gsub(regex) do |link|
+    new_content = self.content.gsub("_", " ").gsub(regex) do |link|
       "#{$1}#{$2}#{rewrite_link_name($3, to)}#{$4}#{$5}#{$6}"
     end
-    change(new_content)
+    update_wiki_content new_content
   end
 
-  def rewrite_backlinks(to)
-    backlinks.each do |backlink|
-      bl_page = Page.new.create(backlink)
-      bl_page.rewrite_internal_links(self.full_title, to)
-    end
-  end
-
+  # TODO: remove after content migration
   def add_triple_link(content, triple)
     content.sub(/\s+\Z/, '') + "\n* " + '[[' + triple + ']]'
   end
 
+  # TODO: remove after content migration
   def remove_namespace_triples(content)
     content.sub(/\*\s*\[\[instanceOf::Namespace:([^\[\]]+)\]\]/, '')
   end
 
+  # TODO: remove after content migration
   def add_namespace_triple(content)
     parsed_page = WikiCloth::Parser.new(:data => content, :noedit => true)
     parsed_page.to_html

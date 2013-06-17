@@ -358,24 +358,23 @@ class PagesController < ApplicationController
   def update
     sections = params[:sections]
     content = params[:content]
+    # new title is same as title, if renaming wan't triggered
     new_full_title = Page.unescape_wiki_url params[:newTitle]
-    @page.update_or_rename_page new_full_title, content, sections
     # TODO: has it worked at all?
     #update_history(title)
-    render :json => {:success => true}
-  end
-
-  def rename
     begin
-      new_full_title = Page.unescape_wiki_url params[:newTitle]
-      sections = params[:sections]
-      content = params[:content]
-      @page.update_or_rename_page new_full_title, content, sections
-      # TODO: has it worked at all?
-      #update_history(new_full_title)
-      render :json => {:success => true, :newtitle => new_full_title}
+      result = @page.update_or_rename_page new_full_title, content, sections
     rescue
-      render :json => {:success => false, :error => 'Renamed failed'}, :status => 409
+      result = false
+    end
+    # result is true -> all ok
+    # result is false -> smth failed
+    # if was performed 'rename' action
+    if new_full_title == @page.full_title
+      render :json => {:success => result, :newTitle => (Page.nice_wiki_url @page.full_title)}
+    else
+      # 'updated content' response
+      render :json => {:success => result}
     end
   end
 
