@@ -101,5 +101,6 @@ class Tours.Views.Tour extends Backbone.View
 
   savePage: (triggerEvent) ->
     triggerButton = @.getTriggerButton(triggerEvent)
+    
     console.log(triggerButton)
     
