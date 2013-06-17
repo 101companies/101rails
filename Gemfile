@@ -25,6 +25,7 @@ gem 'rails-backbone', '0.9.0'
 gem 'haml-rails', '0.4'
 
 # database
+# TODO: before upgrade to 4.0 include mongoid-paranoia and mongoid-versioning
 gem 'mongoid', '3.1.4'
 
 # security
