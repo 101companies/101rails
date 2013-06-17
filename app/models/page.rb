@@ -61,10 +61,6 @@ class Page
     end
   end
 
-  def self.get_all_pages_uris
-    Page.all.map {|p| Page.escape_wiki_url p.full_title}
-  end
-
   # if no namespace given
   # starts with '@' ? -> use namespace '101'
   # else -> use default namespace 'Concept'
@@ -185,8 +181,10 @@ class Page
   end
 
   # link for using in html rendering
+  # replace ' ' with '_'
+  # remove trailing spaces
   def self.nice_wiki_url title
-    return (Page.unescape_wiki_url title).gsub(' ', '_')
+    return (Page.unescape_wiki_url title).strip.gsub(' ', '_')
   end
 
   def create_wiki_parser

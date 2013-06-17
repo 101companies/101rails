@@ -21,6 +21,9 @@ class PagesController < ApplicationController
     # 'wikify' title param
     full_title = Page.unescape_wiki_url full_title
 
+    # remove trailing spaces
+    full_title.strip!
+
     # if user can create page -> create new
     if can? :create, Page.new
       @page = Page.find_or_create_page full_title
@@ -96,7 +99,7 @@ class PagesController < ApplicationController
 
   # get all titles as json
   def all
-    render :json => Page.get_all_pages_uris
+    render :json => Page.all.map {|p| Page.escape_wiki_url p.full_title}
   end
 
   def get_rdf_graph(title, directions=false)
@@ -280,12 +283,12 @@ class PagesController < ApplicationController
     WikiCloth::Parser.context = {:ns => @page.namespace, :title => @page.title}
     # define links pointing to pages without content
     html = parsed_page.to_html
-    all_page_uris = Page.get_all_pages_uris
+    all_pages_urls = Page.all.map {|p| Page.nice_wiki_url p.full_title}
     parsed_page.internal_links.each do |link|
       # nice link -> link-uri converted to readable words
-      nice_link = Page.escape_wiki_url link
+      nice_link = Page.nice_wiki_url link
       # if in list of all pages doesn't exists link -> define css class missing-link
-      class_attribute = all_page_uris.include?(nice_link) ?  '' : 'class="missing-link"'
+      class_attribute = all_pages_urls.include?(nice_link) ?  '' : 'class="missing-link"'
       # rewrite all links in html of wiki page
       # additionaly replace all whitespaces with underscore
       html.gsub! "<a href=\"#{link}\"",
