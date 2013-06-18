@@ -363,6 +363,8 @@ class PagesController < ApplicationController
     content = params[:content]
     # new title is same as title, if renaming wan't triggered
     new_full_title = Page.unescape_wiki_url params[:newTitle]
+    # flag for renaming
+    renaming = (new_full_title != @page.full_title)
     # TODO: has it worked at all?
     #update_history(title)
     begin
@@ -373,7 +375,7 @@ class PagesController < ApplicationController
     # result is true -> all ok
     # result is false -> smth failed
     # if was performed 'rename' action
-    if new_full_title == @page.full_title
+    if renaming
       render :json => {:success => result, :newTitle => (Page.nice_wiki_url @page.full_title)}
     else
       # 'updated content' response
