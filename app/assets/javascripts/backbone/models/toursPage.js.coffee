@@ -4,4 +4,4 @@ class Tours.Models.TourPage extends Backbone.Model
 
   defaults:
     title: ""
-    sections: []
+    sections: [] # sections
