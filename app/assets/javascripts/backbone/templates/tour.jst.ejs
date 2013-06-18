@@ -4,17 +4,27 @@
   <h2>Author</h2>
   <div>
   	<div class="viewDefault"><%= author %> <button class="btn-mini tourViewEdit" type="button"><i class="icon-pencil"></i></button></div>
-  	<div class="viewEdit" style="display:none;"><input class="span2" id="" type="text" value="<%= author %>" disabled> <button class="btn-mini tourViewDefault" type="button"><i class="icon-check"> ok</i></button></div>
+  	<div class="viewEdit" style="display:none;"><input class="span2 author" type="text" value="<%= author %>" disabled></div>
   </div>
   
   <h2>Pages</h2>
   <ul id="pages">
-    <% _.each(pages, function(p) { %>
-    <li>
-      <div class="viewDefault"><a href="/wiki/<%= p %>"><%= p.replace(/_/g, ' ') %></div>
-      <div class="viewEdit"><a href="/wiki/<%= p %>"><%= p.replace(/_/g, ' ') %></div>
-    </li>
+    <% _.each(pages, function(p) { 
+         i = 0%>
+     <li>
+      <div class="viewDefault" style="display:none;"><a href="/wiki/<%= p %>"><%= p.replace(/_/g, ' ') %></a></div>
+      <div class="viewEdit"><input class="pageTitle" value="<%= p %>"></div>
+      <ul class="sections">
+       <li class="section">
+        <div class="viewDefault" style="display:none;"><a href="/wiki/newPage#Section">Section</a></div>
+        <div class="viewEdit"><input name="sectionTitle" value="Section"></div>
+       </li>
+      </ul>
+      <button class="btn-mini tourAddSection" type="button"><i class="icon-plus"></i> Add Section</button>
+      <button class="btn-mini tourSavePage" type="button"><i class="icon-check"></i> Ok</button>
+     </li>
     <% }); %>
   </ul>
   <button class="btn tourAddPage" type="button"><i class="icon-plus"></i> Add Page</button>
+  <button class="btn tourSave" type="button"><i class="icon-check"></i> Save</button>
 </div>
