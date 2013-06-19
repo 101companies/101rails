@@ -22,8 +22,8 @@ class ContributionsController < ApplicationController
     @contribution.user = current_user
     @contribution.save
     #TODO: send email to gatekeeper and contributor
-    redirect_to  action: "index"
     flash[:notice] = "You have created new contribution. Please wait until it will be approved by gatekeepers."
+    redirect_to  action: "index"
   end
 
   def new
@@ -38,7 +38,7 @@ class ContributionsController < ApplicationController
         current_user.save
       end
     rescue
-      flash[:warning] = "We couldn't retrieve you github repos, please log out and log in again"
+      flash.now[:warning] = "We couldn't retrieve you github repos, please log out and log in again"
     end
 
     # retrieve repos of user

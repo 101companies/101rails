@@ -303,8 +303,8 @@ class PagesController < ApplicationController
   def search
     @query_string = params[:q]
     if @query_string == ''
-      go_to_homepage
       flash[:notice] = 'Please write something, if you want to search something'
+      go_to_homepage
     else
       @search_results = Page.gateway_and_login.search(@query_string)
       respond_with @search_results

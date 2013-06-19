@@ -7,14 +7,14 @@ class ApplicationController < ActionController::Base
   end
 
   def go_to_homepage
-    redirect_to('/wiki/@project')
+    redirect_to '/wiki/@project'
   end
 
   # handle non authorized 500 status from cancan
   rescue_from CanCan::AccessDenied do |exception|
     flash[:notice] = "Sorry, you aren't permitted to execute your last action =/"
     if request.referer
-      redirect_to(:back)
+      redirect_to :back
     else
       go_to_homepage
     end
