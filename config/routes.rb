@@ -13,7 +13,7 @@ Wiki::Application.routes.draw do
   get '/login_intro' => 'home#login_intro'
   get '/tours' => 'tours#index'
   get '/search' => 'pages#search'
-  match '/tours/:id' => 'tours#show'
+  match '/tours/:title' => 'tours#show'
 
   scope 'api/tours' do
     get ':title' => 'tours#show'

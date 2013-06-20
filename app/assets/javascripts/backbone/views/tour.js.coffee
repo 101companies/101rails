@@ -130,7 +130,9 @@ class Tours.Views.Tour extends Backbone.View
       
     console.log(pages)
 
-    @model.save({
-      author: author
-      pages: pages
-    })
+    @model.save(
+      {
+        author: author
+        pages: pages
+      }
+    )
