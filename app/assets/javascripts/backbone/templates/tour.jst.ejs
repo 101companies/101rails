@@ -3,22 +3,31 @@
   
   <h2>Author</h2>
   <div>
-  	<div class="viewDefault"><%= author %> <button class="btn-mini tourViewEdit" type="button"><i class="icon-pencil"></i></button></div>
+  	<div class="viewDefault"><%= author %>
+  	
+  	<%if (_.contains(Wiki.currentUser.get('actions'), "Edit")) {%>
+  	   <button class="btn-mini tourViewEdit" type="button"><i class="icon-pencil"> Edit</i></button>
+  	<%} else {%>
+  	   <button class="btn-mini tourViewEdit" type="button"><i class="icon-pencil"></i> View</button>
+  	<%}%>
+  	
+  	</div>
   	<div class="viewEdit" style="display:none;"><input class="span2 author" type="text" value="<%= author %>" disabled></div>
   </div>
   
   <h2>Pages</h2>
   <ul id="pages">
-    <% _.each(pages, function(p) { 
-         i = 0%>
+    <% _.each(pages, function(p) {%>
      <li>
-      <div class="viewDefault" style="display:none;"><a href="/wiki/<%= p %>"><%= p.replace(/_/g, ' ') %></a></div>
-      <div class="viewEdit"><input class="pageTitle" value="<%= p %>"></div>
+      <div class="viewDefault" style="display:none;"><a href="/wiki/<%= p.title %>"><%= p.title.replace(/_/g, ' ') %></a></div>
+      <div class="viewEdit"><input class="pageTitle" value="<%= p.title %>"></div>
       <ul class="sections">
+       <% _.each(p.sections, function(s) {%>
        <li class="section">
-        <div class="viewDefault" style="display:none;"><a href="/wiki/newPage#Section">Section</a></div>
-        <div class="viewEdit"><input name="sectionTitle" value="Section"></div>
+        <div class="viewDefault" style="display:none;"><a href="/wiki/<%= p.title %>#<%= s %>"><%= s %></a></div>
+        <div class="viewEdit"><input class="sectionTitle" value="<%= s %>"></div>
        </li>
+       <% }); %>
       </ul>
       <button class="btn-mini tourAddSection" type="button"><i class="icon-plus"></i> Add Section</button>
       <button class="btn-mini tourSavePage" type="button"><i class="icon-check"></i> Ok</button>
