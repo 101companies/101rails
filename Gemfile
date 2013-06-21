@@ -6,7 +6,6 @@ end
 # DO NOT ENTER GEMS WITHOUT GEM NUMBER!
 # OR I WILL CUT YOUR FINGER!
 
-source 'https://rubygems.org'
 gem 'rails', '3.2.13'
 
 # freezed, dependecy for rails_admin
@@ -21,6 +20,7 @@ end
 
 # frontend
 gem 'jquery-rails', '2.1.3'
+gem "jquery-ui-rails", "3.0.1"
 gem 'rails-backbone', '0.9.0'
 gem 'haml-rails', '0.4'
 
