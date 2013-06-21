@@ -4,8 +4,9 @@ class Tours.Views.Tour extends Backbone.View
   el: '#tour'
 
   events:
-    'click .tourViewEdit' : 'showEdit'
-    'click .tourViewDefault' : 'hideEdit'
+    'mouseover .viewDefault' : 'showEditButton'
+    'mouseout .viewDefault' : 'hideEditButton'
+    'click .tourShowEdit' : 'showEdit'
     'click .tourAddPage' : 'showAddPage'
     'click .tourAddSection' : 'showAddSection'
     'click .tourSave' : 'updateTour'
@@ -26,12 +27,30 @@ class Tours.Views.Tour extends Backbone.View
       #console.log(triggerElement.tagName)
       triggerButton = triggerButton.parentNode
     triggerButton
+    
+  getTriggerByClass: (triggerEvent, className) ->
+    triggerButton = triggerEvent.target
+    while (triggerButton.className != className)
+      #console.log(triggerElement.tagName)
+      triggerButton = triggerButton.parentNode
+    triggerButton
 
+  showEditButton: (triggerEvent) ->
+    triggerElement = @.getTriggerByClass(triggerEvent, 'viewDefault')
+    #console.log(triggerElement)
+    editButtons = $(triggerElement).find('.editButtons')
+    #console.log(editButton)
+    $(editButtons).css('display', 'inline')
+
+  hideEditButton: (triggerEvent) ->
+    triggerElement = @.getTriggerByClass(triggerEvent, 'viewDefault')
+    editButtons = $(triggerElement).find('.editButtons')
+    $(editButtons).css('display', 'none')
 
   showEdit: (triggerEvent) ->
     triggerElement = @.getTriggerButton(triggerEvent)
 
-    parent = triggerElement.parentNode.parentNode
+    parent = triggerElement.parentNode.parentNode.parentNode
     #console.log(parent)
 
     defaultBoxes = parent.getElementsByClassName('viewDefault')
@@ -52,38 +71,27 @@ class Tours.Views.Tour extends Backbone.View
       catch error
         console.log(error)
 
-  hideEdit: (triggerEvent) ->
-    triggerElement = @.getTriggerButton(triggerEvent)
-    parent = triggerElement.parentNode.parentNode
-    #console.log(parent)
-
-    defaultBoxes = parent.getElementsByClassName('viewDefault')
-    #console.log(defaultBoxes)
-    for position, defaultBox of defaultBoxes
-      try
-        #console.log(defaultBox)
-        defaultBox.style.display = 'block'
-      catch error
-        console.log(error)
-
-    editBoxes = parent.getElementsByClassName('viewEdit')
-    #console.log(editBoxes)
-    for position, editBox of editBoxes
-      try
-        #console.log(editBox)
-        editBox.style.display = 'none'
-      catch error
-        console.log(error)
-
   showAddPage: ->
     pageList = $.find('#pages')
     newPage = document.createElement('li')
     $(newPage).addClass('page')
-    newPage.innerHTML = '<div class="viewDefault" style="display:none;"><a href="/wiki/newPage">new Page</a></div>\n'+
-                        '<div class="viewEdit"><input class="pageTitle" value="new Page"></div>\n'+
+    newPage.innerHTML = '<div>\n'+
+                        ' <div class="viewDefault">'+
+                        '  <a class="titleLink" href="/wiki/newPage">new Page</a>\n'+
+                        '  <span class="editButtons">\n' +
+                        '   <button class="btn-mini tourShowEdit" type="button"><i class="icon-pencil"></i></button><button class="btn-mini tourRemovePage" type="button"><i class="icon-remove"></i></button>\n'+
+                        '  </span>\n'+
+                        ' </div>\n'+
+                        ' <div class="viewEdit"><input class="pageTitle" value="new Page"></div>\n'+
+                        '</div>\n'+
                         '<ul class="sections">\n'+
                         ' <li class="section">\n'+
-                        '  <div class="viewDefault" style="display:none;"><a href="/wiki/newPage#Section">Section</a></div>\n'+
+                        '  <div class="viewDefault">\n'+
+                        '   <a class="sectionLink" href="/wiki/newPage#Section">Section</a>\n'+
+                        '   <span class="editButtons">\n' +
+                        '    <button class="btn-mini tourShowEdit" type="button"><i class="icon-pencil"></i></button><button class="btn-mini tourRemoveSection" type="button"><i class="icon-remove"></i></button>\n'+
+                        '   </span>\n'+
+                        '  </div>\n'+
                         '  <div class="viewEdit"><input class="sectionTitle" value="Section"></div>\n'+
                         ' </li>\n'+
                         '</ul>\n'+
@@ -96,8 +104,13 @@ class Tours.Views.Tour extends Backbone.View
     #console.log(sectionsList)
     newSection = document.createElement('li')
     $(newSection).addClass('section')
-    newSection.innerHTML = '  <div class="viewDefault" style="display:none;"><a href="/wiki/newPage#Section">Section</a></div>\n'+
-                           '  <div class="viewEdit"><input class="sectionTitle" value="Section"></div>\n'
+    newSection.innerHTML = '<div class="viewDefault">\n'+
+                           ' <a class="sectionLink" href="/wiki/newPage#Section">Section</a>\n'+
+                           ' <span class="editButtons">\n' +
+                           '  <button class="btn-mini tourShowEdit" type="button"><i class="icon-pencil"></i></button><button class="btn-mini tourRemoveSection" type="button"><i class="icon-remove"></i></button>\n'+
+                           ' </span>\n'+
+                           '</div>\n'+
+                           '<div class="viewEdit"><input class="sectionTitle" value="Section"></div>\n'
     sectionsList.appendChild(newSection)
 
 
@@ -112,6 +125,10 @@ class Tours.Views.Tour extends Backbone.View
     for pageItem in $(pageItems)
       pageTitle = $(pageItem).find(".pageTitle")[0].value
       console.log(pageTitle)
+      pageTitleLink = $(pageItem).find(".titleLink")[0]
+      console.log($(pageTitleLink))
+      $(pageTitleLink).attr('href', '/wiki/'+pageTitle);
+      $(pageTitleLink).text(pageTitle);
       sectionList =  $(pageItem).find(".sections")[0]
       sectionItems = $(sectionList).find(".section")
       sections = []
@@ -119,6 +136,9 @@ class Tours.Views.Tour extends Backbone.View
 
       for sectionItem in $(sectionItems)
         sectionTitle = $(sectionItem).find(".sectionTitle")[0].value
+        sectionLink = $(sectionItem).find(".sectionLink")[0]
+        $(sectionLink).attr('href', '/wiki/'+pageTitle+'#'+sectionTitle);
+        $(sectionLink).text('#'+sectionTitle);
         sections[j++] = sectionTitle
 
       pages[i++] = new Tours.Models.TourPage(
@@ -131,4 +151,17 @@ class Tours.Views.Tour extends Backbone.View
         author: author
         pages: pages
       }
+      success: ->
+        console.log(@model)
+        for pageItem in $(pageItems)
+          editViews = $(pageItem).find('.viewEdit')
+          #console.log(editViews)
+          
+          for editView in $(editViews)
+            console.log($(editView))
+            $(editView).css('display', 'none')
+            
+          defaultViews = $(pageItem).find('.viewDefault')
+          for defaultView in $(defaultViews)
+            $(defaultView).css('display', 'block')
     )

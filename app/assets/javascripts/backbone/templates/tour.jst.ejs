@@ -16,24 +16,41 @@
   </div>
   
   <h2>Pages</h2>
-  <ul id="pages">
+  <ul id="pages" class="sortable">
     <% _.each(pages, function(p) {%>
      <li>
-      <div class="viewDefault" style="display:none;"><a href="/wiki/<%= p.title %>"><%= p.title.replace(/_/g, ' ') %></a></div>
-      <div class="viewEdit"><input class="pageTitle" value="<%= p.title %>"></div>
+      <div>
+       <div class="viewDefault">
+        <a class="titleLink" class="titleLink" href="/wiki/<%= p.title.replace(/_/g, ' ') %>"><%= p.title %></a>
+        <span class="editButtons">
+         <button class="btn-mini tourShowEdit" type="button"><i class="icon-pencil"></i></button><button class="btn-mini tourRemovePage" type="button"><i class="icon-remove"></i></button>
+        </span>
+       </div>
+       <div class="viewEdit"><input class="pageTitle" value="<%= p.title %>"></div>
+      </div>
       <ul class="sections">
        <% _.each(p.sections, function(s) {%>
-       <li class="section">
-        <div class="viewDefault" style="display:none;"><a href="/wiki/<%= p.title %>#<%= s %>"><%= s %></a></div>
-        <div class="viewEdit"><input class="sectionTitle" value="<%= s %>"></div>
-       </li>
+        <li class="section">
+         <div class="viewDefault">
+          <a class="sectionLink" href="/wiki/<%= p.title.replace(/_/g, ' ') %>#<%= s.replace(/_/g, ' ') %>"><%= s %></a>
+          <span class="editButtons">
+           <button class="btn-mini tourShowEdit" type="button"><i class="icon-pencil"></i></button><button class="btn-mini tourRemoveSection" type="button"><i class="icon-remove"></i></button>
+          </span>
+         </div>
+         <div class="viewEdit"><input class="sectionTitle" value="<%= s %>"></div>
+        </li>
        <% }); %>
       </ul>
       <button class="btn-mini tourAddSection" type="button"><i class="icon-plus"></i> Add Section</button>
-      <button class="btn-mini tourSavePage" type="button"><i class="icon-check"></i> Ok</button>
      </li>
     <% }); %>
   </ul>
+  <%
+   $(function() {
+     $("#pages").sortable();
+     $("#pages .viewDefault").disableSelection();
+   });
+  %>
   <button class="btn tourAddPage" type="button"><i class="icon-plus"></i> Add Page</button>
   <button class="btn tourSave" type="button"><i class="icon-check"></i> Save</button>
 </div>
