@@ -77,7 +77,9 @@ class Tours.Views.Tour extends Backbone.View
     pageList = $.find('#pages')
     $(pageList).append(
       '<li class="page">\n'+
+      ' <hr>\n'+
       ' <div>\n'+
+      '  <button class="btn btn-small tourAddSection" type="button"><i class="icon-plus"></i> Add Section</button>\n'+
       '  <div class="viewDefault">'+
       '   <a class="titleLink" href="/wiki/newPage">new Page</a>\n'+
       '   <span class="editButtons">\n' +
@@ -97,24 +99,24 @@ class Tours.Views.Tour extends Backbone.View
       '   <div class="viewEdit"><input class="sectionTitle" value="Section"></div>\n'+
       '  </li>\n'+
       ' </ul>\n'+
-      ' <button class="btn-mini tourAddSection" type="button"><i class="icon-plus"></i> Add Section</button>\n'
       '</li>\n'
     )
 
   showAddSection: (triggerEvent) ->
-    triggerButton = @.getTriggerButton(triggerEvent)
-    sectionsList = triggerButton.parentNode.getElementsByClassName('sections').item(0)
+    triggerElement = @.getTriggerByClass(triggerEvent, 'page')
+    sectionsList = $(triggerElement).find('.sections')
     #console.log(sectionsList)
-    newSection = document.createElement('li')
-    $(newSection).addClass('section')
-    newSection.innerHTML = '<div class="viewDefault">\n'+
-                           ' <a class="sectionLink" href="/wiki/newPage#Section">#Section</a>\n'+
-                           ' <span class="editButtons">\n' +
-                           '  <button class="btn-mini tourShowEdit" type="button"><i class="icon-pencil"></i></button><button class="btn-mini tourRemoveSection" type="button"><i class="icon-remove"></i></button>\n'+
-                           ' </span>\n'+
-                           '</div>\n'+
-                           '<div class="viewEdit"><input class="sectionTitle" value="Section"></div>\n'
-    sectionsList.appendChild(newSection)
+    $(sectionsList).append(
+      '<li class="section">\n'+
+      ' <div class="viewDefault">\n'+
+      '  <a class="sectionLink" href="/wiki/newPage#Section">#Section</a>\n'+
+      '  <span class="editButtons">\n' +
+      '   <button class="btn-mini tourShowEdit" type="button"><i class="icon-pencil"></i></button><button class="btn-mini tourRemoveSection" type="button"><i class="icon-remove"></i></button>\n'+
+      '  </span>\n'+
+      ' </div>\n'+
+      ' <div class="viewEdit"><input class="sectionTitle" value="Section"></div>\n'+
+      '</li>\n'
+    )
 
   removePage: (triggerEvent) ->
     triggerElement = @.getTriggerByClass(triggerEvent, 'page')
@@ -126,10 +128,12 @@ class Tours.Views.Tour extends Backbone.View
 
   updateTour: (triggerEvent) ->
     authorElement = $.find(".author")[0]
-    authorEdit = $(authorElement).find('.viewEdit')[0]
-    author = $(authorEdit).find(".authorName")[0].value
-    authorDesciption = $(authorElement).find('.viewDefault')[0]
-    authorDesciption.text('by <a href="https://github.com/'+author+'">'+author+'</a>')
+    authorEditView = $(authorElement).find('.viewEdit')[0]
+    author = $(authorEditView).find(".authorName")[0].value
+    authorDefaultView = $(authorElement).find('.viewDefault')[0]
+    authorLink = $(authorDefaultView).find('a')[0]
+    $(authorLink).text(author)
+    $(authorLink).attr('href', 'https://github.com/'+author+'/')
     #console.log(author)
     
     tourElement = $.find("#tour")[0]
@@ -170,8 +174,8 @@ class Tours.Views.Tour extends Backbone.View
       success: ->
         console.log(@model)
         
-        $(authorElement).find('.viewEdit')[0].css('display', 'none')
-        $(authorElement).find('.viewDefault')[0].css('display', 'block')
+        $(authorEditView).css('display', 'none')
+        $(authorDefaultView).css('display', 'block')
         
         for pageItem in $(pageItems)
           editViews = $(pageItem).find('.viewEdit')
