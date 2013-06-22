@@ -1,3 +1,14 @@
+<%= stylesheet_link_tag 'tours' %>
+<script type="text/javascript">
+	Wiki.currentUser = new Wiki.Models.User(<%= j current_user.to_json.html_safe %>);
+
+	<% if can? :update, @page %>
+		Wiki.currentUser.set('actions', ['View', 'Edit'])
+	<% else %>
+		Wiki.currentUser.set('actions', ['View'])
+	<% end %>
+</script>
+
 <h2>List of all guided tours:</h2>
 <div id="tours">
 <ul id="tourlist" style="list-style-type: none"></ul>
