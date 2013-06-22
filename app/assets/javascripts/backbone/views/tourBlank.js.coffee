@@ -2,10 +2,10 @@ class Tours.Views.TourBlank extends Backbone.View
   template : JST['backbone/templates/tourBlank']
 
   el: '#tour'
-  
+
   events:
     'click .tourCreateNew' : 'createNewTour'
-    
+
   initialize: ->
     @title = Tours.title
     @render()
@@ -15,9 +15,15 @@ class Tours.Views.TourBlank extends Backbone.View
     #html = @template(title: @model.get('title'), author: @model.get('author'), pages: @model.get('pages'))
     #html = @template(title: @model.get('title'))
     $(@el).html(html)
-    
-  createNewTour: (a, b, c) ->
-    @newTour = new Tours.Models.Tour(title: @title, author: 'uknown')
+
+  createNewTour: (a) ->
+
+
+    @newTour = new Tours.Models.Tour(title: @title)
+    @newTour.save({
+      author: Wiki.currentUser.get('name'),
+      pages: $("#pages").val()
+    })
     console.log(@newTour.toJSON())
     @newTour.save()
     window.location.reload()

@@ -1,0 +1,24 @@
+.tour {
+	/*max-width: 700px ;*/
+}
+
+.tour .viewDefault {
+  display: block;
+}
+
+.tour .viewEdit {
+  display: none ;
+}
+
+.tour li {
+	margin: 0px ;
+	padding: 0px ;
+}
+
+.tour .editButtons {
+	display: none ;
+}
+
+.tour .tourAddSection {
+	float: right ;
+}
