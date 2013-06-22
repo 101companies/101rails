@@ -209,10 +209,12 @@ class Page
       Rails.cache.write(self.full_title, content)
     end
     # get rid of mediawiki's link expansion
-    regex = /(\[\[:?)([^:\]\[]+::)?([^\[\]\|]+)(\s*)(\|[^\[\]]*)?(\]\])/
-    content = content.gsub("_", " ").gsub(regex) do |link|
-      title = $3.split(":")[1..-1].join(":")
-      ("|" + title == $5) ? "#{$1}#{$2}#{$3}#{$4}|#{$6}" : link
+    if content
+      regex = /(\[\[:?)([^:\]\[]+::)?([^\[\]\|]+)(\s*)(\|[^\[\]]*)?(\]\])/
+      content = content.gsub("_", " ").gsub(regex) do |link|
+        title = $3.split(":")[1..-1].join(":")
+        ("|" + title == $5) ? "#{$1}#{$2}#{$3}#{$4}|#{$6}" : link
+      end
     end
     return content
   end

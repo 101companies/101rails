@@ -10,7 +10,8 @@ class Wiki.Views.Page extends Backbone.View
     'click #createSection' : 'createSection'
     'click #pageCancelButton' : 'cancel'
     'click #pageSourceButton' : 'showSource'
-    'click #pageDeleteButton' : 'delete'
+    'click #pageDeleteButton' : 'initdelete'
+    'click #pageDeleteSubmit' : 'delete'
     'click #pageSaveButton' : 'save'
     'click #pageRenameButton' : 'initRename'
     'click #pageRenameSubmit' : 'rename'
@@ -200,6 +201,9 @@ class Wiki.Views.Page extends Backbone.View
   cancel: (button) ->
     @toggleEdit(false)
     @fillEditor()
+
+  initdelete: ->
+    $('#deletionmodal').modal()
 
   delete: ->
     @model.destroy(success: ->
