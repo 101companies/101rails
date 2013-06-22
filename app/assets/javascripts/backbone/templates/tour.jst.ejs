@@ -1,24 +1,42 @@
+<%
+ function isAdmin() {
+  return (_.contains(Wiki.currentUser.get('actions'), "Edit")) ;
+ }
+%>
+
 <div class="tour">
   <h1><%= title %></h1>
-  
-  <h2>Author</h2>
-  <div>
-  	<div class="viewDefault"><%= author %>
-  	
-  	<%if (_.contains(Wiki.currentUser.get('actions'), "Edit")) {%>
-  	   <button class="btn-mini tourViewEdit" type="button"><i class="icon-pencil"> Edit</i></button>
-  	<%} else {%>
-  	   <button class="btn-mini tourViewEdit" type="button"><i class="icon-pencil"></i> View</button>
-  	<%}%>
-  	
+  <h3 class="author">
+  	<div class="viewDefault">
+  	  by <a href="https://github.com/<%= author %>"><%= author %></a>
+  	  <%if (isAdmin()) {%>
+  	    <span class="editButtons">
+          <button class="btn-mini tourShowEdit" type="button"><i class="icon-pencil"></i></button>
+        </span>
+      <%}%>
+    </div>
+  	<div class="viewEdit" style="display:none;">
+  	  by <input class="span2 authorName" type="text" value="<%= author %>">
   	</div>
-  	<div class="viewEdit" style="display:none;"><input class="span2 author" type="text" value="<%= author %>" disabled></div>
-  </div>
+  </h3>
+  
+  <%
+   $(function() {
+     $('#pages').sortable({
+       items:'.page',
+       containment: 'parent', 
+       cursor: 'move',
+       axis: 'y',
+       tolerance: 'pointer',
+       delay: 150
+     });
+   });
+  %>
   
   <h2>Pages</h2>
   <ul id="pages" class="sortable">
     <% _.each(pages, function(p) {%>
-     <li>
+     <li class="page">
       <div>
        <div class="viewDefault">
         <a class="titleLink" class="titleLink" href="/wiki/<%= p.title.replace(/_/g, ' ') %>"><%= p.title %></a>
@@ -28,29 +46,25 @@
        </div>
        <div class="viewEdit"><input class="pageTitle" value="<%= p.title %>"></div>
       </div>
-      <ul class="sections">
-       <% _.each(p.sections, function(s) {%>
-        <li class="section">
-         <div class="viewDefault">
-          <a class="sectionLink" href="/wiki/<%= p.title.replace(/_/g, ' ') %>#<%= s.replace(/_/g, ' ') %>"><%= s %></a>
-          <span class="editButtons">
-           <button class="btn-mini tourShowEdit" type="button"><i class="icon-pencil"></i></button><button class="btn-mini tourRemoveSection" type="button"><i class="icon-remove"></i></button>
-          </span>
-         </div>
-         <div class="viewEdit"><input class="sectionTitle" value="<%= s %>"></div>
-        </li>
-       <% }); %>
-      </ul>
+      <div>
+       <ul id="sections" class="sections">
+        <% _.each(p.sections, function(s) {%>
+         <li class="section">
+          <div class="viewDefault">
+           <a class="sectionLink" href="/wiki/<%= p.title.replace(/_/g, ' ') %>#<%= s.replace(/_/g, ' ') %>">#<%= s %></a>
+           <span class="editButtons">
+            <button class="btn-mini tourShowEdit" type="button"><i class="icon-pencil"></i></button><button class="btn-mini tourRemoveSection" type="button"><i class="icon-remove"></i></button>
+           </span>
+          </div>
+          <div class="viewEdit"><input class="sectionTitle" value="<%= s %>"></div>
+         </li>
+        <% }); %>
+       </ul>
+      </div>
       <button class="btn-mini tourAddSection" type="button"><i class="icon-plus"></i> Add Section</button>
      </li>
     <% }); %>
   </ul>
-  <%
-   $(function() {
-     $("#pages").sortable();
-     $("#pages .viewDefault").disableSelection();
-   });
-  %>
   <button class="btn tourAddPage" type="button"><i class="icon-plus"></i> Add Page</button>
   <button class="btn tourSave" type="button"><i class="icon-check"></i> Save</button>
 </div>
