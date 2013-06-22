@@ -1,3 +1,7 @@
+.tour {
+	/*max-width: 700px ;*/
+}
+
 .tour .viewDefault {
   display: block;
 }
@@ -11,6 +15,10 @@
 	padding: 0px ;
 }
 
-.editButtons {
+.tour .editButtons {
 	display: none ;
+}
+
+.tour .tourAddSection {
+	float: right ;
 }
