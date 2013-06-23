@@ -1,6 +1,8 @@
 class Wiki.Views.Triples extends Backbone.View
 
   expandableTemplate: JST['backbone/templates/expandable']
+  externalTriples: []
+  externalTriplesPrefixes: {}
 
   render: ->
     self = @
@@ -44,18 +46,33 @@ class Wiki.Views.Triples extends Backbone.View
     tripleview = new Wiki.Views.Triple(model: triple, el: el)
     tripleview.render()
 
+  registerExternalTriple: (triple) ->
+    @externalTriples.push(triple)
+    split = triple.get('node').split("/")
+    domain = split[2].trim()
+    if not @externalTriplesPrefixes[domain]
+      @externalTriplesPrefixes[domain] = {}
+    if not @externalTriplesPrefixes[domain][_.last(split)]
+      @externalTriplesPrefixes[domain][_.last(split)] = 1
+    else
+      @externalTriplesPrefixes[domain][_.last(split)]++
+
   addExternalTriple: (triple) ->
+    split = triple.get('node').split("/")
     tripleview = new Wiki.Views.ExTriple(model: triple)
-    tripleview.render()
+    tripleview.render(@externalTriplesPrefixes[split[2].trim()][_.last(split)] > 1)
 
   addTriple: (triple) ->
     if @is101Triple(triple)
       @addInternalTriple(triple)
     else
-      @addExternalTriple(triple)
+      @registerExternalTriple(triple)
 
   addAll: ->
     self = @
     $(@el).find('.section-content-parsed').html('')
     $.each @model.models.sort(self.tripleOrdering), (i, triple) ->
       self.addTriple(triple)
+    $.each @externalTriples, (i, triple) ->
+      self.addExternalTriple(triple)
+
