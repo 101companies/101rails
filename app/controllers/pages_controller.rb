@@ -263,7 +263,15 @@ class PagesController < ApplicationController
     end
 
     respond_to do |format|
-      format.html { render :html => @page }
+      format.html {
+        # if need redirect? -> wiki url conventions -> do a redirect
+        good_link = Page.nice_wiki_url @page.full_title
+        if good_link != params[:id]
+          redirect_to '/wiki/'+ good_link and return
+        end
+        # no redirect? -> render the page
+        render :html => @page
+      }
       format.json { render :json => {
         'id'        => @page.full_title,
         'content'   => @page.content,
