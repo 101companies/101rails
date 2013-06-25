@@ -236,12 +236,10 @@ class Page
     end
   end
 
-  # TODO: remove after content migration
   def rewrite_link_name(from, to)
     from[0].downcase == from[0] ? to[0,1].downcase + to[1..-1] : to
   end
 
-  # TODO: remove after content migration
   def rewrite_internal_links(from, to)
     regex = /(\[\[:?)([^:\]\[]+::)?(#{Regexp.escape(from.gsub("_", " "))})(\s*)(\|[^\[\]]*)?(\]\])/i
     new_content = self.content.gsub("_", " ").gsub(regex) do |link|
@@ -250,7 +248,6 @@ class Page
     update_wiki_content new_content
   end
 
-  # TODO: remove after content migration
   def add_triple_link(content, triple)
     content.sub(/\s+\Z/, '') + "\n* " + '[[' + triple + ']]'
   end
