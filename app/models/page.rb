@@ -243,7 +243,7 @@ class Page
 
   # TODO: remove after content migration
   def rewrite_internal_links(from, to)
-    regex = /(\[\[:?)([^:\]\[]+::)?(#{Regexp.escape(from.gsub("_", " "))})(\s*)(\|[^\[\]]+)?(\]\])/i
+    regex = /(\[\[:?)([^:\]\[]+::)?(#{Regexp.escape(from.gsub("_", " "))})(\s*)(\|[^\[\]]*)?(\]\])/i
     new_content = self.content.gsub("_", " ").gsub(regex) do |link|
       "#{$1}#{$2}#{rewrite_link_name($3, to)}#{$4}#{$5}#{$6}"
     end
