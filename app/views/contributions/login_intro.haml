@@ -1,0 +1,36 @@
+%div#help_login
+
+  %h1
+    Welcome to Contribution Process!
+
+  %div#step1.step
+
+    %div.half-left
+      %img{:src => image_path('codercat.png')}
+
+    %div.half-right
+      %b 1.
+      Before you will begin contributing process you need to be logged in with your Github profile.
+      If you don't have such account - create it now.
+      %br
+      %a{:href => "https://github.com/signup/free", :target=>"_blank"} It's really simple and absolutely free!
+
+  %div#step2.step
+    %b 2.
+    Now, please ensure, that you have added
+    %b  public email
+    to your profile account
+    %a{:href=>'https://github.com/settings/profile', :target=>"_blank"}
+      on settings page
+    %p
+    %img{:src => image_path('github-public-email.png')}
+
+
+  %div#step3.step
+    %b 3.
+    After doing this 2 steps you can
+    %p
+    %a{ href: "/auth/github" }
+      %input{:class => "btn btn-success", :type => "submit", :value => "Start contributing"}
+    %a{ href: "/wiki" }
+      %input{:class => "btn btn-info", :type => "submit", :value => "or visit our wiki"}
