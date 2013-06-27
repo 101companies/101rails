@@ -1,7 +1,7 @@
 class ContributionsController < ApplicationController
 
-  before_filter :authenticate_user!, :only => [:new, :create]
-  load_and_authorize_resource :only => [:create, :new]
+  before_filter :authenticate_user!, :only => [:create]
+  # TODO: load_and_authorize
 
   def show
     @contribution = Contribution.find(params[:id])
@@ -26,11 +26,11 @@ class ContributionsController < ApplicationController
     @contribution.analyzed = true
     @contribution.save!
     #TODO: your contributin is analyzed!
-    mail(
-        to: current_user.email,
-        subject: '101companies | Analyzed contribution ' + @contribution.full_title,
-        content: 'Your contribution is analyzed!'
-    )
+    #mail(
+    #    to: current_user.email,
+    #    subject: '101companies | Analyzed contribution ' + @contribution.full_title,
+    #    content: 'Your contribution is analyzed!'
+    #)
     render nothing: true
   end
 
@@ -84,7 +84,6 @@ class ContributionsController < ApplicationController
 
     # if not logged in -> show intro
     if !current_user
-      content_for(:title) { 'Welcome to Contribution process!' }
       render 'contributions/login_intro'
     end
 
@@ -97,18 +96,16 @@ class ContributionsController < ApplicationController
         current_user.github_name = resp["user"]["login"]
         current_user.save
       end
+      # retrieve repos of user
+      temp_repos = Github.repos.list user: current_user.github_name
+      @user_github_repos = ''
+      # create list for select tag
+      temp_repos.each do |repo|
+        @user_github_repos = @user_github_repos + '<option>' + repo.clone_url + '</option>'
+      end
     rescue
-      flash.now[:warning] = "We couldn't retrieve you github repos, please log out and log in again"
-    end
-
-    # retrieve repos of user
-    temp_repos = Github.repos.list user: current_user.github_name
-
-    @user_github_repos = ''
-
-    # create list for select tag
-    temp_repos.each do |repo|
-      @user_github_repos = @user_github_repos + '<option>' + repo.clone_url + '</option>'
+      flash.now[:warning] = "We couldn't retrieve you github information, please try in 5 minutes"
+      redirect_to '/contribute'
     end
 
   end

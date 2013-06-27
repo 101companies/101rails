@@ -1,4 +1,12 @@
+%a{:href=> '/contribute/new'}
+  %button{:class=>"btn btn-success"}
+    Add new contribution
+
 %h1 List of last contributions
 
 - @contributions.each do |contribution|
   = render 'contributions/shared/view', :contribution => contribution
+
+- if !defined? @contributions
+  %p
+    No contributions are available now =/

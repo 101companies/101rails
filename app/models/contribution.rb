@@ -2,6 +2,8 @@ class Contribution
 
   include Mongoid::Document
   include Mongoid::Timestamps
+  #include Mongoid::Paranoia
+  #include Mongoid::Versioning
 
   field :url, type: String
   field :title, type: String
