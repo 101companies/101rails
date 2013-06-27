@@ -1,18 +1,37 @@
 %div{:class => "contribution"}
   %p
-    =link_to contribution.user.name, contribution.user
-    made contribution from
-    =link_to contribution.url, contribution.url
-
-    %p
-      title:
-      = contribution.title
-    %p
-      description:
-      = contribution.description
+    - if contribution.user
+      =link_to contribution.user.name, contribution.user
 
   %p
-    Look at this contribution
-    =link_to 'here', contribution
+    =link_to contribution.url, contribution.url
 
-  %br
+  %p
+    title:
+    = contribution.title
+
+  %p
+    folder:
+    = contribution.folder
+
+  %p
+    description:
+    = contribution.description
+  %p
+    languages:
+    = contribution.languages.to_s
+  %p
+    concepts:
+    = contribution.concepts.to_s
+  %p
+    features:
+    = contribution.features.to_s
+  %p
+    technologies:
+    = contribution.technologies.to_s
+
+  - if contribution.page
+    %p
+      wiki page:
+      %a{:href => '/wiki/'+ contribution.page.full_title.to_s}=  contribution.page.full_title.to_s
+
