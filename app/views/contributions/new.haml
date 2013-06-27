@@ -1,15 +1,15 @@
-%h1 Create new contribution from github-user
-= @github_name
+%h1 Create new contribution
 
 = render 'users/shared/view', :user => current_user
 
-
-= form_tag('/contributions/create', :method => :post) do
+= form_tag('/contribute/create', :method => :post) do
   = label_tag "Url to repository"
   = select(:contrb_repo_url, nil, @user_github_repos.html_safe)
   = label_tag "Title of contribution"
-  %input{:name => 'contrb_title', :placeholder => 'Not obvious'}
-  = label_tag "Secription for contribution"
+  %input{:name => 'contrb_title', :placeholder => 'Obvious'}
+  = label_tag "Description for contribution"
   %textarea{:name => 'contrb_description', :placeholder => 'Not obvious'}
+  = label_tag "Folder in repo"
+  %input{:name => 'contrb_folder', :placeholder => 'Not obvious'}
   %p
   = submit_tag "Create contributon"
