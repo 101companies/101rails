@@ -2,18 +2,24 @@ Wiki::Application.routes.draw do
 
   mount RailsAdmin::Engine => '/admin', :as => 'rails_admin'
 
-  scope 'contributions' do
+  scope 'contribute' do
+    # list of contributions
     get '/' => 'contributions#index'
+    # ui for creating contribution
     get '/new' => 'contributions#new'
+    # method where contribution will be created
     post '/create' => 'contributions#create'
+    # show contribution
     get '/:id' => 'contributions#show', :as => :contribution
+    # put analyzed by worker data to contribution
+    post '/analyze/:id' => 'contributions#analyze', :as => :contribution
   end
 
   root :to => "home#index"
-  get '/login_intro' => 'home#login_intro'
   get '/tours' => 'tours#index'
   get '/search' => 'pages#search'
   match '/tours/:title' => 'tours#show'
+  get '/sitemap.xml' => 'application#sitemap'
 
   scope 'api/tours' do
     get ':title' => 'tours#show'
