@@ -21,7 +21,7 @@ class ContributionsController < ApplicationController
       @contribution.concepts = params[:concepts]
       @contribution.analyzed = true
       @contribution.save!
-      #TODO: your contributin is analyzed!
+      #TODO: your contribution is analyzed!
       #mail(
       #    to: current_user.email,
       #    subject: '101companies | Analyzed contribution ' + @contribution.full_title,
