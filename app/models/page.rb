@@ -211,7 +211,7 @@ class Page
     # get rid of mediawiki's link expansion
     if content
       regex = /(\[\[:?)([^:\]\[]+::)?([^\[\]\|]+)(\s*)(\|[^\[\]]*)?(\]\])/
-      content = content.gsub("_", " ").gsub(regex) do |link|
+      content = content.gsub(regex) do |link|
         title = $3.split(":")[1..-1].join(":")
         ("|" + title == $5) ? "#{$1}#{$2}#{$3}#{$4}|#{$6}" : link
       end
