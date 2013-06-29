@@ -1,46 +1,42 @@
 class ContributionsController < ApplicationController
 
   before_filter :authenticate_user!, :only => [:create]
-  # TODO: load_and_authorize
+  load_and_authorize_resource :only => [:show, :analyze]
 
   def show
-    @contribution = Contribution.find(params[:id])
   end
 
   def index
-
     # last 10 contributions
     #@contributions = Contribution.where(:approved => true).desc(:created_at).limit(10)
     @contributions = Contribution.desc(:created_at).limit(10)
-
-    @title = 'List of all contributions'
-
   end
 
   def analyze
-    @contribution = Contribution.find(params[:id])
-    @contribution.languages = params[:languages]
-    @contribution.technologies = params[:technologies]
-    @contribution.features = params[:features]
-    @contribution.concepts = params[:concepts]
-    @contribution.analyzed = true
-    @contribution.save!
-    #TODO: your contributin is analyzed!
-    #mail(
-    #    to: current_user.email,
-    #    subject: '101companies | Analyzed contribution ' + @contribution.full_title,
-    #    content: 'Your contribution is analyzed!'
-    #)
+    if @contribution
+      @contribution = Contribution.find(params[:id])
+      @contribution.languages = params[:languages]
+      @contribution.technologies = params[:technologies]
+      @contribution.features = params[:features]
+      @contribution.concepts = params[:concepts]
+      @contribution.analyzed = true
+      @contribution.save!
+      #TODO: your contributin is analyzed!
+      #mail(
+      #    to: current_user.email,
+      #    subject: '101companies | Analyzed contribution ' + @contribution.full_title,
+      #    content: 'Your contribution is analyzed!'
+      #)
+    end
     render nothing: true
   end
 
-
   def create
-
     @contribution = Contribution.new
     @contribution.url = params[:contrb_repo_url].first
     @contribution.title = params[:contrb_title]
 
+    # set folder to '/' if no folder given
     folder = params[:contrb_folder]
     puts folder
     if folder.empty?
@@ -52,39 +48,38 @@ class ContributionsController < ApplicationController
     @contribution.user = current_user
     @contribution.save
 
-    # TODO: check page owning
-    #page = Page.find_or_create_page 'Contribution:'+Page.unescape_wiki_url(@contribution.title)
-    #page.users << current_user
-    #page.save!
-    #@contribution.page = page
-    #@contribution.save
+    # create page for contribution
+    # TODO: check owning the page?
+    page = Page.find_or_create_page 'Contribution:'+Page.unescape_wiki_url(@contribution.title)
+    page.users << current_user
+    page.save!
+    @contribution.page = page
+    @contribution.save
+    #flash[:notice] = "You have created new contribution. "+
+    #    "Please wait until it will be analyzed and approved by gatekeeper."
 
+    # send request to matching service
     begin
-      # send request to matching service
       Mechanize.new.post 'http://worker.101companies.org/services/analyzeSubmission',
         {
           :url => @contribution.url,
           :folder => @contribution.folder,
           :name => @contribution.title,
-          :backping => "http://141.26.95.189:3000/contribute/analyze/#{@contribution.id}"
+          :backping => "http://101companies.org/contribute/analyze/#{@contribution.id}"
         }.to_json,
         {'Content-Type' => 'application/json'}
     rescue
       flash[:error] = "Request on analyze service wasn't successful. Please retry it later"
     end
 
-    flash[:notice] = "You have created new contribution. Please wait until it will be approved by gatekeepers."
-
     #TODO: send email to gatekeeper and contributor
     redirect_to  action: "index"
-
   end
 
   def new
-
-    # if not logged in -> show intro
+    # if not logged in -> show intro and go out
     if !current_user
-      render 'contributions/login_intro'
+      render 'contributions/login_intro' and return
     end
 
     # retrieve github login
@@ -107,7 +102,6 @@ class ContributionsController < ApplicationController
       flash.now[:warning] = "We couldn't retrieve you github information, please try in 5 minutes"
       redirect_to '/contribute'
     end
-
   end
 
 end
