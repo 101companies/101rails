@@ -70,7 +70,10 @@ class Wiki.Views.Triples extends Backbone.View
 
   addAll: ->
     self = @
+    @externalTriples = []
+    @externalTriplesPrefixes = {}
     $(@el).find('.section-content-parsed').html('')
+    $('.resourcebar .resourcebox').remove()
     $.each @model.models.sort(self.tripleOrdering), (i, triple) ->
       self.addTriple(triple)
     $.each @externalTriples, (i, triple) ->
