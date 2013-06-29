@@ -10,6 +10,21 @@ class ApplicationController < ActionController::Base
     redirect_to '/wiki/@project'
   end
 
+  def sitemap
+    # generate sitemap for better google indexing
+    text = '<?xml version="1.0" encoding="UTF-8"?>
+      <urlset
+        xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
+        http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">'
+    Page.all.each do |page|
+      text = text + '<url><loc>http://101companies.org/wiki/' + (Page.nice_wiki_url page.full_title) + '</loc></url>'
+    end
+    text = text + '</urlset>'
+    render :xml => text
+  end
+
   # handle non authorized 500 status from cancan
   rescue_from CanCan::AccessDenied do |exception|
     flash[:notice] = "Sorry, you aren't permitted to execute your last action =/"
