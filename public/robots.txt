@@ -5,3 +5,4 @@
 User-Agent: *
 Disallow: /resources
 Disallow: /endpoint
+Disallow: /index.php
