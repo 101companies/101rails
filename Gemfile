@@ -80,7 +80,8 @@ gem 'mechanize', '2.6.0'
 
 # work with wikimarkdown
 gem 'mediawiki-gateway', '0.5.1'
-gem 'wikicloth', :git => 'git://github.com/avaranovich/wikicloth.git'
+gem 'wikicloth', :git => 'git://github.com/avaranovich/wikicloth.git',
+    :ref => '7a852103765aa47e4e5f494ee5a22cd414f0886f'
 
 #rdf support
 gem 'rdf', :git => 'git://github.com/ruby-rdf/rdf.git'
