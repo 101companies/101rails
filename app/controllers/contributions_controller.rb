@@ -13,8 +13,8 @@ class ContributionsController < ApplicationController
   end
 
   def analyze
+    @contribution = Contribution.find(params[:id])
     if @contribution
-      @contribution = Contribution.find(params[:id])
       @contribution.languages = params[:languages]
       @contribution.technologies = params[:technologies]
       @contribution.features = params[:features]
@@ -99,7 +99,8 @@ class ContributionsController < ApplicationController
         @user_github_repos = @user_github_repos + '<option>' + repo.clone_url + '</option>'
       end
     rescue
-      flash.now[:warning] = "We couldn't retrieve you github information, please try in 5 minutes"
+      flash[:warning] = "We couldn't retrieve you github information, please try in 5 minutes." +
+        "If you haven't added github public email - please do it!"
       redirect_to '/contribute'
     end
   end
