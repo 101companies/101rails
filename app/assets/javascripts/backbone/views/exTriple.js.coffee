@@ -35,9 +35,9 @@ class Wiki.Views.ExTriple extends Backbone.View
     if key of @prefixToName
       fullName = @prefixToName[key]
     else
-      fullName = key.split('.')[0]
+      fullName = key
     $('#resources').show()
-    place = $('#resources').find('.' + fullName)
+    place = $('#resources').find('.' + fullName.replace(/\./g, ''))
     info = {'full' : @model.get('node'), 'chapter': @decode(@model.get('node'), false, showMore)}
     templateOps = {cat: 'primary', link: info, predicate: @decode(@model.get('predicate'))}
     if place.length
