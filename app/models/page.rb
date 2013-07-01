@@ -259,6 +259,7 @@ class Page
 
   # TODO: remove after content migration
   def add_namespace_triple(content)
+    WikiCloth::Parser.context = {:ns => (MediaWiki::send :upcase_first_char, self.namespace), :title => self.title}
     parsed_page = WikiCloth::Parser.new(:data => content, :noedit => true)
     parsed_page.to_html
     namespace_triple = 'instanceOf::Namespace:' + namespace
