@@ -1,9 +1,9 @@
 class ContributionsController < ApplicationController
 
   before_filter :authenticate_user!, :only => [:create]
-  load_and_authorize_resource :only => [:show, :analyze]
 
   def show
+    @contribution = Contribution.find(params[:id])
   end
 
   def index
