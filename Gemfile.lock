@@ -8,7 +8,7 @@ GIT
 
 GIT
   remote: git://github.com/avaranovich/wikicloth.git
-  revision: 7a852103765aa47e4e5f494ee5a22cd414f0886f
+  revision: 2b849a581cdf0634c6de784f1518a4dab13ea3f8
   specs:
     wikicloth (0.8.0)
       builder
