@@ -288,7 +288,7 @@ class PagesController < ApplicationController
     content = params[:content]
     parsed_page = WikiCloth::Parser.new(:data => content, :noedit => true)
     parsed_page.sections.first.auto_toc = false
-    WikiCloth::Parser.context = {:ns => @page.namespace, :title => @page.title}
+    WikiCloth::Parser.context = {:ns => (MediaWiki::send :upcase_first_char, @page.namespace), :title => @page.title}
     # define links pointing to pages without content
     html = parsed_page.to_html
     all_pages_urls = Page.all.map {|p| Page.nice_wiki_url p.full_title}
