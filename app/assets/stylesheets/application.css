@@ -23,8 +23,12 @@
   color: coral;
 }
 
+.fragment-failed:hover {
+  cursor:pointer;
+}
+
 /* improved rendering in safari */
-.section-content-parsed p {
+.section-content-parsed p, .section-content-parsed li {
   line-height: 24px;
 }
 
