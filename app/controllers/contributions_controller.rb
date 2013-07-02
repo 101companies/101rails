@@ -82,8 +82,8 @@ class ContributionsController < ApplicationController
       render 'contributions/login_intro' and return
     end
 
-    # retrieve github login
     begin
+      # retrieve github login
       if current_user.github_name == ''
         agent = Mechanize.new
         resp = agent.get "https://api.github.com/legacy/user/email/#{current_user.email}"
