@@ -190,12 +190,13 @@ class Page
   def create_wiki_parser
     # TODO: change, very dirty!, dup
     self.instance_eval { class << self; self end }.send(:attr_accessor, "wiki")
+    self.prepare_wiki_context
     self.wiki = WikiCloth::Parser.new(:data => self.content, :noedit => true)
-    # set namespace for work with wiki
-    # TODO: self.wiki.context = ?
-    # variable of parser for every instance?
-    WikiCloth::Parser.context = self.namespace
     return self.wiki
+  end
+
+  def prepare_wiki_context
+    WikiCloth::Parser.context = {:ns => (MediaWiki::send :upcase_first_char, self.namespace), :title => self.title}
   end
 
   def content
@@ -259,7 +260,7 @@ class Page
 
   # TODO: remove after content migration
   def add_namespace_triple(content)
-    WikiCloth::Parser.context = {:ns => (MediaWiki::send :upcase_first_char, self.namespace), :title => self.title}
+    self.prepare_wiki_context
     parsed_page = WikiCloth::Parser.new(:data => content, :noedit => true)
     parsed_page.to_html
     namespace_triple = 'instanceOf::Namespace:' + namespace
