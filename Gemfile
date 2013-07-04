@@ -106,3 +106,5 @@ gem 'redis-rails', '3.2.3'
 
 # for wiki-editor
 gem 'aced_rails', '0.2.1', :git => 'git://github.com/tschmorleiz/aced_rails.git'
+
+gem 'bootstrap-tour-rails', '0.0.1'

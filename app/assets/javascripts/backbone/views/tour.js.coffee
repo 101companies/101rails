@@ -12,6 +12,7 @@ class Tours.Views.Tour extends Backbone.View
     'click .tourRemovePage' : 'removePage'
     'click .tourRemoveSection' : 'removeSection'
     'click .tourSave' : 'updateTour'
+    #'click. tourStart' : 'start'
     #'click .tour' : 'updateTour'
 
   initialize: ->
