@@ -21,12 +21,7 @@ class ContributionsController < ApplicationController
       @contribution.concepts = params[:concepts]
       @contribution.analyzed = true
       @contribution.save!
-      #TODO: your contribution is analyzed!
-      #mail(
-      #    to: current_user.email,
-      #    subject: '101companies | Analyzed contribution ' + @contribution.full_title,
-      #    content: 'Your contribution is analyzed!'
-      #)
+      Mailer.analyzed_contribution(@contribution).deliver
     end
     render nothing: true
   end
@@ -55,12 +50,10 @@ class ContributionsController < ApplicationController
     page.save!
     @contribution.page = page
     @contribution.save
-    #flash[:notice] = "You have created new contribution. "+
-    #    "Please wait until it will be analyzed and approved by gatekeeper."
 
     # send request to matching service
     begin
-      Mechanize.new.post 'http://worker.101companies.org/services/analyzeSubmission',
+      request = Mechanize.new.post 'http://worker.101companies.org/services/analyzeSubmission',
         {
           :url => @contribution.url,
           :folder => @contribution.folder,
@@ -72,7 +65,13 @@ class ContributionsController < ApplicationController
       flash[:error] = "Request on analyze service wasn't successful. Please retry it later"
     end
 
-    #TODO: send email to gatekeeper and contributor
+    # request was executed without errors
+    if !request.nil?
+      flash[:notice] = "You have created new contribution. "+
+          "Please wait until it will be analyzed and approved by gatekeeper."
+      Mailer.created_contribution(@contribution).deliver
+    end
+
     redirect_to  action: "index"
   end
 
