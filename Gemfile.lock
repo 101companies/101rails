@@ -8,7 +8,7 @@ GIT
 
 GIT
   remote: git://github.com/avaranovich/wikicloth.git
-  revision: 222968d6f7e0f6b72f578a650fb9ab37327b2e77
+  revision: 3158e73994309549b5412f15a1210c4ca0f33816
   specs:
     wikicloth (0.8.0)
       builder
@@ -32,7 +32,7 @@ GIT
 
 GIT
   remote: git://github.com/ruby-rdf/rdf.git
-  revision: 4054b13ce81e3ea71b3adcfde2873b30493f76b9
+  revision: d329351bfc6dcb1c3df36c831f33bdc9dcf07267
   specs:
     rdf (1.0.7)
       addressable (>= 2.2)
