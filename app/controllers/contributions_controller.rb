@@ -7,9 +7,8 @@ class ContributionsController < ApplicationController
   end
 
   def index
-    # last 10 contributions
-    #@contributions = Contribution.where(:approved => true).desc(:created_at).limit(10)
-    @contributions = Contribution.desc(:created_at).limit(10)
+    @contributions = Contribution.where(:analyzed => true).desc(:created_at).limit(10)
+    #TODO: pagination
   end
 
   def analyze
