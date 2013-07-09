@@ -45,6 +45,7 @@ GIT
       rails (~> 3.2)
 
 GEM
+  remote: https://rubygems.org/
   specs:
     actionmailer (3.2.13)
       actionpack (= 3.2.13)

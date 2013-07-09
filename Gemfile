@@ -3,6 +3,9 @@ if RUBY_VERSION =~ /1.9/
   Encoding.default_internal = Encoding::UTF_8
 end
 
+# DO NOT REMOVE THIS LINE!
+source 'https://rubygems.org'
+
 # DO NOT ENTER GEMS WITHOUT GEM NUMBER!
 # OR I WILL CUT YOUR FINGER!
 
