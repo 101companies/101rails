@@ -14,21 +14,30 @@
     folder:
     = contribution.folder
 
-  %p
-    description:
-    = contribution.description
-  %p
-    languages:
-    = contribution.languages.to_s
-  %p
-    concepts:
-    = contribution.concepts.to_s
-  %p
-    features:
-    = contribution.features.to_s
-  %p
-    technologies:
-    = contribution.technologies.to_s
+  -if contribution.description && !contribution.description.empty?
+    %p
+      description:
+      = contribution.description
+
+  - if contribution.languages
+    %p
+      languages:
+      = Contribution.array_to_string contribution.languages
+
+  - if contribution.concepts
+    %p
+      concepts:
+      = Contribution.array_to_string contribution.concepts
+
+  - if contribution.features
+    %p
+      features:
+      = Contribution.array_to_string contribution.features
+
+  - if contribution.technologies
+    %p
+      technologies:
+      = Contribution.array_to_string contribution.technologies
 
   - if contribution.page
     %p

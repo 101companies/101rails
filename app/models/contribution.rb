@@ -34,4 +34,8 @@ class Contribution
   attr_accessible :user_id, :url, :created_at, :updated_at, :title, :description, :folder, :approved,
                   :analyzed, :page_id
 
+  def self.array_to_string(array)
+    array.collect {|u| u}.join ', '
+  end
+
 end
