@@ -4,8 +4,9 @@
 
 %h1 List of last contributions
 
+%div#contributions
 - @contributions.each do |contribution|
-  = render 'contributions/shared/view', :contribution => contribution
+  = render 'contributions/shared/view', :contribution => contribution, :is_linked => true
 
 - if !defined? @contributions
   %p

@@ -12,7 +12,7 @@ Wiki::Application.routes.draw do
     # show contribution
     get '/:id' => 'contributions#show', :as => :contribution
     # put analyzed by worker data to contribution
-    post '/analyze/:id' => 'contributions#analyze', :as => :contribution
+    post '/analyze/:id' => 'contributions#analyze'
   end
 
   root :to => "home#index"

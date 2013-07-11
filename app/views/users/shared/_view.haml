@@ -1,7 +1,8 @@
 %div{:class => 'user'}
-  = gravatar_image_tag(user.email, :alt => user.name)
   %p
-    User: #{user.name}
+    = gravatar_image_tag(user.email, :class => 'github_avatar', :alt => user.name)
+  %p
+    Username: #{user.name}
   %p
     Email:
     %a{:href => "mailto:#{user.email}"}

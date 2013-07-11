@@ -1,11 +1,7 @@
 %h1
+  = gravatar_image_tag(@user.email, :class => 'github_avatar', :alt => @user.name)
   = @user.name
 
-%h2 Personal
-= render 'users/shared/view', :user => @user
-
 %h2 User Contributions
-%ul
 - @user.contributions.each do |contribution|
-  %li
-    = render 'contributions/shared/view', :contribution => contribution
+  = render 'contributions/shared/view', :contribution => contribution, :is_linked => true

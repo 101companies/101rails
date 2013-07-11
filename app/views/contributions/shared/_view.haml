@@ -1,46 +1,79 @@
 %div{:class => "contribution"}
+
+  - if defined? is_linked and is_linked
+    %h3
+      =link_to contribution.title, contribution
+  - else
+    %h3= contribution.title
+
   %p
     - if contribution.user
+      %i{:class => 'icon-male'}
+      Contributor
       =link_to contribution.user.name, contribution.user
 
   %p
-    =link_to contribution.url, contribution.url
+    %a{:href => contribution.url, :target => 'blank'}
+      %i{:class => 'icon-github-alt'}
+      Github link
 
   %p
-    title:
-    = contribution.title
-
-  %p
-    folder:
+    %i{:class => 'icon-folder-close'}
     = contribution.folder
 
-  -if contribution.description && !contribution.description.empty?
-    %p
-      description:
-      = contribution.description
+  %p
+    -if contribution.description && !contribution.description.empty?
+      %i
+        = contribution.description
+    - else
+      No additional information provided
 
-  - if contribution.languages
-    %p
-      languages:
+  %p
+    - if contribution.languages
+      %i{:class => 'icon-check-sign'}
+      Languages:
       = Contribution.array_to_string contribution.languages
+    - else
+      %i{:class => 'icon-meh'}
+      No languages were retrieved
 
-  - if contribution.concepts
-    %p
-      concepts:
+  %p
+    - if contribution.concepts
+      %i{:class => 'icon-check-sign'}
+      Concepts:
       = Contribution.array_to_string contribution.concepts
+    - else
+      %i{:class => 'icon-meh'}
+      No concepts were retrieved
 
-  - if contribution.features
-    %p
-      features:
+  %p
+    - if contribution.features
+      %i{:class => 'icon-check-sign'}
+      Features:
       = Contribution.array_to_string contribution.features
+    - else
+      %i{:class => 'icon-meh'}
+      No features were retrieved
 
-  - if contribution.technologies
-    %p
-      technologies:
+  %p
+    - if contribution.technologies
+      %i{:class => 'icon-check-sign'}
+      Technologies:
       = Contribution.array_to_string contribution.technologies
+    - else
+      %i{:class => 'icon-meh'}
+      No technologies were retrieved
 
-  - if contribution.page
     %p
+    - if contribution.page
+      %i{:class => 'icon-file-text'}
       wiki page:
       %a{:href => '/wiki/'+ contribution.page.full_title.to_s}=  contribution.page.full_title.to_s
 
+  %p
+  - if !contribution.analyzed
+    %i{:class => 'icon-meh'}
+    This contribution is not analyzed =/
+  - else
+    %i{:class => 'icon-smile'}
+    This contribution is successfully analyzed
