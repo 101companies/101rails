@@ -44,7 +44,7 @@ gem 'omniauth-github', '1.1.0'
 gem 'github_api', '0.9.7'
 
 # font with bundled icons
-gem 'font-awesome-sass-rails', '3.0.2.2'
+gem 'font-awesome-rails', '3.2.1.2'
 
 # roles and permissions
 gem 'cancan', '1.6.10'
