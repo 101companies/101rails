@@ -11,7 +11,7 @@
  *= require_self
  *= require bootstrap
  *= require bootstrap-responsive
- *= require _font-awesome
+ *= require font-awesome
  *= require pygments
  *= require home
  *= require contribution
