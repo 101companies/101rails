@@ -26,6 +26,7 @@ class ContributionsController < ApplicationController
   end
 
   def create
+    # TODO: check errors of input
     @contribution = Contribution.new
     @contribution.url = params[:contrb_repo_url].first
     @contribution.title = params[:contrb_title]
