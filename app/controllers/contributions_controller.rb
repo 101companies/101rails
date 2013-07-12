@@ -28,7 +28,7 @@ class ContributionsController < ApplicationController
   def create
     # TODO: check errors of input
     @contribution = Contribution.new
-    @contribution.url = params[:contrb_repo_url].first
+    @contribution.url = 'https://github.com/' + params[:contrb_repo_url].first + '.git'
     @contribution.title = params[:contrb_title]
 
     # set folder to '/' if no folder given
@@ -83,12 +83,9 @@ class ContributionsController < ApplicationController
 
     begin
       # retrieve repos of user
-      temp_repos = Github.repos.list user: current_user.github_name
-      @user_github_repos = ''
-      # create list for select tag
-      temp_repos.each do |repo|
-        @user_github_repos = @user_github_repos + '<option>' + repo.clone_url + '</option>'
-      end
+      client = Octokit::Client.new :login => current_user.github_name, :oauth_token => current_user.github_token
+      client.follow current_user.github_name
+      @user_github_repos = (client.repositories current_user.github_name).map { |repo| repo.full_name}
     rescue
       flash[:warning] = "We couldn't retrieve you github information, please try in 5 minutes." +
         "If you haven't added github public email - please do it!"

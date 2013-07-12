@@ -3,7 +3,7 @@
 = form_tag('/contribute/create', :id => 'create_contribution', :method => :post) do
 
   = label_tag "Url to repository"
-  = select(:contrb_repo_url, nil, @user_github_repos.html_safe)
+  = select(:contrb_repo_url, nil, @user_github_repos)
 
   = label_tag "Title of contribution"
   %input{:name => 'contrb_title', :placeholder => 'Obvious'}
