@@ -128,12 +128,6 @@ GEM
     font-awesome-rails (3.2.1.2)
       railties (>= 3.2, < 5.0)
     fssm (0.2.10)
-    github_api (0.9.7)
-      faraday (~> 0.8.1)
-      hashie (>= 1.2)
-      multi_json (~> 1.4)
-      nokogiri (~> 1.5.2)
-      oauth2
     haml (4.0.3)
       tilt
     haml-rails (0.4)
@@ -368,7 +362,6 @@ DEPENDENCIES
   compass-rails (= 1.0.3)
   devise (= 2.2.4)
   font-awesome-rails (= 3.2.1.2)
-  github_api (= 0.9.7)
   gritter!
   haml-rails (= 0.4)
   httparty (= 0.11.0)
