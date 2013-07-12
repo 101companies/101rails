@@ -65,6 +65,8 @@ group :development do
   gem 'thin', '1.5.1'
   # gem for creating db/controller diagrams
   gem 'railroady', '1.1.0'
+  # colored output in irb and console
+  gem 'wirble', '0.1.3'
 end
 
 # gem for retrieving gravatar/github avatars
