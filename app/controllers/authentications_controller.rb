@@ -46,7 +46,7 @@ class AuthenticationsController < ApplicationController
   def destroy
     session[:user_id] = nil
     flash[:notice] = t(:signed_out)
-    go_to_homepage
+    go_to_previous_page
   end
 
   private
