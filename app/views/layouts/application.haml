@@ -20,35 +20,31 @@
     #page-nav.navbar.navbar-fixed-top
       .navbar-inner
         .container-fluid
-          %a.btn.btn-navbar{"data-target" => ".nav-collapse", "data-toggle" => "collapse"}
-
           %a.brandname{:href => "/", :name => "top"}
             101companies
-          .nav-collapse.collapse
+          %ul.nav.pull-right
 
-            %ul.nav.nav.pull-right
+            %li
+              %form.navbar-search.pull-left{:action => "/search"}
+                %input.search-query{:name => "q", :placeholder => "Search", :type => "text"}/
 
-              %li
-                %form.navbar-search.pull-left{:action => "/search"}
-                  %input.search-query{:name => "q", :placeholder => "Search", :type => "text"}/
-
-              %li
-                - if !current_user
-                  %a{:class => 'btn btn-primary btn-small', :href => "/auth/github"}
-                    %i{:class=>'icon-white icon-github-sign'}
-                    Login with GiHub
-                - else
-                  %a.btn.dropdown-toggle{"data-toggle" => "dropdown", :href => ""}
-                    %img.small_avatar{:height => "24", :src => current_user.github_avatar, :width => "24"}/
-                    = current_user.name
-                    %strong
-                      (#{current_user.role} )
-                    %span.caret
-                  %ul.dropdown-menu
-                    %li
-                      = link_to raw("<i class=\"icon-wrench\"></i> My account"), current_user
-                    %li
-                      = link_to raw("<i class=\"icon-share\"></i> Logout"), '/authentications/delete', :method => 'delete'
+            %li
+              - if !current_user
+                %a{:href => "/auth/github"}
+                  %i.icon-github-alt.icon-large
+                  GitHub Login
+              - else
+                %a.btn.dropdown-toggle{"data-toggle" => "dropdown", :href => ""}
+                  %img.small_avatar{:height => "24", :src => current_user.github_avatar, :width => "24"}/
+                  = current_user.name
+                  %strong
+                    (#{current_user.role} )
+                  %span.caret
+                %ul.dropdown-menu
+                  %li
+                    = link_to raw("<i class=\"icon-wrench\"></i> My account"), current_user
+                  %li
+                    = link_to raw("<i class=\"icon-share\"></i> Logout"), '/authentications/delete', :method => 'delete'
 
     .container-fluid
       .row-fluid
