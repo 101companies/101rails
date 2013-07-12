@@ -5,17 +5,10 @@ class User
   include Mongoid::Document
   include Mongoid::Timestamps
 
-  # Include default devise modules. Others available are:
-  # :token_authenticatable, :confirmable,
-  # :lockable, :timeoutable and :omniauthable
-  devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :trackable, :validatable
-
   ROLE_OPTIONS = %w[admin editor guest banned nobody]
 
   ## Database authenticatable
   field :email,              :type => String, :default => ""
-  field :encrypted_password, :type => String, :default => ""
 
   # work with roles
   field :role,               :type => String, :default => "guest"
@@ -40,13 +33,6 @@ class User
     end
   end
 
-  validates_presence_of :email
-  validates_presence_of :encrypted_password
-
-  ## Recoverable
-  field :reset_password_token,   :type => String
-  field :reset_password_sent_at, :type => Time
-
   ## Rememberable
   field :remember_created_at, :type => Time
 
@@ -57,24 +43,11 @@ class User
   field :current_sign_in_ip, :type => String
   field :last_sign_in_ip,    :type => String
 
-  ## Confirmable
-  field :confirmation_token,   :type => String
-  field :confirmed_at,         :type => Time
-  field :confirmation_sent_at, :type => Time
-  # field :unconfirmed_email,    :type => String # Only if using reconfirmable
-
-  ## Lockable
-  # field :failed_attempts, :type => Integer, :default => 0 # Only if lock strategy is :failed_attempts
-  # field :unlock_token,    :type => String # Only if unlock strategy is :email or :both
-  # field :locked_at,       :type => Time
-
-  ## Token authenticatable
-  # field :authentication_token, :type => String
   # run 'rake db:mongoid:create_indexes' to create indexes
   index({ email: 1 }, { unique: true, background: true })
   field :name, :type => String
   validates_presence_of :name
-  attr_accessible :name, :email, :role, :password, :password_confirmation, :remember_me, :created_at, :updated_at,
+  attr_accessible :name, :email, :role, :remember_me, :created_at, :updated_at,
                   :contributions, :github_name, :page_ids, :old_wiki_user_ids
 
   has_many :authentications, :dependent => :delete
@@ -110,10 +83,6 @@ private
     if self.email.blank?
       self.email = user_info['email'] unless user_info['email'].blank?
     end
-
-    # Set a random password for omniauthenticated users
-    self.password, self.password_confirmation = String::random_string(20)
-    self.confirmed_at, self.confirmation_sent_at = Time.now
 
     # Build a new Authentication and remember until :after_create -> save_new_authentication
     @new_auth = authentications.build( :uid => omniauth['uid'], :provider => omniauth['provider'])

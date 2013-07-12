@@ -35,7 +35,6 @@ gem 'mongoid', '3.1.4'
 gem 'bcrypt-ruby', '3.0.1'
 
 # auth
-gem 'devise', '2.2.4'
 gem 'omniauth-identity', '1.1.0'
 gem 'omniauth', '1.1.4'
 gem 'omniauth-github', '1.1.0'

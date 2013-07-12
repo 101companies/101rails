@@ -25,14 +25,18 @@ class ApplicationController < ActionController::Base
     render :xml => text
   end
 
-  # handle non authorized 500 status from cancan
-  rescue_from CanCan::AccessDenied do |exception|
-    flash[:notice] = "Sorry, you aren't permitted to execute your last action =/"
+  def go_to_previous_page
     if request.referer
       redirect_to :back
     else
       go_to_homepage
     end
+  end
+
+  # handle non authorized 500 status from cancan
+  rescue_from CanCan::AccessDenied do |exception|
+    flash[:notice] = "Sorry, you aren't permitted to execute your last action =/"
+    go_to_previous_page
   end
 
   # profiling with ruby-prof
@@ -46,6 +50,12 @@ class ApplicationController < ActionController::Base
     else
       yield
     end
+  end
+
+  helper_method :current_user
+  private
+  def current_user
+    @current_user ||= User.find(session[:user_id]) if session[:user_id]
   end
 
 end

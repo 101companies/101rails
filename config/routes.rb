@@ -19,6 +19,8 @@ Wiki::Application.routes.draw do
   get '/tours' => 'tours#index'
   get '/search' => 'pages#search'
   match '/tours/:title' => 'tours#show'
+
+  # sitemap
   get '/sitemap.xml' => 'application#sitemap'
 
   scope 'api/tours' do
@@ -28,9 +30,11 @@ Wiki::Application.routes.draw do
   end
 
   #users
-  match 'registrations' => 'users#index', :as => 'registrations'
-  devise_for :users, :controllers => { :registrations => 'registrations' }
-  resources :users, :only => [:show, :index]
+  scope 'users' do
+    get '/' => 'users#index'
+    get '/logout' => 'authentications#destroy'
+    get '/:id' => 'users#show', :as => :user
+  end
 
   # pages routes
   get '/wiki' => redirect("/wiki/@project")
@@ -59,9 +63,6 @@ Wiki::Application.routes.draw do
     get ':id/json/directions' => 'pages#get_json', :constraints => { :id => /.*/ }, :directions => true
     get ':id/summary' => 'pages#summary', :constraints => { :id => /.*/ }
   end
-
-  devise_for :users, :controllers => { :registrations => 'registrations' }
-  resources :users, :only => [:show,:destroy]
 
   # AUTHENTICATIONS
   match '/auth/:provider/callback' => 'authentications#create'

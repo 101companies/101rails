@@ -1,4 +1,4 @@
-# Sample localization file for English. Add more files in this directory for other locales.
-# See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
-
 en:
+  unauthenticated: 'You need to sign in or sign up before continuing.'
+  signed_in: 'Signed in successfully.'
+  signed_out: 'Signed out successfully.'
