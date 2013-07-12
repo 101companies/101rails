@@ -48,7 +48,8 @@
       <% else %>
           <div class="btn-group pull-right">
             <a class="btn dropdown-toggle" data-toggle="dropdown" href="">
-              <i class="icon-user"></i> <%= current_user.email %> <b>(<%= current_user.role %> )</b>
+              <img class='small_avatar' height=24 width=24 src='<%= current_user.github_avatar %>' />
+              <%= current_user.email %> <strong>(<%= current_user.role %> )</strong>
               <span class="caret"></span>
             </a>
             <ul class="dropdown-menu">
