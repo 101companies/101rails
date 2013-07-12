@@ -22,6 +22,8 @@ class User
 
   # github data
   field :github_name,        :type => String, :default => ''
+  field :github_avatar,      :type => String, :default => ''
+  field :github_token,       :type => String, :default => ''
 
   #mapping with old wiki
   has_many :old_wiki_users

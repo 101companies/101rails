@@ -82,14 +82,6 @@ class ContributionsController < ApplicationController
     end
 
     begin
-      # retrieve github login
-      if current_user.github_name == ''
-        agent = Mechanize.new
-        resp = agent.get "https://api.github.com/legacy/user/email/#{current_user.email}"
-        resp = JSON.parse resp.body
-        current_user.github_name = resp["user"]["login"]
-        current_user.save
-      end
       # retrieve repos of user
       temp_repos = Github.repos.list user: current_user.github_name
       @user_github_repos = ''

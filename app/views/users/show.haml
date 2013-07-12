@@ -1,5 +1,5 @@
 %h1
-  = gravatar_image_tag(@user.email, :class => 'github_avatar', :alt => @user.name)
+  %img{:src=>@user.github_avatar,:class => 'github_avatar', :alt => @user.name}
   = @user.name
 
 %h2 User Contributions

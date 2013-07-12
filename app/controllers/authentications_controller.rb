@@ -18,21 +18,36 @@ class AuthenticationsController < ApplicationController
     if authentication
       # Just sign in an existing user with omniauth
       flash[:notice] = I18n.t 'devise.sessions.signed_in'
+      # if used github -> integrate with app
+      integrate_github_info authentication.user, omniauth
       sign_in_and_redirect(:user, authentication.user)
     elsif current_user
       # Add authentication to signed in user
       current_user.authentications.create!(:provider => omniauth['provider'], :uid => omniauth['uid'])
+      # if used github -> integrate with app
+      integrate_github_info current_user, omniauth
       flash[:notice] = t(:authentication_successful)
       redirect_to authentications_url
     elsif user = create_new_omniauth_user(omniauth)
       # Create a new User through omniauth
       flash[:notice] = I18n.t 'devise.sessions.signed_in'
+      integrate_github_info user, omniauth
       sign_in_and_redirect(:user, user)
     else
       # New user data not valid, try again
       session[:omniauth] = omniauth.except('extra')
       flash[:notice] = 'Please specify a public email address on your github profile before sign up'
       redirect_to new_user_registration_url
+    end
+  end
+
+  def integrate_github_info(user, omniauth)
+    if omniauth['provider'] == 'github'
+      # get github nickname, token and avatar image
+      user.github_name = omniauth['info']['nickname']
+      user.github_avatar = omniauth['info']['image']
+      user.github_token = omniauth['credentials']['token']
+      user.save
     end
   end
 

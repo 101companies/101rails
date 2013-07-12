@@ -1,6 +1,6 @@
 %div{:class => 'user'}
   %p
-    = gravatar_image_tag(user.email, :class => 'github_avatar', :alt => user.name)
+    %img{:src=>user.github_avatar,:class => 'github_avatar', :alt => user.name}
   %p
     Username: #{user.name}
   %p
