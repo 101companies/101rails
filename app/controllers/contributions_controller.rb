@@ -1,7 +1,5 @@
 class ContributionsController < ApplicationController
 
-  before_filter :authenticate_user!, :only => [:create]
-
   def show
     @contribution = Contribution.find(params[:id])
   end
@@ -26,6 +24,12 @@ class ContributionsController < ApplicationController
   end
 
   def create
+    if !current_user
+      flash[:notices] = 'You need to be logged in, if you want to make contribution'
+      go_to_previous_page
+      return
+    end
+
     # TODO: check errors of input
     @contribution = Contribution.new
     @contribution.url = 'https://github.com/' + params[:contrb_repo_url].first + '.git'
