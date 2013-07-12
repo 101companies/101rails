@@ -42,7 +42,7 @@
                   %span.caret
                 %ul.dropdown-menu
                   %li
-                    = link_to raw("<i class=\"icon-wrench\"></i> My account"), current_user
+                    = link_to raw("<i class=\"icon-wrench\"></i> My contributions"), current_user
                   -if current_user.role == 'admin'
                     %li
                       = link_to raw("<i class=\"icon-lock\"></i> Admin UI"), '/admin'
