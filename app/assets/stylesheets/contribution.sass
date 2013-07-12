@@ -2,8 +2,17 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
-.container-fluid .span12
-  margin-top: 50px
+$form_element_width: 450px
+#create_contribution
+  select
+    width: $form_element_width
+    height: 30px
+  input
+    width: $form_element_width - 10px
+  textarea
+    width: $form_element_width - 20px
+  button
+    margin-top: 20px
 
 $avatar_size: 80px
 
@@ -13,6 +22,8 @@ $avatar_size: 80px
   border-radius: $avatar_size/2
 
 .contribution
+  vertical-align: top
+  float: left
   margin-bottom: 30px
   background-color: #efefef
   border: #cccccc

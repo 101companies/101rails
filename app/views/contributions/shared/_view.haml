@@ -3,8 +3,6 @@
   - if defined? is_linked and is_linked
     %h3
       =link_to contribution.title, contribution
-  - else
-    %h3= contribution.title
 
   %p
     - if contribution.user
@@ -27,6 +25,8 @@
         = contribution.description
     - else
       No additional information provided
+
+  %hr/
 
   %p
     - if contribution.languages
@@ -64,7 +64,9 @@
       %i{:class => 'icon-meh'}
       No technologies were retrieved
 
-    %p
+  %hr/
+
+  %p
     - if contribution.page
       %i{:class => 'icon-file-text'}
       wiki page:
