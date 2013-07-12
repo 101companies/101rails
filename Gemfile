@@ -41,6 +41,7 @@ gem 'omniauth', '1.1.4'
 gem 'omniauth-github', '1.1.0'
 
 # github integration
+gem 'octokit', '1.25.0'
 gem 'github_api', '0.9.7'
 
 # font with bundled icons
@@ -68,9 +69,6 @@ group :development do
   # colored output in irb and console
   gem 'wirble', '0.1.3'
 end
-
-# gem for retrieving gravatar/github avatars
-gem 'gravatar_image_tag', '1.1.3'
 
 # admin interface
 gem 'rails_admin', '0.4.9'
