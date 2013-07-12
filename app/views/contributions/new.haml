@@ -2,18 +2,32 @@
 
 = form_tag('/contribute/create', :id => 'create_contribution', :method => :post) do
 
-  = label_tag "Url to repository"
-  = select(:contrb_repo_url, nil, @user_github_repos)
+  %h2 Obvious parameters:
 
-  = label_tag "Title of contribution"
-  %input{:name => 'contrb_title', :placeholder => 'Obvious'}
+  %p
+    %span
+      Github repo for contribution
+      %i{:class => 'icon-asterisk red_asterisk'}
+    %p
+      = select(:contrb_repo_url, nil, @user_github_repos)
 
-  = label_tag "Description for contribution"
-  %textarea{:name => 'contrb_description', :placeholder => 'Not obvious'}
+  %p
+    %span
+      Title of contribution
+      %i{:class => 'icon-asterisk red_asterisk'}
+    %p
+      %input{:name => 'contrb_title', :placeholder => 'Obvious'}
 
-  = label_tag "Folder in repo"
-  %input{:name => 'contrb_folder', :placeholder => 'Not obvious'}
+  %h2 Additional parameters:
 
-  %br/
-  %button{:type => "submit", :class => "btn-large btn btn-success"}
-    Create contribution
+  %p
+    = label_tag "Description for contribution"
+    %textarea{:name => 'contrb_description', :placeholder => 'Not obvious'}
+
+  %p
+    = label_tag "Folder in repo"
+    %input{:name => 'contrb_folder', :placeholder => 'Not obvious'}
+
+  %p
+    %button{:type => "submit", :class => "btn-large btn btn-success"}
+      Create contribution

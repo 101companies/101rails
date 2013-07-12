@@ -3,16 +3,22 @@
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
 $form_element_width: 450px
+$input_height: 30px
 #create_contribution
   select
     width: $form_element_width
-    height: 30px
+    height: $input_height
   input
     width: $form_element_width - 10px
+    height: $input_height
   textarea
     width: $form_element_width - 20px
   button
+    width: $form_element_width
     margin-top: 20px
+
+.red_asterisk
+  color: red
 
 $avatar_size: 80px
 
