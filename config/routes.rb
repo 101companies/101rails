@@ -1,7 +1,15 @@
 Wiki::Application.routes.draw do
 
+  # homepage
+  root :to => "home#index"
+  get '/search' => 'pages#search'
+  # sitemap
+  get '/sitemap.xml' => 'application#sitemap'
+
+  # admin ui
   mount RailsAdmin::Engine => '/admin', :as => 'rails_admin'
 
+  # urls for contribution process
   scope 'contribute' do
     # list of contributions
     get '/' => 'contributions#index'
@@ -15,14 +23,13 @@ Wiki::Application.routes.draw do
     post '/analyze/:id' => 'contributions#analyze'
   end
 
-  root :to => "home#index"
-  get '/tours' => 'tours#index'
-  get '/search' => 'pages#search'
-  match '/tours/:title' => 'tours#show'
+  # tours
+  scope 'tours' do
+    get '/' => 'tours#index'
+    match '/:title' => 'tours#show'
+  end
 
-  # sitemap
-  get '/sitemap.xml' => 'application#sitemap'
-
+  # tours api
   scope 'api/tours' do
     get ':title' => 'tours#show', :as => :tour
     put ':title' => 'tours#update'
@@ -37,9 +44,11 @@ Wiki::Application.routes.draw do
   end
 
   # pages routes
-  get '/wiki' => redirect("/wiki/@project")
-  match '/wiki/clean_cache/:id' => 'pages#clean_cache' , :constraints => { :id => /.*/ }
-  match '/wiki/:id' => 'pages#show' , :constraints => { :id => /.*/ }, :as => :page
+  scope 'wiki' do
+    get '/' => redirect("/wiki/@project")
+    match '/clean_cache/:id' => 'pages#clean_cache' , :constraints => { :id => /.*/ }
+    match '/:id' => 'pages#show' , :constraints => { :id => /.*/ }, :as => :page
+  end
 
   # json api requests for pages
   scope 'api', :format => :json do
@@ -64,7 +73,9 @@ Wiki::Application.routes.draw do
     get ':id/summary' => 'pages#summary', :constraints => { :id => /.*/ }
   end
 
-  # AUTHENTICATIONS
-  match '/auth/:provider/callback' => 'authentications#create'
-  match '/auth/failure' => 'authentications#auth_failure'
+  # authentications
+  scope 'auth' do
+    match '/:provider/callback' => 'authentications#create'
+    match '/failure' => 'authentications#auth_failure'
+  end
 end
