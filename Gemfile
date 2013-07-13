@@ -10,6 +10,13 @@ source 'https://rubygems.org'
 # OR I WILL CUT YOUR FINGER!
 
 gem 'rails', '3.2.13'
+# for update to rails 4.0.0
+# need to be updated:
+# * aced_rails
+# * mongoid
+# * rails-backbone
+# * redis-rails
+
 
 # freezed, dependecy for rails_admin
 gem 'bootstrap-sass', '2.3.2.0'
