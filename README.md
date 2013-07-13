@@ -16,7 +16,7 @@ This application requires:
 ##Development
 
 *   Template Engines: ERB, HAML
-*   Front-end Frameworks: jQuery, backbone.js, Bootstrap
+*   Front-end Frameworks: jQuery, Backbone.js, Twitter Bootstrap
 *   Authentication: Omniauth
 *   Authorization: Cancan
 
@@ -78,6 +78,8 @@ It will be generated a picture in root of the app named **models.png**
 ###Local admin rights
 
 To be signed in you need to have github account with public email.
+
+![](http://101companies.org/assets/github-public-email-3ed71b5549eed5cd7235804f3e0054f9.png)
 
 If you have been successfully signed in, you can set another role to your user:
 
