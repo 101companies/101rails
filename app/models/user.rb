@@ -7,7 +7,6 @@ class User
 
   ROLE_OPTIONS = %w[admin editor guest banned nobody]
 
-  ## Database authenticatable
   field :email,              :type => String, :default => ""
 
   # work with roles
@@ -33,21 +32,11 @@ class User
     end
   end
 
-  ## Rememberable
-  field :remember_created_at, :type => Time
-
-  ## Trackable
-  field :sign_in_count,      :type => Integer, :default => 0
-  field :current_sign_in_at, :type => Time
-  field :last_sign_in_at,    :type => Time
-  field :current_sign_in_ip, :type => String
-  field :last_sign_in_ip,    :type => String
-
   # run 'rake db:mongoid:create_indexes' to create indexes
   index({ email: 1 }, { unique: true, background: true })
   field :name, :type => String
   validates_presence_of :name
-  attr_accessible :name, :email, :role, :remember_me, :created_at, :updated_at,
+  attr_accessible :name, :email, :role, :created_at, :updated_at,
                   :contributions, :github_name, :page_ids, :old_wiki_user_ids
 
   has_many :authentications, :dependent => :delete
