@@ -35,7 +35,6 @@ gem 'mongoid', '3.1.4'
 gem 'bcrypt-ruby', '3.1.1'
 
 # auth
-gem 'omniauth-identity', '1.1.0'
 gem 'omniauth', '1.1.4'
 gem 'omniauth-github', '1.1.0'
 
@@ -98,7 +97,7 @@ gem 'gritter', :git => 'git://github.com/burgua/gritter.git', :branch => 'vendor
 # deploy with Capistrano
 gem 'capistrano', '2.15.5'
 
-gem 'rvm-capistrano', '1.3.4'
+gem 'rvm-capistrano', '1.4.0'
 
 gem 'redis', '3.0.4'
 gem 'redis-store', '1.1.3'
