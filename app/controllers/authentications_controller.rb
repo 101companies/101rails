@@ -49,6 +49,11 @@ class AuthenticationsController < ApplicationController
     go_to_previous_page
   end
 
+  def failure
+    flash[:notice] = "Sorry, but login wasn't successful. Please try a bit later again"
+    go_to_previous_page
+  end
+
   private
 
   # Create a new user and assign an authentication to it.

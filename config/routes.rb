@@ -24,7 +24,7 @@ Wiki::Application.routes.draw do
   get '/sitemap.xml' => 'application#sitemap'
 
   scope 'api/tours' do
-    get ':title' => 'tours#show'
+    get ':title' => 'tours#show', :as => :tour
     put ':title' => 'tours#update'
     delete ':title' => 'tours#delete'
   end
@@ -39,7 +39,7 @@ Wiki::Application.routes.draw do
   # pages routes
   get '/wiki' => redirect("/wiki/@project")
   match '/wiki/clean_cache/:id' => 'pages#clean_cache' , :constraints => { :id => /.*/ }
-  match '/wiki/:id' => 'pages#show' , :constraints => { :id => /.*/ }
+  match '/wiki/:id' => 'pages#show' , :constraints => { :id => /.*/ }, :as => :page
 
   # json api requests for pages
   scope 'api', :format => :json do
@@ -66,6 +66,5 @@ Wiki::Application.routes.draw do
 
   # AUTHENTICATIONS
   match '/auth/:provider/callback' => 'authentications#create'
-  resources :authentications, :only => [:index,:create,:destroy]
   match '/auth/failure' => 'authentications#auth_failure'
 end
