@@ -68,7 +68,6 @@ class Page
     full_title_parts = full_title.split(':')
     # retrieve amount of splits
     amount_of_full_title_parts = full_title_parts.count
-    # TODO: crazy case:
     # amount_of_full_title_parts == 0 or amount_of_full_title_parts > 2
     # retrieved namespace and title
     if amount_of_full_title_parts == 2

@@ -9,16 +9,15 @@ source 'https://rubygems.org'
 # DO NOT ENTER GEMS WITHOUT GEM NUMBER!
 # OR I WILL CUT YOUR FINGER!
 
-gem 'rails', '3.2.13'
-# for update to rails 4.0.0
+# TODO: update to rails 4.0.0
 # need to be updated:
 # * aced_rails
 # * mongoid
 # * rails-backbone
 # * redis-rails
+gem 'rails', '3.2.13'
 
-
-# freezed, dependecy for rails_admin
+# twitter bootstrap as sass
 gem 'bootstrap-sass', '2.3.2.0'
 
 group :assets do

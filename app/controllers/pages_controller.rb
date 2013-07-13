@@ -106,8 +106,6 @@ class PagesController < ApplicationController
      @page = Page.find_by_full_title Page.unescape_wiki_url title
 
      uri = self.page_to_resource title
-     #TODO: unused variable
-     v101 = RDF::Vocabulary.new("http://101companies.org/property/")
      graph = RDF::Graph.new #<< [uri, RDF::RDFS.title, title]
 
      context   = RDF::URI.new("http://101companies.org")
@@ -249,7 +247,6 @@ class PagesController < ApplicationController
 
   def show
 
-    # TODO: rework history
     @page.instance_eval { class << self; self end }.send(:attr_accessor, "history")
 
     if not History.where(:page => @page.full_title).exists?
@@ -349,7 +346,6 @@ class PagesController < ApplicationController
     end
   end
 
-  # TODO: does it actually work?
   def update_history(pagename)
     if History.where(:page => pagename).exists?
       history = History.where(:page => pagename).first
@@ -373,8 +369,6 @@ class PagesController < ApplicationController
     new_full_title = Page.unescape_wiki_url params[:newTitle]
     # flag for renaming
     renaming = (new_full_title != @page.full_title)
-    # TODO: has it worked at all?
-    #update_history(title)
     begin
       result = @page.update_or_rename_page new_full_title, content, sections
     rescue
