@@ -1,7 +1,6 @@
 #101companies-wiki
 
-[![](https://codeclimate.com/github/101companies/101rails.png)](https://codeclimate.com/github/101companies/101rails) [![](https://github-camo.global.ssl.fastly.net/e0334278561c44df70429f69399e953b4dc2a786/687474703a2f2f7777772e76657273696f6e6579652e636f6d2f757365722f70726f6a656374732f3531623561393466383335343863303030323030646461312f62616467652e706e67)](http://www.versioneye.com/user/projects/51b5a94f83548c000200dda1)
-
+[![](https://codeclimate.com/github/101companies/101rails.png)](https://codeclimate.com/github/101companies/101rails) [![Dependency Status](http://www.versioneye.com/user/projects/51b5a94f83548c000200dda1/badge.png)](http://www.versioneye.com/user/projects/51b5a94f83548c000200dda1)
 This application was generated with the [rails_apps_composer](https://github.com/RailsApps/rails_apps_composer) gem provided by the [RailsApps Project](http://railsapps.github.com/).
 
 ##Requirements
