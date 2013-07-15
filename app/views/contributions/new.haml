@@ -18,7 +18,7 @@
       Title of contribution
       %i{:class => 'icon-asterisk red_asterisk'}
     %p
-      %input{:name => 'contrb_title', :placeholder => 'Obvious'}
+      %input{:name => 'contrb_title', :placeholder => 'Obvious', :id => 'contribution_title'}
 
   %h2 Additional parameters:
 
@@ -31,5 +31,5 @@
     %input{:name => 'contrb_folder', :placeholder => 'Not obvious'}
 
   %p
-    %button{:type => "submit", :class => "btn-large btn btn-success"}
+    %button{:type => "submit", :id => 'contribution_submit', :class => "btn-large btn btn-success"}
       Create contribution
