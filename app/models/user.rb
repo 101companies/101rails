@@ -5,7 +5,9 @@ class User
   include Mongoid::Document
   include Mongoid::Timestamps
 
-  ROLE_OPTIONS = %w[admin editor guest banned nobody]
+  def self.role_options
+    ['admin', 'editor', 'guest', 'banned', 'nobody']
+  end
 
   field :email,              :type => String, :default => ""
 
@@ -21,16 +23,6 @@ class User
   has_many :old_wiki_users
 
   # creating dropdown select with roles for user model in edit view (create view)
-  rails_admin do
-    edit do
-      include_all_fields
-      field :role, :enum do
-        enum do
-          ROLE_OPTIONS.to_a
-        end
-      end
-    end
-  end
 
   # run 'rake db:mongoid:create_indexes' to create indexes
   index({ email: 1 }, { unique: true, background: true })
