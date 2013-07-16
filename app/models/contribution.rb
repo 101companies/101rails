@@ -2,15 +2,12 @@ class Contribution
 
   include Mongoid::Document
   include Mongoid::Timestamps
-  #include Mongoid::Paranoia
-  #include Mongoid::Versioning
+  #include Mongoid::Audit::Trackable
+  include Mongoid::Paranoia
 
   field :url, type: String
   field :title, type: String
   field :description, type: String
-
-  field :created_at, type: DateTime
-  field :updated_at, type: DateTime
 
   field :approved, type: Boolean, :default => false
 

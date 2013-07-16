@@ -4,6 +4,8 @@ include StringExtensions
 class User
   include Mongoid::Document
   include Mongoid::Timestamps
+  #include Mongoid::Audit::Trackable
+  include Mongoid::Paranoia
 
   def self.role_options
     ['admin', 'editor', 'guest', 'banned', 'nobody']
