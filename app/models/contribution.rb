@@ -29,10 +29,9 @@ class Contribution
 
   belongs_to :user
 
-  belongs_to :page
+  has_one :page
 
-  attr_accessible :user_id, :url, :created_at, :updated_at, :title, :description, :folder, :approved,
-                  :analyzed, :page_id
+  attr_accessible :user_id, :created_at, :updated_at, :title, :description, :folder, :approved, :analyzed, :page_id
 
   def self.array_to_string(array)
     array.collect {|u| u}.join ', '

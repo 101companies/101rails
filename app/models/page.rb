@@ -12,12 +12,12 @@ class Page
 
   # relations here
   has_and_belongs_to_many :users
-  has_one :contribution
+  belongs_to :contribution
 
   # added index as composite key, paar title+namespace
   index({title: 1, namespace: 1}, {unique: true})
 
-  attr_accessible :user_ids, :namespace, :title, :created_at, :updated_at, :contribution
+  attr_accessible :user_ids, :namespace, :title, :created_at, :updated_at, :contribution_id
 
   # uri for using mediawiki gateway
   @@base_uri = 'http://mediawiki.101companies.org/api.php'
