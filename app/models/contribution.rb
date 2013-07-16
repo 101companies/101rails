@@ -34,7 +34,11 @@ class Contribution
   attr_accessible :user_id, :created_at, :updated_at, :title, :description, :folder, :approved, :analyzed, :page_id
 
   def self.array_to_string(array)
-    array.collect {|u| u}.join ', '
+    if !array.nil?
+      array.collect {|u| u}.join ', '
+    else
+      'No information retrieved'
+    end
   end
 
 end
