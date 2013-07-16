@@ -1,6 +1,6 @@
 class Tour
   include Mongoid::Document
-  #include Mongoid::Audit::Trackable
+  include Mongoid::Audit::Trackable
   include Mongoid::Paranoia
 
   field :title, type: String

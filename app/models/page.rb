@@ -5,7 +5,7 @@ class Page
   include Mongoid::Document
   include Mongoid::Timestamps
   include Mongoid::Paranoia
-  #include Mongoid::Audit::Trackable
+  include Mongoid::Audit::Trackable
 
   field :title, type: String
   # namespace for page, need to be set

@@ -2,7 +2,7 @@ class Contribution
 
   include Mongoid::Document
   include Mongoid::Timestamps
-  #include Mongoid::Audit::Trackable
+  include Mongoid::Audit::Trackable
   include Mongoid::Paranoia
 
   field :url, type: String

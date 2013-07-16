@@ -2,7 +2,7 @@ class OldWikiUser
 
   include Mongoid::Document
   include Mongoid::Paranoia
-  #include Mongoid::Audit::Trackable
+  include Mongoid::Audit::Trackable
 
   field :email, type: String
   field :name, type: String
