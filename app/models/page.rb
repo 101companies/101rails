@@ -10,15 +10,25 @@ class Page
   field :title, type: String
   # namespace for page, need to be set
   field :namespace, type: String
+  field :page_title_namespace, type: String
 
   # relations here
   has_and_belongs_to_many :users
   belongs_to :contribution
 
-  # added index as composite key, paar title+namespace
-  index({title: 1, namespace: 1}, {unique: true})
+  # validate uniqueness for paar title + namespace
+  before_validation :page_title_namespace_proc
+  def page_title_namespace_proc
+    self.page_title_namespace = self.namespace.to_s + ':' + self.title.to_s
+  end
 
-  attr_accessible :user_ids, :namespace, :title, :created_at, :updated_at, :contribution_id
+  validates_uniqueness_of :page_title_namespace
+  validates_presence_of :title
+  validates_presence_of :namespace
+
+  validates_uniqueness_of :page_title_namespace_proc
+
+  attr_accessible :user_ids, :namespace, :title, :contribution_id
 
   # uri for using mediawiki gateway
   @@base_uri = 'http://mediawiki.101companies.org/api.php'
