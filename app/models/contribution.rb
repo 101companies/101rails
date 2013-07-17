@@ -5,6 +5,9 @@ class Contribution
   include Mongoid::Audit::Trackable
   include Mongoid::Paranoia
 
+  track_history :on => [:title, :url, :description, :languages, :concepts, :features, :technologies, :page,
+                        :folder, :analyzed, :approved, :user], :track_create => true, :track_destroy => true
+
   field :url, type: String
   field :title, type: String
   field :description, type: String

@@ -28,6 +28,8 @@ class Page
 
   validates_uniqueness_of :page_title_namespace_proc
 
+  track_history :on => [:title, :namespace, :users, :contribution], :track_create => true, :track_destroy => true
+
   attr_accessible :user_ids, :namespace, :title, :contribution_id
 
   # uri for using mediawiki gateway
