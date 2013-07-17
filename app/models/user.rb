@@ -22,8 +22,8 @@ class User
   has_many :contributions
   has_and_belongs_to_many :pages
 
-  index({ email: 1 }, { unique: true})
-  index({ github_uid: 1 }, { unique: true})
+  validates_uniqueness_of :email
+  validates_uniqueness_of :github_uid
 
   validates_presence_of :name, :email, :github_uid, :github_token, :github_name
 

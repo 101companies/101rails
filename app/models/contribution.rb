@@ -18,11 +18,19 @@ class Contribution
   field :concepts, type: Array
   field :features, type: Array
 
+  before_validation :contribution_url_folder_proc
+  def contribution_url_folder_proc
+    self.contribution_url_folder = self.url.to_s + ':' + self.folder.to_s
+  end
+
+  # this field is using for validating the uniqueness of paar url+folder
+  field :contribution_url_folder, type: String
+
   belongs_to :user
   has_one :page
 
-  index({url: 1, folder: 1}, {unique: true})
-  index({title: 1}, {unique: true})
+  validates_uniqueness_of :title
+  validates_uniqueness_of :contribution_url_folder
 
   validates_presence_of :title, :url, :folder
 
