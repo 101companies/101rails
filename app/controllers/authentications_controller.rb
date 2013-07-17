@@ -26,12 +26,12 @@ class AuthenticationsController < ApplicationController
     user.github_token = omniauth['credentials']['token']
     user.github_uid = omniauth['uid']
 
-    #begin
+    begin
       user.save!
-    #rescue
-    #  flash[:warning] = "Sorry, but we couldn't read you data from github. Have you added public github email?"
-    ##  go_to_previous_page and return
-    #end
+    rescue
+      flash[:warning] = "Sorry, but we couldn't read you data from github. Have you added public github email?"
+      go_to_previous_page and return
+    end
 
     session[:user_id] = user.id
     flash[:notice] = t :signed_in
