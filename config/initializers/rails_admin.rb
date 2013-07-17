@@ -40,23 +40,6 @@ RailsAdmin.config do |config|
   # Exclude specific models (keep the others):
   config.excluded_models = ['History', 'HistoryTracker']
 
-  config.model 'Authentication' do
-
-    field :user
-
-    field :uid do
-      searchable true
-    end
-
-    field :provider do
-      searchable true
-      pretty_value do
-        "<i class='icon-#{value}'> #{value}".html_safe
-      end
-    end
-
-  end
-
   config.model 'Contribution' do
 
     field :title do
@@ -187,8 +170,7 @@ RailsAdmin.config do |config|
     end
 
     field :old_wiki_users do
-    field :authentications do
-      searchable true
+      sortable false
     end
 
   end
