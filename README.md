@@ -57,14 +57,6 @@ If you want to have all gems ready per project only:
 
     bundle install --path vendor/bundle
 
-To apply index for mongodb you need to execute
-
-    bundle exec rake db:mongoid:create_indexes
-
-Indexes are using for unique keys in db.
-
-Creating indexes need to be done after adding any new model with indexes or changing old models with indexes.
-
 After installing mongodb start this database and then launch application with:
 
     bundle exec rails server
