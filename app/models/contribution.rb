@@ -8,27 +8,25 @@ class Contribution
   field :url, type: String
   field :title, type: String
   field :description, type: String
-
-  field :approved, type: Boolean, :default => false
-
   field :folder, type: String, :default => '/'
 
-  index({url: 1, folder: 1}, {unique: true})
-
-  validates_presence_of :title, :url, :folder
+  field :analyzed, type: Boolean, :default => false
+  field :approved, type: Boolean, :default => false
 
   field :languages, type: Array
   field :technologies, type: Array
   field :concepts, type: Array
   field :features, type: Array
 
-  field :analyzed, type: Boolean, :default => false
-
   belongs_to :user
-
   has_one :page
 
-  attr_accessible :user_id, :created_at, :updated_at, :title, :description, :folder, :approved, :analyzed, :page_id
+  index({url: 1, folder: 1}, {unique: true})
+  index({title: 1}, {unique: true})
+
+  validates_presence_of :title, :url, :folder
+
+  attr_accessible :user_id, :title, :description, :url, :folder, :approved, :analyzed, :page_id
 
   def self.array_to_string(array)
     if !array.nil?
