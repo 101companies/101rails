@@ -28,13 +28,12 @@ class AuthenticationsController < ApplicationController
 
     begin
       user.save!
+      session[:user_id] = user.id
+      flash[:notice] = t :signed_in
     rescue
       flash[:warning] = "Sorry, but we couldn't read you data from github. Have you added public github email?"
-      go_to_previous_page and return
     end
 
-    session[:user_id] = user.id
-    flash[:notice] = t :signed_in
     go_to_previous_page
   end
 
