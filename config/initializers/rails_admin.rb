@@ -179,17 +179,14 @@ RailsAdmin.config do |config|
     field :updated_at
 
     field :pages do
-      searchable true
+      sortable false
     end
 
     field :contributions do
-      searchable true
+      sortable false
     end
 
     field :old_wiki_users do
-      searchable true
-    end
-
     field :authentications do
       searchable true
     end
@@ -215,7 +212,10 @@ RailsAdmin.config do |config|
       searchable true
     end
 
-    field :users
+    field :users do
+      sortable false
+    end
+
     field :contribution
 
     field :created_at
