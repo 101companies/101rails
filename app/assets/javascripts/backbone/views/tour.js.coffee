@@ -1,4 +1,4 @@
-class Tours.Views.Tour extends Backbone.View
+class Tours.Views.GuidedTour extends Backbone.View
   template : JST['backbone/templates/tour']
 
   el: '#tour'
@@ -12,7 +12,7 @@ class Tours.Views.Tour extends Backbone.View
     'click .tourRemovePage' : 'removePage'
     'click .tourRemoveSection' : 'removeSection'
     'click .tourSave' : 'updateTour'
-    #'click. tourStart' : 'start'
+    'click. #start' : 'start'
     #'click .tour' : 'updateTour'
 
   initialize: ->
@@ -192,3 +192,33 @@ class Tours.Views.Tour extends Backbone.View
           for defaultView in $(defaultViews)
             $(defaultView).css('display', 'block')
     )
+
+
+  start: ->
+    $start = $("#start")
+
+    tour = new Tour(
+      onStart: -> $start.addClass "disabled", true
+      onEnd: -> $start.removeClass "disabled", true
+      debug: on
+    )
+    data = []
+    $.each(@model.get('pages'), (i, p) ->
+      $.each(p.sections, (j, s) ->
+        data.push({path: '/wiki/' + p.title, element: s.replace(/\s/g, '_').toLowerCase()})
+      )
+    )
+    tour.addSteps data
+    tour.start()
+
+
+
+    $(document).on "click", ".start", (e) ->
+      e.preventDefault()
+      return false if $(this).hasClass "disabled"
+      tour.restart()
+      $(".alert").alert "close"
+
+
+
+

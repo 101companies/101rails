@@ -14,7 +14,7 @@
 <script type="text/javascript">
   jQuery(document).ready(function ($){
     Tours.tourTitle = <%= j @title.to_json.html_safe -%>;
-    new Tours.Routers.ToursRouter(Tours.Views.Tour);
+    new Tours.Routers.ToursRouter(Tours.Views.GuidedTour);
     Backbone.history.start();
   })
 </script>
