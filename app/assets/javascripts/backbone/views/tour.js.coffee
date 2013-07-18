@@ -12,12 +12,15 @@ class Tours.Views.Tour extends Backbone.View
     'click .tourRemovePage' : 'removePage'
     'click .tourRemoveSection' : 'removeSection'
     'click .tourSave' : 'updateTour'
+    #'click. tourStart' : 'start'
     #'click .tour' : 'updateTour'
 
   initialize: ->
-    @model = Tours.tour
-    @size = @model.get('pages').length
-    @render()
+    self = @
+    @model = new Tours.Models.Tour(title: Tours.tourTitle)
+    @model.fetch(success: (model) ->
+      self.render()
+    )
 
   render: ->
     html = @template(title: @model.get('title'), author: @model.get('author'), pages: @model.get('pages'))
@@ -29,7 +32,7 @@ class Tours.Views.Tour extends Backbone.View
       #console.log(triggerElement.tagName)
       triggerButton = triggerButton.parentNode
     triggerButton
-    
+
   getTriggerByClass: (triggerEvent, className) ->
     triggerButton = triggerEvent.target
     while (triggerButton.className != className)
@@ -129,13 +132,13 @@ class Tours.Views.Tour extends Backbone.View
   updateTour: (triggerEvent) ->
     authorElement = $.find(".author")[0]
     authorEditView = $(authorElement).find('.viewEdit')[0]
-    author = $(authorEditView).find(".authorName")[0].value
+    author = Wiki.currentUser.id
     authorDefaultView = $(authorElement).find('.viewDefault')[0]
     authorLink = $(authorDefaultView).find('a')[0]
     $(authorLink).text(author)
     $(authorLink).attr('href', 'https://github.com/'+author+'/')
     #console.log(author)
-    
+
     tourElement = $.find("#tour")[0]
     pageList = $(tourElement).find("#pages")[0]
     pageItems = $(pageList).find(".page")
@@ -173,18 +176,18 @@ class Tours.Views.Tour extends Backbone.View
       }
       success: ->
         console.log(@model)
-        
+
         $(authorEditView).css('display', 'none')
         $(authorDefaultView).css('display', 'block')
-        
+
         for pageItem in $(pageItems)
           editViews = $(pageItem).find('.viewEdit')
           #console.log(editViews)
-          
+
           for editView in $(editViews)
             console.log($(editView))
             $(editView).css('display', 'none')
-            
+
           defaultViews = $(pageItem).find('.viewDefault')
           for defaultView in $(defaultViews)
             $(defaultView).css('display', 'block')
