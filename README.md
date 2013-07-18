@@ -63,7 +63,7 @@ After installing mongodb start this database and then launch application with:
 
 If you want to see all models of app you need to execute next:
 
-    bundle exec railroady -M -e app/models/ability.rb | neato -Tpng &gt; models.png
+    bundle exec railroady -M -e app/models/ability.rb | neato -Tpng > models.png
 
 It will be generated a picture in root of the app named **models.png**
 
