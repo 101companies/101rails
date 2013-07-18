@@ -11,15 +11,20 @@ class Page
   # namespace for page, need to be set
   field :namespace, type: String
   field :page_title_namespace, type: String
+  field :raw_content, type: String
 
   # relations here
   has_and_belongs_to_many :users
   belongs_to :contribution
 
   # validate uniqueness for paar title + namespace
-  before_validation :page_title_namespace_proc
+  before_validation :page_title_namespace_proc, :save_raw_content
   def page_title_namespace_proc
     self.page_title_namespace = self.namespace.to_s + ':' + self.title.to_s
+  end
+
+  def save_raw_content
+    self.raw_content = self.content
   end
 
   validates_uniqueness_of :page_title_namespace
