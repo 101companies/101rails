@@ -21,7 +21,7 @@ RailsAdmin.config do |config|
   ################  Global configuration  ################
 
   # history of object changes with mongodb
-  #config.audit_with :mongoid_audit, 'HistoryTracker'
+  config.audit_with :mongoid_audit, 'HistoryTracker'
 
   # Set the admin name here (optional second array element will appear in red). For example:
   config.main_app_name = ['101Wiki', 'Admin']
@@ -32,8 +32,6 @@ RailsAdmin.config do |config|
   # use roles system for blocking admin interface
   config.authorize_with :cancan
 
-  # Display empty fields in show views:
-  config.compact_show_view = false
   # Number of default rows per-page:
   config.default_items_per_page = 30
 

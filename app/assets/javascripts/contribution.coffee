@@ -1,6 +1,9 @@
 #= require masonry.pkgd.min
 $ ->
 
+  # pinterest-like presentation for contributions
+  $('#contributions').masonry({item: '.contribution'})
+
   # use for contribution name of repo
   project_select = $("#create_contribution select").first()
 

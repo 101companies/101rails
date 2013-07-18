@@ -2,8 +2,13 @@ class Contribution
 
   include Mongoid::Document
   include Mongoid::Timestamps
-  #include Mongoid::Audit::Trackable
+  include Mongoid::Audit::Trackable
   include Mongoid::Paranoia
+
+  track_history :on => [:title, :url, :description, :folder, :approved, :analyzed,
+                        :languages, :technologies, :concepts, :features, :page_id, :user_id],
+                :track_create => true,
+                :track_destroy => true
 
   field :url, type: String
   field :title, type: String

@@ -1,8 +1,13 @@
 class User
   include Mongoid::Document
   include Mongoid::Timestamps
-  #include Mongoid::Audit::Trackable
+  include Mongoid::Audit::Trackable
   include Mongoid::Paranoia
+
+  track_history :on => [:email, :role, :github_avatar, :github_name, :github_token, :old_wiki_user_ids,
+                        :contribution_ids, :name, :page_ids],
+                :track_create => true,
+                :track_destroy => true
 
   def self.role_options
     ['admin', 'editor', 'guest', 'nobody']
