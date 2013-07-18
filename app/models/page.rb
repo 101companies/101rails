@@ -5,7 +5,7 @@ class Page
   include Mongoid::Document
   include Mongoid::Timestamps
   include Mongoid::Paranoia
-  #include Mongoid::Audit::Trackable
+  include Mongoid::Audit::Trackable
 
   field :title, type: String
   # namespace for page, need to be set
@@ -27,6 +27,10 @@ class Page
   validates_presence_of :namespace
 
   validates_uniqueness_of :page_title_namespace_proc
+
+  track_history :on => [:title, :namespace, :user_ids],
+                :track_create => true,
+                :track_destroy => true
 
   attr_accessible :user_ids, :namespace, :title, :contribution_id
 
