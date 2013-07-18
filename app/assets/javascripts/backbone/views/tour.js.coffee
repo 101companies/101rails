@@ -1,4 +1,4 @@
-class Tours.Views.Tour extends Backbone.View
+class Tours.Views.GuidedTour extends Backbone.View
   template : JST['backbone/templates/tour']
 
   el: '#tour'
@@ -12,7 +12,7 @@ class Tours.Views.Tour extends Backbone.View
     'click .tourRemovePage' : 'removePage'
     'click .tourRemoveSection' : 'removeSection'
     'click .tourSave' : 'updateTour'
-    'click. tourStart' : 'start'
+    'click. #start' : 'start'
     #'click .tour' : 'updateTour'
 
   initialize: ->
@@ -194,61 +194,30 @@ class Tours.Views.Tour extends Backbone.View
     )
 
 
-$ ->
-  $start = $("#start")
+  start: ->
+    $start = $("#start")
+
+    tour = new Tour(
+      onStart: -> $start.addClass "disabled", true
+      onEnd: -> $start.removeClass "disabled", true
+      debug: on
+    )
+    data = []
+    $.each(@model.get('pages'), (i, p) ->
+      $.each(p.sections, (j, s) ->
+        data.push({path: '/wiki/' + p.title, element: s.replace(/\s/g, '_').toLowerCase()})
+      )
+    )
+    tour.addSteps data
+    tour.start()
 
 
-  tour = new Tour(
-    onStart: -> $start.addClass "disabled", true
-    onEnd: -> $start.removeClass "disabled", true
-    debug: on
-  )
 
-  tour.addSteps [
-      element: "#"
-      placement: "bottom"
-      title: "SECTION1"
-      content: "NUMMER1"
-    ,
-      element: "#sections"
-      placement: "top"
-      title: "SECTION2"
-      content: "NUMMER2"
-      options:
-        labels:
-          prev: "Prev"
-          next: "Next"
-          end: "Stop"
-    ,
-      element: "#sections"
-      placement: "top"
-      title: "SECTION3"
-      content: "NUMMER3"
-      reflex: true
-    ,
-      element: "#sections"
-      placement: "top"
-      title: "SECTION4"
-      content: "NUMMER4"
-      backdrop: true
-    ,
-      element: "#sections"
-      placement: "bottom"
-      title: "SECTION5"
-      content: "NUMMER5"
-      reflex: true
-    
-
-    ]
-  tour.start()
-
-  
-
-  $(document).on "click", ".start", (e) ->
-    e.preventDefault()
-    return false if $(this).hasClass "disabled"
-    tour.restart()
-    $(".alert").alert "close"
+    $(document).on "click", ".start", (e) ->
+      e.preventDefault()
+      return false if $(this).hasClass "disabled"
+      tour.restart()
+      $(".alert").alert "close"
 
 
 
