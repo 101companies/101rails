@@ -182,6 +182,10 @@ RailsAdmin.config do |config|
       searchable true
     end
 
+    field :raw_content do
+      searchable true
+    end
+
     field :namespace do
       hide
       searchable true
