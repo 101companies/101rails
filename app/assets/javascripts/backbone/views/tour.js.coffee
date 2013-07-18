@@ -195,29 +195,18 @@ class Tours.Views.GuidedTour extends Backbone.View
 
 
   start: ->
-    $start = $("#start")
-
-    tour = new Tour(
-      onStart: -> $start.addClass "disabled", true
-      onEnd: -> $start.removeClass "disabled", true
-      debug: on
-    )
+    tour = new Tour()
     data = []
     $.each(@model.get('pages'), (i, p) ->
+      data.push({path: '/wiki/' + p.title, content: "BAR", title: p.title})
       $.each(p.sections, (j, s) ->
-        data.push({path: '/wiki/' + p.title, element: s.replace(/\s/g, '_').toLowerCase()})
+        data.push({path: '/wiki/' + p.title, element: s.replace(/\s/g, '_').toLowerCase(), content: "BAR", title: s})
       )
     )
     tour.addSteps data
     tour.start()
 
 
-
-    $(document).on "click", ".start", (e) ->
-      e.preventDefault()
-      return false if $(this).hasClass "disabled"
-      tour.restart()
-      $(".alert").alert "close"
 
 
 
