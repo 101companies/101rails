@@ -37,6 +37,11 @@ class AuthenticationsController < ApplicationController
     go_to_previous_page
   end
 
+  def failure
+    flash[:warning] = "Sorry, but login wasn't successful"
+    go_to_previous_page
+  end
+
   # destroy user's authentication and return to the authentication page.
   def destroy
     session[:user_id] = nil

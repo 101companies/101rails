@@ -76,6 +76,6 @@ Wiki::Application.routes.draw do
   # authentications
   scope 'auth' do
     match '/:provider/callback' => 'authentications#create'
-    match '/failure' => 'authentications#auth_failure'
+    match '/failure' => 'authentications#failure'
   end
 end
