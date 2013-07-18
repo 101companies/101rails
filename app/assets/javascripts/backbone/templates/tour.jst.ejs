@@ -8,8 +8,8 @@
   <h1>
     <%= title %>
     <div class="editBar">
-      <div class="btn-toolbar">
-        <button class="btn tourStart" type="button"><i class="icon-play"></i> Start</button>
+      <div class="btn-toolbar">  
+        <a href="#" id="start" class="start btn-primary btn-large btn">&#9658; Start tour</a>            
       </div>
     </div>
   </h1>
@@ -66,7 +66,7 @@
         <button class="btn btn-small tourAddSection" type="button"><i class="icon-plus"></i> Add Section</button>
        <%}%>
        <div class="viewDefault">
-        <a class="titleLink" class="titleLink" href="/wiki/"><%= p.title %></a>
+        <a class="titleLink" class="titleLink" href="/wiki/<%= p.title %>"><%= p.title %></a>
         <%if (isAdmin()) {%>
          <span class="editButtons">
           <button class="btn-mini tourShowEdit" type="button"><i class="icon-pencil"></i></button><button class="btn-mini tourRemovePage" type="button"><i class="icon-remove"></i></button>
