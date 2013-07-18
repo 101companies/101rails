@@ -11,7 +11,9 @@ class OldWikiUser
 
   belongs_to :user
 
-  track_history :on => [:email, :name, :user], :track_create => true, :track_destroy => true
+  track_history :on => [:email, :name, :user_id],
+                :track_create => true,
+                :track_destroy => true
 
   attr_accessible :email, :name, :user_id
 
