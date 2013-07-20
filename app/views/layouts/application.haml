@@ -26,7 +26,7 @@
 
             %li
               %form.navbar-search.pull-left{:action => "/search"}
-                %input.search-query{:name => "q", :placeholder => "Search", :type => "text"}/
+                %input.search-query{:name => "q", :id => 'search-query', :placeholder => "Search", :type => "text"}/
 
             %li
               - if !current_user
