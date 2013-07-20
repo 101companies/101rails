@@ -55,7 +55,7 @@ class PagesController < ApplicationController
 
   def semantic_properties
     {
-      'dependsOn'  => 'http://101companies.org/property/dependsOn',
+      'dependsOn'   => 'http://101companies.org/property/dependsOn',
       'instanceOf'  => 'http://101companies.org/property/instanceOf',
       'identifies'  => 'http://101companies.org/property/identifies',
       'linksTo'     => 'http://101companies.org/property/linksTo',
@@ -67,7 +67,7 @@ class PagesController < ApplicationController
       'developedBy' => 'http://101companies.org/property/developedBy',
       'reviewedBy'  => 'http://101companies.org/property/reviewedBy',
       'relatesTo'   => 'http://101companies.org/property/relatesTo',
-      'implies'   => 'http://101companies.org/property/implies',
+      'implies'     => 'http://101companies.org/property/implies',
       'mentions'    => 'http://101companies.org/property/mentions'
     }
   end
