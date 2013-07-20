@@ -288,7 +288,14 @@ class PagesController < ApplicationController
     @page.prepare_wiki_context
     # define links pointing to pages without content
     html = parsed_page.to_html
-    all_pages_urls = Page.all.map {|p| Page.nice_wiki_url p.full_title}
+
+    # get titles of all pages with content
+    all_pages_urls = Page.all.map do |page|
+      if !page.raw_content.nil?
+        Page.nice_wiki_url page.full_title
+      end
+    end
+
     parsed_page.internal_links.each do |link|
       # nice link -> link-uri converted to readable words
       nice_link = Page.nice_wiki_url link
