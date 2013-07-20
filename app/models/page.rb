@@ -62,6 +62,10 @@ class Page
     # find occurrence of searched string in title
     if !found_pages.nil?
       found_pages.each do |found_page|
+        # do not show pages without content
+        if found_page.raw_content.nil?
+          next
+        end
         # find match ignoring case
         score = found_page.full_title.downcase.index query_string.downcase
         # not found match in title

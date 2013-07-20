@@ -281,34 +281,33 @@ class PagesController < ApplicationController
     end
   end
 
+  # TODO: build fetching for pages for mongodb
   def parse
     content = params[:content]
     parsed_page = WikiCloth::Parser.new(:data => content, :noedit => true)
+    # hide content list
     parsed_page.sections.first.auto_toc = false
     @page.prepare_wiki_context
     # define links pointing to pages without content
     html = parsed_page.to_html
-
-    # get titles of all pages with content
-    all_pages_urls = Page.all.map do |page|
-      if !page.raw_content.nil?
-        Page.nice_wiki_url page.full_title
-      end
-    end
-
+    # mark empty or non-existing page with class missing-link (red color)
     parsed_page.internal_links.each do |link|
-      # nice link -> link-uri converted to readable words
+      # format link to nice readable view
       nice_link = Page.nice_wiki_url link
-      # if in list of all pages doesn't exists link -> define css class missing-link
-      class_attribute = all_pages_urls.include?(nice_link) ?  '' : 'class="missing-link"'
-      # rewrite all links in html of wiki page
-      # additionaly replace all whitespaces with underscore
+      # get the page by link in html
+      used_page = Page.find_by_full_title Page.unescape_wiki_url nice_link
+      # if found page and it has content
+      # set in class_attribute additional class for link (mark with red)
+      class_attribute = ''
+      if used_page.nil? || used_page.raw_content.nil?
+        class_attribute = 'class="missing-link"'
+      end
+      # replace page link in wiki markup
       html.gsub! "<a href=\"#{link}\"",
-          "<a " + class_attribute + " href=\"/wiki/#{Page.nice_wiki_url link}\""
+                 "<a " + class_attribute + " href=\"/wiki/#{nice_link}\""
       html.gsub! "<a href=\"#{link.camelize(:lower)}\"",
-                 "<a " + class_attribute + " href=\"/wiki/#{Page.nice_wiki_url link}\""
+                 "<a " + class_attribute + " href=\"/wiki/#{nice_link}\""
     end
-
     render :json => {:success => true, :html => html.html_safe}
   end
 
