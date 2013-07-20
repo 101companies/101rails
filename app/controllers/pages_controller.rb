@@ -311,7 +311,7 @@ class PagesController < ApplicationController
       flash[:notice] = 'Please write something, if you want to search something'
       go_to_homepage
     else
-      @search_results = Page.gateway_and_login.search(@query_string)
+      @search_results = Page.search @query_string
       respond_with @search_results
     end
   end

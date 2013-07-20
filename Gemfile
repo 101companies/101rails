@@ -41,6 +41,9 @@ gem 'haml-rails', '0.4'
 # TODO: before upgrade to 4.0 include mongoid-paranoia and mongoid-versioning
 gem 'mongoid', '3.1.4'
 
+# search eninge
+gem 'mongoid_search', '0.3.2'
+
 # security
 gem 'bcrypt-ruby', '3.1.1'
 

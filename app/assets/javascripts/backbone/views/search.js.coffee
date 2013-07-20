@@ -8,5 +8,5 @@ class Wiki.Views.Search extends Backbone.View
   render: ->
    self = @
    $('#query-string').text('Search results for "' + Wiki.queryString + '"')
-   _.each Wiki.searchResults, (link) ->
-      $('#search-results ul').append(self.template(link: link.replace(/\s/g, '_'), name: link.replace(/_/g, ' ')))
+   _.each Wiki.searchResults, (result) ->
+      $('#search-results ul').append(self.template(link: result.link, name: result.title))

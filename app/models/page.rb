@@ -6,6 +6,9 @@ class Page
   include Mongoid::Timestamps
   include Mongoid::Paranoia
   include Mongoid::Audit::Trackable
+  include Mongoid::Search
+
+  search_in :title, :namespace, :page_title_namespace, :raw_content
 
   field :title, type: String
   # namespace for page, need to be set
@@ -50,6 +53,37 @@ class Page
     end
     # else use normal building of full url
     self.namespace + ':' + self.title
+  end
+
+  def self.search(query_string)
+    found_pages = Page.full_text_search query_string
+    # save results here
+    results = []
+    # find occurrence of searched string in title
+    if !found_pages.nil?
+      found_pages.each do |found_page|
+        # find match ignoring case
+        score = found_page.full_title.downcase.index query_string.downcase
+        # not found match in title
+        if score == nil
+          # big value for search
+          score = 10000
+        end
+        # exact match -> best score (lowest)
+        if found_page.full_title.downcase == query_string.downcase
+          score = -1
+        end
+        # prepare array wit results
+        results << {
+            :title => found_page.full_title,
+            :link  => found_page.nice_wiki_url,
+            # more score -> worst result
+            :score => score
+        }
+      end
+    end
+    # sort by score and return
+    return results.sort_by { |a| a[:score] }
   end
 
   # get authorship of old wiki users for page
@@ -204,6 +238,10 @@ class Page
   # remove trailing spaces
   def self.nice_wiki_url title
     return (Page.unescape_wiki_url title).strip.gsub(' ', '_')
+  end
+
+  def nice_wiki_url
+    return Page.nice_wiki_url self.full_title
   end
 
   def create_wiki_parser
