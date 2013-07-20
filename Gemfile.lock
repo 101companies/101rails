@@ -116,6 +116,9 @@ GEM
     ejs (1.1.1)
     erubis (2.7.0)
     eventmachine (1.0.3)
+    exception_notification (4.0.0)
+      actionmailer (>= 3.0.4)
+      activesupport (>= 3.0.4)
     execjs (1.4.0)
       multi_json (~> 1.0)
     expression_parser (0.9.0)
@@ -360,6 +363,7 @@ DEPENDENCIES
   closure-compiler (= 1.1.10)
   coffee-rails (= 3.2.2)
   compass-rails (= 1.0.3)
+  exception_notification (= 4.0.0)
   font-awesome-rails (= 3.2.1.2)
   gritter!
   haml-rails (= 0.4)

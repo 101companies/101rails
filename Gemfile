@@ -18,6 +18,9 @@ source 'https://rubygems.org'
 # * redis-rails
 gem 'rails', '3.2.13'
 
+# send email on error
+gem 'exception_notification', '4.0.0'
+
 # twitter bootstrap as sass
 gem 'bootstrap-sass', '2.3.2.0'
 
