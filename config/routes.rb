@@ -5,6 +5,8 @@ Wiki::Application.routes.draw do
   get '/search' => 'pages#search'
   # sitemap
   get '/sitemap.xml' => 'application#sitemap'
+  # link for downloading slides from slideshare
+  get '/get_slide/*slideshare' => 'application#get_slide', :format => false
 
   # admin ui
   mount RailsAdmin::Engine => '/admin', :as => 'rails_admin'

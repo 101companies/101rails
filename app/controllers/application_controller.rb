@@ -10,6 +10,15 @@ class ApplicationController < ActionController::Base
     redirect_to '/wiki/@project'
   end
 
+  def get_slide
+    # get markup with slideshare tag
+    slideshare_url = params[:slideshare]
+    # parse markup to html
+    html = WikiCloth::Parser.new(:data => "<media url='#{CGI.unescape(slideshare_url)}'>", :noedit => true).to_html
+    # get download link from html and redirect to it
+    redirect_to html.scan(/download-link='(.+?)'/)[0][0].to_s
+  end
+
   def sitemap
     # generate sitemap for better google indexing
     text = '<?xml version="1.0" encoding="UTF-8"?>
