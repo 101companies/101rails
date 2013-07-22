@@ -262,7 +262,7 @@ class PagesController < ApplicationController
     respond_to do |format|
       format.html {
         # if need redirect? -> wiki url conventions -> do a redirect
-        good_link = Page.nice_wiki_url @page.full_title
+        good_link = @page.nice_wiki_url
         if good_link != params[:id]
           redirect_to '/wiki/'+ good_link and return
         end
@@ -384,7 +384,7 @@ class PagesController < ApplicationController
     # result is false -> smth failed
     # if was performed 'rename' action
     if renaming
-      render :json => {:success => result, :newTitle => (Page.nice_wiki_url @page.full_title)}
+      render :json => {:success => result, :newTitle => @page.nice_wiki_url}
     else
       # 'updated content' response
       render :json => {:success => result}
@@ -395,4 +395,3 @@ class PagesController < ApplicationController
     respond_with ({:content => @page.section(params[:full_title])}).to_json
   end
 end
-
