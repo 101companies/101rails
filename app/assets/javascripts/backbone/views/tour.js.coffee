@@ -21,10 +21,10 @@ class Tours.Views.GuidedTour extends Backbone.View
     @model.fetch(success: (model) ->
       self.render()
     )
-    
+
   isAdmin: ->
     _.contains(Wiki.currentUser.get('actions'), "Edit")
-   
+
   render: ->
     html = @template(title: @model.get('title'), author: @model.get('author'), pages: @model.get('pages'))
     $(@el).html(html)
@@ -32,14 +32,17 @@ class Tours.Views.GuidedTour extends Backbone.View
     if (@isAdmin())
       $('#pages').sortable({
         items: '.page',
-        containment: 'parent',
         cursor: 'move',
         axis: 'y',
         tolerance: 'pointer',
         delay: 150 ,
-        toleranceElement: '> div'
+        toleranceElement: '> div',
+        placeholder: "sortable-placeholder",
+        forcePlaceholderSize: true,
+        start: (event, ui) ->
+          $('.sortable-placeholder').css('height', ui.item.height() / 2)
       })
-      $('#sections').sortable({
+      $('.sections').sortable({
         items: ' .section',
         containment: 'parent',
         cursor: 'move',
@@ -138,7 +141,7 @@ class Tours.Views.GuidedTour extends Backbone.View
       ' <div class="viewDefault">\n'+
       '  <a class="sectionLink" href="/wiki/newPage#Section">#Section</a>\n'+
       '  <span class="editButtons">\n' +
-      '   <button class="btn-mini tourShowEdit" type="button"><i class="icon-pencil"></i></button><button class="btn-mini tourRemoveSection" type="button"><i class="icon-remove"></i></button>\n'+
+      '   <button class="btn-mini tourShowEdit" type="button"><i class="icon-pencil"></i></button><button class="btn-mini tourRemoveSection" type="button"><i class="icon-remove"></i> </button><i class="icon-remove"></i>\n'+
       '  </span>\n'+
       ' </div>\n'+
       ' <div class="viewEdit"><input class="sectionTitle" value="Section"></div>\n'+

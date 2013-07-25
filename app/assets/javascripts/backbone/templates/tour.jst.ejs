@@ -42,6 +42,7 @@
     </div>
    <%}%>
   </h2>
+  <div id="pages-container">
   <ul id="pages" class="sortable">
     <% _.each(pages, function(p) {%>
      <li class="page">
@@ -66,7 +67,7 @@
        <%}%>
       </div>
       <div>
-       <ul id="sections" class="sections">
+       <ul class="sections">
         <% _.each(p.sections, function(s) {%>
          <li class="section">
           <div class="viewDefault">
@@ -74,8 +75,7 @@
            <%if (isAdmin()) {%>
             <span class="editButtons">
              <button class="btn-mini tourShowEdit" type="button"><i class="icon-pencil"></i></button>
-             <button class="btn-mini tourRemoveSection" type="button"><i class="icon-remove"></i></button>
-             DRAG
+             <button class="btn-mini tourRemoveSection" type="button"><i class="icon-remove"></i></button> <i class="icon-remove"></i>
             </span>
            <%}%>
           </div>
@@ -89,4 +89,5 @@
      </li>
     <% }); %>
   </ul>
+</div>
 </div>
