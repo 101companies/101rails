@@ -11,12 +11,16 @@ class ApplicationController < ActionController::Base
   end
 
   def get_slide
-    # get markup with slideshare tag
+    # get url for slideshare slide
     slideshare_url = params[:slideshare]
+    # remove part of urls with http:/, http://, https://, https:/
+    # and replace it with https://
+    # this is needed for nginx + passenger, who merge slashes in url, when url is sent as param
+    slideshare_url.gsub! /.+[ps]:\/*(.+)/, 'https://\1'
     # parse markup to html
     html = WikiCloth::Parser.new(:data => "<media url='#{CGI.unescape(slideshare_url)}'>", :noedit => true).to_html
     # get download link from html and redirect to it
-    redirect_to html.scan(/download-link='(.+?)'/)[0][0].to_s
+    redirect_to (html.match /download-link='(.+?)'/)[1]
   end
 
   def sitemap
