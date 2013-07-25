@@ -22,9 +22,39 @@ class Tours.Views.GuidedTour extends Backbone.View
       self.render()
     )
 
+  isAdmin: ->
+    _.contains(Wiki.currentUser.get('actions'), "Edit")
+
   render: ->
     html = @template(title: @model.get('title'), author: @model.get('author'), pages: @model.get('pages'))
     $(@el).html(html)
+
+    if (@isAdmin())
+      $('#pages').sortable({
+        items: '.page',
+        cursor: 'move',
+        axis: 'y',
+        tolerance: 'pointer',
+        delay: 150 ,
+        toleranceElement: '> div',
+        placeholder: "sortable-placeholder",
+        forcePlaceholderSize: true,
+        start: (event, ui) ->
+          height = ui.item.height() / 2
+          if (height < 50)
+            height = 50
+          $('.sortable-placeholder').css('height', height)
+      })
+      $('.sections').sortable({
+        items: ' .section',
+        containment: 'parent',
+        cursor: 'move',
+        axis: 'y',
+        tolerance: 'pointer',
+        delay: 150 ,
+        toleranceElement: '> div'
+      })
+      $('.tourMovePage').disableSelection()
 
   getTriggerButton: (triggerEvent) ->
     triggerButton = triggerEvent.target
@@ -114,7 +144,7 @@ class Tours.Views.GuidedTour extends Backbone.View
       ' <div class="viewDefault">\n'+
       '  <a class="sectionLink" href="/wiki/newPage#Section">#Section</a>\n'+
       '  <span class="editButtons">\n' +
-      '   <button class="btn-mini tourShowEdit" type="button"><i class="icon-pencil"></i></button><button class="btn-mini tourRemoveSection" type="button"><i class="icon-remove"></i></button>\n'+
+      '   <button class="btn-mini tourShowEdit" type="button"><i class="icon-pencil"></i></button><button class="btn-mini tourRemoveSection" type="button"><i class="icon-remove"></i> </button><i class="icon-remove"></i>\n'+
       '  </span>\n'+
       ' </div>\n'+
       ' <div class="viewEdit"><input class="sectionTitle" value="Section"></div>\n'+
@@ -195,29 +225,17 @@ class Tours.Views.GuidedTour extends Backbone.View
 
 
   start: ->
-    $start = $("#start")
-
-    tour = new Tour(
-      onStart: -> $start.addClass "disabled", true
-      onEnd: -> $start.removeClass "disabled", true
-      debug: on
-    )
+    tour = new Tour()
     data = []
     $.each(@model.get('pages'), (i, p) ->
+      data.push({path: '/wiki/' + p.title, content: "BAR", title: p.title})
       $.each(p.sections, (j, s) ->
-        data.push({path: '/wiki/' + p.title, element: s.replace(/\s/g, '_').toLowerCase()})
+        data.push({path: '/wiki/' + p.title, element: s.replace(/\s/g, '_').toLowerCase(), content: "BAR", title: s})
       )
     )
     tour.addSteps data
     tour.start()
 
-
-
-    $(document).on "click", ".start", (e) ->
-      e.preventDefault()
-      return false if $(this).hasClass "disabled"
-      tour.restart()
-      $(".alert").alert "close"
 
 
 
