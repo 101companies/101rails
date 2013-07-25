@@ -31,21 +31,6 @@
   	<%}%>
   </h3>
 
-  <%
-   if (isAdmin()) {
-     $(function() {
-       $('#pages').sortable({
-         items:'.page',
-         containment: 'parent',
-         cursor: 'move',
-         axis: 'y',
-         tolerance: 'pointer',
-         delay: 150
-       });
-     });
-   }
-  %>
-
   <h2>
    Pages
    <%if (isAdmin()) {%>
@@ -69,7 +54,10 @@
         <a class="titleLink" class="titleLink" href="/wiki/<%= p.title %>"><%= p.title %></a>
         <%if (isAdmin()) {%>
          <span class="editButtons">
-          <button class="btn-mini tourShowEdit" type="button"><i class="icon-pencil"></i></button><button class="btn-mini tourRemovePage" type="button"><i class="icon-remove"></i></button>
+          <button class="btn-mini tourShowEdit" type="button"><i class="icon-pencil"></i></button>
+          <button class="btn-mini tourMovePage" type="button"><i class="icon-triangle-2-n-s"></i></button>
+          <button class="btn-mini tourRemovePage" type="button"><i class="icon-remove"></i></button>
+          click to drag
          </span>
         <%}%>
        </div>
@@ -85,7 +73,9 @@
            <a class="sectionLink" href="/wiki/<%= p.title.replace(/_/g, ' ') %>#<%= s.replace(/_/g, ' ') %>">#<%= s %></a>
            <%if (isAdmin()) {%>
             <span class="editButtons">
-             <button class="btn-mini tourShowEdit" type="button"><i class="icon-pencil"></i></button><button class="btn-mini tourRemoveSection" type="button"><i class="icon-remove"></i></button>
+             <button class="btn-mini tourShowEdit" type="button"><i class="icon-pencil"></i></button>
+             <button class="btn-mini tourRemoveSection" type="button"><i class="icon-remove"></i></button>
+             DRAG
             </span>
            <%}%>
           </div>

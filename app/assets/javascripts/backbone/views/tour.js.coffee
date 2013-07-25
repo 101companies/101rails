@@ -21,10 +21,34 @@ class Tours.Views.GuidedTour extends Backbone.View
     @model.fetch(success: (model) ->
       self.render()
     )
-
+    
+  isAdmin: ->
+    _.contains(Wiki.currentUser.get('actions'), "Edit")
+   
   render: ->
     html = @template(title: @model.get('title'), author: @model.get('author'), pages: @model.get('pages'))
     $(@el).html(html)
+
+    if (@isAdmin())
+      $('#pages').sortable({
+        items: '.page',
+        containment: 'parent',
+        cursor: 'move',
+        axis: 'y',
+        tolerance: 'pointer',
+        delay: 150 ,
+        toleranceElement: '> div'
+      })
+      $('#sections').sortable({
+        items: ' .section',
+        containment: 'parent',
+        cursor: 'move',
+        axis: 'y',
+        tolerance: 'pointer',
+        delay: 150 ,
+        toleranceElement: '> div'
+      })
+      $('.tourMovePage').disableSelection()
 
   getTriggerButton: (triggerEvent) ->
     triggerButton = triggerEvent.target
@@ -205,7 +229,6 @@ class Tours.Views.GuidedTour extends Backbone.View
     )
     tour.addSteps data
     tour.start()
-
 
 
 
