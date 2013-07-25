@@ -8,7 +8,7 @@ GIT
 
 GIT
   remote: git://github.com/avaranovich/wikicloth.git
-  revision: 8950ea420a6853537066ec8af40e44b616f4ce0a
+  revision: 2830835221c91861476c9eadf04896e39376d25b
   specs:
     wikicloth (0.8.0)
       builder
@@ -198,8 +198,8 @@ GEM
     multi_xml (0.5.4)
     multipart-post (1.2.0)
     nested_form (0.3.2)
-    net-http-digest_auth (1.3)
-    net-http-persistent (2.8)
+    net-http-digest_auth (1.4)
+    net-http-persistent (2.9)
     net-scp (1.1.2)
       net-ssh (>= 2.6.5)
     net-sftp (2.1.2)
