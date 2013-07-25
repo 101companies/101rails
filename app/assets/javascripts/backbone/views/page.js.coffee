@@ -83,8 +83,8 @@ class Wiki.Views.Page extends Backbone.View
       @saveButton.remove()
 
     $('a[href^=imported]').remove()
-
     $('#disqus-loader').show()
+
 
   initRename: ->
     $('#renamemodal').modal()
