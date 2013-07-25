@@ -40,7 +40,10 @@ class Tours.Views.GuidedTour extends Backbone.View
         placeholder: "sortable-placeholder",
         forcePlaceholderSize: true,
         start: (event, ui) ->
-          $('.sortable-placeholder').css('height', ui.item.height() / 2)
+          height = ui.item.height() / 2
+          if (height < 50)
+            height = 50
+          $('.sortable-placeholder').css('height', height)
       })
       $('.sections').sortable({
         items: ' .section',
