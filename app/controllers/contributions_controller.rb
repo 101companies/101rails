@@ -86,10 +86,11 @@ class ContributionsController < ApplicationController
     end
 
     begin
-      # retrieve repos of user
-      client = Octokit::Client.new :login => current_user.github_name, :oauth_token => current_user.github_token
-      client.follow current_user.github_name
-      @user_github_repos = (client.repositories current_user.github_name).map { |repo| repo.full_name}
+      # retrieve all repos of user
+      @user_github_repos = (Octokit.repos current_user.github_name, {:type => 'all'}).map do |repo|
+        # retrieve 'username/reponame' from url
+        repo.clone_url.to_s[19..-5]
+      end
     rescue
       flash[:warning] = "We couldn't retrieve you github information, please try in 5 minutes." +
         "If you haven't added github public email - please do it!"
