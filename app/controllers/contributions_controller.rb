@@ -5,8 +5,12 @@ class ContributionsController < ApplicationController
   end
 
   def index
-    @contributions = Contribution.where(:analyzed => true).desc(:created_at).limit(10)
-    #TODO: pagination
+    show_per_page = 10
+    @contributions = Contribution.
+        where(:analyzed => true, :approved => true).
+        desc(:created_at).
+        offset(show_per_page*params[:page].to_i).
+        limit(show_per_page)
   end
 
   def analyze
@@ -49,25 +53,23 @@ class ContributionsController < ApplicationController
 
     # create page for contribution
     # TODO: check owning the page?
+    page = Page.find_by_full_title 'Contribution:'+Page.unescape_wiki_url(@contribution.title)
+    # page already exist
+    if page
+      flash[:notice] = 'Wikipage for this contribution already exist'
+      redirect_to '/contribute' and return
+    end
+
     page = Page.find_or_create_page 'Contribution:'+Page.unescape_wiki_url(@contribution.title)
     page.users << current_user
     page.save!
+    @contribution.approved = true
+    @contribution.analyzed = true
     @contribution.page = page
     @contribution.save
 
     # send request to matching service
-    begin
-      request = Mechanize.new.post 'http://worker.101companies.org/services/analyzeSubmission',
-        {
-          :url => @contribution.url,
-          :folder => @contribution.folder,
-          :name => @contribution.title,
-          :backping => "http://101companies.org/contribute/analyze/#{@contribution.id}"
-        }.to_json,
-        {'Content-Type' => 'application/json'}
-    rescue
-      flash[:error] = "Request on analyze service wasn't successful. Please retry it later"
-    end
+    #@contribution.analyse_request "http://101companies.org/contribute/analyze/#{@contribution.id}"
 
     # request was executed without errors
     if !request.nil?
@@ -85,6 +87,8 @@ class ContributionsController < ApplicationController
       render 'contributions/login_intro' and return
     end
 
+    @user_github_repos = nil
+
     begin
       # retrieve all repos of user
       @user_github_repos = (Octokit.repos current_user.github_name, {:type => 'all'}).map do |repo|
@@ -93,9 +97,10 @@ class ContributionsController < ApplicationController
       end
     rescue
       flash[:warning] = "We couldn't retrieve you github information, please try in 5 minutes." +
-        "If you haven't added github public email - please do it!"
+          "If you haven't added github public email - please do it!"
       redirect_to '/contribute'
     end
+
   end
 
 end

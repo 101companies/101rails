@@ -39,6 +39,26 @@ class Contribution
 
   attr_accessible :user_id, :title, :description, :url, :folder, :approved, :analyzed, :page_id
 
+  def analyse_request(backping_url)
+    success = true
+    # TODO: check fail case
+    # TODO: stress case?
+    begin
+      Mechanize.new.post 'http://worker.101companies.org/services/analyzeSubmission',
+         {
+           :url => self.url,
+           :folder => self.folder,
+           :name => self.title,
+           :backping => backping_url
+         }.to_json,
+         {'Content-Type' => 'application/json'}
+    rescue
+      flash[:error] = "Request on analyze service wasn't successful. Please retry it later"
+      success = false
+    end
+    success
+  end
+
   def self.array_to_string(array)
     if !array.nil?
       array.collect {|u| u}.join ', '
