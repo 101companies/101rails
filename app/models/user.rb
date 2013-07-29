@@ -32,4 +32,13 @@ class User
 
   attr_accessible :role, :contributions, :page_ids, :old_wiki_user_ids
 
+  def populate_data(omniauth)
+    self.email = omniauth['info']['email']
+    self.name = omniauth['info']['name']
+    self.github_name = omniauth['info']['nickname']
+    self.github_avatar = omniauth['info']['image']
+    self.github_token = omniauth['credentials']['token']
+    self.github_uid = omniauth['uid']
+  end
+
 end
