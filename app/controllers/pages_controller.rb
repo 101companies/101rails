@@ -97,11 +97,6 @@ class PagesController < ApplicationController
     end
   end
 
-  # get all titles as json
-  def all
-    render :json => Page.all.map {|p| Page.escape_wiki_url p.full_title}
-  end
-
   def get_rdf_graph(title, directions=false)
      @page = Page.find_by_full_title Page.unescape_wiki_url title
 
