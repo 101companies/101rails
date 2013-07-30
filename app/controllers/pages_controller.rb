@@ -82,7 +82,7 @@ class PagesController < ApplicationController
       if page.nil?
         return nil
       end
-      RDF::URI.new("http://101companies.org/resources/#{page.namespace.downcase.pluralize}/#{page.title.sub(' ', '_')}")
+      RDF::URI.new("http://101companies.org/resources/#{page.namespace.downcase.pluralize}/#{Page.escape_wiki_url page.title}")
     end
   end
 
@@ -92,6 +92,7 @@ class PagesController < ApplicationController
   end
 
   def get_rdf_graph(title, directions=false)
+     puts title
      @page = Page.find_by_full_title(title)
 
      uri = self.page_to_resource title
@@ -199,8 +200,14 @@ class PagesController < ApplicationController
 
   def get_rdf
     title = params[:id]
-    graph = self.get_rdf_graph(title)
-    respond_with graph.dump(:ntriples)
+    begin
+      graph = self.get_rdf_graph(title)
+      respond_with graph.dump(:ntriples)
+    rescue
+      error_message="#{$!}"
+      Rails.logger.error error_message
+      respond_with error_message
+    end
   end
 
   def get_json
