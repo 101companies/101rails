@@ -1,0 +1,68 @@
+!!!
+%html
+
+  %head
+
+    %meta{:content => "width=device-width, initial-scale=1.0", :name => "viewport"}/
+    %title 101wiki
+    %link{:href => "//fonts.googleapis.com", :rel => "dns-prefetch"}/
+    %meta{:content => content_for?(:description) ? yield(:description) : "Wiki", :name => "description"}/
+    = stylesheet_link_tag "application", :media => "all"
+    = csrf_meta_tag
+    = javascript_include_tag "application"
+    = csrf_meta_tags
+    = yield(:head)
+
+  %body
+
+    = render 'home/flashes'
+
+    #page-nav.navbar.navbar-fixed-top
+      .navbar-inner
+        .container-fluid
+          %a.brandname{:href => "/", :name => "top"}
+            101companies
+          %ul.nav.pull-right
+
+            %li
+              %form.navbar-search.pull-left{:action => "/search"}
+                %input.search-query{:name => "q", :id => 'search-query', :placeholder => "Search", :type => "text"}/
+
+            %li
+              - if !current_user
+                %a{:href => "/auth/github"}
+                  %i.icon-github-alt.icon-large
+                  GitHub Login
+              - else
+                %a.dropdown-toggle{"data-toggle" => "dropdown", :href => ""}
+                  %img.small_avatar{:height => "24", :src => current_user.github_avatar, :width => "24"}/
+                  = current_user.name
+                  %strong
+                    (#{current_user.role} )
+                  %span.caret
+                %ul.dropdown-menu
+                  %li
+                    = link_to raw("<i class=\"icon-wrench\"></i> My contributions"), current_user
+                  -if current_user.role == 'admin'
+                    %li
+                      = link_to raw("<i class=\"icon-lock\"></i> Admin UI"), '/admin'
+                  %li
+                    = link_to raw("<i class=\"icon-share\"></i> Logout"), '/users/logout'
+
+    .container-fluid
+      .row-fluid
+        .span2
+        #main101.span8
+          = yield
+        .span2
+
+    :javascript
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-40245180-1']);
+      _gaq.push(['_trackPageview']);
+
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();

@@ -6,17 +6,6 @@ load 'deploy/assets'
 set :sync_backups, 3
 set :db_file, "mongoid.yml"
 
-# added sending email after deploy
-load 'config/deploy/cap_notify.rb'
-set :notify_emails, ["aleksey.lashin@gmail.com", "arkadi@uni-koblenz.de", "dotnetby@gmail.com", "tschmorleiz@gmail.com"]
-#after :deploy, 'deploy:send_notification'
-namespace :deploy do
-  desc "Send email notification"
-  task :send_notification do
-    Notifier.deploy_notification(self).deliver
-  end
-end
-
 # keep 10 last revisions of app
 set :keep_releases, 10
 # automatically remove old revisions, except last 10, after deploy
@@ -97,24 +86,24 @@ namespace :sync do
         on_rollback { delete "#{shared_path}/sync/#{filename}" }
         username, password, database, host = database_config('production')
         production_database = database
- 
+
         run "mongodump -db #{database}"
         run "tar -cjf /home/user101/#{filename} dump/#{database}"
         run "rm -rf dump"
-        
+
         download "/home/user101/#{filename}", "tmp/#{filename}"
-        
+
         username, password, database = database_config('development')
         system "tar -xjvf tmp/#{filename}"
-        
+
         system "mongorestore #{fetch(:db_drop, '')} -db #{database} dump/#{production_database}"
-        
+
         system "rm -f tmp/#{filename} | rm -rf dump"
-        
+
         logger.important "sync database from the 'production' to local finished"
-    end  
-  end 
-end  
+    end
+  end
+end
 
 #
 # Reads the database credentials from the local config/database.yml file
@@ -123,9 +112,9 @@ end
 #
 def database_config(db)
   database = YAML::load_file('config/mongoid.yml')
-  return database["#{db}"]['sessions']['default']['username'], 
-         database["#{db}"]['sessions']['default']['password'], 
-         database["#{db}"]['sessions']['default']['database'], 
+  return database["#{db}"]['sessions']['default']['username'],
+         database["#{db}"]['sessions']['default']['password'],
+         database["#{db}"]['sessions']['default']['database'],
          database["#{db}"]['sessions']['default']['host']
 end
 

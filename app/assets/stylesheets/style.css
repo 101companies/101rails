@@ -17,7 +17,7 @@ body{
     margin-top: 12px;
     margin-left: 10px;
     overflow: hidden;
-    
+
     color: #333;
     background: url(/assets/logo2.jpg) no-repeat 0 0;
 }
@@ -25,9 +25,9 @@ body{
 .navbar .brand {
     position: relative;
     top: 0;
-    
+
     margin-left: 0;
-    
+
     font-weight: 600;
 }
 
@@ -521,7 +521,7 @@ label{
         background-image: none;
         background-color: #b7dbf1;
     }
-    
+
     .sengal-thumbnail{
         margin: 0 auto;
     }

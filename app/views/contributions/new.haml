@@ -1,15 +1,35 @@
-%h1 Create new contribution from github-user
-= @github_name
+= render 'contributions/shared/navigation'
 
-= render 'users/shared/view', :user => current_user
+%h1 Create new contribution
 
+= form_tag('/contribute/create', :id => 'create_contribution', :method => :post) do
 
-= form_tag('/contributions/create', :method => :post) do
-  = label_tag "Url to repository"
-  = select(:contrb_repo_url, nil, @user_github_repos.html_safe)
-  = label_tag "Title of contribution"
-  %input{:name => 'contrb_title', :placeholder => 'Not obvious'}
-  = label_tag "Secription for contribution"
-  %textarea{:name => 'contrb_description', :placeholder => 'Not obvious'}
+  %h2 Obvious parameters:
+
   %p
-  = submit_tag "Create contributon"
+    %span
+      Github repo for contribution
+      %i{:class => 'icon-asterisk red_asterisk'}
+    %p
+      = select(:contrb_repo_url, nil, @user_github_repos)
+
+  %p
+    %span
+      Title of contribution
+      %i{:class => 'icon-asterisk red_asterisk'}
+    %p
+      %input{:name => 'contrb_title', :placeholder => 'Obvious', :id => 'contribution_title'}
+
+  %h2 Additional parameters:
+
+  %p
+    = label_tag "Description for contribution"
+    %textarea{:name => 'contrb_description', :placeholder => 'Not obvious'}
+
+  %p
+    = label_tag "Folder in repo"
+    %input{:name => 'contrb_folder', :placeholder => 'Not obvious'}
+
+  %p
+    %button{:type => "submit", :id => 'contribution_submit', :class => "btn-large btn btn-success"}
+      Create contribution

@@ -14,6 +14,7 @@
 //= require typo/typo
 //= require spellcheck_ace/spellcheck_ace
 //= require jquery_ujs
+//= require jquery-ui
 //= require underscore
 //= require backbone
 //= require backbone_rails_sync
@@ -28,3 +29,4 @@
 //= require ace/theme-wiki
 //= require ace/mode-wiki
 //= require gritter
+//= require bootstrap-tour

@@ -1,24 +1,20 @@
+<%= stylesheet_link_tag 'tours' %>
+<script type="text/javascript">
+	Wiki.currentUser = new Wiki.Models.User(<%= j current_user.to_json.html_safe %>);
+
+	<% if can? :update, @page %>
+		Wiki.currentUser.set('actions', ['View', 'Edit'])
+	<% else %>
+		Wiki.currentUser.set('actions', ['View'])
+	<% end %>
+</script>
+
 <div id="tour"></div>
 
-<% if @tour.nil? %>
-
 <script type="text/javascript">
   jQuery(document).ready(function ($){
-  	Tours.title = '<%= @title %>'
-    //Tours.tourBlank = new Tours.Models.Tour(<%= j @tourBlank.to_json.html_safe -%>)
-    new Tours.Routers.ToursRouter(Tours.Views.TourBlank);
+    Tours.tourTitle = <%= j @title.to_json.html_safe -%>;
+    new Tours.Routers.ToursRouter(Tours.Views.GuidedTour);
     Backbone.history.start();
   })
 </script>
-
-<% else %>
-
-<script type="text/javascript">
-  jQuery(document).ready(function ($){
-    Tours.tour = new Tours.Models.Tour(<%= j @tour.to_json.html_safe -%>)
-    new Tours.Routers.ToursRouter(Tours.Views.Tour);
-    Backbone.history.start();
-  })
-</script>
-
-<% end %>

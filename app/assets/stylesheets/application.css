@@ -11,7 +11,7 @@
  *= require_self
  *= require bootstrap
  *= require bootstrap-responsive
- *= require _font-awesome
+ *= require font-awesome
  *= require pygments
  *= require home
  *= require contribution
@@ -19,9 +19,25 @@
  *= require gritter
 */
 
+#search-query {
+  width: 110px;
+}
+
+.fragment-failed {
+  color: coral;
+}
+
+.fragment-failed:hover {
+  cursor:pointer;
+}
+
+.small_avatar {
+  border-radius: 12px;
+}
+
 /* set default font */
 @import url(http://fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,800italic,400,700,800);
-body, p, h1, h2, ul, a, span, strong {
+body, p, h1, h2, ul, a, span, strong, select, option, label {
   font-family: 'Open Sans', 'Lucida Grande', sans-serif;
 }
 

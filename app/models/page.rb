@@ -5,19 +5,42 @@ class Page
   include Mongoid::Document
   include Mongoid::Timestamps
   include Mongoid::Paranoia
+  include Mongoid::Audit::Trackable
+  include Mongoid::Search
+
+  search_in :title, :namespace, :page_title_namespace, :raw_content
 
   field :title, type: String
   # namespace for page, need to be set
   field :namespace, type: String
+  field :page_title_namespace, type: String
+  field :raw_content, type: String
 
   # relations here
   has_and_belongs_to_many :users
-  belongs_to :contribution
+  belongs_to :contribution, validate: false
 
-  # added index as composite key, paar title+namespace
-  index({title: 1, namespace: 1}, {unique: true})
+  # validate uniqueness for paar title + namespace
+  before_validation :page_title_namespace_proc, :save_raw_content
+  def page_title_namespace_proc
+    self.page_title_namespace = self.namespace.to_s + ':' + self.title.to_s
+  end
 
-  attr_accessible :user_ids, :namespace, :title, :created_at, :updated_at, :contribution_id
+  def save_raw_content
+    self.raw_content = self.content
+  end
+
+  validates_uniqueness_of :page_title_namespace
+  validates_presence_of :title
+  validates_presence_of :namespace
+
+  validates_uniqueness_of :page_title_namespace_proc
+
+  #track_history :on => [:title, :namespace, :raw_content, :user_ids, :contribution_id],
+  #              :track_create => true,
+  #              :track_destroy => true
+
+  attr_accessible :user_ids, :namespace, :title, :contribution_id
 
   # uri for using mediawiki gateway
   @@base_uri = 'http://mediawiki.101companies.org/api.php'
@@ -30,6 +53,41 @@ class Page
     end
     # else use normal building of full url
     self.namespace + ':' + self.title
+  end
+
+  def self.search(query_string)
+    found_pages = Page.full_text_search query_string
+    # save results here
+    results = []
+    # find occurrence of searched string in title
+    if !found_pages.nil?
+      found_pages.each do |found_page|
+        # do not show pages without content
+        if found_page.raw_content.nil?
+          next
+        end
+        # find match ignoring case
+        score = found_page.full_title.downcase.index query_string.downcase
+        # not found match in title
+        if score == nil
+          # big value for search
+          score = 10000
+        end
+        # exact match -> best score (lowest)
+        if found_page.full_title.downcase == query_string.downcase
+          score = -1
+        end
+        # prepare array wit results
+        results << {
+            :title => found_page.full_title,
+            :link  => found_page.nice_wiki_url,
+            # more score -> worst result
+            :score => score
+        }
+      end
+    end
+    # sort by score and return
+    return results.sort_by { |a| a[:score] }
   end
 
   # get authorship of old wiki users for page
@@ -61,10 +119,6 @@ class Page
     end
   end
 
-  def self.get_all_pages_uris
-    Page.all.map {|p| Page.escape_wiki_url p.full_title}
-  end
-
   # if no namespace given
   # starts with '@' ? -> use namespace '101'
   # else -> use default namespace 'Concept'
@@ -72,7 +126,6 @@ class Page
     full_title_parts = full_title.split(':')
     # retrieve amount of splits
     amount_of_full_title_parts = full_title_parts.count
-    # TODO: crazy case:
     # amount_of_full_title_parts == 0 or amount_of_full_title_parts > 2
     # retrieved namespace and title
     if amount_of_full_title_parts == 2
@@ -110,13 +163,35 @@ class Page
 
     # if title was changes -> rename page
     if new_title!=self.full_title
-      #TODO: remove old page
+      # save old title
+      old_title =  self.full_title
+      # set new title to page
       nt = Page.retrieve_namespace_and_title new_title
       self.title = nt['title']
       self.namespace = nt['namespace']
+      # rewrite backlinks
+      # TODO: rewrite clearer
+      Page.gateway.backlinks(Page.escape_wiki_url old_title).each do |backlink|
+        related_page = Page.find_by_full_title Page.unescape_wiki_url backlink
+        if !related_page.nil?
+          related_page.rewrite_internal_links old_title, self.full_title
+        else
+          Rails.logger.info "Couldn't find page with link " + backlink
+        end
+      end
+      # delete page in mediawiki by old title
+      Page.gateway_and_login.delete old_title
     end
 
-    # rewrite triples for content
+    # update content on mediawiki
+    self.update_wiki_content content
+
+    # save the changes to page
+    self.save
+
+  end
+
+  def update_wiki_content content
     content = remove_namespace_triples(content)
     content = add_namespace_triple(content)
 
@@ -124,15 +199,6 @@ class Page
 
     # save page to wiki
     Page.gateway_and_login.edit(self.full_title, content)
-
-    #new_page = Page.find_or_create_page(to)
-    #new_page.change(content)
-    #rewrite_backlinks(to)
-    #new_page.retrieve_namespace_and_title to
-    #new_page.save
-
-    # save changes
-    self.save
 
   end
 
@@ -171,15 +237,27 @@ class Page
     page
   end
 
+  # link for using in html rendering
+  # replace ' ' with '_'
+  # remove trailing spaces
+  def self.nice_wiki_url title
+    return (Page.unescape_wiki_url title).strip.gsub(' ', '_')
+  end
+
+  def nice_wiki_url
+    return Page.nice_wiki_url self.full_title
+  end
+
   def create_wiki_parser
     # TODO: change, very dirty!, dup
     self.instance_eval { class << self; self end }.send(:attr_accessor, "wiki")
+    self.prepare_wiki_context
     self.wiki = WikiCloth::Parser.new(:data => self.content, :noedit => true)
-    # set namespace for work with wiki
-    # TODO: self.wiki.context = ?
-    # variable of parser for every instance?
-    WikiCloth::Parser.context = self.namespace
     return self.wiki
+  end
+
+  def prepare_wiki_context
+    WikiCloth::Parser.context = {:ns => (MediaWiki::send :upcase_first_char, self.namespace), :title => self.title}
   end
 
   def content
@@ -191,6 +269,14 @@ class Page
       content = Page.gateway.get(self.full_title)
       # and store content in cache
       Rails.cache.write(self.full_title, content)
+    end
+    # get rid of mediawiki's link expansion
+    if content
+      regex = /(\[\[:?)([^:\]\[]+::)?([^\[\]\|]+)(\s*)(\|[^\[\]]*)?(\]\])/
+      content = content.gsub(regex) do |link|
+        title = $3.split(":")[1..-1].join(":")
+        ("|" + title == $5) ? "#{$1}#{$2}#{$3}#{$4}|#{$6}" : link
+      end
     end
     return content
   end
@@ -217,30 +303,26 @@ class Page
   end
 
   def rewrite_internal_links(from, to)
-    regex = /(\[\[:?)([^:\]\[]+::)?(#{Regexp.escape(from.gsub("_", " "))})(\s*)(\|[^\[\]]+)?(\]\])/i
-    new_content = content.gsub("_", " ").gsub(regex) do |link|
+    regex = /(\[\[:?)([^:\]\[]+::)?(#{Regexp.escape(from.gsub("_", " "))})(\s*)(\|[^\[\]]*)?(\]\])/i
+    new_content = self.content.gsub("_", " ").gsub(regex) do |link|
       "#{$1}#{$2}#{rewrite_link_name($3, to)}#{$4}#{$5}#{$6}"
     end
-    change(new_content)
-  end
-
-  def rewrite_backlinks(to)
-    backlinks.each do |backlink|
-      bl_page = Page.new.create(backlink)
-      bl_page.rewrite_internal_links(self.full_title, to)
-    end
+    update_wiki_content new_content
   end
 
   def add_triple_link(content, triple)
     content.sub(/\s+\Z/, '') + "\n* " + '[[' + triple + ']]'
   end
 
+  # TODO: remove after content migration
   def remove_namespace_triples(content)
     content.sub(/\*\s*\[\[instanceOf::Namespace:([^\[\]]+)\]\]/, '')
   end
 
+  # TODO: remove after content migration
   def add_namespace_triple(content)
-    parsed_page = WikiCloth::Parser.new(:data => self.content, :noedit => true)
+    self.prepare_wiki_context
+    parsed_page = WikiCloth::Parser.new(:data => content, :noedit => true)
     parsed_page.to_html
     namespace_triple = 'instanceOf::Namespace:' + namespace
     unless parsed_page.internal_links.include?(namespace_triple)

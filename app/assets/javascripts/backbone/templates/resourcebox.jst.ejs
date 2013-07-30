@@ -3,5 +3,5 @@
 	<div class="subject label">this</div>
 	<div class="predicate"><%= predicate %></div>
 	<% } %>
-	<a href=<%=link.full%> ><%=link.chapter%></a>
+	<a href=<%=link.full.replace(/\s/g, '_')%> ><%=link.chapter%></a>
 </span>

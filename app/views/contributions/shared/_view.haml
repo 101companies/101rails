@@ -1,18 +1,81 @@
 %div{:class => "contribution"}
-  %p
-    =link_to contribution.user.name, contribution.user
-    made contribution from
-    =link_to contribution.url, contribution.url
 
-    %p
-      title:
-      = contribution.title
-    %p
-      description:
-      = contribution.description
+  - if defined? is_linked and is_linked
+    %h3
+      =link_to contribution.title, contribution
 
   %p
-    Look at this contribution
-    =link_to 'here', contribution
+    - if contribution.user
+      %i{:class => 'icon-male'}
+      Contributor
+      =link_to contribution.user.name, contribution.user
 
-  %br
+  %p
+    %a{:href => contribution.url, :target => 'blank'}
+      %i{:class => 'icon-github-alt'}
+      Github link
+
+  %p
+    %i{:class => 'icon-folder-close'}
+    = contribution.folder
+
+  %p
+    -if contribution.description && !contribution.description.empty?
+      %i
+        = contribution.description
+    - else
+      No additional information provided
+
+  %hr/
+
+  %p
+    - if contribution.languages
+      %i{:class => 'icon-check-sign'}
+      Languages:
+      = Contribution.array_to_string contribution.languages
+    - else
+      %i{:class => 'icon-meh'}
+      No languages were retrieved
+
+  %p
+    - if contribution.concepts
+      %i{:class => 'icon-check-sign'}
+      Concepts:
+      = Contribution.array_to_string contribution.concepts
+    - else
+      %i{:class => 'icon-meh'}
+      No concepts were retrieved
+
+  %p
+    - if contribution.features
+      %i{:class => 'icon-check-sign'}
+      Features:
+      = Contribution.array_to_string contribution.features
+    - else
+      %i{:class => 'icon-meh'}
+      No features were retrieved
+
+  %p
+    - if contribution.technologies
+      %i{:class => 'icon-check-sign'}
+      Technologies:
+      = Contribution.array_to_string contribution.technologies
+    - else
+      %i{:class => 'icon-meh'}
+      No technologies were retrieved
+
+  %hr/
+
+  %p
+    - if contribution.page
+      %i{:class => 'icon-file-text'}
+      wiki page:
+      %a{:href => '/wiki/'+ contribution.page.full_title.to_s}=  contribution.page.full_title.to_s
+
+  %p
+  - if !contribution.analyzed
+    %i{:class => 'icon-meh'}
+    This contribution is not analyzed =/
+  - else
+    %i{:class => 'icon-smile'}
+    This contribution is successfully analyzed

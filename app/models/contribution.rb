@@ -2,25 +2,51 @@ class Contribution
 
   include Mongoid::Document
   include Mongoid::Timestamps
+  include Mongoid::Audit::Trackable
+  include Mongoid::Paranoia
+
+  track_history :on => [:title, :url, :description, :folder, :approved, :analyzed,
+                        :languages, :technologies, :concepts, :features, :page_id, :user_id],
+                :track_create => true,
+                :track_destroy => true
 
   field :url, type: String
-  index({ url: 1 }, { unique: true, background: true })
-
   field :title, type: String
-  index({ title: 1 }, { unique: true, background: true })
-
   field :description, type: String
-  index({ description: 1 }, { unique: true, background: true })
+  field :folder, type: String, :default => '/'
 
-  field :created_at, type: DateTime
-  field :updated_at, type: DateTime
-
+  field :analyzed, type: Boolean, :default => false
   field :approved, type: Boolean, :default => false
 
+  field :languages, type: Array
+  field :technologies, type: Array
+  field :concepts, type: Array
+  field :features, type: Array
+
+  before_validation :contribution_url_folder_proc
+  def contribution_url_folder_proc
+    self.contribution_url_folder = self.url.to_s + ':' + self.folder.to_s
+  end
+
+  # this field is using for validating the uniqueness of paar url+folder
+  field :contribution_url_folder, type: String
+
   belongs_to :user
+  has_one :page, validate: false
 
-  has_one :page
+  validates_uniqueness_of :title
+  validates_uniqueness_of :contribution_url_folder
 
-  attr_accessible :user_id, :url, :created_at, :updated_at, :title, :description, :page_id, :approved
+  validates_presence_of :title, :url, :folder
+
+  attr_accessible :user_id, :title, :description, :url, :folder, :approved, :analyzed, :page_id
+
+  def self.array_to_string(array)
+    if !array.nil?
+      array.collect {|u| u}.join ', '
+    else
+      'No information retrieved'
+    end
+  end
 
 end

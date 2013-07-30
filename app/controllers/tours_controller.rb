@@ -9,12 +9,7 @@ class ToursController < ApplicationController
   def show
     @title = params[:title]
     @tour = Tour.where(title: @title).first
-    #if @tour.nil?
-     # @tourBlank = Tour.new.create(:title)
-     # respond_with @tourBlank
-    #else
     respond_with @tour
-    #end
   end
 
   def update

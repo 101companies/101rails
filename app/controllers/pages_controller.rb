@@ -2,10 +2,11 @@ class PagesController < ApplicationController
 
   respond_to :json, :html
 
-  # methods, that need to check permissions
-  #load_and_authorize_resource :only => [:delete, :rename, :update]
-
+  # order of next two lines os very important!
+  # before_filter need to be before load_and_authorize_resource
   before_filter :get_the_page
+  # methods, that need to check permissions
+  load_and_authorize_resource :only => [:delete, :rename, :update, :clean_cache]
 
   def get_the_page
 
@@ -20,19 +21,28 @@ class PagesController < ApplicationController
     # 'wikify' title param
     full_title = Page.unescape_wiki_url full_title
 
+    # remove trailing spaces
+    full_title.strip!
+
     # if user can create page -> create new
     if can? :create, Page.new
       @page = Page.find_or_create_page full_title
-    # else this page doesn't exist
+    # else find existing page from db
     else
       @page = Page.find_by_full_title full_title
     end
 
-    # check page existence
+    # if no page created/found
     if @page == nil
-      flash[:error] = "Page wasn't not found. Redirected to main wiki page"
-      # TODO: different formats
-      redirect_to '/wiki'
+      respond_to do |format|
+        format.html {
+          flash[:error] = "Page wasn't not found. Redirected to main wiki page"
+          go_to_homepage
+        }
+        format.json {
+          render :json => {success: false}, :status => 404
+        }
+      end
     end
 
   end
@@ -45,7 +55,7 @@ class PagesController < ApplicationController
 
   def semantic_properties
     {
-      'dependsOn'  => 'http://101companies.org/property/dependsOn',
+      'dependsOn'   => 'http://101companies.org/property/dependsOn',
       'instanceOf'  => 'http://101companies.org/property/instanceOf',
       'identifies'  => 'http://101companies.org/property/identifies',
       'linksTo'     => 'http://101companies.org/property/linksTo',
@@ -57,7 +67,7 @@ class PagesController < ApplicationController
       'developedBy' => 'http://101companies.org/property/developedBy',
       'reviewedBy'  => 'http://101companies.org/property/reviewedBy',
       'relatesTo'   => 'http://101companies.org/property/relatesTo',
-      'implies'   => 'http://101companies.org/property/implies',
+      'implies'     => 'http://101companies.org/property/implies',
       'mentions'    => 'http://101companies.org/property/mentions'
     }
   end
@@ -82,22 +92,20 @@ class PagesController < ApplicationController
       if page.nil?
         return nil
       end
-      RDF::URI.new("http://101companies.org/resources/#{page.namespace.downcase.pluralize}/#{Page.escape_wiki_url page.title}")
+      RDF::URI.new(
+          "http://101companies.org/resources/#{page.namespace.downcase.pluralize}/#{page.title.sub(' ', '_')}")
     end
   end
 
   # get all titles as json
   def all
-    render :json => Page.get_all_pages_uris
+    render :json => Page.all.map {|p| Page.escape_wiki_url p.full_title}
   end
 
   def get_rdf_graph(title, directions=false)
-     puts title
-     @page = Page.find_by_full_title(title)
+     @page = Page.find_by_full_title Page.unescape_wiki_url title
 
      uri = self.page_to_resource title
-     #TODO: unused variable
-     v101 = RDF::Vocabulary.new("http://101companies.org/property/")
      graph = RDF::Graph.new #<< [uri, RDF::RDFS.title, title]
 
      context   = RDF::URI.new("http://101companies.org")
@@ -217,7 +225,8 @@ class PagesController < ApplicationController
     rdf = self.get_rdf_graph(title, directions)
     rdf.each do |resource|
       p = "#{resource.predicate.scheme}://#{resource.predicate.host}#{resource.predicate.path}"
-      o = resource.object.kind_of?(RDF::Literal) ? resource.object.object : "#{resource.object.scheme}://#{resource.object.host}#{resource.object.path}"
+      o = resource.object.kind_of?(RDF::Literal) ?
+          resource.object.object : "#{resource.object.scheme}://#{resource.object.host}#{resource.object.path}"
       if directions
         s = "#{resource.subject}"
         json.push ({
@@ -237,13 +246,13 @@ class PagesController < ApplicationController
     # remove page from mediawiki
     @page.delete_from_mediawiki
     # remove the object itself
+    flash[:notice] = 'Page ' + @page.full_title + ' was deleted'
     @page.delete
     render :json => {:success => true}
   end
 
   def show
 
-    # TODO: rework history
     @page.instance_eval { class << self; self end }.send(:attr_accessor, "history")
 
     if not History.where(:page => @page.full_title).exists?
@@ -257,7 +266,15 @@ class PagesController < ApplicationController
     end
 
     respond_to do |format|
-      format.html { render :html => @page }
+      format.html {
+        # if need redirect? -> wiki url conventions -> do a redirect
+        good_link = @page.nice_wiki_url
+        if good_link != params[:id]
+          redirect_to '/wiki/'+ good_link and return
+        end
+        # no redirect? -> render the page
+        render :html => @page
+      }
       format.json { render :json => {
         'id'        => @page.full_title,
         'content'   => @page.content,
@@ -270,34 +287,44 @@ class PagesController < ApplicationController
     end
   end
 
+  # TODO: build fetching for pages for mongodb
   def parse
     content = params[:content]
     parsed_page = WikiCloth::Parser.new(:data => content, :noedit => true)
+    # hide content list
     parsed_page.sections.first.auto_toc = false
-    WikiCloth::Parser.context = @page.namespace
-
+    @page.prepare_wiki_context
     # define links pointing to pages without content
     html = parsed_page.to_html
-    all_page_uris = Page.get_all_pages_uris
+    # mark empty or non-existing page with class missing-link (red color)
     parsed_page.internal_links.each do |link|
-      # nice link -> link-uri converted to readable words
-      nice_link = Page.escape_wiki_url link
-      # if in list of all pages doesn't exists link -> define css class missing-link
-      class_attribute = all_page_uris.include?(nice_link) ?  '' : 'class="missing-link"'
-      html.gsub!("<a href=\"#{link}\"", "<a " + class_attribute + " href=\"/wiki/#{nice_link}\"")
-      html.gsub!("<a href=\"#{link.camelize(:lower)}\"", "<a " + class_attribute + " href=\"/wiki/#{nice_link}\"")
+      # format link to nice readable view
+      nice_link = Page.nice_wiki_url link
+      # get the page by link in html
+      used_page = Page.find_by_full_title Page.unescape_wiki_url nice_link
+      # if found page and it has content
+      # set in class_attribute additional class for link (mark with red)
+      class_attribute = ''
+      if used_page.nil? || used_page.raw_content.nil?
+        class_attribute = 'class="missing-link"'
+      end
+      # replace page link in wiki markup
+      html.gsub! "<a href=\"#{link}\"",
+                 "<a " + class_attribute + " href=\"/wiki/#{nice_link}\""
+      html.gsub! "<a href=\"#{link.camelize(:lower)}\"",
+                 "<a " + class_attribute + " href=\"/wiki/#{nice_link}\""
     end
-
     render :json => {:success => true, :html => html.html_safe}
   end
 
   def search
     @query_string = params[:q]
     if @query_string == ''
-      redirect_to "/wiki/"
       flash[:notice] = 'Please write something, if you want to search something'
+      go_to_homepage
     else
-      respond_with Page.gateway_and_login.search(@query_string)
+      @search_results = Page.search @query_string
+      respond_with @search_results
     end
   end
 
@@ -331,7 +358,6 @@ class PagesController < ApplicationController
     end
   end
 
-  # TODO: does it actually work?
   def update_history(pagename)
     if History.where(:page => pagename).exists?
       history = History.where(:page => pagename).first
@@ -351,24 +377,23 @@ class PagesController < ApplicationController
   def update
     sections = params[:sections]
     content = params[:content]
+    # new title is same as title, if renaming wan't triggered
     new_full_title = Page.unescape_wiki_url params[:newTitle]
-    @page.update_or_rename_page new_full_title, content, sections
-    # TODO: has it worked at all?
-    #update_history(title)
-    render :json => {:success => true}
-  end
-
-  def rename
+    # flag for renaming
+    renaming = (new_full_title != @page.full_title)
     begin
-      new_full_title = Page.unescape_wiki_url params[:newTitle]
-      sections = params[:sections]
-      content = params[:content]
-      @page.update_or_rename_page new_full_title, content, sections
-      # TODO: has it worked at all?
-      #update_history(new_full_title)
-      render :json => {:success => true, :newtitle => new_full_title}
+      result = @page.update_or_rename_page new_full_title, content, sections
     rescue
-      render :json => {:success => false, :error => 'Renamed failed'}, :status => 409
+      result = false
+    end
+    # result is true -> all ok
+    # result is false -> smth failed
+    # if was performed 'rename' action
+    if renaming
+      render :json => {:success => result, :newTitle => @page.nice_wiki_url}
+    else
+      # 'updated content' response
+      render :json => {:success => result}
     end
   end
 
@@ -376,4 +401,3 @@ class PagesController < ApplicationController
     respond_with ({:content => @page.section(params[:full_title])}).to_json
   end
 end
-

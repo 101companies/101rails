@@ -7,26 +7,29 @@ class Wiki.Views.ExTriple extends Backbone.View
   # which parts of the '/'-split of the URL to show
   prefixToSplit : {'github.com': {'pick': [4], 'tail': 7}}
 
-  decode: (str, toLower) ->
+  decode: (str, toLower, showMore) ->
     self = @
 
     str = decodeURIComponent(str.replace(@resBase,"").replace(/-3A/g,":").replace("Property:", "").replace(/_/g, " "))
-    split = str.split("/")
-    key = split[2].trim()
-    if key of @prefixToSplit
-      str = split.filter((x,i) -> _.contains(self.prefixToSplit[key].pick, i)).join('/')
-      str += '/' + split.slice(@prefixToSplit[key].tail).join('/')
-    else
-      str = _.last(split)
-      if str.replace(/\s/g, '') == ''
-        str = split[split.length - 2]
-    if toLower
-      firstLetter = str.substr(0, 1)
-      firstLetter.toLowerCase() + str.substr(1)
-    else
+    if showMore
       str
+    else
+      split = str.split("/")
+      key = split[2].trim()
+      if key of @prefixToSplit
+        str = split.filter((x,i) -> _.contains(self.prefixToSplit[key].pick, i)).join('/')
+        str += '/' + split.slice(@prefixToSplit[key].tail).join('/')
+      else
+        str = _.last(split)
+        if str.replace(/\s/g, '') == ''
+          str = split[split.length - 2]
+      if toLower
+        firstLetter = str.substr(0, 1)
+        firstLetter.toLowerCase() + str.substr(1)
+      else
+        str
 
-  render: ->
+  render: (showMore) ->
     self = @
     key = @model.get('node').split('/')[2]
     if key of @prefixToName
@@ -34,8 +37,8 @@ class Wiki.Views.ExTriple extends Backbone.View
     else
       fullName = key
     $('#resources').show()
-    place = $('#resources').find('.' + fullName)
-    info = {'full' : @model.get('node'), 'chapter': @decode(@model.get('node'), false)}
+    place = $('#resources').find('.' + fullName.replace(/\./g, ''))
+    info = {'full' : @model.get('node'), 'chapter': @decode(@model.get('node'), false, showMore)}
     templateOps = {cat: 'primary', link: info, predicate: @decode(@model.get('predicate'))}
     if place.length
       $(place).find('.resourcebar').append($(self.resourceBoxTemplate(templateOps)).tooltip("show"))
