@@ -15,19 +15,22 @@ class Page
   field :namespace, type: String
   field :page_title_namespace, type: String
   field :raw_content, type: String
+  field :used_links, type: Array
 
   # relations here
   has_and_belongs_to_many :users
   belongs_to :contribution
 
   # validate uniqueness for paar title + namespace
-  before_validation :page_title_namespace_proc, :save_raw_content
+  before_validation :page_title_namespace_proc
   def page_title_namespace_proc
+    # prepare paar namespace + tile
     self.page_title_namespace = self.namespace.to_s + ':' + self.title.to_s
-  end
-
-  def save_raw_content
-    self.raw_content = self.content
+    # fill with links
+    self.used_links = []
+    self.internal_links.each do |link|
+      self.used_links << (Page.unescape_wiki_url link)
+    end
   end
 
   validates_uniqueness_of :page_title_namespace
@@ -88,35 +91,6 @@ class Page
     return results.sort_by { |a| a[:score] }
   end
 
-  # get authorship of old wiki users for page
-  def retrieve_old_wiki_users
-    begin
-      # else retrieve users from old wiki
-      a = Mechanize.new
-      # get all authors of page in json format, 500 last revisions
-      authors= a.get @@base_uri +
-                         "?action=query&prop=revisions&titles=#{self.full_title}&rvprop=user&rvlimit=500&format=json"
-      # parse json
-      authors = JSON.parse authors.body
-      # retrieve body of data from response => all revisions
-      authors = authors['query']['pages'].first[1]['revisions'].to_a.uniq
-      # go through authors and assign to page
-      authors.each do |author|
-        old_wiki_user = OldWikiUser.where(:name => author['user']).first
-        # if matched user from old wiki
-        if !old_wiki_user.nil?
-          # and we have matching user from new wiki
-          if !old_wiki_user.user.nil?
-            # add him to authors of this page
-            self.users << old_wiki_user.user
-          end
-        end
-      end
-    rescue
-      Rails.logger.info "Fetching histroy for page #{self.full_title} has failed"
-    end
-  end
-
   # if no namespace given
   # starts with '@' ? -> use namespace '101'
   # else -> use default namespace 'Concept'
@@ -150,23 +124,20 @@ class Page
   end
 
   def update_or_rename_page(new_title, content, sections)
-
     # if content is empty -> populate content with sections
     if content == ""
       sections.each { |s| content += s['content'] + "\n" }
     end
-
+    # save new content
+    self.raw_content = content
     # unescape new title to nice readable url
     new_title = Page.unescape_wiki_url new_title
-
     # if title was changes -> rename page
     if new_title!=self.full_title
-      # save old title
-      old_title =  self.full_title
       # set new title to page
       nt = Page.retrieve_namespace_and_title new_title
-      self.title = nt['title']
       self.namespace = nt['namespace']
+      self.title = nt['title']
       # rewrite backlinks
       # TODO: rewrite clearer
       Page.gateway.backlinks(Page.escape_wiki_url old_title).each do |backlink|
@@ -177,60 +148,20 @@ class Page
           Rails.logger.info "Couldn't find page with link " + backlink
         end
       end
-      # delete page in mediawiki by old title
-      Page.gateway_and_login.delete old_title
     end
-
-    # update content on mediawiki
-    self.update_wiki_content content
-
     # save the changes to page
     self.save
-
-  end
-
-  def update_wiki_content content
-    content = remove_namespace_triples(content)
-    content = add_namespace_triple(content)
-
-    self.clear_wiki_cache
-
-    # save page to wiki
-    Page.gateway_and_login.edit(self.full_title, content)
-
   end
 
   # find page without creating
   def self.find_by_full_title(full_title)
     nt = Page.retrieve_namespace_and_title full_title
-    page = Page.where(:title => nt['title'], :namespace => nt['namespace']).first
+    page = Page.where(:page_title_namespace => nt['namespace'] + ':' + nt['title']).first
     # if page was found create wiki parser
     if !page.nil?
       page.create_wiki_parser
     end
     return page
-  end
-
-  # static method for getting page if already exist in db
-  # or creating using mediawiki api
-  def self.find_or_create_page(full_title)
-    # retrieve namespace and title from page full_title
-    namespace_and_title = retrieve_namespace_and_title full_title
-
-    # find page from db
-    page = Page.find_by_full_title full_title
-
-    if page.nil?
-      page = Page.create :title => namespace_and_title['title'], :namespace => namespace_and_title['namespace']
-      # retrieve content for page from wiki
-      page.retrieve_content_from_wiki
-      # retrieve user info
-      page.retrieve_old_wiki_users
-      # save page at end of changes
-      page.save
-    end
-    page.create_wiki_parser
-    page
   end
 
   # link for using in html rendering
@@ -248,50 +179,12 @@ class Page
     # TODO: change, very dirty!, dup
     self.instance_eval { class << self; self end }.send(:attr_accessor, "wiki")
     self.prepare_wiki_context
-    self.wiki = WikiCloth::Parser.new(:data => self.content, :noedit => true)
+    self.wiki = WikiCloth::Parser.new(:data => self.raw_content, :noedit => true)
     return self.wiki
   end
 
   def prepare_wiki_context
     WikiCloth::Parser.context = {:ns => (MediaWiki::send :upcase_first_char, self.namespace), :title => self.title}
-  end
-
-  def content
-    # retrieve content from cache
-    content = Rails.cache.read(self.full_title)
-    # if no content stored in cache
-    if (content == nil)
-      # get content
-      content = Page.gateway.get(self.full_title)
-      # and store content in cache
-      Rails.cache.write(self.full_title, content)
-    end
-    # get rid of mediawiki's link expansion
-    if content
-      regex = /(\[\[:?)([^:\]\[]+::)?([^\[\]\|]+)(\s*)(\|[^\[\]]*)?(\]\])/
-      content = content.gsub(regex) do |link|
-        title = $3.split(":")[1..-1].join(":")
-        ("|" + title == $5) ? "#{$1}#{$2}#{$3}#{$4}|#{$6}" : link
-      end
-    end
-    return content
-  end
-
-  def retrieve_content_from_wiki
-    # TODO: change, very dirty!, dup
-    self.instance_eval { class << self; self end }.send(:attr_accessor, "wiki")
-    self.wiki = WikiCloth::Parser.new(:data => self.content, :noedit => true)
-    @html = Rails.cache.read(self.full_title + "_html")
-    # if not found in cache
-    if (@html == nil)
-      # get html markup for page
-      @html = @wiki.to_html
-      # rewrite all wiki links adding prefix "wiki" to links
-      @wiki.internal_links.each do |link|
-        @html.gsub!("<a href=\"#{link}\"", "<a href=\"/wiki/#{link}\"")
-      end
-      Rails.cache.write(self.title + "_html", @html)
-    end
   end
 
   def rewrite_link_name(from, to)
@@ -300,47 +193,10 @@ class Page
 
   def rewrite_internal_links(from, to)
     regex = /(\[\[:?)([^:\]\[]+::)?(#{Regexp.escape(from.gsub("_", " "))})(\s*)(\|[^\[\]]*)?(\]\])/i
-    new_content = self.content.gsub("_", " ").gsub(regex) do |link|
+    new_content = self.raw_content.gsub("_", " ").gsub(regex) do |link|
       "#{$1}#{$2}#{rewrite_link_name($3, to)}#{$4}#{$5}#{$6}"
     end
     update_wiki_content new_content
-  end
-
-  def add_triple_link(content, triple)
-    content.sub(/\s+\Z/, '') + "\n* " + '[[' + triple + ']]'
-  end
-
-  # TODO: remove after content migration
-  def remove_namespace_triples(content)
-    content.sub(/\*\s*\[\[instanceOf::Namespace:([^\[\]]+)\]\]/, '')
-  end
-
-  # TODO: remove after content migration
-  def add_namespace_triple(content)
-    self.prepare_wiki_context
-    parsed_page = WikiCloth::Parser.new(:data => content, :noedit => true)
-    parsed_page.to_html
-    namespace_triple = 'instanceOf::Namespace:' + namespace
-    unless parsed_page.internal_links.include?(namespace_triple)
-      metaheader = '== Metadata =='
-      unless content.gsub(/\s+/, '').include?(metaheader.gsub(/\s+/, ''))
-        content.concat("\n" + metaheader)
-      end
-      content = add_triple_link(content, namespace_triple)
-    end
-    content
-  end
-
-  def clear_wiki_cache
-    Rails.cache.delete(self.full_title + "_html")
-    Rails.cache.delete(self.full_title)
-  end
-
-  def delete_from_mediawiki
-    # delete wiki page
-    Page.gateway_and_login.delete(self.full_title)
-    # delete cache
-    self.clear_wiki_cache
   end
 
   def self.escape_wiki_url(full_title)
@@ -352,15 +208,11 @@ class Page
   end
 
   def semantic_links
-    # TODO: to_html -> some fix for producing non-empty internal_links, remove later
-    self.wiki.to_html
-    self.wiki.internal_links.find_all{|item| item.include? "::" }
+    self.used_links.map {|link| link.include? "::" }
   end
 
   def internal_links
-    # TODO: to_html -> some fix for producing non-empty internal_links, remove later
-    self.wiki.to_html
-    self.wiki.internal_links
+    self.used_links
   end
 
   def sections
@@ -372,24 +224,11 @@ class Page
   end
 
   def backlinks
-    Page.gateway.backlinks(self.full_title).map { |e| e.gsub(" ", "_")  }
+    Page.where(:used_links => self.full_title).map { |page| page.full_title}
   end
 
   def section(section)
     self.wiki.sections.first.children.find { |s| s.full_title.downcase == section.downcase }
-  end
-
-  def self.gateway_and_login
-    gw = Page.gateway
-    gw.login(ENV['WIKIUSER'], ENV['WIKIPASSWORD'])
-    return gw
-  end
-
-  def self.gateway
-    if @gateway == nil
-      @gateway = MediaWiki::Gateway.new(@@base_uri)
-    end
-    @gateway
   end
 
 end

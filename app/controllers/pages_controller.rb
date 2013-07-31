@@ -6,7 +6,7 @@ class PagesController < ApplicationController
   # before_filter need to be before load_and_authorize_resource
   before_filter :get_the_page
   # methods, that need to check permissions
-  load_and_authorize_resource :only => [:delete, :rename, :update, :clean_cache]
+  load_and_authorize_resource :only => [:delete, :rename, :update]
 
   def get_the_page
 
@@ -24,16 +24,19 @@ class PagesController < ApplicationController
     # remove trailing spaces
     full_title.strip!
 
-    # if user can create page -> create new
-    if can? :create, Page.new
-      @page = Page.find_or_create_page full_title
-    # else find existing page from db
-    else
-      @page = Page.find_by_full_title full_title
+    @page = Page.find_by_full_title full_title
+
+    # page not found and user can create page -> create new page by full_title
+    if @page.nil? && (can? :create, Page.new)
+      @page = Page.new
+      namespace_and_title = Page.retrieve_namespace_and_title full_title
+      @page.namespace = namespace_and_title['namespace']
+      @page.title = namespace_and_title['title']
+      @page.save
     end
 
     # if no page created/found
-    if @page == nil
+    if !@page
       respond_to do |format|
         format.html {
           flash[:error] = "Page wasn't not found. Redirected to main wiki page"
@@ -45,12 +48,6 @@ class PagesController < ApplicationController
       end
     end
 
-  end
-
-  def clean_cache
-    @page.clear_wiki_cache
-    flash[:notice] = "Cache for page "+@page.full_title+" successfully cleared"
-    redirect_to :action => 'show', :id => @page.full_title
   end
 
   def semantic_properties
@@ -72,6 +69,7 @@ class PagesController < ApplicationController
     }
   end
 
+  # TODO: refactor
   def get_context_for(title)
     if ((title.split(':').length == 2) and (title.starts_with?('http') == false))
       @ctx  = {ns: title.split(':')[0].downcase, title: title.split(':')[1]}
@@ -238,27 +236,15 @@ class PagesController < ApplicationController
   end
 
   def delete
-    # remove page from mediawiki
-    @page.delete_from_mediawiki
-    # remove the object itself
-    flash[:notice] = 'Page ' + @page.full_title + ' was deleted'
-    @page.delete
-    render :json => {:success => true}
+    result = @page.delete
+    # generate message if deleting was successful
+    if result
+      flash[:notice] = 'Page ' + @page.full_title + ' was deleted'
+    end
+    render :json => {:success => result}
   end
 
   def show
-
-    @page.instance_eval { class << self; self end }.send(:attr_accessor, "history")
-
-    if not History.where(:page => @page.full_title).exists?
-      @page.history = History.create!(
-        user: current_user,
-        page:@page.full_title,
-        version: 1
-        )
-    else
-      @page.history = History.where(:page => @page.full_title).first
-    end
 
     respond_to do |format|
       format.html {
@@ -272,17 +258,17 @@ class PagesController < ApplicationController
       }
       format.json { render :json => {
         'id'        => @page.full_title,
-        'content'   => @page.content,
+        'content'   => @page.raw_content,
         'sections'  => @page.sections,
-        # TODO: to much entries about versions
-        'history'   => @page.history.as_json(:include => {:user => { :except => [:role, :github_name]}}),
+        # TODO: fix for new history
+        'history'   => [], #@page.history.as_json(:include => {:user => { :except => [:role, :github_name]}}),
+        # TODO: restore
         'backlinks' => @page.backlinks
       }}
 
     end
   end
 
-  # TODO: build fetching for pages for mongodb
   def parse
     content = params[:content]
     parsed_page = WikiCloth::Parser.new(:data => content, :noedit => true)
@@ -297,7 +283,7 @@ class PagesController < ApplicationController
       nice_link = Page.nice_wiki_url link
       # get the page by link in html
       used_page = Page.find_by_full_title Page.unescape_wiki_url nice_link
-      # if found page and it has content
+      # if not found page or it has no content
       # set in class_attribute additional class for link (mark with red)
       class_attribute = ''
       if used_page.nil? || used_page.raw_content.nil?
@@ -324,72 +310,30 @@ class PagesController < ApplicationController
   end
 
   def summary
-    begin
-      render :json => {:sections => @page.sections, :internal_links => @page.internal_links}
-    rescue
-      @error_message="#{$!}"
-      render :json => {:success => false, :error => @error_message}
-    ensure
-    end
+    render :json => {:sections => @page.sections, :internal_links => @page.internal_links}
   end
 
   # get all sections for a page
   def sections
-    begin
-      respond_with @page.sections
-    rescue
-      @error_message="#{$!}"
-      render :json => {:success => false, :error => @error_message}
-    end
+    respond_with @page.sections
   end
 
   # get all internal links for the page
   def internal_links
-    begin
-      respond_with @page.internal_links
-    rescue
-      @error_message="#{$!}"
-      render :json => {:success => false, :error => @error_message}
-    end
-  end
-
-  def update_history(pagename)
-    if History.where(:page => pagename).exists?
-      history = History.where(:page => pagename).first
-      history.update_attributes(
-        version: history.version + 1,
-        user: current_user
-        )
-    else
-      History.create!(
-        page: pagename,
-        version: 1,
-        user: current_user
-        )
-    end
+    respond_with @page.internal_links
   end
 
   def update
+
     sections = params[:sections]
     content = params[:content]
-    # new title is same as title, if renaming wan't triggered
+
     new_full_title = Page.unescape_wiki_url params[:newTitle]
-    # flag for renaming
-    renaming = (new_full_title != @page.full_title)
-    begin
-      result = @page.update_or_rename_page new_full_title, content, sections
-    rescue
-      result = false
-    end
-    # result is true -> all ok
-    # result is false -> smth failed
-    # if was performed 'rename' action
-    if renaming
-      render :json => {:success => result, :newTitle => @page.nice_wiki_url}
-    else
-      # 'updated content' response
-      render :json => {:success => result}
-    end
+
+    render :json => {
+        :success => @page.update_or_rename_page(new_full_title, content, sections),
+        :newTitle => @page.nice_wiki_url
+    }
   end
 
   def section
