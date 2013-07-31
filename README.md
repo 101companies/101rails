@@ -11,7 +11,6 @@ This application requires:
 *   Ruby
 *   Rails
 *   MongoDB
-*   Redis (for production mode)
 
 ##Development
 
@@ -30,7 +29,7 @@ The application is configured to send emails using a Gmail account.
 
 Before installing all, you need to install some dependecies:
 
-    sudo apt-get install redis-server curl nodejs build-essenstial libxslt-dev libxml2-dev mongodb
+    sudo apt-get install curl nodejs build-essenstial libxslt-dev libxml2-dev mongodb
 
 If you are using Ubuntu, you can install ruby via [rvm](http://rvm.io)
 
@@ -43,7 +42,7 @@ Install ruby (version 1.9.3) using [rvm](http://rvm.io) or [rbenv](https://githu
 
 And install dependencies for project:
 
-    brew install mongodb node redis
+    brew install mongodb node
 
 ###Common part of installation
 
