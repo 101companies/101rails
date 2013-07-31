@@ -5,9 +5,7 @@ class User
   include Mongoid::Paranoia
 
   track_history :on => [:email, :role, :github_avatar, :github_name, :github_token, :old_wiki_user_ids,
-                        :contribution_ids, :name, :page_ids],
-                :track_create => true,
-                :track_destroy => true
+                        :contribution_ids, :name, :page_ids]
 
   def self.role_options
     ['admin', 'editor', 'guest', 'nobody']

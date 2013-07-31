@@ -6,7 +6,7 @@ class TourPage
   field :name, type: String
   field :sections, type: Array
 
-  track_history :on => [:name, :sections], :track_create => true, :track_destroy => true
+  track_history :on => [:name, :sections]
 
   def create(name)
     self.title = name
