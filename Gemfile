@@ -13,7 +13,6 @@ end
 # * aced_rails
 # * mongoid
 # * rails-backbone
-# * redis-rails
 gem 'rails', '3.2.13'
 
 # send email on error
@@ -110,10 +109,6 @@ gem 'gritter', :git => 'git://github.com/burgua/gritter.git', :branch => 'vendor
 gem 'capistrano', '2.15.5'
 
 gem 'rvm-capistrano', '1.4.0'
-
-gem 'redis', '3.0.4'
-gem 'redis-store', '1.1.3'
-gem 'redis-rails', '3.2.3'
 
 # for wiki-editor
 gem 'aced_rails', '0.2.1', :git => 'git://github.com/tschmorleiz/aced_rails.git'
