@@ -17,5 +17,6 @@
 %h2 Granted to edit next pages:
 - @user.pages.each do |page|
   %p
-    = link_to page.full_title, page
+    %a{:href => "/wiki/#{page.nice_wiki_url}"}
+      = page.full_title
 
