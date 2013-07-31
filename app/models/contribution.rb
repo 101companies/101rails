@@ -32,7 +32,7 @@ class Contribution
   field :contribution_url_folder, type: String
 
   belongs_to :user
-  has_one :page, validate: false
+  has_one :page
 
   validates_uniqueness_of :title
   validates_uniqueness_of :contribution_url_folder

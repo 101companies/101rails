@@ -18,7 +18,7 @@ class Page
 
   # relations here
   has_and_belongs_to_many :users
-  belongs_to :contribution, validate: false
+  belongs_to :contribution
 
   # validate uniqueness for paar title + namespace
   before_validation :page_title_namespace_proc, :save_raw_content
@@ -36,9 +36,9 @@ class Page
 
   validates_uniqueness_of :page_title_namespace_proc
 
-  #track_history :on => [:title, :namespace, :raw_content, :user_ids, :contribution_id],
-  #              :track_create => true,
-  #              :track_destroy => true
+  track_history :on => [:title, :namespace, :raw_content, :user_ids, :contribution_id],
+                :track_create => true,
+                :track_destroy => true
 
   attr_accessible :user_ids, :namespace, :title, :contribution_id
 
@@ -223,9 +223,7 @@ class Page
     page = Page.find_by_full_title full_title
 
     if page.nil?
-      page = Page.new
-      page.namespace = namespace_and_title['namespace']
-      page.title = namespace_and_title['title']
+      page = Page.create :title => namespace_and_title['title'], :namespace => namespace_and_title['namespace']
       # retrieve content for page from wiki
       page.retrieve_content_from_wiki
       # retrieve user info
