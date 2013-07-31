@@ -17,7 +17,7 @@ class User
 
   # github data
   field :github_name,    :type => String
-  field :github_avatar,  :type => String
+  field :github_avatar,  :type => String, :default => "http://www.gravatar.com/avatar"
   field :github_token,   :type => String
   field :github_uid,     :type => String
 

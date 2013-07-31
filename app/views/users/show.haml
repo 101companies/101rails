@@ -3,6 +3,19 @@
   %img{:src=>@user.github_avatar,:class => 'github_avatar', :alt => @user.name}
   = @user.name
 
+- if (@user == current_user) && current_user.old_wiki_users?
+  %a{:href=> '/users/claim_pages'}
+    %button{:class=>"btn btn-success"}
+      Claim pages from old wiki
+
 %h2 User Contributions
 - @user.contributions.each do |contribution|
   = render 'contributions/shared/view', :contribution => contribution, :is_linked => true
+
+%div.clearfix
+
+%h2 Granted to edit next pages:
+- @user.pages.each do |page|
+  %p
+    = link_to page.full_title, page
+

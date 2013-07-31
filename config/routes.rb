@@ -41,6 +41,7 @@ Wiki::Application.routes.draw do
   #users
   scope 'users' do
     get '/' => 'users#index'
+    get '/claim_pages' => 'users#claim_pages', :format => false
     get '/logout' => 'authentications#destroy'
     get '/:id' => 'users#show', :as => :user
   end
