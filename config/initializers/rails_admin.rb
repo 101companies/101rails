@@ -36,7 +36,7 @@ RailsAdmin.config do |config|
   config.default_items_per_page = 30
 
   # Exclude specific models (keep the others):
-  config.excluded_models = ['History', 'HistoryTracker']
+  config.excluded_models = ['HistoryTracker']
 
   config.model 'Contribution' do
 
