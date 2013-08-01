@@ -52,7 +52,7 @@ class Page
 
   validates_uniqueness_of :page_title_namespace_proc
 
-  track_history :on => [:title, :namespace, :raw_content, :user_ids, :contribution_id]
+  #track_history :on => [:title, :namespace, :raw_content, :user_ids, :contribution_id]
 
   attr_accessible :user_ids, :namespace, :title, :contribution_id
 
