@@ -149,14 +149,19 @@ class Page
     if new_title!=self.full_title
       # set new title to page
       nt = Page.retrieve_namespace_and_title new_title
+      old_title = self.full_title
+      # save old backlinsk before renaming
+      old_backlinks = self.backlinks
+      # rename the page
       self.namespace = nt['namespace']
       self.title = nt['title']
       # rewrite backlinks
       # TODO: rewrite clearer
-      self.backlinks.each do |backlink|
+      old_backlinks.each do |backlink|
         related_page = Page.find_by_full_title Page.unescape_wiki_url backlink
         if !related_page.nil?
-          related_page.rewrite_internal_links old_title, self.full_title
+          related_page.raw_content = related_page.rewrite_internal_links old_title, self.full_title
+          related_page.save
         else
           Rails.logger.info "Couldn't find page with link " + backlink
         end
@@ -164,6 +169,18 @@ class Page
     end
     # save the changes to page
     self.save
+  end
+
+  def rewrite_link_name(from, to)
+    from[0].downcase == from[0] ? to[0,1].downcase + to[1..-1] : to
+  end
+
+  def rewrite_internal_links(from, to)
+    regex = /(\[\[:?)([^:\]\[]+::)?(#{Regexp.escape(from.gsub("_", " "))})(\s*)(\|[^\[\]]*)?(\]\])/i
+    new_content = self.raw_content.gsub("_", " ").gsub(regex) do |link|
+      "#{$1}#{$2}#{rewrite_link_name($3, to)}#{$4}#{$5}#{$6}"
+    end
+    new_content
   end
 
   # find page without creating
@@ -198,18 +215,6 @@ class Page
 
   def prepare_wiki_context
     WikiCloth::Parser.context = {:ns => (MediaWiki::send :upcase_first_char, self.namespace), :title => self.title}
-  end
-
-  def rewrite_link_name(from, to)
-    from[0].downcase == from[0] ? to[0,1].downcase + to[1..-1] : to
-  end
-
-  def rewrite_internal_links(from, to)
-    regex = /(\[\[:?)([^:\]\[]+::)?(#{Regexp.escape(from.gsub("_", " "))})(\s*)(\|[^\[\]]*)?(\]\])/i
-    new_content = self.raw_content.gsub("_", " ").gsub(regex) do |link|
-      "#{$1}#{$2}#{rewrite_link_name($3, to)}#{$4}#{$5}#{$6}"
-    end
-    update_wiki_content new_content
   end
 
   def self.escape_wiki_url(full_title)
