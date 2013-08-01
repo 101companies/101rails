@@ -24,13 +24,26 @@ class Page
   # validate uniqueness for paar title + namespace
   before_validation :page_title_namespace_proc
   def page_title_namespace_proc
-    # prepare paar namespace + tile
+    # prepare field namespace + title
     self.page_title_namespace = self.namespace.to_s + ':' + self.title.to_s
-    # fill with links
-    self.used_links = []
-    self.internal_links.each do |link|
-      self.used_links << (Page.unescape_wiki_url link)
+
+    # fill used_links with links in page
+    # parse content and get internal links
+    self.create_wiki_parser
+    begin
+      # this produces internal_links
+      self.wiki.to_html
+    rescue
+      Rails.logger "Failed producing html for page #{self.full_title}"
     end
+
+    parsed_internal_links = self.wiki.internal_links
+
+    # if exist internal_links -> fill used_links
+    if parsed_internal_links
+      self.used_links = self.wiki.internal_links.map { |link| Page.unescape_wiki_url link }
+    end
+
   end
 
   validates_uniqueness_of :page_title_namespace
