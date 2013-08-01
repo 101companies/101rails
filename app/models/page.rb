@@ -153,7 +153,7 @@ class Page
       self.title = nt['title']
       # rewrite backlinks
       # TODO: rewrite clearer
-      Page.gateway.backlinks(Page.escape_wiki_url old_title).each do |backlink|
+      self.backlinks.each do |backlink|
         related_page = Page.find_by_full_title Page.unescape_wiki_url backlink
         if !related_page.nil?
           related_page.rewrite_internal_links old_title, self.full_title
