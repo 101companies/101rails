@@ -44,14 +44,14 @@ class Contribution
     # TODO: check fail case
     # TODO: stress case?
     begin
-      Mechanize.new.post 'http://worker.101companies.org/services/analyzeSubmission',
-         {
+      HTTParty.new.post 'http://worker.101companies.org/services/analyzeSubmission',
+         :body => {
            :url => self.url,
            :folder => self.folder,
            :name => self.title,
            :backping => backping_url
          }.to_json,
-         {'Content-Type' => 'application/json'}
+         :headers => {'Content-Type' => 'application/json'}
     rescue
       flash[:error] = "Request on analyze service wasn't successful. Please retry it later"
       success = false
