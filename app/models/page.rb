@@ -29,19 +29,19 @@ class Page
 
     # fill used_links with links in page
     # parse content and get internal links
-    self.create_wiki_parser
+    wiki_parser = self.create_wiki_parser
     begin
       # this produces internal_links
-      self.wiki.to_html
+      wiki_parser.to_html
     rescue
       Rails.logger "Failed producing html for page #{self.full_title}"
     end
 
-    parsed_internal_links = self.wiki.internal_links
+    parsed_internal_links =wiki_parser.internal_links
 
     # if exist internal_links -> fill used_links
     if parsed_internal_links
-      self.used_links = self.wiki.internal_links.map { |link| Page.unescape_wiki_url link }
+      self.used_links = wiki_parser.internal_links.map { |link| Page.unescape_wiki_url link }
     end
 
   end
@@ -205,16 +205,12 @@ class Page
     return Page.nice_wiki_url self.full_title
   end
 
-  def create_wiki_parser
-    # TODO: change, very dirty!, dup
-    self.instance_eval { class << self; self end }.send(:attr_accessor, "wiki")
-    self.prepare_wiki_context
-    self.wiki = WikiCloth::Parser.new(:data => self.raw_content, :noedit => true)
-    return self.wiki
-  end
-
-  def prepare_wiki_context
+  def create_wiki_parser(content=nil)
+    if content.nil?
+      content = self.raw_content
+    end
     WikiCloth::Parser.context = {:ns => (MediaWiki::send :upcase_first_char, self.namespace), :title => self.title}
+    WikiCloth::Parser.new(:data => content, :noedit => true)
   end
 
   def self.escape_wiki_url(full_title)
@@ -246,7 +242,7 @@ class Page
   end
 
   def section(section)
-    self.wiki.sections.first.children.find { |s| s.full_title.downcase == section.downcase }
+    self.create_wiki_parser.sections.first.children.find { |s| s.full_title.downcase == section.downcase }
   end
 
 end

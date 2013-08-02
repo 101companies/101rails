@@ -270,13 +270,9 @@ class PagesController < ApplicationController
   end
 
   def parse
-    content = params[:content]
-    parsed_page = WikiCloth::Parser.new(:data => content, :noedit => true)
-    # hide content list
-    parsed_page.sections.first.auto_toc = false
-    @page.prepare_wiki_context
-    # define links pointing to pages without content
+    parsed_page = @page.create_wiki_parser params[:content]
     html = parsed_page.to_html
+    # define links pointing to pages without content
     # mark empty or non-existing page with class missing-link (red color)
     parsed_page.internal_links.each do |link|
       # format link to nice readable view
