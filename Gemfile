@@ -1,5 +1,7 @@
 # DO NOT REMOVE THIS LINE!
 source 'https://rubygems.org'
+
+# force using encoding
 if RUBY_VERSION =~ /1.9/
   Encoding.default_external = Encoding::UTF_8
   Encoding.default_internal = Encoding::UTF_8
@@ -35,8 +37,11 @@ gem 'rails-backbone', '0.9.10'
 gem 'haml-rails', '0.4'
 
 # database
-# TODO: before upgrade to 4.0 include mongoid-paranoia and mongoid-versioning
+# TODO: before upgrade to 4.0 include mongoid-paranoia
 gem 'mongoid', '3.1.4'
+
+# communication with rdf service
+gem 'delayed_job_mongoid', '2.0.0'
 
 # search eninge
 gem 'mongoid_search', '0.3.2'
@@ -44,7 +49,7 @@ gem 'mongoid_search', '0.3.2'
 # security
 gem 'bcrypt-ruby', '3.1.1'
 
-# auth
+# github auth
 gem 'omniauth', '1.1.4'
 gem 'omniauth-github', '1.1.0'
 
@@ -68,7 +73,6 @@ group :development do
   gem 'meta_request', '0.2.7'
   #gem 'debugger', '1.5.0'
   gem 'better_errors', '0.9.0'
-  #gem 'binding_of_caller', '0.7.1'
   # web server
   gem 'thin', '1.5.1'
   # gem for creating db/controller diagrams
@@ -79,6 +83,7 @@ end
 
 # admin interface
 gem 'rails_admin', '0.4.9'
+# history tracking, works with admin ui
 gem 'mongoid-audit', '0.1.7'
 
 # web-scraping
@@ -86,11 +91,9 @@ gem 'json_pure', '1.8.0'
 gem 'json', '1.8.0'
 gem 'httparty', '0.11.0'
 
-# used for retrieving github-username by email
-gem 'mechanize', '2.7.1'
-
-# work with wikimarkdown
+# work with mediawiki
 gem 'mediawiki-gateway', '0.5.1'
+# work with wiki markdown
 gem 'wikicloth', :git => 'git://github.com/avaranovich/wikicloth.git'
 
 #rdf support
@@ -107,7 +110,6 @@ gem 'gritter', :git => 'git://github.com/burgua/gritter.git', :branch => 'vendor
 
 # deploy with Capistrano
 gem 'capistrano', '2.15.5'
-
 gem 'rvm-capistrano', '1.4.0'
 
 # for wiki-editor
