@@ -2,7 +2,7 @@ class PagesController < ApplicationController
 
   respond_to :json, :html
 
-  # order of next two lines os very important!
+  # order of next two lines is very important!
   # before_filter need to be before load_and_authorize_resource
   before_filter :get_the_page
   # methods, that need to check permissions
@@ -30,8 +30,8 @@ class PagesController < ApplicationController
     if @page.nil? && (can? :create, Page.new)
       @page = Page.new
       namespace_and_title = Page.retrieve_namespace_and_title full_title
-      @page.namespace = namespace_and_title['namespace']
-      @page.title = namespace_and_title['title']
+      @page.create :title => namespace_and_title['title'],
+        :namespace => namespace_and_title['namespace']
       @page.save
     end
 
@@ -51,22 +51,8 @@ class PagesController < ApplicationController
   end
 
   def semantic_properties
-    {
-      'dependsOn'   => 'http://101companies.org/property/dependsOn',
-      'instanceOf'  => 'http://101companies.org/property/instanceOf',
-      'identifies'  => 'http://101companies.org/property/identifies',
-      'linksTo'     => 'http://101companies.org/property/linksTo',
-      'cites'       => 'http://101companies.org/property/cites',
-      'uses'        => 'http://101companies.org/property/uses',
-      'implements'  => 'http://101companies.org/property/implements',
-      'instanceOf'  => 'http://101companies.org/property/instanceOf',
-      'isA'         => 'http://101companies.org/property/isA',
-      'developedBy' => 'http://101companies.org/property/developedBy',
-      'reviewedBy'  => 'http://101companies.org/property/reviewedBy',
-      'relatesTo'   => 'http://101companies.org/property/relatesTo',
-      'implies'     => 'http://101companies.org/property/implies',
-      'mentions'    => 'http://101companies.org/property/mentions'
-    }
+    %w(dependsOn, instanceOf, identifies, cites, linksTo, uses, implements, isA, developedBy, reviewedBy, relatesTo,
+       implies, mentions).map { |prop| {prop => 'http://101companies.org/property/'+prop} }
   end
 
   # TODO: refactor
@@ -83,16 +69,10 @@ class PagesController < ApplicationController
   end
 
   def page_to_resource(title)
-    if title.starts_with?('http')
-      title
-    else
-      page = Page.find_by_full_title Page.unescape_wiki_url title
-      if page.nil?
-        return nil
-      end
-      RDF::URI.new(
-          "http://101companies.org/resources/#{page.namespace.downcase.pluralize}/#{page.title.sub(' ', '_')}")
-    end
+    return title if title.starts_with?('http')
+    page = Page.find_by_full_title Page.unescape_wiki_url title
+    return nil if page.nil?
+    RDF::URI.new("http://101companies.org/resources/#{page.namespace.downcase.pluralize}/#{page.title.sub(' ', '_')}")
   end
 
   def get_rdf_graph(title, directions=false)
@@ -245,7 +225,6 @@ class PagesController < ApplicationController
   end
 
   def show
-
     respond_to do |format|
       format.html {
         # if need redirect? -> wiki url conventions -> do a redirect
@@ -285,7 +264,7 @@ class PagesController < ApplicationController
       if used_page.nil? || used_page.raw_content.nil?
         class_attribute = 'class="missing-link"'
       end
-      # replace page link in wiki markup
+      # replace page link in html
       html.gsub! "<a href=\"#{link}\"",
                  "<a " + class_attribute + " href=\"/wiki/#{nice_link}\""
       html.gsub! "<a href=\"#{link.camelize(:lower)}\"",
@@ -320,19 +299,17 @@ class PagesController < ApplicationController
   end
 
   def update
-
     sections = params[:sections]
     content = params[:content]
-
     new_full_title = Page.unescape_wiki_url params[:newTitle]
-
     render :json => {
-        :success => @page.update_or_rename_page(new_full_title, content, sections),
-        :newTitle => @page.nice_wiki_url
+      :success => @page.update_or_rename_page(new_full_title, content, sections),
+      :newTitle => @page.nice_wiki_url
     }
   end
 
   def section
     respond_with ({:content => @page.section(params[:full_title])}).to_json
   end
+
 end

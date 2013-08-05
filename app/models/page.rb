@@ -21,9 +21,17 @@ class Page
   has_and_belongs_to_many :users
   belongs_to :contribution
 
+  validates_uniqueness_of :page_title_namespace
+  validates_presence_of :title
+  validates_presence_of :namespace
+
+  track_history :on => [:title, :namespace, :raw_content, :user_ids, :contribution_id]
+
+  attr_accessible :user_ids, :namespace, :title, :contribution_id
+
   # validate uniqueness for paar title + namespace
-  before_validation :page_title_namespace_proc
-  def page_title_namespace_proc
+  before_validation :generate_links_and_name
+  def generate_links_and_name
     # prepare field namespace + title
     self.page_title_namespace = self.namespace.to_s + ':' + self.title.to_s
 
@@ -37,27 +45,12 @@ class Page
       Rails.logger "Failed producing html for page #{self.full_title}"
     end
 
-    parsed_internal_links =wiki_parser.internal_links
-
     # if exist internal_links -> fill used_links
-    if parsed_internal_links
+    if wiki_parser.internal_links
       self.used_links = wiki_parser.internal_links.map { |link| Page.unescape_wiki_url link }
     end
 
   end
-
-  validates_uniqueness_of :page_title_namespace
-  validates_presence_of :title
-  validates_presence_of :namespace
-
-  validates_uniqueness_of :page_title_namespace_proc
-
-  #track_history :on => [:title, :namespace, :raw_content, :user_ids, :contribution_id]
-
-  attr_accessible :user_ids, :namespace, :title, :contribution_id
-
-  # uri for using mediawiki gateway
-  @@base_uri = 'http://mediawiki.101companies.org/api.php'
 
   # get fullname with namespace and  title
   def full_title
@@ -71,7 +64,6 @@ class Page
 
   def self.search(query_string)
     found_pages = Page.full_text_search query_string
-    # save results here
     results = []
     # find occurrence of searched string in title
     if !found_pages.nil?
@@ -155,13 +147,17 @@ class Page
       # rename the page
       self.namespace = nt['namespace']
       self.title = nt['title']
-      # rewrite backlinks
-      # TODO: rewrite clearer
+      # rewrite links in pages, that links to the page
       old_backlinks.each do |backlink|
+        # find page by backlink
         related_page = Page.find_by_full_title Page.unescape_wiki_url backlink
         if !related_page.nil?
+          # rewrite link in page, found by backlink
           related_page.raw_content = related_page.rewrite_internal_links old_title, self.full_title
-          related_page.save
+          # and save changes
+          if !related_page.save
+            Rails.logger.info "Failed to rewrite links for page " + related_page.full_title
+          end
         else
           Rails.logger.info "Couldn't find page with link " + backlink
         end
@@ -171,16 +167,12 @@ class Page
     self.save
   end
 
-  def rewrite_link_name(from, to)
-    from[0].downcase == from[0] ? to[0,1].downcase + to[1..-1] : to
-  end
-
+  # TODO: rewrite simplier
   def rewrite_internal_links(from, to)
     regex = /(\[\[:?)([^:\]\[]+::)?(#{Regexp.escape(from.gsub("_", " "))})(\s*)(\|[^\[\]]*)?(\]\])/i
-    new_content = self.raw_content.gsub("_", " ").gsub(regex) do |link|
-      "#{$1}#{$2}#{rewrite_link_name($3, to)}#{$4}#{$5}#{$6}"
+    self.raw_content.gsub("_", " ").gsub(regex) do
+      "#{$1}#{$2}#{$3[0].downcase == $3[0] ? to[0,1].downcase + to[1..-1] : to}#{$4}#{$5}#{$6}"
     end
-    new_content
   end
 
   # find page without creating
