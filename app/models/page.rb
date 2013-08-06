@@ -52,6 +52,16 @@ class Page
 
   end
 
+  after_save :execute_send_to_rdf_store
+
+  def execute_send_to_rdf_store
+    self.delay.send_to_rdf_store
+  end
+
+  def send_to_rdf_store
+    Rails.logger "Delayed sending to rdf store for "+self.full_title
+  end
+
   # get fullname with namespace and  title
   def full_title
     # if used default namespaces -> remove from full title

@@ -2,6 +2,13 @@ require 'bundler/capistrano'
 require 'yaml'
 require 'pathname'
 load 'deploy/assets'
+require "delayed/recipes"
+
+#added for delayed job
+set :rails_env, "production"
+after "deploy:stop",    "delayed_job:stop"
+after "deploy:start",   "delayed_job:start"
+after "deploy:restart", "delayed_job:restart"
 
 set :sync_backups, 3
 set :db_file, "mongoid.yml"

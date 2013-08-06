@@ -339,6 +339,7 @@ DEPENDENCIES
   closure-compiler (= 1.1.10)
   coffee-rails (= 3.2.2)
   compass-rails (= 1.0.3)
+  daemons (= 1.1.9)
   delayed_job_mongoid (= 2.0.0)
   exception_notification (= 4.0.0)
   font-awesome-rails (= 3.2.1.2)

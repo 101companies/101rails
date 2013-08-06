@@ -42,6 +42,7 @@ gem 'mongoid', '3.1.4'
 
 # communication with rdf service
 gem 'delayed_job_mongoid', '2.0.0'
+gem 'daemons', '1.1.9'
 
 # search eninge
 gem 'mongoid_search', '0.3.2'
