@@ -208,11 +208,8 @@ class Page
   end
 
   def create_wiki_parser(content=nil)
-    if content.nil?
-      content = self.raw_content
-    end
     WikiCloth::Parser.context = {:ns => (MediaWiki::send :upcase_first_char, self.namespace), :title => self.title}
-    WikiCloth::Parser.new(:data => content, :noedit => true)
+    WikiCloth::Parser.new(:data => ((content.nil?) ? self.raw_content : content), :noedit => true)
   end
 
   def self.escape_wiki_url(full_title)
