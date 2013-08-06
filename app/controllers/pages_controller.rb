@@ -30,8 +30,8 @@ class PagesController < ApplicationController
     if @page.nil? && (can? :create, Page.new)
       @page = Page.new
       namespace_and_title = Page.retrieve_namespace_and_title full_title
-      @page.create :title => namespace_and_title['title'],
-        :namespace => namespace_and_title['namespace']
+      @page.title = namespace_and_title['title']
+      @page.namespace = namespace_and_title['namespace']
       @page.save
     end
 
