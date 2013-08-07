@@ -30,11 +30,9 @@ class Page
   attr_accessible :user_ids, :namespace, :title, :contribution_id
 
   # validate uniqueness for paar title + namespace
-  before_validation :generate_links_and_name
-  def generate_links_and_name
+  before_validation do
     # prepare field namespace + title
     self.page_title_namespace = self.namespace.to_s + ':' + self.title.to_s
-
     # fill used_links with links in page
     # parse content and get internal links
     wiki_parser = self.create_wiki_parser
@@ -44,12 +42,10 @@ class Page
     rescue
       Rails.logger.info "Failed producing html for page #{self.full_title}"
     end
-
     # if exist internal_links -> fill used_links
     if wiki_parser.internal_links
       self.used_links = wiki_parser.internal_links.map { |link| Page.unescape_wiki_url link }
     end
-
   end
 
   after_save :execute_send_to_rdf_store
