@@ -101,9 +101,12 @@ class Wiki.Views.Page extends Backbone.View
 
   addSection: (section, sections, options) ->
     args = {model: section}
+    if not options
+      options = {}
     if section.get('title') == 'Metadata'
         args.subview = new Wiki.Views.Triples(model: @model.get('triples'))
         args.subId = 'metasection'
+        options.renderTour = true
     sectionview = new Wiki.Views.Section(args)
     sectionview.render(options)
 

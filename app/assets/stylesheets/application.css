@@ -11,12 +11,14 @@
  *= require_self
  *= require bootstrap
  *= require bootstrap-responsive
+ *= require bootstrap-tour
  *= require _font-awesome
  *= require pygments
  *= require home
  *= require contribution
  *= require login_intro
  *= require gritter
+
 */
 
 /* set default font */
