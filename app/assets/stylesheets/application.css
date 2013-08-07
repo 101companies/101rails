@@ -12,11 +12,13 @@
  *= require bootstrap
  *= require bootstrap-responsive
  *= require font-awesome
+ *= require bootstrap-tour
  *= require pygments
  *= require home
  *= require contribution
  *= require login_intro
  *= require gritter
+
 */
 
 #search-query {

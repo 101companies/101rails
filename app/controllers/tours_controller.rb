@@ -1,6 +1,8 @@
 class ToursController < ApplicationController
   respond_to :json, :html
 
+  load_and_authorize_resource :only => [:delete, :update]
+
   def index
     @tours = Tour.asc
     respond_with @tours

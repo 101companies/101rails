@@ -34,9 +34,49 @@ class Wiki.Views.Section extends Backbone.View
             else
               self.insertHTML(data.html)
             self.bindHanders()
+            if options.renderTour
+              self.handleTour()
         })
     else
       @renderSubView()
+
+  handleTour: ->
+    tourString = localStorage.getItem('currentTour')
+    if tourString
+      tourData = JSON.parse(tourString)
+      tourStep = parseInt(localStorage.getItem('currentTourStep'))
+      nextPage = tourData.pages[tourStep + 1]
+      tour = new Tour(
+        backdrop: true
+        onPrev: (tour) ->
+          if tour._current == 0
+            localStorage.setItem('currentTourStep', tourStep - 1)
+        onEnd: ->
+          localStorage.removeItem('currentTour')
+      )
+      tour.setState('end', 'no')
+      data = []
+      $.each(tourData.pages[tourStep].sections, (i, section) ->
+        sectionid = '#' + section.toLowerCase().replace(/\s/g, "_")
+        if $(sectionid).length
+          data.push(element: sectionid, title: section)
+      )
+      if tourStep
+        if nextPage
+          prev = data.length + 1
+        else
+          prev = data.length
+        data[0].prev = prev
+      if nextPage
+        data.push(path: '/wiki/' + nextPage.title)
+        localStorage.setItem('currentTourStep', tourStep + 1)
+      if tourStep
+        data.push(path: '/wiki/' + tourData.pages[tourStep - 1].title)
+      tour.addSteps data
+      if tour.ended()
+        tour.restart()
+      else
+        tour.start()
 
   renderSubView: ->
     if @subview

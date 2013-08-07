@@ -56,6 +56,8 @@ class Tours.Views.GuidedTour extends Backbone.View
       })
       $('.tourMovePage').disableSelection()
 
+
+
   getTriggerButton: (triggerEvent) ->
     triggerButton = triggerEvent.target
     while (triggerButton.tagName != 'BUTTON')
@@ -225,18 +227,8 @@ class Tours.Views.GuidedTour extends Backbone.View
 
 
   start: ->
-    tour = new Tour()
-    data = []
-    $.each(@model.get('pages'), (i, p) ->
-      data.push({path: '/wiki/' + p.title, content: "BAR", title: p.title})
-      $.each(p.sections, (j, s) ->
-        data.push({path: '/wiki/' + p.title, element: s.replace(/\s/g, '_').toLowerCase(), content: "BAR", title: s})
-      )
-    )
-    tour.addSteps data
-    tour.start()
-
-
-
-
+    if @model.get('pages')
+      localStorage.setItem('currentTour', JSON.stringify(@model.toJSON()))
+      localStorage.setItem('currentTourStep', 0)
+      window.location = '/wiki/' + @model.get('pages')[0].title
 
