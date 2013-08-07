@@ -20,9 +20,6 @@ RailsAdmin.config do |config|
 
   ################  Global configuration  ################
 
-  # history of object changes with mongodb
-  config.audit_with :mongoid_audit, 'HistoryTracker'
-
   # Set the admin name here (optional second array element will appear in red). For example:
   config.main_app_name = ['101Wiki', 'Admin']
 
@@ -34,9 +31,6 @@ RailsAdmin.config do |config|
 
   # Number of default rows per-page:
   config.default_items_per_page = 30
-
-  # Exclude specific models (keep the others):
-  config.excluded_models = ['HistoryTracker']
 
   config.model 'Contribution' do
 

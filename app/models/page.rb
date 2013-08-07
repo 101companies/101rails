@@ -5,7 +5,6 @@ class Page
   include Mongoid::Document
   include Mongoid::Timestamps
   include Mongoid::Paranoia
-  include Mongoid::Audit::Trackable
   include Mongoid::Search
 
   search_in :title, :namespace, :page_title_namespace, :raw_content
@@ -24,8 +23,6 @@ class Page
   validates_uniqueness_of :page_title_namespace
   validates_presence_of :title
   validates_presence_of :namespace
-
-  track_history :on => [:title, :namespace, :raw_content, :user_ids, :contribution_id]
 
   attr_accessible :user_ids, :namespace, :title, :contribution_id
 

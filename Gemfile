@@ -85,8 +85,6 @@ end
 
 # admin interface
 gem 'rails_admin', '0.4.9'
-# history tracking, works with admin ui
-gem 'mongoid-audit', '0.1.7'
 
 # web-scraping
 gem 'json_pure', '1.8.0'
