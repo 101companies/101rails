@@ -42,7 +42,7 @@ class Page
       # this produces internal_links
       wiki_parser.to_html
     rescue
-      Rails.logger "Failed producing html for page #{self.full_title}"
+      Rails.logger.info "Failed producing html for page #{self.full_title}"
     end
 
     # if exist internal_links -> fill used_links
@@ -55,6 +55,7 @@ class Page
   after_save :execute_send_to_rdf_store
 
   def execute_send_to_rdf_store
+    Rails.logger.info "Delayed sending to rdf store for #{self.full_title}"
     self.delay.send_to_rdf_store
   end
 
