@@ -60,42 +60,32 @@ class Page
   # get fullname with namespace and  title
   def full_title
     # if used default namespaces -> remove from full title
-    if (self.namespace == '101') or (self.namespace == 'Concept')
-      return self.title
-    end
+    return self.title if (self.namespace == '101') or (self.namespace == 'Concept')
     # else use normal building of full url
     self.namespace + ':' + self.title
   end
 
   def self.search(query_string)
     found_pages = Page.full_text_search query_string
+    # nothing found -> go out
+    return [] if found_pages.nil?
     results = []
-    # find occurrence of searched string in title
-    if !found_pages.nil?
-      found_pages.each do |found_page|
-        # do not show pages without content
-        if found_page.raw_content.nil?
-          next
-        end
-        # find match ignoring case
-        score = found_page.full_title.downcase.index query_string.downcase
-        # not found match in title
-        if score == nil
-          # big value for search
-          score = 10000
-        end
-        # exact match -> best score (lowest)
-        if found_page.full_title.downcase == query_string.downcase
-          score = -1
-        end
-        # prepare array wit results
-        results << {
-            :title => found_page.full_title,
-            :link  => found_page.nice_wiki_url,
-            # more score -> worst result
-            :score => score
-        }
-      end
+    found_pages.each do |found_page|
+      # do not show pages without content
+      next if found_page.raw_content.nil?
+      # find match ignoring case
+      score = found_page.full_title.downcase.index query_string.downcase
+      # not found match in title, make score worst
+      score = 10000 if score == nil
+      # exact match -> best score (lowest)
+      score = -1 if found_page.full_title.downcase == query_string.downcase
+      # prepare array wit results
+      results << {
+          :title => found_page.full_title,
+          :link  => found_page.nice_wiki_url,
+          # more score -> worst result
+          :score => score
+      }
     end
     # sort by score and return
     return results.sort_by { |a| a[:score] }
