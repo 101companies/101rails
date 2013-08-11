@@ -5,7 +5,7 @@ class Wiki.Views.ExTriple extends Backbone.View
   resBase = "http://101companies.org/resource/"
   prefixToName : {  'www.haskell.org': 'HaskellWiki', 'en.wikipedia.org': 'Wikipedia', 'en.wikibooks.org': 'Wikibooks', 'www.youtube.com': "YouTube", 'github.com': 'GitHub'}
   # which parts of the '/'-split of the URL to show
-  prefixToSplit : {'github.com': {'pick': [4], 'tail': 7}}
+  prefixToSplit : {'github.com': {'pick': [3, 4], 'tail': 7}}
 
   decode: (str, toLower, showMore) ->
     self = @
@@ -18,7 +18,9 @@ class Wiki.Views.ExTriple extends Backbone.View
       key = split[2].trim()
       if key of @prefixToSplit
         str = split.filter((x,i) -> _.contains(self.prefixToSplit[key].pick, i)).join('/')
-        str += '/' + split.slice(@prefixToSplit[key].tail).join('/')
+        tail = split.slice(@prefixToSplit[key].tail).join('/')
+        if tail
+          str += '/' + tail
       else
         str = _.last(split)
         if str.replace(/\s/g, '') == ''

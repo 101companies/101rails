@@ -17,8 +17,8 @@ class Wiki.Views.Triples extends Backbone.View
     })
 
   is101Triple: (triple) ->
-    internalPrefix = 'http://'
-    triple.get('node').substring(0, internalPrefix.length) != internalPrefix
+    regexp = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/
+    not regexp.test(triple.get('node'))
 
   tripleOrdering: (a,b) ->
     if a.get('predicate') < b.get('predicate')
