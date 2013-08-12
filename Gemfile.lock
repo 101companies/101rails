@@ -8,7 +8,7 @@ GIT
 
 GIT
   remote: git://github.com/avaranovich/wikicloth.git
-  revision: 5a6c81531c2e668daec8d9f83b4187d627b72075
+  revision: fd5471670b7b61ef3d76cc2f98744e2c3a8b81b4
   specs:
     wikicloth (0.8.0)
       activesupport
@@ -189,8 +189,8 @@ GEM
     mongoid_search (0.3.2)
       fast-stemmer (~> 1.0.0)
       mongoid (>= 3.0.0)
-    moped (1.5.0)
-    multi_json (1.7.8)
+    moped (1.5.1)
+    multi_json (1.7.9)
     multi_xml (0.5.5)
     multipart-post (1.2.0)
     nested_form (0.3.2)
@@ -295,7 +295,7 @@ GEM
     ruby-prof (0.13.0)
     rvm-capistrano (1.4.0)
       capistrano (>= 2.0.0)
-    safe_yaml (0.9.4)
+    safe_yaml (0.9.5)
     sass (3.2.10)
     sass-rails (3.2.6)
       railties (~> 3.2.0)
