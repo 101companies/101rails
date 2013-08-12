@@ -47,7 +47,7 @@
     <% _.each(pages, function(p) {%>
      <li class="page">
       <hr>
-      <div>
+      <div class="pageItem">
        <%if (isAdmin()) {%>
         <button class="btn btn-small tourAddSection" type="button"><i class="icon-plus"></i> Add Section</button>
        <%}%>
@@ -55,10 +55,8 @@
         <a class="titleLink" class="titleLink" href="/wiki/<%= p.title %>"><%= p.title %></a>
         <%if (isAdmin()) {%>
          <span class="editButtons">
-          <button class="btn-mini tourShowEdit" type="button"><i class="icon-pencil"></i></button>
-          <button class="btn-mini tourMovePage" type="button"><i class="icon-triangle-2-n-s"></i></button>
-          <button class="btn-mini tourRemovePage" type="button"><i class="icon-remove"></i></button>
-          click to drag
+          <button class="btn-mini tourShowEdit" type="button"><i class="icon-pencil"></i></button><button class="btn-mini tourRemovePage" type="button"><i class="icon-remove"></i></button>
+          <i class="icon-move tourMove"></i>
          </span>
         <%}%>
        </div>
@@ -70,18 +68,20 @@
        <ul class="sections">
         <% _.each(p.sections, function(s) {%>
          <li class="section">
-          <div class="viewDefault">
-           <a class="sectionLink" href="/wiki/<%= p.title.replace(/_/g, ' ') %>#<%= s.replace(/_/g, ' ') %>">#<%= s %></a>
+          <div class="sectionItem">
+           <div class="viewDefault">
+            <a class="sectionLink" href="/wiki/<%= p.title.replace(/_/g, ' ') %>#<%= s.replace(/_/g, ' ') %>">#<%= s %></a>
+            <%if (isAdmin()) {%>
+             <span class="editButtons">
+              <button class="btn-mini tourShowEdit" type="button"><i class="icon-pencil"></i></button><button class="btn-mini tourRemoveSection" type="button"><i class="icon-remove"></i></button>
+              <i class="icon-move tourMove"></i>
+             </span>
+            <%}%>
+           </div>
            <%if (isAdmin()) {%>
-            <span class="editButtons">
-             <button class="btn-mini tourShowEdit" type="button"><i class="icon-pencil"></i></button>
-             <button class="btn-mini tourRemoveSection" type="button"><i class="icon-remove"></i></button> <i class="icon-remove"></i>
-            </span>
+            <div class="viewEdit"><input class="sectionTitle" value="<%= s %>"></div>
            <%}%>
           </div>
-          <%if (isAdmin()) {%>
-           <div class="viewEdit"><input class="sectionTitle" value="<%= s %>"></div>
-          <%}%>
          </li>
         <% }); %>
        </ul>
