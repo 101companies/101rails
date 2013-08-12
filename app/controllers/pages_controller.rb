@@ -51,22 +51,10 @@ class PagesController < ApplicationController
   end
 
   def semantic_properties
-    {
-      'dependsOn'   => 'http://101companies.org/property/dependsOn',
-      'instanceOf'  => 'http://101companies.org/property/instanceOf',
-      'identifies'  => 'http://101companies.org/property/identifies',
-      'linksTo'     => 'http://101companies.org/property/linksTo',
-      'cites'       => 'http://101companies.org/property/cites',
-      'uses'        => 'http://101companies.org/property/uses',
-      'implements'  => 'http://101companies.org/property/implements',
-      'instanceOf'  => 'http://101companies.org/property/instanceOf',
-      'isA'         => 'http://101companies.org/property/isA',
-      'developedBy' => 'http://101companies.org/property/developedBy',
-      'reviewedBy'  => 'http://101companies.org/property/reviewedBy',
-      'relatesTo'   => 'http://101companies.org/property/relatesTo',
-      'implies'     => 'http://101companies.org/property/implies',
-      'mentions'    => 'http://101companies.org/property/mentions'
-    }
+    semantic_hash = Hash.new
+    %w(dependsOn instanceOf identifies cites linksTo uses implements isA developedBy reviewedBy relatesTo
+       implies mentions).map {|prop| semantic_hash["#{prop}"] = "http://101companies.org/property/#{prop}"}
+    semantic_hash
   end
 
   # TODO: refactor
@@ -106,7 +94,10 @@ class PagesController < ApplicationController
       else
         subject = uri
       end
-      predicate = RDF::URI.new(self.semantic_properties[l.split('::')[0]])
+      # uncapitalize link
+      semantic_flag = l.split('::')[0]
+      semantic_flag = semantic_flag[0, 1].downcase + semantic_flag[1..-1]
+      predicate = RDF::URI.new(self.semantic_properties[semantic_flag])
       object =  l.split('::')[1]
       unless directions
         object = page_to_resource(object)
