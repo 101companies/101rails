@@ -54,6 +54,10 @@ class Page
     # TODO: some work with rdf store
   end
 
+  def get_content_from_mediawiki
+    MediaWiki::Gateway.new('http://mediawiki.101companies.org/api.php').get self.full_title
+  end
+
   # TODO: remove after content migration
   def retrieve_old_wiki_content
     if self.raw_content.nil?
