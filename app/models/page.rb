@@ -222,7 +222,7 @@ class Page
   end
 
   def semantic_links
-    self.used_links.map {|link| link.include? "::" }
+    self.used_links.select {|link| link.include? "::" }
   end
 
   def internal_links
