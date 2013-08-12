@@ -45,15 +45,6 @@ class Page
     end
   end
 
-  after_save do
-    Rails.logger.info "Delayed sending to rdf store for #{self.full_title}"
-    self.delay.send_to_rdf_store
-  end
-
-  def send_to_rdf_store
-    # TODO: some work with rdf store
-  end
-
   def get_content_from_mediawiki
     MediaWiki::Gateway.new('http://mediawiki.101companies.org/api.php').get self.full_title
   end

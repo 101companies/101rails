@@ -40,11 +40,6 @@ gem 'haml-rails', '0.4'
 # TODO: before upgrade to 4.0 include mongoid-paranoia
 gem 'mongoid', '3.1.4'
 
-# communication with rdf service
-gem 'delayed_job_mongoid', '2.0.0'
-gem 'daemons', '1.1.9'
-gem 'delayed_job_admin', '1.0.3'
-
 # search eninge
 gem 'mongoid_search', '0.3.2'
 

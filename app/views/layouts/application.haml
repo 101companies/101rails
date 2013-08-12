@@ -46,8 +46,6 @@
                   -if current_user.role == 'admin'
                     %li
                       = link_to raw("<i class=\"icon-lock\"></i> Admin UI"), '/admin'
-                    %li
-                      = link_to raw("<i class=\"icon-briefcase\"></i> Delayed jobs"), '/delayed_job_admin'
                   %li
                     = link_to raw("<i class=\"icon-share\"></i> Logout"), '/users/logout'
 

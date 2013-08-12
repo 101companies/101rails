@@ -6,13 +6,6 @@ class ApplicationController < ActionController::Base
     request.env['omniauth.origin'] || stored_location_for(resource) || root_path
   end
 
-  def delayed_job_admin_authentication
-    if current_user.role != 'admin'
-      flash[:notice] = 'You are not allowed to look delayed jobs'
-      go_to_homepage
-    end
-  end
-
   def go_to_homepage
     redirect_to '/wiki/@project'
   end

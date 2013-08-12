@@ -114,14 +114,6 @@ GEM
     compass-rails (1.0.3)
       compass (>= 0.12.2, < 0.14)
     daemons (1.1.9)
-    delayed_job (3.0.5)
-      activesupport (~> 3.0)
-    delayed_job_admin (1.0.3)
-      delayed_job
-      rails
-    delayed_job_mongoid (2.0.0)
-      delayed_job (~> 3.0)
-      mongoid (~> 3.0)
     ejs (1.1.1)
     erubis (2.7.0)
     eventmachine (1.0.3)
@@ -338,9 +330,6 @@ DEPENDENCIES
   closure-compiler (= 1.1.10)
   coffee-rails (= 3.2.2)
   compass-rails (= 1.0.3)
-  daemons (= 1.1.9)
-  delayed_job_admin (= 1.0.3)
-  delayed_job_mongoid (= 2.0.0)
   exception_notification (= 4.0.0)
   font-awesome-rails (= 3.2.1.2)
   gritter!
