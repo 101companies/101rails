@@ -21,12 +21,12 @@ gem 'rails', '3.2.13'
 gem 'exception_notification', '4.0.0'
 
 # twitter bootstrap as sass
-gem 'bootstrap-sass', '2.3.2.0'
+gem 'bootstrap-sass', '2.3.2.1'
 
 group :assets do
   gem 'sass-rails',   '3.2.6'
   gem 'coffee-rails', '3.2.2'
-  gem 'uglifier', '2.1.1'
+  gem 'uglifier', '2.1.2'
   gem 'compass-rails', '1.0.3'
 end
 
@@ -48,13 +48,13 @@ gem 'bcrypt-ruby', '3.1.1'
 
 # github auth
 gem 'omniauth', '1.1.4'
-gem 'omniauth-github', '1.1.0'
+gem 'omniauth-github', '1.1.1'
 
 # github integration
 gem 'octokit', '1.25.0'
 
 # font with bundled icons
-gem 'font-awesome-rails', '3.2.1.2'
+gem 'font-awesome-rails', '3.2.1.3'
 
 # roles and permissions
 gem 'cancan', '1.6.10'
@@ -67,13 +67,13 @@ group :development do
   # profiling
   gem 'ruby-prof', '0.13.0'
   # for work with rails panel
-  gem 'meta_request', '0.2.7'
+  gem 'meta_request', '0.2.8'
   #gem 'debugger', '1.5.0'
   gem 'better_errors', '0.9.0'
   # web server
   gem 'thin', '1.5.1'
   # gem for creating db/controller diagrams
-  gem 'railroady', '1.1.0'
+  gem 'railroady', '1.1.1'
   # colored output in irb and console
   gem 'wirble', '0.1.3'
 end
@@ -87,7 +87,7 @@ gem 'json', '1.8.0'
 gem 'httparty', '0.11.0'
 
 # work with mediawiki
-gem 'mediawiki-gateway', '0.5.1'
+gem 'mediawiki-gateway', '0.5.2'
 # work with wiki markdown
 gem 'wikicloth', :git => 'git://github.com/avaranovich/wikicloth.git'
 
@@ -97,7 +97,7 @@ gem 'rdf-rdfxml', :git => 'git://github.com/ruby-rdf/rdf-rdfxml.git'
 gem 'rdf-sesame', :git => 'git://github.com/avaranovich/rdf-sesame.git'
 
 # source text highlighting
-gem 'pygments.rb', '0.5.1'
+gem 'pygments.rb', '0.5.2'
 gem 'closure-compiler', '1.1.10'
 
 # growl-like notifications
@@ -105,7 +105,7 @@ gem 'gritter', :git => 'git://github.com/burgua/gritter.git', :branch => 'vendor
 
 # deploy with Capistrano
 gem 'capistrano', '2.15.5'
-gem 'rvm-capistrano', '1.4.0'
+gem 'rvm-capistrano', '1.4.3'
 
 # for wiki-editor
 gem 'aced_rails', '0.2.1', :git => 'git://github.com/tschmorleiz/aced_rails.git'
