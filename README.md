@@ -80,12 +80,6 @@ You will be asked about your email and new role.
 
 Just type email from your github account and role ‘admin’
 
-###Delayed jobs
-
-To start for development environment delayed jobs you need to execute next command
-
-    bundle exec rake jobs:work
-
 ##Contributing
 
 If you make improvements to this application, please share with others.
