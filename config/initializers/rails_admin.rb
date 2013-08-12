@@ -99,9 +99,6 @@ RailsAdmin.config do |config|
 
     field :email do
       searchable true
-      pretty_value do
-        "<a href='mailto:#{value}'/>#{value}</a>".html_safe
-      end
     end
 
     field :name do
@@ -120,9 +117,6 @@ RailsAdmin.config do |config|
       label do
         'Avatar'
       end
-      pretty_value do
-        "<img width=24 height=24 src='#{value}'/>".html_safe
-      end
     end
 
     field :name do
@@ -131,9 +125,6 @@ RailsAdmin.config do |config|
 
     field :email do
       searchable true
-      pretty_value do
-        "<a href='mailto:#{value}'/>#{value}</a>".html_safe
-      end
     end
 
     field :role, :enum do
@@ -145,9 +136,6 @@ RailsAdmin.config do |config|
 
     field :github_name do
       searchable true
-      pretty_value do
-        "<a target='_blank' href='https://github.com/#{value}'/>#{value}</a>".html_safe
-      end
     end
 
     field :created_at
