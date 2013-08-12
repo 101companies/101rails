@@ -12,6 +12,6 @@ class Wiki.Models.Triples extends Backbone.Collection
     options.cache = false
     return Backbone.Collection.prototype.fetch.call(@, options)
 
-  url: (title) -> 'http://101companies.org/endpoint/' + title + '/json/directions'
+  url: (title) -> '/endpoint/' + title + '/json/directions'
 
 
