@@ -127,56 +127,7 @@ class PagesController < ApplicationController
         end
       }
     end
-
-    server = RDF::Sesame::Server.new RDF::URI("http://triples.101companies.org/openrdf-sesame")
-    repository = server.repository("wiki101")
-    title = title.sub(':', '-3A')
-    res = repository.query(:object => RDF::URI.new("http://101companies.org/resource/#{title}"))
-    res.each do |solution|
-      if directions
-          solution.object = solution.subject
-
-          solution.subject = RDF::Literal("IN")
-      end
-      graph << patch_resource(solution, directions)
-    end
-
     return graph
-  end
-
-  def patch_resource(resource, directions)
-    unless directions
-      resource.subject.path.sub!('resource', 'resources')
-    end
-    resource.object.path.sub!('resource', 'resources')
-
-    unless directions
-      resource.subject.path = patch_path(resource.subject.path)
-    end
-    resource.object.path = patch_path(resource.object.path, directions)
-    resource
-  end
-
-  def patch_path(path, directions=false)
-    item = path.split("/").last
-    fixed_item = item
-
-    if (fixed_item.split('-3A').length == 2)
-      ns = fixed_item.split('-3A')[0]
-      title = fixed_item.split('-3A')[1]
-      if directions
-        fixed_item = "#{ns}:#{title}"
-      else
-        fixed_item = "#{ns.downcase.pluralize}/#{title}"
-      end
-    else
-      unless directions
-        fixed_item = "concepts/#{fixed_item}"
-      end
-    end
-
-    path.sub!(item, fixed_item)
-    path
   end
 
   def get_rdf
