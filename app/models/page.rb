@@ -6,6 +6,8 @@ class Page
   include Mongoid::Timestamps
   include Mongoid::Paranoia
   include Mongoid::Search
+  include Mongoid::Versioning
+  max_versions 42
 
   search_in :title, :namespace, :page_title_namespace, :raw_content
 
