@@ -15,6 +15,14 @@
 	padding: 0px ;
 }
 
+.tour .pageItem, .tour .section {
+	min-height: 1.65em ;
+}
+
+.tour .pageItem button, .tour .section button {
+	margin-top: -2px ;
+}
+
 .tour .editButtons {
 	display: none ;
 }

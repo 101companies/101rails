@@ -28,6 +28,7 @@ class Tours.Views.GuidedTour extends Backbone.View
   render: ->
     html = @template(title: @model.get('title'), author: @model.get('author'), pages: @model.get('pages'))
     $(@el).html(html)
+    minHeight = 40
 
     if (@isAdmin())
       $('#pages').sortable({
@@ -41,8 +42,8 @@ class Tours.Views.GuidedTour extends Backbone.View
         forcePlaceholderSize: true,
         start: (event, ui) ->
           height = ui.item.height() / 2
-          if (height < 50)
-            height = 50
+          if (height < minHeight)
+            height = minHeight
           $('.sortable-placeholder').css('height', height)
       })
       $('.sections').sortable({
@@ -54,7 +55,7 @@ class Tours.Views.GuidedTour extends Backbone.View
         delay: 150 ,
         toleranceElement: '> div'
       })
-      $('.tourMovePage').disableSelection()
+      $('.tourMove').disableSelection()
 
 
 
@@ -113,25 +114,29 @@ class Tours.Views.GuidedTour extends Backbone.View
     $(pageList).append(
       '<li class="page">\n'+
       ' <hr>\n'+
-      ' <div>\n'+
+      ' <div class="pageItem">\n'+
       '  <button class="btn btn-small tourAddSection" type="button"><i class="icon-plus"></i> Add Section</button>\n'+
       '  <div class="viewDefault">'+
       '   <a class="titleLink" href="/wiki/newPage">new Page</a>\n'+
       '   <span class="editButtons">\n' +
       '    <button class="btn-mini tourShowEdit" type="button"><i class="icon-pencil"></i></button><button class="btn-mini tourRemovePage" type="button"><i class="icon-remove"></i></button>\n'+
+      '    <i class="icon-move tourMove"></i>\n'+
       '   </span>\n'+
       '  </div>\n'+
       '  <div class="viewEdit"><input class="pageTitle" value="new Page"></div>\n'+
       ' </div>\n'+
       ' <ul class="sections">\n'+
       '  <li class="section">\n'+
-      '   <div class="viewDefault">\n'+
-      '    <a class="sectionLink" href="/wiki/newPage#Section">#Section</a>\n'+
-      '    <span class="editButtons">\n' +
-      '     <button class="btn-mini tourShowEdit" type="button"><i class="icon-pencil"></i></button><button class="btn-mini tourRemoveSection" type="button"><i class="icon-remove"></i></button>\n'+
-      '    </span>\n'+
-      '   </div>\n'+
-      '   <div class="viewEdit"><input class="sectionTitle" value="Section"></div>\n'+
+      '   <div class="sectionItem">\n'+
+      '    <div class="viewDefault">\n'+
+      '     <a class="sectionLink" href="/wiki/newPage#Section">#Section</a>\n'+
+      '     <span class="editButtons">\n' +
+      '      <button class="btn-mini tourShowEdit" type="button"><i class="icon-pencil"></i></button><button class="btn-mini tourRemoveSection" type="button"><i class="icon-remove"></i></button>\n'+
+      '      <i class="icon-move tourMove"></i>\n'+
+      '     </span>\n'+
+      '    </div>\n'+
+      '    <div class="viewEdit"><input class="sectionTitle" value="Section"></div>\n'+
+      '  </div>\n'+
       '  </li>\n'+
       ' </ul>\n'+
       '</li>\n'
@@ -143,11 +148,14 @@ class Tours.Views.GuidedTour extends Backbone.View
     #console.log(sectionsList)
     $(sectionsList).append(
       '<li class="section">\n'+
-      ' <div class="viewDefault">\n'+
-      '  <a class="sectionLink" href="/wiki/newPage#Section">#Section</a>\n'+
-      '  <span class="editButtons">\n' +
-      '   <button class="btn-mini tourShowEdit" type="button"><i class="icon-pencil"></i></button><button class="btn-mini tourRemoveSection" type="button"><i class="icon-remove"></i> </button><i class="icon-remove"></i>\n'+
-      '  </span>\n'+
+      ' <div class="sectionItem">'+
+      '  <div class="viewDefault">\n'+
+      '   <a class="sectionLink" href="/wiki/newPage#Section">#Section</a>\n'+
+      '   <span class="editButtons">\n' +
+      '    <button class="btn-mini tourShowEdit" type="button"><i class="icon-pencil"></i></button><button class="btn-mini tourRemoveSection" type="button"><i class="icon-remove"></i></button>\n'+
+      '    <i class="icon-move tourMove"></i>\n'+
+      '   </span>\n'+
+      '  </div>\n'+
       ' </div>\n'+
       ' <div class="viewEdit"><input class="sectionTitle" value="Section"></div>\n'+
       '</li>\n'
