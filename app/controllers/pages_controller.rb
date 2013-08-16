@@ -252,6 +252,7 @@ class PagesController < ApplicationController
     sections = params[:sections]
     content = params[:content]
     new_full_title = Page.unescape_wiki_url params[:newTitle]
+    # TODO: renaming -> check used page
     render :json => {
       :success => @page.update_or_rename_page(new_full_title, content, sections),
       :newTitle => @page.nice_wiki_url
