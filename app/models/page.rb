@@ -154,7 +154,7 @@ class Page
       # rewrite links in pages, that links to the page
       old_backlinks.each do |backlink|
         # find page by backlink
-        related_page = Page.find_by_full_title Page.unescape_wiki_url backlink
+        related_page = Page.find_by_full_title backlink
         if !related_page.nil?
           # rewrite link in page, found by backlink
           related_page.raw_content = related_page.rewrite_internal_links old_title, self.full_title
@@ -171,16 +171,22 @@ class Page
     self.save
   end
 
+  def self.uncapitalize(string)
+    string[0,1].downcase + string[1..-1]
+  end
+
   # TODO: black magic
   def rewrite_internal_links(from, to)
     regex = /(\[\[:?)([^:\]\[]+::)?(#{Regexp.escape(from.gsub("_", " "))})(\s*)(\|[^\[\]]*)?(\]\])/i
     self.raw_content.gsub("_", " ").gsub(regex) do
-      "#{$1}#{$2}#{$3[0].downcase == $3[0] ? to[0,1].downcase + to[1..-1] : to}#{$4}#{$5}#{$6}"
+      "#{$1}#{$2}#{$3[0].downcase == $3[0] ? Page.uncapitalize(to) : to}#{$4}#{$5}#{$6}"
     end
   end
 
   # find page without creating
   def self.find_by_full_title(full_title)
+    full_title = Page.unescape_wiki_url full_title
+    full_title.strip!
     nt = Page.retrieve_namespace_and_title full_title
     page = Page.where(:page_title_namespace => nt['namespace'] + ':' + nt['title']).first
     # if page was found create wiki parser

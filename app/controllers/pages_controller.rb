@@ -18,12 +18,6 @@ class PagesController < ApplicationController
       full_title = '@project'
     end
 
-    # 'wikify' title param
-    full_title = Page.unescape_wiki_url full_title
-
-    # remove trailing spaces
-    full_title.strip!
-
     @page = Page.find_by_full_title full_title
 
     # page not found and user can create page -> create new page by full_title
@@ -72,7 +66,7 @@ class PagesController < ApplicationController
 
   def page_to_resource(title)
     return title if title.starts_with?('http')
-    page = Page.find_by_full_title Page.unescape_wiki_url title
+    page = Page.find_by_full_title title
     return nil if page.nil?
     RDF::URI.new("http://101companies.org/resources/#{page.namespace.downcase.pluralize}/#{page.title.sub(' ', '_')}")
   end
@@ -96,7 +90,7 @@ class PagesController < ApplicationController
       end
       # uncapitalize link
       semantic_flag = l.split('::')[0]
-      semantic_flag = semantic_flag[0, 1].downcase + semantic_flag[1..-1]
+      semantic_flag = Page.uncapitalize semantic_flag
       predicate = RDF::URI.new(self.semantic_properties[semantic_flag])
       object =  l.split('::')[1]
       unless directions
@@ -213,7 +207,7 @@ class PagesController < ApplicationController
       # format link to nice readable view
       nice_link = Page.nice_wiki_url link
       # get the page by link in html
-      used_page = Page.find_by_full_title Page.unescape_wiki_url nice_link
+      used_page = Page.find_by_full_title nice_link
       # if not found page or it has no content
       # set in class_attribute additional class for link (mark with red)
       class_attribute = ''
