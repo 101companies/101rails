@@ -14,9 +14,7 @@ class PagesController < ApplicationController
     full_title = params[:id]
 
     # if no title -> set default wiki startpage '@project'
-    if full_title == nil
-      full_title = '@project'
-    end
+    full_title = '@project' if full_title == nil
 
     @page = Page.find_by_full_title full_title
 
@@ -191,7 +189,6 @@ class PagesController < ApplicationController
         'sections'  => @page.sections,
         # TODO: fix for new history
         'history'   => [], #@page.history.as_json(:include => {:user => { :except => [:role, :github_name]}}),
-        # TODO: restore
         'backlinks' => @page.backlinks
       }}
 
@@ -201,24 +198,16 @@ class PagesController < ApplicationController
   def parse
     parsed_page = @page.create_wiki_parser params[:content]
     html = parsed_page.to_html
-    # define links pointing to pages without content
     # mark empty or non-existing page with class missing-link (red color)
     parsed_page.internal_links.each do |link|
-      # format link to nice readable view
       nice_link = Page.nice_wiki_url link
-      # get the page by link in html
       used_page = Page.find_by_full_title nice_link
       # if not found page or it has no content
       # set in class_attribute additional class for link (mark with red)
-      class_attribute = ''
-      if used_page.nil? || used_page.raw_content.nil?
-        class_attribute = 'class="missing-link"'
-      end
-      # replace page link in html
-      html.gsub! "<a href=\"#{link}\"",
-                 "<a " + class_attribute + " href=\"/wiki/#{nice_link}\""
-      html.gsub! "<a href=\"#{link.camelize(:lower)}\"",
-                 "<a " + class_attribute + " href=\"/wiki/#{nice_link}\""
+      class_attribute = (used_page.nil? || used_page.raw_content.nil?) ? 'class="missing-link"' : ''
+      # replace page links in html
+      html.gsub! "<a href=\"#{link}\"", "<a " + class_attribute + " href=\"/wiki/#{nice_link}\""
+      html.gsub! "<a href=\"#{link.camelize(:lower)}\"", "<a " + class_attribute + " href=\"/wiki/#{nice_link}\""
     end
     render :json => {:success => true, :html => html.html_safe}
   end
