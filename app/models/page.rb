@@ -185,8 +185,7 @@ class Page
 
   # find page without creating
   def self.find_by_full_title(full_title)
-    full_title = Page.unescape_wiki_url full_title
-    full_title.strip!
+    full_title = (Page.unescape_wiki_url full_title).strip
     nt = Page.retrieve_namespace_and_title full_title
     page = Page.where(:page_title_namespace => nt['namespace'] + ':' + nt['title']).first
     # if page was found create wiki parser
