@@ -62,69 +62,57 @@ class PagesController < ApplicationController
     return @ctx
   end
 
+  def get_rdf_statements(title, directions=false)
+    @page = Page.find_by_full_title Page.unescape_wiki_url title
+    statements = []
+    uri = self.page_to_resource title
+    context   = RDF::URI.new("http://101companies.org")
+
+    @page.semantic_links.each do |link|
+      subject = directions ? RDF::Literal.new("OUT") : uri
+      link_prefix = link.split('::')[1]
+      object = directions ? link_prefix : page_to_resource(link_prefix)
+      if !object.nil?
+        statements <<  RDF::Statement.new(subject, RDF::URI.new(self.semantic_properties[link.split('::')[0]]),
+                                          object, :context => context)
+      end
+    end
+
+    unless directions
+      (@page.internal_links-@page.semantic_links).each do |link|
+        object = directions ? link : page_to_resource(link)
+        if !object.nil?
+          statements << RDF::Statement.new(uri, RDF::URI.new(self.semantic_properties['mentions']), object,
+                                           :context => context)
+        end
+      end
+    end
+
+    # TODO: delayed jobs
+    if (Rails.env == 'production') && (!directions)
+      repo = (RDF::Sesame::Server.new RDF::URI("http://triples.101companies.org/openrdf-sesame")).repository("wiki2")
+      statements.each do |statement|
+        repo.delete statement
+        repo.insert statement
+      end
+    end
+
+    statements
+  end
+
   def page_to_resource(title)
-    return title if title.starts_with?('http')
+    return title if title.starts_with?('Http')
     page = Page.find_by_full_title title
     return nil if page.nil?
     RDF::URI.new("http://101companies.org/resources/#{page.namespace.downcase.pluralize}/#{page.title.sub(' ', '_')}")
   end
 
   def get_rdf_graph(title, directions=false)
-     @page = Page.find_by_full_title Page.unescape_wiki_url title
-
-     uri = self.page_to_resource title
-     graph = RDF::Graph.new #<< [uri, RDF::RDFS.title, title]
-
-     context   = RDF::URI.new("http://101companies.org")
-
-     server = RDF::Sesame::Server.new RDF::URI("http://triples.101companies.org/openrdf-sesame")
-     repository = server.repository("wiki2")
-
-     @page.semantic_links.each { |l|
-      if directions
-        subject = RDF::Literal.new("OUT")
-      else
-        subject = uri
-      end
-      # uncapitalize link
-      semantic_flag = l.split('::')[0]
-      semantic_flag = Page.uncapitalize semantic_flag
-      predicate = RDF::URI.new(self.semantic_properties[semantic_flag])
-      object =  l.split('::')[1]
-      unless directions
-        object = page_to_resource(object)
-      end
-      if !object.nil?
-        statement =  RDF::Statement.new(subject, predicate, object, :context => context)
-        graph << statement
-        unless directions
-          repository.delete statement
-          repository.insert statement
-        end
-      end
-
-    }
-
-    unless directions
-      @page.internal_links.each { |l|
-        #we're not interested in semantic links
-        if (l.split('::').length == 1)
-          predicate =  RDF::URI.new(self.semantic_properties['mentions'])
-          subject = uri
-          object = l
-          unless directions
-            object = page_to_resource(object)
-          end
-          if !object.nil?
-            statement =  RDF::Statement.new(subject, predicate, object, :context => context)
-            graph << statement
-            repository.delete statement
-            repository.insert statement
-          end
-        end
-      }
+    graph = RDF::Graph.new
+    get_rdf_statements(title, directions).each do |statement|
+      graph << statement
     end
-    return graph
+    graph
   end
 
   def get_rdf
