@@ -93,7 +93,6 @@ gem 'wikicloth', :git => 'git://github.com/avaranovich/wikicloth.git'
 
 #rdf support
 gem 'rdf', :git => 'git://github.com/ruby-rdf/rdf.git'
-gem 'rdf-rdfxml', :git => 'git://github.com/ruby-rdf/rdf-rdfxml.git'
 gem 'rdf-sesame', :git => 'git://github.com/avaranovich/rdf-sesame.git'
 
 # source text highlighting
