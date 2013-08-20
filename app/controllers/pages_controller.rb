@@ -100,11 +100,11 @@ class PagesController < ApplicationController
   end
 
   def get_rdf_graph(title, directions=false)
-    graph = RDF::Graph.new
-    get_rdf_statements(title, directions).each do |statement|
-      graph << statement
+    RDF::Graph.new do |graph|
+      get_rdf_statements(title, directions).each do |statement|
+        graph << statement
+      end
     end
-    graph
   end
 
   def get_rdf
