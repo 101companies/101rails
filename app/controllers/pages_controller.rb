@@ -65,7 +65,7 @@ class PagesController < ApplicationController
       link_prefix = link.split('::')[1]
       object = directions ? link_prefix : page_to_resource(link_prefix)
       if !object.nil?
-        statements <<  RDF::Statement.new(subject, RDF::URI.new(self.semantic_properties[link.split('::')[0]]),
+        statements <<  RDF::Statement.new(subject, RDF::URI.new(self.semantic_properties[Page.uncapitalize(link.split('::')[0])]),
                                           object, :context => context)
       end
     end
