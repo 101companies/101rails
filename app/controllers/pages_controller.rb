@@ -188,8 +188,8 @@ class PagesController < ApplicationController
       # set in class_attribute additional class for link (mark with red)
       class_attribute = (used_page.nil? || used_page.raw_content.nil?) ? 'class="missing-link"' : ''
       # replace page links in html
-      html.gsub! "<a href=\"#{link}\"", "<a " + class_attribute + " href=\"/wiki/#{nice_link}\""
-      html.gsub! "<a href=\"#{link.camelize(:lower)}\"", "<a " + class_attribute + " href=\"/wiki/#{nice_link}\""
+      html.gsub! "<a href=\"#{link}\"", "<a #{class_attribute} href=\"/wiki/#{nice_link}\""
+      html.gsub! "<a href=\"#{link.camelize(:lower)}\"", "<a #{class_attribute} href=\"/wiki/#{nice_link}\""
     end
     render :json => {:success => true, :html => html.html_safe}
   end
