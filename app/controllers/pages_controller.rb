@@ -96,7 +96,7 @@ class PagesController < ApplicationController
     return title if title.starts_with?('Http')
     page = Page.find_by_full_title title
     return nil if page.nil?
-    RDF::URI.new("http://101companies.org/resources/#{page.namespace.downcase.pluralize}/#{page.title.sub(' ', '_')}")
+    RDF::URI.new("http://101companies.org/resources/#{page.namespace.downcase.pluralize}/#{page.title.gsub(' ', '_')}")
   end
 
   def get_rdf_graph(title, directions=false)
