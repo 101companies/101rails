@@ -104,7 +104,8 @@ gem 'gritter', :git => 'git://github.com/burgua/gritter.git', :branch => 'vendor
 
 # deploy with Capistrano
 gem 'capistrano', '2.15.5'
-gem 'rvm-capistrano', '1.4.3'
+# TODO: remove?
+gem 'rvm-capistrano', '1.4.4'
 
 # for wiki-editor
 gem 'aced_rails', '0.2.1', :git => 'git://github.com/tschmorleiz/aced_rails.git'
