@@ -51,8 +51,9 @@ class PagesController < ApplicationController
       subject = directions ? RDF::Literal.new("OUT") : uri
       link_prefix = link.split('::')[1]
       object = directions ? link_prefix : page_to_resource(link_prefix)
+      semantic_property = Page.uncapitalize link.split('::')[0]
       if !object.nil?
-        statements <<  RDF::Statement.new(subject, RDF::URI.new(self.semantic_properties[Page.uncapitalize(link.split('::')[0])]),
+        statements <<  RDF::Statement.new(subject, RDF::URI.new(self.semantic_properties[semantic_property]),
                                           object, :context => context)
       end
     end
