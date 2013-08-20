@@ -204,8 +204,7 @@ class Page
   end
 
   # link for using in html rendering
-  # replace ' ' with '_'
-  # remove trailing spaces
+  # replace ' ' with '_', remove trailing spaces
   def self.nice_wiki_url title
     return (Page.unescape_wiki_url title).strip.gsub(' ', '_')
   end
