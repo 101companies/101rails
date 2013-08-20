@@ -41,19 +41,6 @@ class PagesController < ApplicationController
     semantic_hash
   end
 
-  # TODO: refactor
-  def get_context_for(title)
-    if ((title.split(':').length == 2) and (title.starts_with?('http') == false))
-      @ctx  = {ns: title.split(':')[0].downcase, title: title.split(':')[1]}
-    elsif title.starts_with?('http')
-      @ctx = {title: title}
-    else
-      @ctx = {ns: 'concept', title: title.split(':')[0]}
-    end
-
-    return @ctx
-  end
-
   def get_rdf_statements(title, directions=false)
     @page = Page.find_by_full_title Page.unescape_wiki_url title
     statements = []
