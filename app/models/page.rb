@@ -74,6 +74,16 @@ class Page
     self.namespace + ':' + self.title
   end
 
+  def self.match_page_score(found_page, query_string)
+    # find match ignoring case
+    score = found_page.full_title.downcase.index query_string.downcase
+    # not found match in title, make score worst
+    score = 10000 if score == nil
+    # exact match -> best score (lowest)
+    score = -1 if found_page.full_title.downcase == query_string.downcase
+    score
+  end
+
   def self.search(query_string)
     found_pages = Page.full_text_search query_string
     # nothing found -> go out
@@ -82,12 +92,7 @@ class Page
     found_pages.each do |found_page|
       # do not show pages without content
       next if found_page.raw_content.nil?
-      # find match ignoring case
-      score = found_page.full_title.downcase.index query_string.downcase
-      # not found match in title, make score worst
-      score = 10000 if score == nil
-      # exact match -> best score (lowest)
-      score = -1 if found_page.full_title.downcase == query_string.downcase
+      score = Page.match_page_score found_page, query_string
       # prepare array wit results
       results << {
           :title => found_page.full_title,
