@@ -24,13 +24,11 @@ class PagesController < ApplicationController
     # if no page created/found
     if !@page
       respond_to do |format|
-        format.html {
+        format.html do
           flash[:error] = "Page wasn't not found. Redirected to main wiki page"
           go_to_homepage
-        }
-        format.json {
-          render :json => {success: false}, :status => 404
-        }
+        end
+        format.json { render :json => {success: false}, :status => 404 }
       end
     end
 
