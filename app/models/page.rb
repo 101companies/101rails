@@ -132,42 +132,46 @@ class Page
     }
   end
 
+  def rewrite_backlink(backlink, old_title)
+    # find page by backlink
+    related_page = Page.find_by_full_title backlink
+    if !related_page.nil?
+      # rewrite link in page, found by backlink
+      related_page.raw_content = related_page.rewrite_internal_links old_title, self.full_title
+      # and save changes
+      if !related_page.save
+        Rails.logger.info "Failed to rewrite links for page " + related_page.full_title
+      end
+    else
+      Rails.logger.info "Couldn't find page with link " + backlink
+    end
+  end
+
+  def rename(new_title)
+    # set new title to page
+    nt = Page.retrieve_namespace_and_title new_title
+    old_title = self.full_title
+    # save old backlinsk before renaming
+    old_backlinks = self.backlinks
+    # rename the page
+    self.namespace = nt['namespace']
+    self.title = nt['title']
+    # rewrite links in pages, that links to the page
+    old_backlinks.each do |backlink|
+      self.rewrite_backlink backlink, old_title
+    end
+  end
+
   def update_or_rename_page(new_title, content, sections)
     # if content is empty -> populate content with sections
     if content == ""
       sections.each { |s| content += s['content'] + "\n" }
     end
-    # save new content
     self.raw_content = content
     # unescape new title to nice readable url
     new_title = Page.unescape_wiki_url new_title
-    # if title was changes -> rename page
-    if new_title!=self.full_title
-      # set new title to page
-      nt = Page.retrieve_namespace_and_title new_title
-      old_title = self.full_title
-      # save old backlinsk before renaming
-      old_backlinks = self.backlinks
-      # rename the page
-      self.namespace = nt['namespace']
-      self.title = nt['title']
-      # rewrite links in pages, that links to the page
-      old_backlinks.each do |backlink|
-        # find page by backlink
-        related_page = Page.find_by_full_title backlink
-        if !related_page.nil?
-          # rewrite link in page, found by backlink
-          related_page.raw_content = related_page.rewrite_internal_links old_title, self.full_title
-          # and save changes
-          if !related_page.save
-            Rails.logger.info "Failed to rewrite links for page " + related_page.full_title
-          end
-        else
-          Rails.logger.info "Couldn't find page with link " + backlink
-        end
-      end
-    end
-    # save the changes to page
+    # if title was changed -> rename page
+    self.rename(new_title) if new_title!=self.full_title
     self.save
   end
 
