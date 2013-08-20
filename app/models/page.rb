@@ -195,6 +195,14 @@ class Page
     return page
   end
 
+  def self.create_page_by_full_title(full_title)
+    page = Page.new
+    namespace_and_title = Page.retrieve_namespace_and_title full_title
+    page.title = namespace_and_title['title']
+    page.namespace = namespace_and_title['namespace']
+    page.save ? page : nil
+  end
+
   # link for using in html rendering
   # replace ' ' with '_'
   # remove trailing spaces

@@ -60,7 +60,7 @@ class ContributionsController < ApplicationController
       redirect_to '/contribute' and return
     end
 
-    page = Page.find_or_create_page 'Contribution:'+Page.unescape_wiki_url(@contribution.title)
+    page = Page.create_page_by_full_title 'Contribution:'+Page.unescape_wiki_url(@contribution.title)
     page.users << current_user
     page.save!
     @contribution.approved = true

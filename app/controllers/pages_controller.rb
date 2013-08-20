@@ -19,13 +19,7 @@ class PagesController < ApplicationController
     @page = Page.find_by_full_title full_title
 
     # page not found and user can create page -> create new page by full_title
-    if @page.nil? && (can? :create, Page.new)
-      @page = Page.new
-      namespace_and_title = Page.retrieve_namespace_and_title full_title
-      @page.title = namespace_and_title['title']
-      @page.namespace = namespace_and_title['namespace']
-      @page.save
-    end
+    @page = Page.create_page_by_full_title full_title if @page.nil? && (can? :create, Page.new)
 
     # if no page created/found
     if !@page
