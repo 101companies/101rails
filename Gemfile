@@ -93,7 +93,6 @@ gem 'wikicloth', :git => 'git://github.com/avaranovich/wikicloth.git'
 
 #rdf support
 gem 'rdf', :git => 'git://github.com/ruby-rdf/rdf.git'
-gem 'rdf-sesame', :git => 'git://github.com/avaranovich/rdf-sesame.git'
 
 # source text highlighting
 gem 'pygments.rb', '0.5.2'
@@ -104,8 +103,6 @@ gem 'gritter', :git => 'git://github.com/burgua/gritter.git', :branch => 'vendor
 
 # deploy with Capistrano
 gem 'capistrano', '2.15.5'
-# TODO: remove?
-gem 'rvm-capistrano', '1.4.4'
 
 # for wiki-editor
 gem 'aced_rails', '0.2.1', :git => 'git://github.com/tschmorleiz/aced_rails.git'
