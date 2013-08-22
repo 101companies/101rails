@@ -41,7 +41,7 @@ class Wiki.Views.ExTriple extends Backbone.View
     $('#resources').show()
     place = $('#resources').find('.' + fullName.replace(/\./g, ''))
     info = {'full' : @model.get('node'), 'chapter': @decode(@model.get('node'), false, showMore)}
-    templateOps = {cat: 'primary', link: info, predicate: @decode(@model.get('predicate'))}
+    templateOps = {cat: 'primary', link: info, predicate: @decode(@model.get('predicate')), isBook: false}
     if place.length
       $(place).find('.resourcebar').append($(self.resourceBoxTemplate(templateOps)).tooltip("show"))
     else

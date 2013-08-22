@@ -1,4 +1,4 @@
-<span class="resourcebox"  data-toggle="collapse resource">
+<span class="resourcebox <%= isBook ? "" : "nonbookresource" %>"  data-toggle="collapse resource">
 	<%if (typeof predicate !== 'undefined') { %>
 	<div class="subject label">this</div>
 	<div class="predicate"><%= predicate %></div>
