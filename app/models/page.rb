@@ -180,7 +180,7 @@ class Page
     self.save
   end
 
-  def self.uncapitalize(string)
+  def self.uncapitalize_first_char(string)
     string[0,1].downcase + string[1..-1]
   end
 
@@ -188,7 +188,7 @@ class Page
   def rewrite_internal_links(from, to)
     regex = /(\[\[:?)([^:\]\[]+::)?(#{Regexp.escape(from.gsub("_", " "))})(\s*)(\|[^\[\]]*)?(\]\])/i
     self.raw_content.gsub("_", " ").gsub(regex) do
-      "#{$1}#{$2}#{$3[0].downcase == $3[0] ? Page.uncapitalize(to) : to}#{$4}#{$5}#{$6}"
+      "#{$1}#{$2}#{$3[0].downcase == $3[0] ? Page.uncapitalize_first_char(to) : to}#{$4}#{$5}#{$6}"
     end
   end
 
