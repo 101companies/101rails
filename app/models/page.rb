@@ -176,7 +176,7 @@ class Page
     # unescape new title to nice readable url
     new_title = Page.unescape_wiki_url new_title
     # if title was changed -> rename page
-    self.rename(new_title) if new_title!=self.full_title
+    self.rename(new_title) if (new_title!=self.full_title and Page.find_by_full_title(new_title).nil?)
     self.save
   end
 
