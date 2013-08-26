@@ -51,7 +51,7 @@ gem 'omniauth', '1.1.4'
 gem 'omniauth-github', '1.1.1'
 
 # github integration
-gem 'octokit', '1.25.0'
+gem 'octokit', '2.0.0'
 
 # font with bundled icons
 gem 'font-awesome-rails', '3.2.1.3'
@@ -68,7 +68,7 @@ group :development do
   gem 'ruby-prof', '0.13.0'
   # for work with rails panel
   gem 'meta_request', '0.2.8'
-  #gem 'debugger', '1.5.0'
+  # nice ui for errors
   gem 'better_errors', '0.9.0'
   # web server
   gem 'thin', '1.5.1'
@@ -91,7 +91,6 @@ gem 'mediawiki-gateway', '0.5.2'
 # work with wiki markdown
 gem 'wikicloth', :git => 'git://github.com/avaranovich/wikicloth.git'
 
-#rdf support
 gem 'rdf', :git => 'git://github.com/ruby-rdf/rdf.git'
 
 # source text highlighting
@@ -101,7 +100,7 @@ gem 'closure-compiler', '1.1.10'
 # growl-like notifications
 gem 'gritter', :git => 'git://github.com/burgua/gritter.git', :branch => 'vendor_dir'
 
-# deploy with Capistrano
+# deploy tool
 gem 'capistrano', '2.15.5'
 
 # for wiki-editor
