@@ -59,7 +59,6 @@ class PagesController < ApplicationController
     end
 
     unless directions
-
       (@page.internal_links-@page.semantic_links).each do |link|
         object = directions ? link : page_to_resource(link)
         if !object.nil?
@@ -67,18 +66,13 @@ class PagesController < ApplicationController
                                       :context => context)
         end
       end
+    end
 
-    else
-
-      # ingoing triples
-      semantic_properties.each do |prop_key, value|
-        prop_key = MediaWiki::send :upcase_first_char, prop_key
-        Page.where(:used_links => prop_key+'::'+@page.full_title).each do |page|
-          graph << RDF::Statement.new(RDF::Literal.new("IN"), RDF::URI.new(value),
-                                      page.full_title, :context => context)
-        end
+    semantic_properties.each do |prop_key, value|
+      prop_key = MediaWiki::send :upcase_first_char, prop_key
+      Page.where(:used_links => prop_key+'::'+@page.full_title).each do |page|
+        graph << RDF::Statement.new(RDF::Literal.new("IN"), value, page.full_title, :context => context)
       end
-
     end
 
     graph
@@ -107,21 +101,31 @@ class PagesController < ApplicationController
     title = params[:id]
     directions = params[:directions]
     json = []
-    rdf = self.get_rdf_graph(title, directions)
-    rdf.each do |resource|
-      p = "#{resource.predicate.scheme}://#{resource.predicate.host}#{resource.predicate.path}"
-      o = resource.object.kind_of?(RDF::Literal) ?
-          resource.object.object : "#{resource.object.scheme}://#{resource.object.host}#{resource.object.path}"
+    self.get_rdf_graph(title, directions).each do |resource|
       if directions
-        s = "#{resource.subject}"
-        json.push ({
-          :direction => s,
-          :predicate => p,
-          :node => o.sub('http://101companies.org/resources/', '')
-        })
+        json << {
+            :direction => resource.subject.to_s,
+            :predicate => resource.predicate.to_s,
+            :node => resource.object.to_s
+        }
       else
-        s = "#{resource.subject.scheme}://#{resource.subject.host}#{resource.subject.path}"
-        json.append [s,p,o]
+        # ingoing triples
+        if resource.subject.to_s == 'IN'
+          this = page_to_resource(resource.object.to_s)
+          related = page_to_resource(title)
+          json << [
+              "#{this.scheme}://#{this.host}#{this.path}",
+              resource.predicate.to_s,
+              "#{related.scheme}://#{related.host}#{related.path}",
+          ]
+        #outgoing triples
+        else
+          json << [
+              resource.subject.to_s,
+              resource.predicate.to_s,
+              resource.object.to_s
+          ]
+        end
       end
     end
     respond_with json
