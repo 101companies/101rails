@@ -85,11 +85,18 @@ class PagesController < ApplicationController
     RDF::URI.new("http://101companies.org/resources/#{page.namespace.downcase.pluralize}/#{page.title.gsub(' ', '_')}")
   end
 
+  def reverse_statement(st, title)
+    RDF::Statement.new( page_to_resource(st.object.to_s), st.predicate, page_to_resource(title), :context => st.context)
+  end
+
   def get_rdf
     title = params[:id]
     begin
-      graph = self.get_rdf_graph(title)
-      respond_with graph.dump(:ntriples)
+      graph_to_return = RDF::Graph.new
+      self.get_rdf_graph(title).each do |st|
+        graph_to_return << (st.subject.to_s === "IN" ? (reverse_statement st, title) : st)
+      end
+      respond_with graph_to_return.dump(:ntriples)
     rescue
       error_message="#{$!}"
       Rails.logger.error error_message
@@ -101,31 +108,13 @@ class PagesController < ApplicationController
     title = params[:id]
     directions = params[:directions]
     json = []
-    self.get_rdf_graph(title, directions).each do |resource|
+    self.get_rdf_graph(title, directions).each do |res|
       if directions
-        json << {
-            :direction => resource.subject.to_s,
-            :predicate => resource.predicate.to_s,
-            :node => resource.object.to_s
-        }
+        json << { :direction => res.subject.to_s, :predicate => res.predicate.to_s, :node => res.object.to_s }
       else
         # ingoing triples
-        if resource.subject.to_s == 'IN'
-          this = page_to_resource(resource.object.to_s)
-          related = page_to_resource(title)
-          json << [
-              "#{this.scheme}://#{this.host}#{this.path}",
-              resource.predicate.to_s,
-              "#{related.scheme}://#{related.host}#{related.path}",
-          ]
-        #outgoing triples
-        else
-          json << [
-              resource.subject.to_s,
-              resource.predicate.to_s,
-              resource.object.to_s
-          ]
-        end
+        res = reverse_statement res, title if res.subject.to_s == 'IN'
+        json << [ res.subject.to_s, res.predicate.to_s, res.object.to_s ]
       end
     end
     respond_with json
