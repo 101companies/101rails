@@ -42,7 +42,7 @@ class Contribution
     begin
       HTTParty.new.post 'http://worker.101companies.org/services/analyzeSubmission',
          :body => {
-           :url => self.url,
+           :url => self.url+'.git',
            :folder => self.folder,
            :name => self.title,
            :backping => backping_url

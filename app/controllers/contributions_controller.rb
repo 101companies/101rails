@@ -44,7 +44,7 @@ class ContributionsController < ApplicationController
 
     # TODO: check errors of input
     @contribution = Contribution.new
-    @contribution.url = 'https://github.com/' + params[:contrb_repo_url].first + '.git'
+    @contribution.url = 'https://github.com/' + params[:contrb_repo_url].first
     @contribution.title = params[:contrb_title]
 
     # set folder to '/' if no folder given
