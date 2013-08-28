@@ -34,6 +34,14 @@ class ContributionsController < ApplicationController
       return
     end
 
+    page_title_for_contribution = 'Contribution:' + Page.unescape_wiki_url(params[:contrb_title])
+    page = Page.find_by_full_title page_title_for_contribution
+    # page already exist
+    if page
+      flash[:error] = 'Sorry, but page with name of contribution is already taken'
+      redirect_to action: 'new' and return
+    end
+
     # TODO: check errors of input
     @contribution = Contribution.new
     @contribution.url = 'https://github.com/' + params[:contrb_repo_url].first + '.git'
@@ -51,25 +59,19 @@ class ContributionsController < ApplicationController
     @contribution.user = current_user
     @contribution.save
 
-    # create page for contribution
-    # TODO: check owning the page?
-    page = Page.find_by_full_title 'Contribution:'+Page.unescape_wiki_url(@contribution.title)
-    # page already exist
-    if page
-      flash[:notice] = 'Wikipage for this contribution already exist'
-      redirect_to '/contribute' and return
-    end
-
-    page = Page.create_page_by_full_title 'Contribution:'+Page.unescape_wiki_url(@contribution.title)
+    page = Page.create_page_by_full_title page_title_for_contribution
     page.users << current_user
     page.save!
     @contribution.approved = true
-    @contribution.analyzed = true
     @contribution.page = page
     @contribution.save
 
     # send request to matching service
-    #@contribution.analyse_request "http://101companies.org/contribute/analyze/#{@contribution.id}"
+    result = @contribution.analyse_request "http://101companies.org/contribute/analyze/#{@contribution.id}"
+    unless result
+      flash[:error] = "Request on analyze service wasn't successful. Please retry it later"
+      redirect_to action: 'new' and return
+    end
 
     # request was executed without errors
     if !request.nil?

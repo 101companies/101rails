@@ -49,7 +49,6 @@ class Contribution
          }.to_json,
          :headers => {'Content-Type' => 'application/json'}
     rescue
-      flash[:error] = "Request on analyze service wasn't successful. Please retry it later"
       success = false
     end
     success
