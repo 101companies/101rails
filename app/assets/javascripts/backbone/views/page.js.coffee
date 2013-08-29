@@ -163,6 +163,7 @@ class Wiki.Views.Page extends Backbone.View
       'italic': {start: "''", end: "''"}
       'headline': {start: "==", end: "=="}
       'link': {start: "[[", end: "]]"}
+      'code': {start: "<syntaxhighlight lang=\"???\">\n", end: "\n</syntaxhighlight>"}
     toInsert = $(options.currentTarget).attr('data-editoraction')
     help = helps[toInsert]
     toWrap = @editor.getSession().getTextRange(@editor.getSelectionRange())
