@@ -154,6 +154,7 @@ class PagesController < ApplicationController
 
   def parse
     parsed_page = @page.create_wiki_parser params[:content]
+    parsed_page.sections.first.auto_toc = false
     html = parsed_page.to_html
     # mark empty or non-existing page with class missing-link (red color)
     parsed_page.internal_links.each do |link|
