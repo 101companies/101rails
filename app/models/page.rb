@@ -206,6 +206,7 @@ class Page
 
   def self.create_page_by_full_title(full_title)
     page = Page.new
+    full_title = Page.unescape_wiki_url full_title
     namespace_and_title = Page.retrieve_namespace_and_title full_title
     page.title = namespace_and_title['title']
     page.namespace = namespace_and_title['namespace']
