@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/avaranovich/wikicloth.git
-  revision: 54b80fec8cb7de1d4b3d4414089ea6a0ffd8450d
+  revision: 4cebe98e232af85a288b4a1b8c133dcb54de4fbf
   specs:
     wikicloth (0.8.0)
       activesupport
@@ -104,8 +104,7 @@ GEM
     exception_notification (4.0.0)
       actionmailer (>= 3.0.4)
       activesupport (>= 3.0.4)
-    execjs (1.4.0)
-      multi_json (~> 1.0)
+    execjs (2.0.1)
     expression_parser (0.9.0)
     faraday (0.8.8)
       multipart-post (~> 1.2.0)
@@ -154,7 +153,7 @@ GEM
       rack-contrib
       railties
     method_source (0.8.2)
-    mime-types (1.23)
+    mime-types (1.24)
     mini_portile (0.5.1)
     mongoid (3.1.4)
       activemodel (~> 3.2)
@@ -279,7 +278,7 @@ GEM
       rack (>= 1.0.0)
     thor (0.18.1)
     tilt (1.4.1)
-    treetop (1.4.14)
+    treetop (1.4.15)
       polyglot
       polyglot (>= 0.3.1)
     tzinfo (0.3.37)
