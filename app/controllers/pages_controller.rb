@@ -9,18 +9,11 @@ class PagesController < ApplicationController
   load_and_authorize_resource :only => [:delete, :rename, :update]
 
   def get_the_page
-
-    # get page title
-    full_title = params[:id]
-
     # if no title -> set default wiki startpage '@project'
-    full_title = '@project' if full_title == nil
-
+    full_title = params[:id].nil? ? '@project' : params[:id]
     @page = Page.find_by_full_title full_title
-
     # page not found and user can create page -> create new page by full_title
     @page = Page.create_page_by_full_title full_title if @page.nil? && (can? :create, Page.new)
-
     # if no page created/found
     if !@page
       respond_to do |format|
@@ -91,17 +84,11 @@ class PagesController < ApplicationController
 
   def get_rdf
     title = params[:id]
-    begin
-      graph_to_return = RDF::Graph.new
-      self.get_rdf_graph(title).each do |st|
-        graph_to_return << (st.subject.to_s === "IN" ? (reverse_statement st, title) : st)
-      end
-      respond_with graph_to_return.dump(:ntriples)
-    rescue
-      error_message="#{$!}"
-      Rails.logger.error error_message
-      respond_with error_message
+    graph_to_return = RDF::Graph.new
+    self.get_rdf_graph(title).each do |st|
+      graph_to_return << (st.subject.to_s === "IN" ? (reverse_statement st, title) : st)
     end
+    respond_with graph_to_return.dump(:ntriples)
   end
 
   def get_json
@@ -123,9 +110,7 @@ class PagesController < ApplicationController
   def delete
     result = @page.delete
     # generate message if deleting was successful
-    if result
-      flash[:notice] = 'Page ' + @page.full_title + ' was deleted'
-    end
+    flash[:notice] = 'Page ' + @page.full_title + ' was deleted' if result
     render :json => {:success => result}
   end
 

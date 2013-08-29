@@ -26,7 +26,7 @@ gem 'bootstrap-sass', '2.3.2.1'
 group :assets do
   gem 'sass-rails',   '3.2.6'
   gem 'coffee-rails', '3.2.2'
-  gem 'uglifier', '2.1.2'
+  gem 'uglifier', '2.2.1'
   gem 'compass-rails', '1.0.3'
 end
 
@@ -44,7 +44,7 @@ gem 'mongoid', '3.1.4'
 gem 'mongoid_search', '0.3.2'
 
 # security
-gem 'bcrypt-ruby', '3.1.1'
+gem 'bcrypt-ruby', '3.1.2'
 
 # github auth
 gem 'omniauth', '1.1.4'

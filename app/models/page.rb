@@ -59,7 +59,7 @@ class Page
         self.save
         Rails.logger.info "Successfully retrieved content for page #{self.full_title}"
       rescue
-        Rails.logger.info "!!! Failed retrieve content for page #{self.full_title}"
+        Rails.logger.info "Failed retrieve content for page #{self.full_title}"
       end
     else
       Rails.logger.info "Content for page #{self.full_title} already exists"
@@ -102,7 +102,7 @@ class Page
       }
     end
     # sort by score and return
-    return results.sort_by { |a| a[:score] }
+    results.sort_by { |a| a[:score] }
   end
 
   # if no namespace given
@@ -123,18 +123,11 @@ class Page
       title = full_title_parts[0]
       # and namespace need to be defined in this way
       # if title starts with '@' -> '101'
-      if title[0] == "@"
-        namespace = "101"
-        # else namespace will be set to default value 'Concept'
-      else
-        namespace = "Concept"
-      end
+      # else namespace will be set to default value 'Concept'
+      namespace = title[0] == "@" ?  "101" : "Concept"
     end
-    # return hash with namespace and title
-    return {
-      'namespace' => namespace,
-      'title' => title
-    }
+    # TODO: fail case
+    { 'namespace' => namespace, 'title' => title }
   end
 
   def rewrite_backlink(backlink, old_title)
@@ -162,9 +155,7 @@ class Page
     self.namespace = nt['namespace']
     self.title = nt['title']
     # rewrite links in pages, that links to the page
-    old_backlinks.each do |backlink|
-      self.rewrite_backlink backlink, old_title
-    end
+    old_backlinks.each { |old_backlink| self.rewrite_backlink old_backlink, old_title }
   end
 
   def update_or_rename_page(new_title, content, sections)
@@ -196,12 +187,10 @@ class Page
   def self.find_by_full_title(full_title)
     full_title = (Page.unescape_wiki_url full_title).strip
     nt = Page.retrieve_namespace_and_title full_title
-    page = Page.where(:page_title_namespace => nt['namespace'] + ':' + nt['title']).first
-    # if page was found create wiki parser
-    if !page.nil?
-      page.create_wiki_parser
+    Page.where(:page_title_namespace => nt['namespace'] + ':' + nt['title']).first do |page|
+      # if page was found create wiki parser
+      page.create_wiki_parser if !page.nil?
     end
-    return page
   end
 
   def self.create_page_by_full_title(full_title)
@@ -216,11 +205,11 @@ class Page
   # link for using in html rendering
   # replace ' ' with '_', remove trailing spaces
   def self.nice_wiki_url title
-    return (Page.unescape_wiki_url title).strip.gsub(' ', '_')
+    Page.unescape_wiki_url(title).strip.gsub(' ', '_')
   end
 
   def nice_wiki_url
-    return Page.nice_wiki_url self.full_title
+    Page.nice_wiki_url self.full_title
   end
 
   def create_wiki_parser(content=nil)
@@ -229,11 +218,11 @@ class Page
   end
 
   def self.escape_wiki_url(full_title)
-    MediaWiki::send :upcase_first_char, (MediaWiki::wiki_to_uri full_title)
+    MediaWiki::send :upcase_first_char, MediaWiki::wiki_to_uri(full_title)
   end
 
   def self.unescape_wiki_url(full_title)
-    MediaWiki::send :upcase_first_char, (MediaWiki::uri_to_wiki full_title)
+    MediaWiki::send :upcase_first_char, MediaWiki::uri_to_wiki(full_title)
   end
 
   def semantic_links
@@ -245,11 +234,11 @@ class Page
   end
 
   def sections
-    sec = []
-    self.create_wiki_parser.sections.first.children.each do |s|
-      sec.push({'title' => s.title, 'content' => s.wikitext.sub(/\s+\Z/, "")})
+    sections = []
+    self.create_wiki_parser.sections.first.children.each do |section|
+      sections << { 'title' => section.title, 'content' => section.wikitext.sub(/\s+\Z/, "") }
     end
-    sec
+    sections
   end
 
   def backlinks
