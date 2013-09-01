@@ -125,12 +125,24 @@ class PagesController < ApplicationController
         # no redirect? -> render the page
         render :html => @page
       }
+
+      last_change = @page.page_changes.last
+      if last_change
+        history_entry = {
+            user_name: last_change.user.name,
+            user_pic: last_change.user.github_avatar,
+            user_email: last_change.user.email,
+            created_at: last_change.created_at
+        }
+      else
+        history_entry = {}
+      end
+
       format.json { render :json => {
         'id'        => @page.full_title,
         'content'   => @page.raw_content,
         'sections'  => @page.sections,
-        # TODO: fix for new history
-        'history'   => [], #@page.history.as_json(:include => {:user => { :except => [:role, :github_name]}}),
+        'history'   => history_entry,
         'backlinks' => @page.backlinks
       }}
 
@@ -184,9 +196,13 @@ class PagesController < ApplicationController
     sections = params[:sections]
     content = params[:content]
     new_full_title = Page.unescape_wiki_url params[:newTitle]
+
+    result = @page.update_or_rename_page(new_full_title, content, sections)
+    @page.create_track current_user if result
+
     # TODO: renaming -> check used page
     render :json => {
-      :success => @page.update_or_rename_page(new_full_title, content, sections),
+      :success => result,
       :newTitle => @page.nice_wiki_url
     }
   end

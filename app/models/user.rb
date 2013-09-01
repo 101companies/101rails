@@ -19,6 +19,7 @@ class User
 
   has_many :old_wiki_users
   has_many :contributions
+  has_many :page_changes
   has_and_belongs_to_many :pages
 
   validates_uniqueness_of :email

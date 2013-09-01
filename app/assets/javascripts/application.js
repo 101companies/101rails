@@ -30,3 +30,4 @@
 //= require ace/mode-wiki
 //= require gritter
 //= require bootstrap-tour
+//= require moment.min

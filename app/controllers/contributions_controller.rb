@@ -61,7 +61,8 @@ class ContributionsController < ApplicationController
 
     page = Page.create_page_by_full_title page_title_for_contribution
     page.users << current_user
-    page.save!
+    page.create_track current_user if page.save
+
     @contribution.approved = true
     @contribution.page = page
     @contribution.save

@@ -20,6 +20,7 @@ class Page
 
   # relations here
   has_and_belongs_to_many :users
+  has_many :page_changes
   belongs_to :contribution
 
   validates_uniqueness_of :page_title_namespace
@@ -45,6 +46,14 @@ class Page
     if wiki_parser.internal_links
       self.used_links = wiki_parser.internal_links.map { |link| Page.unescape_wiki_url link }
     end
+  end
+
+  def create_track(user)
+    PageChange.create :page => self,
+                      :raw_content => self.raw_content,
+                      :title => self.title,
+                      :namespace => self.namespace,
+                      :user => user
   end
 
   def get_content_from_mediawiki
