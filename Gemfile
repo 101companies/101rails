@@ -71,7 +71,7 @@ group :development do
   # nice ui for errors
   gem 'better_errors', '0.9.0'
   # web server
-  gem 'thin', '1.5.1'
+  gem 'puma', '2.5.1'
   # gem for creating db/controller diagrams
   gem 'railroady', '1.1.1'
   # colored output in irb and console
