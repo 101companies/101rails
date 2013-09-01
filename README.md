@@ -11,6 +11,7 @@ This application requires:
 *   Ruby
 *   Rails
 *   MongoDB
+*   Node.js
 
 ##Development
 
@@ -21,15 +22,15 @@ This application requires:
 
 ##Email
 
-The application is configured to send emails using a Gmail account.
+The application is configured to send emails through a Gmail account.
 
 ##Getting Started
 
 ###Preparation for Ubuntu only
 
-Before installing all, you need to install some dependecies:
+Before starting work with the application, you need to install dependecies:
 
-    sudo apt-get install curl nodejs build-essenstial libxslt-dev libxml2-dev mongodb
+    apt-get install curl nodejs build-essenstial libxslt-dev libxml2-dev mongodb
 
 If you are using Ubuntu, you can install ruby via [rvm](http://rvm.io)
 
@@ -46,17 +47,15 @@ And install dependencies for project:
 
 ###Common part of installation
 
-First of all you need to install gem bundler.
+At first you need to install gem bundler.
 
-    sudo gem install bundler
+    gem install bundler
 
-Now you need go to project folder.
-
-If you want to have all gems ready per project only:
+Now you need go to the project folder und install app:
 
     bundle install --path vendor/bundle
 
-After installing mongodb start this database and then launch application with:
+After installing mongodb you need to start it and then launch application with:
 
     bundle exec rails server
 
@@ -76,9 +75,9 @@ If you have been successfully signed in, you can set another role to your user:
 
     bundle exec rake change_role
 
-You will be asked about your email and new role.
+You will be asked for your email and new role.
 
-Just type email from your github account and role ‘admin’
+Just type email from your github account and role ‘admin’ (or 'editor', 'guest')
 
 ##Contributing
 
@@ -87,6 +86,6 @@ If you make improvements to this application, please share with others.
 *   Fork the project on GitHub.
 *   Make your feature addition or bug fix.
 *   Commit with Git.
-*   Send the author a pull request.
+*   Send a pull request.
 
 If you add functionality to this application, create an alternative implementation, or build an application that is similar, please contact me and I’ll add a note to the README so that others can find your work.

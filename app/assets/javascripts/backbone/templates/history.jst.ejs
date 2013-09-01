@@ -2,7 +2,7 @@
   <% if (model.user_name && model.user_email) { %>
     <img class="small_avatar" height="24" src="<%= model.user_pic %>" width="24">
     <a href="mailto:<%= model.user_email %>"><%= model.user_name %></a>
-    last edited this article at
+    edited this article at
     <%= moment(model.created_at).format('dddd, DD MMMM YYYY, HH:mm') %>
     <hr/>
   <% } %>
