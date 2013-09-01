@@ -1,4 +1,5 @@
 module PageModule
+  require 'media_wiki'
 
   def self.match_page_score(found_page, query_string)
     # find match ignoring case
@@ -8,6 +9,32 @@ module PageModule
     # exact match -> best score (lowest)
     score = -1 if found_page.full_title.downcase == query_string.downcase
     score
+  end
+
+  def self.backup
+    Rails.logger.info 'Started exporting pages to backup'
+    Page.all.each do |p|
+      File.open("#{Rails.root}/wiki_content/#{CGI::escape(p.full_title)}", 'w+') { |file| file.write(p.raw_content) }
+    end
+    Rails.logger.info 'Ended exporting pages to backup'
+  end
+
+  def self.apply_backup
+    Rails.logger.info 'Started exporting pages from backup'
+    folder = "#{Rails.root}/wiki_content/"
+    Dir.foreach(folder) do |fname|
+      next if fname[0] == '.'
+      full_title = CGI::unescape fname
+      page = PageModule.find_by_full_title full_title
+      page = PageModule.create_page_by_full_title full_title if page.nil?
+      if page.nil?
+        Rails.logger.error "Couldn't create page #{full_title}"
+        next
+      end
+      page.raw_content = File.read(folder+fname)
+      page.save!
+    end
+    Rails.logger.info 'Ended exporting pages from backup'
   end
 
   # if no namespace given
