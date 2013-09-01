@@ -317,7 +317,7 @@ DEPENDENCIES
   octokit (= 2.0.0)
   omniauth (= 1.1.4)
   omniauth-github (= 1.1.1)
-  puma
+  puma (= 2.5.1)
   pygments.rb (= 0.5.2)
   quiet_assets (= 1.0.2)
   railroady (= 1.1.1)
