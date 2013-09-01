@@ -38,7 +38,7 @@ If you are using Ubuntu, you can install ruby via [rvm](http://rvm.io)
 
 ###Preparation for OSX only
 
-Install ruby (version 1.9.3) using [rvm](http://rvm.io) or [rbenv](https://github.com/sstephenson/rbenv/)
+Install ruby using [rvm](http://rvm.io) or [rbenv](https://github.com/sstephenson/rbenv/)
 
 And install dependencies for project:
 
