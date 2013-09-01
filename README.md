@@ -33,8 +33,8 @@ Before installing all, you need to install some dependecies:
 
 If you are using Ubuntu, you can install ruby via [rvm](http://rvm.io)
 
-    rvm install 1.9.3-p429
-    rvm use 1.9.3-p429 --default
+    rvm install 2.0.0-p247
+    rvm use 2.0.0-p247 --default
 
 ###Preparation for OSX only
 
