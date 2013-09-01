@@ -11,9 +11,9 @@ class PagesController < ApplicationController
   def get_the_page
     # if no title -> set default wiki startpage '@project'
     full_title = params[:id].nil? ? '@project' : params[:id]
-    @page = Page.find_by_full_title full_title
+    @page = PageModule.find_by_full_title full_title
     # page not found and user can create page -> create new page by full_title
-    @page = Page.create_page_by_full_title full_title if @page.nil? && (can? :create, Page.new)
+    @page = PageModule.create_page_by_full_title full_title if @page.nil? && (can? :create, Page.new)
     # if no page created/found
     if !@page
       respond_to do |format|
@@ -35,7 +35,7 @@ class PagesController < ApplicationController
   end
 
   def get_rdf_graph(title, directions=false)
-    @page = Page.find_by_full_title Page.unescape_wiki_url title
+    @page = PageModule.find_by_full_title PageModule.unescape_wiki_url title
     uri = self.page_to_resource title
     context   = RDF::URI.new("http://101companies.org")
     graph = RDF::Graph.new
@@ -44,7 +44,7 @@ class PagesController < ApplicationController
       subject = directions ? RDF::Literal.new("OUT") : uri
       link_prefix = link.split('::')[1]
       object = directions ? link_prefix : page_to_resource(link_prefix)
-      semantic_property = Page.uncapitalize_first_char link.split('::')[0]
+      semantic_property = PageModule.uncapitalize_first_char link.split('::')[0]
       if !object.nil?
         graph <<  RDF::Statement.new(subject, RDF::URI.new(self.semantic_properties[semantic_property]),
                                      object, :context => context)
@@ -73,7 +73,7 @@ class PagesController < ApplicationController
 
   def page_to_resource(title)
     return title if title.starts_with?('Http')
-    page = Page.find_by_full_title title
+    page = PageModule.find_by_full_title title
     return nil if page.nil?
     RDF::URI.new("http://101companies.org/resources/#{page.namespace.downcase.pluralize}/#{page.title.gsub(' ', '_')}")
   end
@@ -155,8 +155,8 @@ class PagesController < ApplicationController
     html = parsed_page.to_html
     # mark empty or non-existing page with class missing-link (red color)
     parsed_page.internal_links.each do |link|
-      nice_link = Page.nice_wiki_url link
-      used_page = Page.find_by_full_title nice_link
+      nice_link = PageModule.nice_wiki_url link
+      used_page = PageModule.find_by_full_title nice_link
       # if not found page or it has no content
       # set in class_attribute additional class for link (mark with red)
       class_attribute = (used_page.nil? || used_page.raw_content.nil?) ? 'class="missing-link"' : ''
@@ -173,7 +173,7 @@ class PagesController < ApplicationController
       flash[:notice] = 'Please write something, if you want to search something'
       go_to_homepage
     else
-      @search_results = Page.search @query_string
+      @search_results = PageModule.search @query_string
       respond_with @search_results
     end
   end
@@ -195,7 +195,7 @@ class PagesController < ApplicationController
   def update
     sections = params[:sections]
     content = params[:content]
-    new_full_title = Page.unescape_wiki_url params[:newTitle]
+    new_full_title = PageModule.unescape_wiki_url params[:newTitle]
 
     result = @page.update_or_rename_page(new_full_title, content, sections)
     @page.create_track current_user if result
