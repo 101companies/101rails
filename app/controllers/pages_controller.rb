@@ -1,5 +1,7 @@
 class PagesController < ApplicationController
 
+  include RdfModule
+
   respond_to :json, :html
 
   # order of next two lines is very important!
@@ -27,65 +29,10 @@ class PagesController < ApplicationController
 
   end
 
-  def semantic_properties
-    semantic_hash = Hash.new
-    %w(dependsOn instanceOf identifies cites linksTo uses implements isA developedBy reviewedBy relatesTo
-       implies mentions).map {|prop| semantic_hash["#{prop}"] = "http://101companies.org/property/#{prop}"}
-    semantic_hash
-  end
-
-  def get_rdf_graph(title, directions=false)
-    @page = PageModule.find_by_full_title PageModule.unescape_wiki_url title
-    uri = self.page_to_resource title
-    context   = RDF::URI.new("http://101companies.org")
-    graph = RDF::Graph.new
-
-    @page.semantic_links.each do |link|
-      subject = directions ? RDF::Literal.new("OUT") : uri
-      link_prefix = link.split('::')[1]
-      object = directions ? link_prefix : page_to_resource(link_prefix)
-      semantic_property = PageModule.uncapitalize_first_char link.split('::')[0]
-      if !object.nil?
-        graph <<  RDF::Statement.new(subject, RDF::URI.new(self.semantic_properties[semantic_property]),
-                                     object, :context => context)
-      end
-    end
-
-    unless directions
-      (@page.internal_links-@page.semantic_links).each do |link|
-        object = directions ? link : page_to_resource(link)
-        if !object.nil?
-          graph << RDF::Statement.new(uri, RDF::URI.new(self.semantic_properties['mentions']), object,
-                                      :context => context)
-        end
-      end
-    end
-
-    semantic_properties.each do |prop_key, value|
-      prop_key = MediaWiki::send :upcase_first_char, prop_key
-      Page.where(:used_links => prop_key+'::'+@page.full_title).each do |page|
-        graph << RDF::Statement.new(RDF::Literal.new("IN"), value, page.full_title, :context => context)
-      end
-    end
-
-    graph
-  end
-
-  def page_to_resource(title)
-    return title if title.starts_with?('Http')
-    page = PageModule.find_by_full_title title
-    return nil if page.nil?
-    RDF::URI.new("http://101companies.org/resources/#{page.namespace.downcase.pluralize}/#{page.title.gsub(' ', '_')}")
-  end
-
-  def reverse_statement(st, title)
-    RDF::Statement.new( page_to_resource(st.object.to_s), st.predicate, page_to_resource(title), :context => st.context)
-  end
-
   def get_rdf
     title = params[:id]
     graph_to_return = RDF::Graph.new
-    self.get_rdf_graph(title).each do |st|
+    get_rdf_graph(title).each do |st|
       graph_to_return << (st.subject.to_s === "IN" ? (reverse_statement st, title) : st)
     end
     respond_with graph_to_return.dump(:ntriples)
@@ -95,7 +42,7 @@ class PagesController < ApplicationController
     title = params[:id]
     directions = params[:directions]
     json = []
-    self.get_rdf_graph(title, directions).each do |res|
+    get_rdf_graph(title, directions).each do |res|
       if directions
         json << { :direction => res.subject.to_s, :predicate => res.predicate.to_s, :node => res.object.to_s }
       else
