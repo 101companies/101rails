@@ -70,7 +70,7 @@ module PageModule
     found_pages.each do |found_page|
       # do not show pages without content
       next if found_page.raw_content.nil?
-      score = Page.match_page_score found_page, query_string
+      score = PageModule.match_page_score found_page, query_string
       # prepare array wit results
       results << {
           :title => found_page.full_title,
