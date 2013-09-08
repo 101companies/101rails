@@ -1,6 +1,8 @@
 <li class="tour-item" id="<%= title.replace(/\s/g, '_') %>">
     <a href="/tours/<%= title %>"><%= title %> by <%= author %> (<%= numOfPages %>)</a>
     <button class="btn btn-mini tourStart" type="button" title="Start tour"><i class="icon-play"> Start</i></button>
-    <button class="btn btn-mini tourDelete" type="button" title="Delete tour"><i class="icon-remove"></i></button>
+    <%if (isAdmin()) {%>
+    	<button class="btn btn-mini tourDelete" type="button" title="Delete tour"><i class="icon-remove"></i></button>
+    <%}%>
 	<hr>
 </li>

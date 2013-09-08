@@ -134,8 +134,16 @@ class Tours.Views.GuidedTour extends Backbone.View
       '      <button class="btn-mini tourShowEdit" type="button"><i class="icon-pencil"></i></button><button class="btn-mini tourRemoveSection" type="button"><i class="icon-remove"></i></button>\n'+
       '      <i class="icon-move tourMove"></i>\n'+
       '     </span>\n'+
+      '     <p class="sectionDescriptionText">\n'+
+      '      Description...\n'+
+      '     </p>\n'+
       '    </div>\n'+
-      '    <div class="viewEdit"><input class="sectionTitle" value="Section"></div>\n'+
+      '    <div class="viewEdit">\n'+
+      '     <input class="sectionTitle" value="Section">\n'+
+      '     <p>\n'+
+      '      <textarea class="sectionDescription" cols="50" rows="3">Description</textarea>\n'+
+      '     </p>\n'+
+      '    </div>\n'+
       '  </div>\n'+
       '  </li>\n'+
       ' </ul>\n'+
@@ -147,18 +155,26 @@ class Tours.Views.GuidedTour extends Backbone.View
     sectionsList = $(triggerElement).find('.sections')
     #console.log(sectionsList)
     $(sectionsList).append(
-      '<li class="section">\n'+
-      ' <div class="sectionItem">'+
-      '  <div class="viewDefault">\n'+
-      '   <a class="sectionLink" href="/wiki/newPage#Section">#Section</a>\n'+
-      '   <span class="editButtons">\n' +
-      '    <button class="btn-mini tourShowEdit" type="button"><i class="icon-pencil"></i></button><button class="btn-mini tourRemoveSection" type="button"><i class="icon-remove"></i></button>\n'+
-      '    <i class="icon-move tourMove"></i>\n'+
-      '   </span>\n'+
+      '  <li class="section">\n'+
+      '   <div class="sectionItem">\n'+
+      '    <div class="viewDefault">\n'+
+      '     <a class="sectionLink" href="/wiki/newPage#Section">#Section</a>\n'+
+      '     <span class="editButtons">\n' +
+      '      <button class="btn-mini tourShowEdit" type="button"><i class="icon-pencil"></i></button><button class="btn-mini tourRemoveSection" type="button"><i class="icon-remove"></i></button>\n'+
+      '      <i class="icon-move tourMove"></i>\n'+
+      '     </span>\n'+
+      '     <p class="sectionDescriptionText">\n'+
+      '      Description...\n'+
+      '     </p>\n'+
+      '    </div>\n'+
+      '    <div class="viewEdit">\n'+
+      '     <input class="sectionTitle" value="Section">\n'+
+      '     <p>\n'+
+      '      <textarea class="sectionDescription" cols="50" rows="3">Description</textarea>\n'+
+      '     </p>\n'+
+      '    </div>\n'+
       '  </div>\n'+
-      ' </div>\n'+
-      ' <div class="viewEdit"><input class="sectionTitle" value="Section"></div>\n'+
-      '</li>\n'
+      '  </li>\n'
     )
 
   removePage: (triggerEvent) ->
@@ -202,7 +218,15 @@ class Tours.Views.GuidedTour extends Backbone.View
         sectionLink = $(sectionItem).find(".sectionLink")[0]
         $(sectionLink).attr('href', '/wiki/'+pageTitle+'#'+sectionTitle);
         $(sectionLink).text('#'+sectionTitle);
-        sections[j++] = sectionTitle
+        
+        sectionDescription = $(sectionItem).find(".sectionDescription")[0].val()
+        sectionDescriptionText = $(sectionItem).find(".sectionDescriptionText")[0].val();
+        $(sectionDescriptionText).text(sectionDescription);
+        
+        sections[j++] = new Tours.Models.TourSection(
+          title: sectionTitle
+          desription: sectionDescription 
+        )
 
       pages[i++] = new Tours.Models.TourPage(
         title: pageTitle

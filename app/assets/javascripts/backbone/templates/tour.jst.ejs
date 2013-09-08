@@ -43,7 +43,7 @@
    <%}%>
   </h2>
   <div id="pages-container">
-  <ul id="pages" class="sortable">
+   <ul id="pages" class="sortable">
     <% _.each(pages, function(p) {%>
      <li class="page">
       <hr>
@@ -70,16 +70,22 @@
          <li class="section">
           <div class="sectionItem">
            <div class="viewDefault">
-            <a class="sectionLink" href="/wiki/<%= p.title.replace(/_/g, ' ') %>#<%= s.replace(/_/g, ' ') %>">#<%= s %></a>
+            <a class="sectionLink" href="/wiki/<%= p.title.replace(/_/g, ' ') %>#<%= s.title.replace(/_/g, ' ') %>">#<%= s.title %></a>
             <%if (isAdmin()) {%>
              <span class="editButtons">
               <button class="btn-mini tourShowEdit" type="button"><i class="icon-pencil"></i></button><button class="btn-mini tourRemoveSection" type="button"><i class="icon-remove"></i></button>
               <i class="icon-move tourMove"></i>
              </span>
             <%}%>
+            <p class="sectionDescriptionText">
+             <%= s.description %>">
+            </p>
            </div>
            <%if (isAdmin()) {%>
-            <div class="viewEdit"><input class="sectionTitle" value="<%= s %>"></div>
+            <div class="viewEdit"><input class="sectionTitle" value="<%= s.title %>"></div>
+            <p>
+             <textarea class="sectionDescription" cols="50" rows="3"><%= s.description %></textarea>
+            </p>
            <%}%>
           </div>
          </li>
@@ -89,5 +95,5 @@
      </li>
     <% }); %>
   </ul>
-</div>
+ </div>
 </div>

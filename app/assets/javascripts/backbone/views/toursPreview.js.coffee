@@ -22,8 +22,8 @@ class Tours.Views.ToursPreview extends Backbone.View
           $(self.el).remove()
       )
 
-
-
+  isAdmin: ->
+    _.contains(Wiki.currentUser.get('actions'), "Edit")
 
   startTour: (a) ->
     console.log("not yet implemented")
