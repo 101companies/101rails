@@ -50,6 +50,7 @@ module PageModule
       namespace = full_title_parts[0]
       title = full_title_parts[1]
       # no namespace retrieved, amount_of_full_title_parts == 1
+      # TODO: case crazy
     else
       # then entire param is title
       title = full_title_parts[0]

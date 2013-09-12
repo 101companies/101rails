@@ -144,8 +144,9 @@ class PagesController < ApplicationController
     content = params[:content]
     new_full_title = PageModule.unescape_wiki_url params[:newTitle]
 
+    history_track = @page.create_track current_user
     result = @page.update_or_rename_page(new_full_title, content, sections)
-    @page.create_track current_user if result
+    history_track.save if result
 
     # TODO: renaming -> check used page
     render :json => {
