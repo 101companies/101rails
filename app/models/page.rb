@@ -17,6 +17,7 @@ class Page
   field :namespace, type: String
   field :page_title_namespace, type: String
   field :raw_content, type: String
+  field :html_content, type: String
   field :used_links, type: Array
 
   # relations here
@@ -40,6 +41,8 @@ class Page
     begin
       # this produces internal_links
       wiki_parser.to_html
+      # TODO: combine with line above later
+      self.html_content = self.parse
     rescue
       Rails.logger.info "Failed producing html for page #{self.full_title}"
     end
@@ -49,12 +52,43 @@ class Page
     end
   end
 
+  def decorate_headline(headline_text)
+    # if string is too long -> cut to 250 chars and add '...' at the end
+    popup_msg_length = 250
+    (headline_text.length < popup_msg_length)  ? headline_text : "#{headline_text[0..popup_msg_length-1]} ..."
+  end
+
+  def get_headline
+    # assume that first <p> in html content will be shown as popup
+    headline_elem = Nokogiri::HTML(self.html_content).css('p').first
+    # TODO: too long text?
+    headline_elem.nil? ? "No headline found for page #{self.full_title}" : (decorate_headline(headline_elem.text)).strip
+  end
+
   def create_track(user)
-    PageChange.create :page => self,
-                      :raw_content => self.raw_content,
-                      :title => self.title,
-                      :namespace => self.namespace,
-                      :user => user
+    PageChange.new :page => self,
+                   :raw_content => self.raw_content,
+                   :title => self.title,
+                   :namespace => self.namespace,
+                   :user => user
+  end
+
+  def parse(content = self.raw_content)
+    parsed_page = self.create_wiki_parser content
+    parsed_page.sections.first.auto_toc = false
+    html = parsed_page.to_html
+    # mark empty or non-existing page with class missing-link (red color)
+    parsed_page.internal_links.each do |link|
+      nice_link = PageModule.nice_wiki_url link
+      used_page = PageModule.find_by_full_title nice_link
+      # if not found page or it has no content
+      # set in class_attribute additional class for link (mark with red)
+      class_attribute = (used_page.nil? || used_page.raw_content.nil?) ? 'class="missing-link"' : ''
+      # replace page links in html
+      html.gsub! "<a href=\"#{link}\"", "<a #{class_attribute}"+
+          "data-original-title=\"#{used_page.get_headline if used_page}\" href=\"/wiki/#{nice_link}\""
+    end
+    return html.html_safe
   end
 
   def get_content_from_mediawiki

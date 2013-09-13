@@ -97,7 +97,8 @@ class PagesController < ApplicationController
   end
 
   def parse
-    render :json => {:success => true, :html => html.html_safe}
+    html = @page.parse params[:content]
+    render :json => {:success => true, :html => html}
   end
 
   def search
