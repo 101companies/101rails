@@ -18,7 +18,9 @@ end
 gem 'rails', '3.2.13'
 
 # send email on error
-gem 'exception_notification', '4.0.0'
+gem 'exception_notification', '4.0.1'
+
+gem 'request-log-analyzer', '1.12.9'
 
 # twitter bootstrap as sass
 gem 'bootstrap-sass', '2.3.2.1'
@@ -51,7 +53,7 @@ gem 'omniauth', '1.1.4'
 gem 'omniauth-github', '1.1.1'
 
 # github integration
-gem 'octokit', '2.0.0'
+gem 'octokit', '2.1.1'
 
 # font with bundled icons
 gem 'font-awesome-rails', '3.2.1.3'
@@ -69,9 +71,9 @@ group :development do
   # for work with rails panel
   gem 'meta_request', '0.2.8'
   # nice ui for errors
-  gem 'better_errors', '0.9.0'
+  gem 'better_errors', '1.0.1'
   # web server
-  gem 'puma', '2.5.1'
+  gem 'puma', '2.6.0'
   # gem for creating db/controller diagrams
   gem 'railroady', '1.1.1'
   # colored output in irb and console
