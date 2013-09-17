@@ -3,7 +3,7 @@ Wiki::Application.config.middleware.use ExceptionNotification::Rack,
       :email_format => :html,
       :email_prefix => "[101wiki | 500 error] ",
       :sender_address => %{"101companies" <101companies@gmail.com>},
-      :exception_recipients => %w{aleksey.lashin@gmail.com}
+      :exception_recipients => %w{aleksey.lashin@gmail.com rlaemmel@gmail.com dotnetby@gmail.com tschmorleiz@googlemail.com}
   }
 
 Wiki::Application.configure do
