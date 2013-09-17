@@ -62,38 +62,43 @@ class PagesController < ApplicationController
   end
 
   def show
-    respond_to do |format|
-      format.html {
-        # if need redirect? -> wiki url conventions -> do a redirect
-        good_link = @page.nice_wiki_url
-        if good_link != params[:id]
-          redirect_to '/wiki/'+ good_link and return
-        end
-        # no redirect? -> render the page
-        render :html => @page
-      }
+    if params.has_key?(:_escaped_fragment_)
+      render :html => @page.html_content
+    else
 
-      last_change = @page.page_changes.last
-      if last_change
-        history_entry = {
-            user_name: last_change.user.name,
-            user_pic: last_change.user.github_avatar,
-            user_email: last_change.user.email,
-            created_at: last_change.created_at
+      respond_to do |format|
+        format.html {
+          # if need redirect? -> wiki url conventions -> do a redirect
+          good_link = @page.nice_wiki_url
+          if good_link != params[:id]
+            redirect_to '/wiki/'+ good_link and return
+          end
+          # no redirect? -> render the page
+          render :html => @page
         }
-      else
-        history_entry = {}
+
+        last_change = @page.page_changes.last
+        if last_change
+          history_entry = {
+              user_name: last_change.user.name,
+              user_pic: last_change.user.github_avatar,
+              user_email: last_change.user.email,
+              created_at: last_change.created_at
+          }
+        else
+          history_entry = {}
+        end
+
+        format.json { render :json => {
+          'id'        => @page.full_title,
+          'content'   => @page.raw_content,
+          'sections'  => @page.sections,
+          'history'   => history_entry,
+          'backlinks' => @page.backlinks
+        }}
+
       end
-
-      format.json { render :json => {
-        'id'        => @page.full_title,
-        'content'   => @page.raw_content,
-        'sections'  => @page.sections,
-        'history'   => history_entry,
-        'backlinks' => @page.backlinks
-      }}
-
-    end
+    end   
   end
 
   def parse
