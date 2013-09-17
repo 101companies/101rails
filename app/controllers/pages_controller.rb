@@ -63,7 +63,10 @@ class PagesController < ApplicationController
 
   def show
     if params.has_key?(:_escaped_fragment_)
-      render :html => @page.html_content
+      respond_to do |format|
+        format.html {
+          render :html => @page.html_content
+        }
     else
 
       respond_to do |format|
