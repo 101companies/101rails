@@ -67,6 +67,7 @@ class PagesController < ApplicationController
         format.html {
           render :html => @page.html_content
         }
+      end  
     else
 
       respond_to do |format|
