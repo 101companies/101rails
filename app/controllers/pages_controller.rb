@@ -62,24 +62,37 @@ class PagesController < ApplicationController
     render :json => {:success => result}
   end
 
+  def snapshot
+    @doc = SnapshotModule.get_snapshot(@page)
+    @page.snapshot = @doc
+    @page.save
+    @doc = @page.snapshot
+    logger.info("snapshot: #{@s}")
+    respond_to do |format|
+      format.html {
+        render :html => @doc, :layout => "snapshot"
+      }
+    end  
+  end
+
   def show
     if params.has_key?(:_escaped_fragment_)
        begin
         if @page.snapshot == nil
-          @doc = SnapshotModule.get_snapshot(@page)
-          @page.snapshot = @doc
-          @page.save
+          self.snapshot
+          return
         end  
-        @doc = @page.snapshot
-        logger.info("snapshot: #{@s}")
-        respond_to do |format|
-          format.html {
-            render :html => @doc, :layout => "snapshot"
-          }
-        end 
+          @doc = @page.snapshot
+          logger.info("snapshot: #{@s}")
+          respond_to do |format|
+            format.html {
+              render :html => @doc, :layout => "snapshot"
+            }
+          end 
       rescue
         @error_message="#{$!}" 
         logger.error(@error_message) 
+        redirect_to :status => 404
       end
     else
 

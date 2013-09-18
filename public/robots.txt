@@ -6,3 +6,4 @@ User-Agent: *
 Disallow: /resource
 Disallow: /endpoint
 Disallow: /index.php
+Disallow: /api
