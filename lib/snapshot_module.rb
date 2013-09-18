@@ -6,7 +6,7 @@ module SnapshotModule
 
   def self.get_snapshot(page)
     @b = Watir::Browser.new :phantomjs
-    @b.driver.manage.timeouts.implicit_wait = 10 #10 seconds
+    @b.driver.manage.timeouts.implicit_wait = 30 #30 seconds
     @site = "http://101companies.org/"
     begin
       @b.goto "#{@site}wiki/#{page.nice_wiki_url}"
