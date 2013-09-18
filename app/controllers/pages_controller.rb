@@ -65,14 +65,16 @@ class PagesController < ApplicationController
   def show
     if params.has_key?(:_escaped_fragment_)
        begin
-        @doc = SnapshotModule.get_snapshot(@page)
-        if @page.snapshot != ''
+        if @page.snapshot == nil
+          @doc = SnapshotModule.get_snapshot(@page)
           @page.snapshot = @doc
           @page.save
         end  
+        @doc = @page.snapshot
+        logger.info("snapshot: #{@s}")
         respond_to do |format|
           format.html {
-            render :html => @page.snapshot, :layout => "snapshot"
+            render :html => @doc, :layout => "snapshot"
           }
         end 
       rescue
