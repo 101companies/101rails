@@ -19,6 +19,7 @@ class Page
   field :raw_content, type: String
   field :html_content, type: String
   field :used_links, type: Array
+  field :snapshot, type: String
 
   # relations here
   has_and_belongs_to_many :users
@@ -29,7 +30,7 @@ class Page
   validates_presence_of :title
   validates_presence_of :namespace
 
-  attr_accessible :user_ids, :namespace, :title, :contribution_id
+  attr_accessible :user_ids, :namespace, :title, :contribution_id, :snapshot
 
   # validate uniqueness for paar title + namespace
   before_validation do
