@@ -1,6 +1,7 @@
 class PagesController < ApplicationController
 
   include RdfModule
+  include SnapshotModule
 
   respond_to :json, :html
 
@@ -63,11 +64,18 @@ class PagesController < ApplicationController
 
   def show
     if params.has_key?(:_escaped_fragment_)
-      respond_to do |format|
-        format.html {
-          render :html => @page.html_content
-        }
-      end  
+       begin
+        @doc = SnapshotModule.get_snapshot(@page)
+        logger.info(@doc)
+        respond_to do |format|
+          format.html {
+            render :html => @doc, :layout => "snapshot"
+          }
+        end 
+      rescue
+        @error_message="#{$!}" 
+        logger.error(@error_message) 
+      end
     else
 
       respond_to do |format|
