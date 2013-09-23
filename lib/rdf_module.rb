@@ -23,10 +23,6 @@ module RdfModule
   end
 
   def semantic_properties(name)
-    #semantic_hash = Hash.new
-    #%w(dependsOn instanceOf identifies cites linksTo uses implements isA developedBy reviewedBy relatesTo
-    #   implies mentions).map {|prop| semantic_hash["#{prop}"] = "http://101companies.org/property/#{prop}"}
-    #semantic_hash
     # See https://github.com/101companies/101rails/issues/46
     "http://101companies.org/property/#{name}"
   end
@@ -57,11 +53,26 @@ module RdfModule
   end
 
   def add_ingoing_triples(graph, page, context)
-    page[:used_links].find_all{|l| l.include? '::'}.each do |link|
-      prop_key, _ = link.split('::')
+
+    #page[:used_links].find_all{|l| l.include? '::'}.each do |link|
+    #  prop_key, _ = link.split('::')
+    #  prop_key = MediaWiki::send :upcase_first_char, prop_key
+    #  Page.where(:used_links => prop_key+'::'+page.full_title).each do |page|
+    #    graph << RDF::Statement.new(RDF::Literal.new('IN'), self.semantic_properties(prop_key), page.full_title, :context => context)
+    #  end
+    #end
+    #graph
+
+    #TODO: need to get all semantic properties in a generic way
+    semantic_hash = Hash.new
+    %w(dependsOn instanceOf identifies cites linksTo uses implements isA developedBy reviewedBy relatesTo
+       implies mentions).map {|prop| semantic_hash["#{prop}"] = "http://101companies.org/property/#{prop}"}
+    semantic_hash
+
+    semantic_hash.each do |prop_key, value|
       prop_key = MediaWiki::send :upcase_first_char, prop_key
       Page.where(:used_links => prop_key+'::'+page.full_title).each do |page|
-        graph << RDF::Statement.new(RDF::Literal.new('IN'), self.semantic_properties(prop_key), page.full_title, :context => context)
+        graph << RDF::Statement.new(RDF::Literal.new("IN"), value, page.full_title, :context => context)
       end
     end
     graph
