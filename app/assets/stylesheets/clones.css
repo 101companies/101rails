@@ -40,6 +40,10 @@ body {
   margin-top: 10px;
 }
 
+#clones-list li {
+ margin-top: 10px;
+}
+
 .feature span a {
   color: white;
 }

@@ -1,6 +1,6 @@
 class Wiki.Views.CloneIndex extends Backbone.View
   el:  '#clone'
-  template : JST['backbone/templates/clonePreview']
+  template : JST['backbone/templates/cloneIndex']
 
   initialize: ->
     self = @
@@ -9,13 +9,4 @@ class Wiki.Views.CloneIndex extends Backbone.View
     )
 
   render: ->
-    self = @
-    $(@el).
-      html($('<h1>').text("Index of clones")).
-      append($('<hr>'))
-    $ul = $('<ul>')
-    $(@el).append($ul)
-    @collection.each((clone) ->
-      $ul.append(self.template(clone.toJSON()))
-    )
-
+    $(@el).append(@template(models: @collection.toJSON()))
