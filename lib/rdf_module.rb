@@ -22,18 +22,20 @@ module RdfModule
     add_ingoing_triples graph, @page, context
   end
 
-  def semantic_properties
-    semantic_hash = Hash.new
-    %w(dependsOn instanceOf identifies cites linksTo uses implements isA developedBy reviewedBy relatesTo
-       implies mentions).map {|prop| semantic_hash["#{prop}"] = "http://101companies.org/property/#{prop}"}
-    semantic_hash
+  def semantic_properties(name)
+    #semantic_hash = Hash.new
+    #%w(dependsOn instanceOf identifies cites linksTo uses implements isA developedBy reviewedBy relatesTo
+    #   implies mentions).map {|prop| semantic_hash["#{prop}"] = "http://101companies.org/property/#{prop}"}
+    #semantic_hash
+    # See https://github.com/101companies/101rails/issues/46
+    "http://101companies.org/property/#{name}"
   end
 
   def add_outgoing_non_semantic_triples(graph, context, uri, directions)
     (@page.internal_links-@page.semantic_links).each do |link|
       object = directions ? link : page_to_resource(link)
       if !object.nil?
-        graph << RDF::Statement.new(uri, RDF::URI.new(self.semantic_properties['mentions']), object,
+        graph << RDF::Statement.new(uri, RDF::URI.new(self.semantic_properties('mentions')), object,
                                     :context => context)
       end
     end
@@ -47,7 +49,7 @@ module RdfModule
       object = directions ? link_prefix : page_to_resource(link_prefix)
       semantic_property = PageModule.uncapitalize_first_char link.split('::')[0]
       if !object.nil?
-        graph <<  RDF::Statement.new(subject, RDF::URI.new(self.semantic_properties[semantic_property]),
+        graph <<  RDF::Statement.new(subject, RDF::URI.new(self.semantic_properties(semantic_property)),
                                      object, :context => context)
       end
     end
@@ -55,13 +57,13 @@ module RdfModule
   end
 
   def add_ingoing_triples(graph, page, context)
-    semantic_properties.each do |prop_key, value|
+    page[:used_links].find_all{|l| l.include? '::'}.each do |link|
+      prop_key, _ = link.split('::')
       prop_key = MediaWiki::send :upcase_first_char, prop_key
       Page.where(:used_links => prop_key+'::'+page.full_title).each do |page|
-        graph << RDF::Statement.new(RDF::Literal.new("IN"), value, page.full_title, :context => context)
+        graph << RDF::Statement.new(RDF::Literal.new('IN'), self.semantic_properties(prop_key), page.full_title, :context => context)
       end
     end
     graph
   end
-
 end
