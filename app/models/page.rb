@@ -38,6 +38,7 @@ class Page
     self.page_title_namespace = self.namespace.to_s + ':' + self.title.to_s
     # fill used_links with links in page
     # parse content and get internal links
+    self.inject_namespace_triple
     wiki_parser = self.create_wiki_parser
     begin
       # this produces internal_links
@@ -51,6 +52,32 @@ class Page
     if wiki_parser.internal_links
       self.used_links = wiki_parser.internal_links.map { |link| PageModule.unescape_wiki_url link }
     end
+  end
+
+  def get_metadata_section(sections)
+    sections.select { |section| section["title"] == 'Metadata' }
+  end
+
+  def inject_namespace_triple
+    self.inject_triple "instanceOf::Namespace:#{self.namespace}"
+  end
+
+  def inject_triple(namespace_triple)
+    sections = self.sections
+    # find metadata section
+    metadata_section = get_metadata_section sections
+    # not found -> create it
+    if metadata_section.empty?
+      self.raw_content = self.raw_content + "\n=== Metadata ==="
+      wiki_parser = self.create_wiki_parser self.raw_content
+      sections = self.sections wiki_parser
+    end
+    metadata_section = get_metadata_section(sections)[0]
+    unless metadata_section["content"].include? namespace_triple
+      metadata_section["content"] = metadata_section["content"] + "\n* [[#{namespace_triple}]]"
+    end
+    # rebuild content from sections
+    self.raw_content = build_content_from_sections sections
   end
 
   def decorate_headline(headline_text)
@@ -147,10 +174,16 @@ class Page
     old_backlinks.each { |old_backlink| self.rewrite_backlink old_backlink, old_title }
   end
 
+  def build_content_from_sections(sections)
+    content = ""
+    sections.each { |s| content += s['content'] + "\n" }
+    content
+  end
+
   def update_or_rename_page(new_title, content, sections)
     # if content is empty -> populate content with sections
     if content == ""
-      sections.each { |s| content += s['content'] + "\n" }
+      content = build_content_from_sections(sections)
     end
     self.raw_content = content
     # unescape new title to nice readable url
@@ -180,9 +213,9 @@ class Page
     self.used_links
   end
 
-  def sections
+  def sections(wiki_parser = self.create_wiki_parser)
     sections = []
-    self.create_wiki_parser.sections.first.children.each do |section|
+    wiki_parser.sections.first.children.each do |section|
       sections << { 'title' => section.title, 'content' => section.wikitext.sub(/\s+\Z/, "") }
     end
     sections
