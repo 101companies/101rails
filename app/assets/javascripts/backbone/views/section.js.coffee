@@ -28,8 +28,8 @@ class Wiki.Views.Section extends Backbone.View
       else
         self.insertHTML(self.model.get("html_content"))
       self.bindHanders()
-      #if options.renderTour
-      #  self.handleTour()
+      if options.renderTour
+        self.handleTour()
     else
       @renderSubView()
 
