@@ -34,4 +34,15 @@ class ClonesController < ApplicationController
     respond_with @clone
   end
 
+  def delete
+    @clone = Clone.where(title: params[:title])
+    if @clone
+      @clone.delete
+      render :json => {:success => true}
+    else
+      render :json => {:success => false}, :status => 409
+    end
+
+  end
+
 end

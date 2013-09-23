@@ -1,3 +1,10 @@
+#header h1 {
+  float: left;
+}
+#header button {
+  float: right;
+}
+
 body {
   margin-bottom: 30px;
 }
