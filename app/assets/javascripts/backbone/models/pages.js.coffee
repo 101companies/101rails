@@ -19,6 +19,7 @@ class Wiki.Models.Page extends Backbone.Model
         this.reset page_sections
     @set('sections', new Sections)
     @set('backlinks', Wiki.pageBacklinks)
+    @set('history', new Wiki.Models.History(Wiki.pageHistory))
     @set('triples', new Wiki.Models.Triples())
     @set('sourceLinks', new Wiki.Models.SourceLinks())
     @set('resources', new Wiki.Models.Resources())

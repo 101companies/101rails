@@ -54,7 +54,7 @@ class Wiki.Views.Page extends Backbone.View
     $(@el).html($(@pageTemplate(title: niceTitle)))
     $('#sections-parsed').html('')
 
-    #new Wiki.Views.History(model: @model.get('history'))
+    new Wiki.Views.History(model: @model.get('history'))
     @addBacklinks()
     @addSections()
     new Wiki.Views.Resources(model: @model.get('resources'))

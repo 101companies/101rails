@@ -72,7 +72,7 @@ class PagesController < ApplicationController
       format.html {
         render :html => @doc, :layout => "snapshot"
       }
-    end  
+    end
   end
 
   def show
@@ -81,18 +81,18 @@ class PagesController < ApplicationController
         if @page.snapshot == nil
           logger.debug("Page doesn't have a snapshot")
           @doc = SnapshotModule.get_snapshot(@page)
-        else  
+        else
           logger.debug("Page already has a snapshot")
-          @doc = @page.snapshot 
-        end 
+          @doc = @page.snapshot
+        end
         respond_to do |format|
           format.html {
             render :html => @doc, :layout => "snapshot"
           }
-        end 
+        end
       rescue
-        @error_message="#{$!}" 
-        logger.error(@error_message) 
+        @error_message="#{$!}"
+        logger.error(@error_message)
         redirect_to :status => 404
       end
     else
@@ -108,28 +108,17 @@ class PagesController < ApplicationController
           render :html => @page
         }
 
-        last_change = @page.page_changes.last
-        if last_change
-          history_entry = {
-              user_name: last_change.user.name,
-              user_pic: last_change.user.github_avatar,
-              user_email: last_change.user.email,
-              created_at: last_change.created_at
-          }
-        else
-          history_entry = {}
-        end
 
         format.json { render :json => {
           'id'        => @page.full_title,
           'content'   => @page.raw_content,
           'sections'  => @page.sections,
-          'history'   => history_entry,
+          'history'   => @page.get_last_change,
           'backlinks' => @page.backlinks
         }}
 
       end
-    end   
+    end
   end
 
   def parse

@@ -6,6 +6,7 @@
     Wiki.pageNiceTitle=  "<%= j @page.nice_wiki_url.html_safe -%>";
     Wiki.pageSections= <%= j @page.sections.to_json.html_safe -%>;
     Wiki.pageBacklinks= <%= j @page.backlinks.to_json.html_safe -%>;
+    Wiki.pageHistory= <%= j @page.get_last_change.to_json.html_safe -%>;
 
     <% if current_user -%>
 

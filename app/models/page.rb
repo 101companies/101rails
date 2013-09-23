@@ -59,6 +59,21 @@ class Page
     (headline_text.length < popup_msg_length)  ? headline_text : "#{headline_text[0..popup_msg_length-1]} ..."
   end
 
+  def get_last_change
+    last_change = self.page_changes.last
+    if last_change
+      history_entry = {
+          user_name: last_change.user.name,
+          user_pic: last_change.user.github_avatar,
+          user_email: last_change.user.email,
+          created_at: last_change.created_at
+      }
+    else
+      history_entry = {}
+    end
+    history_entry
+  end
+
   def get_headline
     # assume that first <p> in html content will be shown as popup
     headline_elem = Nokogiri::HTML(self.html_content).css('p').first
