@@ -1,6 +1,23 @@
 class Wiki.Models.Page extends Backbone.Model
 
   initialize: ->
+    @set('content', Wiki.pageContent)
+    @set('nice_title', Wiki.pageNiceTitle)
+    # create sections
+    page_sections = []
+    Wiki.pageSections.forEach (el) ->
+      page_sections.push new Wiki.Models.Section (
+        title: el.title,
+        content: el.content,
+        html_content: el.html_content
+      )
+    # populate sections for collection of sections
+    # TODO: it was dirty
+    class Sections extends Backbone.Collection
+      model: Wiki.Models.Section,
+      initialize: ->
+        this.reset page_sections
+    @set('sections', new Sections)
     @set('triples', new Wiki.Models.Triples())
     @set('sourceLinks', new Wiki.Models.SourceLinks())
     @set('resources', new Wiki.Models.Resources())

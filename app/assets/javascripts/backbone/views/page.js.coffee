@@ -24,11 +24,8 @@ class Wiki.Views.Page extends Backbone.View
   initialize: ->
     self = @
     @inedit = false
-    @model.fetch(success: (model) ->
-      window.p_model = model
-      self.bindHanders()
-      self.render()
-    )
+    self.bindHanders()
+    self.render()
 
   bindHanders: ->
     @model.get('sections').bind('add', @addSection, @)
@@ -57,7 +54,7 @@ class Wiki.Views.Page extends Backbone.View
     $(@el).html($(@pageTemplate(title: niceTitle)))
     $('#sections-parsed').html('')
 
-    new Wiki.Views.History(model: @model.get('history'))
+    #new Wiki.Views.History(model: @model.get('history'))
     @addSections()
     @addBacklinks()
     new Wiki.Views.Resources(model: @model.get('resources'))
@@ -123,6 +120,7 @@ class Wiki.Views.Page extends Backbone.View
 
   addBacklinks: ->
     self = @
+    return
     if @model.get('backlinks').length > 0
       $('#backlinks').show()
     $.each @model.get('backlinks'), (i,bl) ->

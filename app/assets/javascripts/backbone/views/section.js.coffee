@@ -24,19 +24,13 @@ class Wiki.Views.Section extends Backbone.View
       $('#sections-parsed').append(html)
       @setElement($(html))
       @templateIn = true
-      $.ajax({
-          type: "POST"
-          url: "/api/parse/"
-          data: {content: self.model.get('content'), id: Wiki.pageTitle}
-          success: (data) ->
-            if self.subview
-              self.renderSubView()
-            else
-              self.insertHTML(data.html)
-            self.bindHanders()
-            if options.renderTour
-              self.handleTour()
-        })
+      if self.subview
+        self.renderSubView()
+      else
+        self.insertHTML(self.model.get("html_content"))
+      self.bindHanders()
+      if options.renderTour
+        self.handleTour()
     else
       @renderSubView()
 
