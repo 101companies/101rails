@@ -49,6 +49,7 @@ Wiki::Application.routes.draw do
   # clones
   scope 'clones' do
     get '/new' => 'clones#show_create'
+    get '/' => 'clones#show'
     get '/check/:title' => 'clones#show'
   end
 
@@ -67,6 +68,7 @@ Wiki::Application.routes.draw do
     post 'parse' => 'pages#parse'
     post 'clones/:title' => 'clones#create'
     get 'clones/:title' => 'clones#get'
+    get 'clones' => 'clones#index'
     get 'pages' => 'pages#all'
     resources :pages, :constraints => { :id => /.*/ }, :only => [:section,:show] do
       member do

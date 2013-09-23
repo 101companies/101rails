@@ -21,6 +21,11 @@ class ClonesController < ApplicationController
   def show
   end
 
+  def index
+    @clones = Clone.all
+    respond_with @clones
+  end
+
   def get
     @clone = Clone.where(title: params[:title]).first
     @clone.update_status() unless @clone.nil?
