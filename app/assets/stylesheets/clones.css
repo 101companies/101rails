@@ -28,6 +28,11 @@ body {
   color: #468847;
 }
 
+#clone li {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  margin-top: 10px;
+}
+
 .feature span a {
   color: white;
 }

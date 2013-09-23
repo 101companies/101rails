@@ -15,7 +15,6 @@ class ClonesController < ApplicationController
     else
       render :json => {:success => false, :message => "Clone already exists, choose another name."}, :status => 409
     end
-
   end
 
   def show
@@ -23,6 +22,9 @@ class ClonesController < ApplicationController
 
   def index
     @clones = Clone.all
+    for c in @clones
+      c.update_status()
+    end
     respond_with @clones
   end
 

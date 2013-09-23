@@ -28,10 +28,14 @@ class Wiki.Views.CloneSelectFeature extends Backbone.View
       $(@el).find('.text-error').text("Sorry, this feature can currently not be deselected.")
     else
       features = @clone.get('features')
+      minusfeatures = @clone.get('minusfeatures')
       if @selected
         features = _.difference(features, [@title])
+        minusfeatures = _.union(minusfeatures, [@title])
       else
+        minusfeatures = _.difference(minusfeatures, [@title])
         features = _.union(features, [@title])
       @clone.set('features', features)
+      @clone.set('minusfeatures', minusfeatures)
       @selected = not @selected
       @showStatus()

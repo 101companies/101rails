@@ -1,7 +1,7 @@
 class Wiki.Routers.ClonesRouter extends Backbone.Router
   routes:
-    "clones" : 'index'
-    "clones/new" : "create"
+    "clones(/)" : 'index'
+    "clones/new(/)" : "create"
     "clones/check/:title" : "check"
 
   index: ->

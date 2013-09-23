@@ -7,9 +7,17 @@
  <% if (status == 'new') { %>
   The clone will be prepared soon. Please come back later.
  <% } else if (status == 'in_preparation') { %>
-  The clone is currently prepared. Please come back later.
+  The clone is currently beging prepared. Please come back later.
  <% } else if (status == 'in_inspection') { %>
-  The clone is currently inspected by the developer.
+  The clone has been prepared and needs to be inspected. Please follow these steps:
+  <ol>
+  <li> Checkout <a href="https://github.com/tschmorleiz/101haskell">https://github.com/tschmorleiz/101haskell</a>. Your clone can be found in <a href="https://github.com/tschmorleiz/101haskell/tree/master/contributions/haskellFancyData">/contributions/haskellFancyData</a>.</li>
+  <li> Try to run build and test the contribution by using the Makefile.</li>
+ <li>
+  If this does not succeed uncomment feature fragments of the code that were commented out.  Repeat until building and testing succeeds.</li>
+  <li> Commit and push your changes using the commit message "done inspecting <%= title %>".</li>
+  <li> Come back to this page. It will soon provide you a link to the contribution page of your new clone.
+</ol>
  <% } else if (status == 'created') { %>
   The clone was created.
  <% } %>
