@@ -183,7 +183,10 @@ class Page
   def sections
     sections = []
     self.create_wiki_parser.sections.first.children.each do |section|
-      sections << { 'title' => section.title, 'content' => section.wikitext.sub(/\s+\Z/, "") }
+      sections << { 'title' => section.title,
+                    'content' => section.wikitext.sub(/\s+\Z/, ""),
+                    'html_content' => parse(section)
+      }
     end
     sections
   end

@@ -2,6 +2,11 @@
 
     Wiki.pageTitle =  <%= j @page.full_title.to_json.html_safe -%>
 
+    window.rendered_model = {
+        nice_title:  "<%= j @page.nice_wiki_url.html_safe -%>",
+        sections: <%= @page.sections.to_json.html_safe -%>
+    };
+
     <% if current_user -%>
 
         Wiki.currentUser = new Wiki.Models.User(<%= j current_user.to_json.html_safe %>);

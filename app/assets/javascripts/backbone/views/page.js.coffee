@@ -25,6 +25,7 @@ class Wiki.Views.Page extends Backbone.View
     self = @
     @inedit = false
     @model.fetch(success: (model) ->
+      window.p_model = model
       self.bindHanders()
       self.render()
     )
