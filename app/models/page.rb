@@ -16,7 +16,7 @@ class Page
   # namespace for page, need to be set
   field :namespace, type: String
   field :page_title_namespace, type: String
-  field :raw_content, type: String
+  field :raw_content, type: String, :default => ""
   field :html_content, type: String
   field :used_links, type: Array
   field :snapshot, type: String
@@ -68,11 +68,15 @@ class Page
     metadata_section = get_metadata_section sections
     # not found -> create it
     if metadata_section.empty?
-      self.raw_content = self.raw_content + "\n=== Metadata ==="
+      self.raw_content = self.raw_content + "\n== Metadata =="
       wiki_parser = self.create_wiki_parser self.raw_content
       sections = self.sections wiki_parser
     end
     metadata_section = get_metadata_section(sections)[0]
+    unless metadata_section
+      Rails.logger.info "In page #{self.full_title} cannot be any triple injected."
+      return
+    end
     unless metadata_section["content"].include? namespace_triple
       metadata_section["content"] = metadata_section["content"] + "\n* [[#{namespace_triple}]]"
     end
