@@ -70,6 +70,8 @@ production:
   sessions:
     default:
       database: wiki_production
+      username: <%= ENV['MONGODB_USER'] %>
+      password: <%= ENV['MONGODB_PWD'] %>
       hosts:
         - db.101companies.org:27017
       options:
