@@ -55,8 +55,8 @@ class Wiki.Views.Page extends Backbone.View
     $('#sections-parsed').html('')
 
     #new Wiki.Views.History(model: @model.get('history'))
-    @addSections()
     @addBacklinks()
+    @addSections()
     new Wiki.Views.Resources(model: @model.get('resources'))
     new Wiki.Views.SourceLinks(model: @model.get('sourceLinks'))
 
@@ -120,12 +120,12 @@ class Wiki.Views.Page extends Backbone.View
 
   addBacklinks: ->
     self = @
-    return
     if @model.get('backlinks').length > 0
       $('#backlinks').show()
     $.each @model.get('backlinks'), (i,bl) ->
       if i < 21
         target = '#backlinks-body'
+      # cut visible backlinks after 21
       else
         if i == 21
           $('#backlinks')
