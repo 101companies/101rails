@@ -8,7 +8,6 @@ class Wiki.Views.Triple extends Backbone.View
         .replace("-3A",":")
         .replace("Property:", "")
         .replace(/_/g, " ")
-        .replace(/-/g, '%')
     if decodeURI
       str = decodeURIComponent(str)
     str = _.last(str.split("/"))
