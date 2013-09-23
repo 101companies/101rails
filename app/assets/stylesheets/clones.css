@@ -1,3 +1,10 @@
+#header h1 {
+  float: left;
+}
+#header button {
+  float: right;
+}
+
 body {
   margin-bottom: 30px;
 }
@@ -31,6 +38,10 @@ body {
 #clone li {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   margin-top: 10px;
+}
+
+#clones-list li {
+ margin-top: 10px;
 }
 
 .feature span a {
