@@ -1,0 +1,39 @@
+body {
+  margin-bottom: 30px;
+}
+
+#creation, #clone {
+  margin-top: 30px;
+}
+
+.candidate {
+  float: left;
+  margin: 2px;
+}
+
+.candidate span a {
+  color: white;
+}
+
+#candidates-container {
+  height: 100px;
+}
+
+#feature-container {
+  margin-top: 30px;
+  width: 100%;
+}
+
+.candidate.selected span a {
+  color: #468847;
+}
+
+#clone li {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  margin-top: 10px;
+}
+
+.feature span a {
+  color: white;
+}
+

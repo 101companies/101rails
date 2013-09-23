@@ -46,6 +46,14 @@ Wiki::Application.routes.draw do
     get '/:id' => 'users#show', :as => :user
   end
 
+  # clones
+  scope 'clones' do
+    get '/new' => 'clones#show_create'
+    get '/' => 'clones#show'
+    get '/check/:title' => 'clones#show'
+  end
+
+
   # pages routes
   scope 'wiki' do
     get '/' => redirect("/wiki/@project")
@@ -58,6 +66,9 @@ Wiki::Application.routes.draw do
   # json api requests for pages
   scope 'api', :format => :json do
     post 'parse' => 'pages#parse'
+    post 'clones/:title' => 'clones#create'
+    get 'clones/:title' => 'clones#get'
+    get 'clones' => 'clones#index'
     get 'pages' => 'pages#all'
     resources :pages, :constraints => { :id => /.*/ }, :only => [:section,:show] do
       member do
