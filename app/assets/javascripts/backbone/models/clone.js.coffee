@@ -2,6 +2,8 @@ class Wiki.Models.Clone extends Backbone.Model
 
   url: -> "/api/clones/" + @get('title')
 
+  idAttribute: 'title'
+
   defaults:
     title: ""
     status: "non-existent"

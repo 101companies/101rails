@@ -1,4 +1,9 @@
-<h1>Status of  "<%= title %>"</h1>
+<div id="header">
+  <h1>Status of  "<%= title %>"</h1>
+  <% if (status != 'created') { %>
+    <button class="btn btn-small" id="remove"><i class="icon-remove"></i> Withdraw clone</button>
+  <% } %>
+</div>
  <hr>
  <% if (status == 'non-existent') { %>
 <h3>Clone does not exist. You can create one <a href="/clones/new">here</a>.
