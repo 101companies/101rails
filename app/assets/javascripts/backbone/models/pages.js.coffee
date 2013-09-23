@@ -20,7 +20,18 @@ class Wiki.Models.Page extends Backbone.Model
     @set('sections', new Sections)
     @set('backlinks', Wiki.pageBacklinks)
     @set('history', new Wiki.Models.History(Wiki.pageHistory))
-    @set('triples', new Wiki.Models.Triples())
+    page_triples = []
+    Wiki.pageTriples.forEach (el) ->
+      page_triples.push new Wiki.Models.Triple (
+        direction: el.direction,
+        node: el.node,
+        predicate: el.predicate
+      )
+    class Triples extends Backbone.Collection
+      model: Wiki.Models.Triple,
+      initialize: ->
+        this.reset page_triples
+    @set('triples', new Triples(Wiki.pageTriples))
     @set('sourceLinks', new Wiki.Models.SourceLinks())
     @set('resources', new Wiki.Models.Resources())
 

@@ -3,6 +3,9 @@ class PagesController < ApplicationController
   include RdfModule
   include SnapshotModule
 
+  # for calling from view
+  helper_method :get_rdf_json
+
   respond_to :json, :html
 
   # order of next two lines is very important!
@@ -40,19 +43,7 @@ class PagesController < ApplicationController
   end
 
   def get_json
-    title = params[:id]
-    directions = params[:directions]
-    json = []
-    get_rdf_graph(title, directions).each do |res|
-      if directions
-        json << { :direction => res.subject.to_s, :predicate => res.predicate.to_s, :node => res.object.to_s }
-      else
-        # ingoing triples
-        res = reverse_statement res, title if res.subject.to_s == 'IN'
-        json << [ res.subject.to_s, res.predicate.to_s, res.object.to_s ]
-      end
-    end
-    respond_with json
+    respond_with get_rdf_json(params[:id], params[:directions])
   end
 
   def delete

@@ -10,11 +10,7 @@ class Wiki.Views.Triples extends Backbone.View
     @internalTripleCount = 0
     $(@el).find('.section-content-parsed').fadeTo(200, 1)
     $(@el).find(' .loading-indicator').hide()
-    @model.fetch({
-      url: self.model.url(decodeURIComponent(Wiki.pageTitle))
-      success: (model) ->
-        self.addAll()
-    })
+    self.addAll()
 
   is101Triple: (triple) ->
     regexp = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/

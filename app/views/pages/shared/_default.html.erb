@@ -1,12 +1,13 @@
 <script type="text/javascript">
 
-    Wiki.pageTitle =  <%= j @page.full_title.to_json.html_safe -%>
+    Wiki.pageTitle =  <%= j @page.full_title.to_json.html_safe -%>;
 
     Wiki.pageContent= "<%= escape_javascript(@page.raw_content.html_safe) -%>";
     Wiki.pageNiceTitle=  "<%= j @page.nice_wiki_url.html_safe -%>";
     Wiki.pageSections= <%= j @page.sections.to_json.html_safe -%>;
     Wiki.pageBacklinks= <%= j @page.backlinks.to_json.html_safe -%>;
     Wiki.pageHistory= <%= j @page.get_last_change.to_json.html_safe -%>;
+    Wiki.pageTriples= <%= j get_rdf_json(@page.full_title, true).to_json.html_safe -%>;
 
     <% if current_user -%>
 
