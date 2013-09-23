@@ -9,6 +9,7 @@ class ClonesController < ApplicationController
     puts params
     exists = Clone.where(title: params[:title]).exists?
     if !exists
+      params[:clone][:status] = 'new'
       Clone.create(params[:clone])
       render :json => {:success => true}
     else
@@ -18,7 +19,11 @@ class ClonesController < ApplicationController
   end
 
   def show
-    @clone = Clone.where(title: params[:title]).first#
+  end
+
+  def get
+    @clone = Clone.where(title: params[:title]).first
+    @clone.update_status() unless @clone.nil?
     respond_with @clone
   end
 

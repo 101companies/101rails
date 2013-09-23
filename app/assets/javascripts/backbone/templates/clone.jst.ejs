@@ -1,5 +1,20 @@
-<h2>Status of  "<%= title %>"</h2>
-
+<h1>Status of  "<%= title %>"</h1>
+ <hr>
+ <% if (status == 'non-existent') { %>
+<h3>Clone does not exist. You can create one <a href="/clones/new">here</a>.
+  <% } else { %>
+<h3>Current status: <b><%= status.replace('_',' ') %></b></h3>
+ <% if (status == 'new') { %>
+  The clone will be prepared soon. Please come back later.
+ <% } else if (status == 'in_preparation') { %>
+  The clone is currently prepared. Please come back later.
+ <% } else if (status == 'in_inspection') { %>
+  The clone is currently inspected by the developer.
+ <% } else if (status == 'created') { %>
+  The clone was created.
+ <% } %>
+ <p>
+ <hr>
 <h3>Cloned from <a href="/wiki/Contribution:<%= original %>" ><%= original %></a></h3>
 <hr>
 <h3>Cloned features:</h3>
@@ -8,17 +23,4 @@
   <li><a href="/wiki/Feature:<%= f %>" ><%= f %></a></li>
 <% }) %>
 </ul>
-<hr>
-<h3>Current status: </h3>
-<p><b><%= status %>: </b>
- <% if (status == 'new') { %>
-  The clone is new
- <% } else if (status == 'in_preparation') { %>
-  The clone is currently prepared. Please come back later.
- <% } else if (status == 'in_inspection') { %>
-  The clone is currently inspected by the developer.
- <% } else if (status == 'created') { %>
-  The clone was created.
- <% } %>
-
-</i></h3>
+<% }  %>

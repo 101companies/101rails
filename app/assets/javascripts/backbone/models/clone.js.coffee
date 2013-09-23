@@ -4,5 +4,6 @@ class Wiki.Models.Clone extends Backbone.Model
 
   defaults:
     title: ""
+    status: "non-existent"
     original: ""
     features: []

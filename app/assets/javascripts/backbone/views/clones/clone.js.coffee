@@ -9,4 +9,5 @@ class Wiki.Views.Clone extends Backbone.View
     )
 
   render: ->
+    debugger
     $(@el).append(@template(@model.toJSON()))

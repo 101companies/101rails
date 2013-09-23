@@ -64,10 +64,12 @@ class Wiki.Views.CloneCreate extends Backbone.View
         )
         self.renderClone()
     )
+
   changeName: ->
     $('.text-error').text("")
-    $name = $('#name-container input')
-    @clone.set('title', $('#name-container input').val())
+    name = $('#name-container input').val().split('/')[0]
+    $('#name-container input').val(name)
+    @clone.set('title', name)
 
   submit: ->
     self =@

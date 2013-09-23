@@ -2,6 +2,10 @@ body {
   margin-bottom: 30px;
 }
 
+#creation, #clone {
+  margin-top: 30px;
+}
+
 .candidate {
   float: left;
   margin: 2px;
