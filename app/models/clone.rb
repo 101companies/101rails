@@ -10,9 +10,6 @@ class Clone
   field :features, type: Array
   field :minusfeatures, type: Array
 
-  # super simply lock
-  @@triggering = false
-
   def update_status
     case self.status
     when 'new' then
@@ -28,12 +25,8 @@ class Clone
   end
 
   def self.trigger_preparation
-    if not @@triggering
-      @@triggering = true
-      triggerurl = 'worker.101companies.org/services/triggerCloneCreation'
-      return open(url).read
-      @@triggering == false
-    end
+    triggerurl = 'worker.101companies.org/services/triggerCloneCreation'
+    return open(url).read
   end
 
 end

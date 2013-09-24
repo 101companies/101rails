@@ -21,7 +21,7 @@ class ClonesController < ApplicationController
   end
 
   def index
-    Clone.delay.trigger_preparation
+    Clone.trigger_preparation
     @clones = Clone.all
     for c in @clones
       c.update_status()
@@ -30,7 +30,7 @@ class ClonesController < ApplicationController
   end
 
   def get
-    Clone.delay.trigger_preparation
+    Clone.trigger_preparation
     @clone = Clone.where(title: params[:title]).first
     @clone.update_status() unless @clone.nil?
     respond_with @clone
