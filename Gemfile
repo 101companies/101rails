@@ -112,3 +112,6 @@ gem 'aced_rails', '0.2.1', :git => 'git://github.com/tschmorleiz/aced_rails.git'
 gem 'watir-webdriver', '0.6.4'
 
 gem 'bootstrap-tour-rails', '0.4.0'
+
+gem 'eventmachine'
+gem 'em-http-request'

@@ -1,6 +1,8 @@
 class Clone
   require 'open-uri'
   require 'json'
+  require 'eventmachine'
+  require 'em-http'
   include Mongoid::Document
   include Mongoid::Paranoia
 
@@ -25,8 +27,23 @@ class Clone
   end
 
   def self.trigger_preparation
-    triggerurl = 'http://worker.101companies.org/services/triggerCloneCreation'
-    return open(triggerurl).read
+    EM.run do
+      triggerurl = 'http://worker.101companies.org/services/triggerCloneCreation'
+      http = EM::HttpRequest.new(triggerurl).get
+      http.errback do
+        puts "Connection error: #{http.error}"
+        EM.stop
+      end
+      http.callback do
+        if http.response_header.status == 200
+          puts "Success!"
+          puts http.response
+        else
+          puts "Unexpected status code: #{http.response_header.status}"
+        end
+        EM.stop
+      end
+    end
   end
 
 end
