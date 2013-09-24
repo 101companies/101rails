@@ -5,7 +5,7 @@
   <a href="/clones/check/<%= m.title %>""><%= m.title %></a>
   cloned from
   <a href="/wiki/Contributions:<%= m.original %>"><%= m.original %></a>
-  (<%= m.features.length %> features)
+  (<%= m.features.length %> of  <%= m.features.length + m.minusfeatures.length %> features)
 </li>
 <% }) %>
 </ul>
