@@ -22,14 +22,25 @@ class Clone
       if contributions.any?{|x| x['type'] == 'dir' and x['name'] == self.title}
         self.status = 'in_inspection'
       end
-    when 'confirmed', 'new'
+    when 'confirmed'
+      self.create_contribution_page
     end
     self.save!
   end
 
+  def features_to_wikitext_triples
+    wikitext_triples = self.features.map {|f| "* [[implements::Feature:" + f + "]]"}
+    return wikitext_triples.join("\n")
+  end
 
   def create_contribution_page
-
+    @page = PageModule.create_page_by_full_title("Contribution:" + self.title)
+    content = "== Headline ==\nA variant of [[Contribution:" + self.original + "]].\n\n"
+    content += "== Metadata ==\n" + self.features_to_wikitext_triples
+    content += "\n* [[cloneOf::Contribution:" + self.original + "]]"
+    @page.raw_content = content
+    @page.save
+    self.status = 'created'
   end
 
   def self.trigger_preparation

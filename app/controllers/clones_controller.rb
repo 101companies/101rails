@@ -27,18 +27,18 @@ class ClonesController < ApplicationController
   end
 
   def get
-    Clone.trigger_preparation
     @clone = Clone.where(title: params[:title]).first
     @clone.update_status() unless @clone.nil?
+    Clone.trigger_preparation
     respond_with @clone
   end
 
   def update
-    @clone = Clone.find_bys(title: params[:title])
+    @clone = Clone.find_by(title: params[:title])
     if @clone
       @clone.update_attributes!(params[:clone])
       @clone.update_status()
-      render :json => {:success => true}
+      respond_with @clone
     else
       render :json => {:success => false}, :status => 409
     end
