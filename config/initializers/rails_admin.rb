@@ -32,69 +32,6 @@ RailsAdmin.config do |config|
   # Number of default rows per-page:
   config.default_items_per_page = 30
 
-  config.model 'Contribution' do
-
-    field :title do
-      searchable true
-    end
-
-    field :url do
-      searchable true
-      label do
-        'Repo url'
-      end
-      pretty_value do
-        "<a target='_blank' href='#{value}'/>#{value}</a>".html_safe
-      end
-    end
-
-    field :approved
-    field :analyzed
-
-    field :user do
-      searchable true
-    end
-
-    field :page
-
-    field :languages do
-      searchable true
-      pretty_value do
-        Contribution.array_to_string value
-      end
-    end
-
-    field :concepts do
-      searchable true
-      pretty_value do
-        Contribution.array_to_string value
-      end
-    end
-
-    field :technologies do
-      searchable true
-      pretty_value do
-        Contribution.array_to_string value
-      end
-    end
-
-    field :features do
-      searchable true
-      pretty_value do
-        Contribution.array_to_string value
-      end
-    end
-
-    field :description do
-      searchable true
-      hide
-    end
-
-    field :created_at
-    field :updated_at
-
-  end
-
   config.model 'OldWikiUser' do
 
     field :email do
@@ -182,19 +119,34 @@ RailsAdmin.config do |config|
       sortable false
     end
 
-    field :contribution
-
     field :created_at
     field :updated_at
 
     edit do
+      field :title do
+        show
+      end
+
       field :namespace do
         show
       end
 
-      field :title do
+      field :raw_content do
         show
       end
+
+      field :contribution_folder do
+        show
+      end
+
+      field :contribution_url do
+        show
+      end
+
+      field :worker_findings do
+        show
+      end
+
     end
 
   end

@@ -18,7 +18,7 @@ Wiki::Application.routes.draw do
     # ui for creating contribution
     get '/new' => 'contributions#new'
     # method where contribution will be created
-    post '/create' => 'contributions#create'
+    post '/new' => 'contributions#create'
     # put analyzed by worker data to contribution
     post '/analyze/:id' => 'contributions#analyze'
   end

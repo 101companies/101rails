@@ -1,86 +1,73 @@
 class ContributionsController < ApplicationController
 
-  def show
-    @contribution = Contribution.find(params[:id])
-  end
-
-  def index
-    show_per_page = 10
-    @contributions = Contribution.
-        where(:analyzed => true, :approved => true).
-        desc(:created_at).
-        offset(show_per_page*params[:page].to_i).
-        limit(show_per_page)
-  end
-
   def analyze
-    @contribution = Contribution.find(params[:id])
-    if @contribution
-      @contribution.languages = params[:languages]
-      @contribution.technologies = params[:technologies]
-      @contribution.features = params[:features]
-      @contribution.concepts = params[:concepts]
-      @contribution.analyzed = true
-      @contribution.save!
-      Mailer.analyzed_contribution(@contribution).deliver
+    begin
+      @contribution_page = Page.find(params[:id])
+      # write worker findings
+      findings = []
+      %w(languages concepts technologies features).map do |index|
+        findings << { index => params[index] } if params[index]
+      end
+      @contribution_page.worker_findings = findings.to_json.to_s
+      @contribution_page.save!
+      # TODO: restore emails
+      #Mailer.analyzed_contribution(@contribution_page).deliver
     end
     render nothing: true
   end
 
+  def index
+    # get all contribution, where already defined folder and url from github
+    @contributions = Page.where(:contribution_folder.ne => "", :contribution_folder.exists => true,
+                                :contribution_url.ne => "", :contribution_url.exists => true)
+  end
+
   def create
+    #  not logged in -> go out!
     if !current_user
       flash[:notices] = 'You need to be logged in, if you want to make contribution'
       go_to_previous_page
       return
     end
-
-    page_title_for_contribution = 'Contribution:' + Page.unescape_wiki_url(params[:contrb_title])
-    page = Page.find_by_full_title page_title_for_contribution
-    # page already exist
-    if page
-      flash[:error] = 'Sorry, but page with name of contribution is already taken'
+    # check, if title given
+    if params[:contrb_title].nil? || params[:contrb_title].empty?
+      flash[:error] = 'You need to define title for contribution'
       redirect_to action: 'new' and return
     end
-
-    # TODO: check errors of input
-    @contribution = Contribution.new
-    @contribution.url = 'https://github.com/' + params[:contrb_repo_url].first
-    @contribution.title = params[:contrb_title]
-
+    @contribution_page = Page.new
+    full_title = PageModule.unescape_wiki_url "Contribution:#{params[:contrb_title]}"
+    namespace_and_title = PageModule.retrieve_namespace_and_title full_title
+    @contribution_page.title = namespace_and_title["title"]
+    @contribution_page.namespace = namespace_and_title["namespace"]
+    # page already exists
+    unless PageModule.find_by_full_title(@contribution_page.full_title).nil?
+      flash[:error] = 'Sorry, but page with this name is already taken'
+      redirect_to action: 'new' and return
+    end
+    # define github url to repo
+    # TODO: check contrb url+folder via validation
+    @contribution_page.contribution_url = 'https://github.com/' + params[:contrb_repo_url].first
     # set folder to '/' if no folder given
-    folder = params[:contrb_folder]
-    puts folder
-    if folder.empty?
-      folder = '/'
+    @contribution_page.contribution_folder = params[:contrb_folder].empty?  ? '/' : params[:contrb_folder]
+    unless params[:contrb_description].empty?
+      @contribution_page.raw_content = "== Headline ==\n\n" + params[:contrb_description]
+    else
+      # TODO: change text
+      @contribution_page.raw_content = "== Headline ==\n\n" + "Lorem ipsum"
     end
-    @contribution.folder = folder
-
-    @contribution.description = params[:contrb_description]
-    @contribution.user = current_user
-    @contribution.save
-
-    page = Page.create_page_by_full_title page_title_for_contribution
-    page.users << current_user
-
-    @contribution.approved = true
-    @contribution.page = page
-    @contribution.save
-
+    # TODO: restore later
+    #@contribution_page.user = current_user
     # send request to matching service
-    result = @contribution.analyse_request "http://101companies.org/contribute/analyze/#{@contribution.id}"
-    unless result
-      flash[:error] = "Request on analyze service wasn't successful. Please retry it later"
-      redirect_to action: 'new' and return
+    # TODO: texts
+    unless @contribution_page.analyse_request
+      flash[:error] = "You have created new contribution. Request on analyze service wasn't successful. Please retry it later"
+    else
+      flash[:notice] = "You have created new contribution. You will retrieve an email, when it will be analyzed."
     end
-
-    # request was executed without errors
-    if !request.nil?
-      flash[:notice] = "You have created new contribution. "+
-          "Please wait until it will be analyzed and approved by gatekeeper."
-      Mailer.created_contribution(@contribution).deliver
-    end
-
-    redirect_to  action: "index"
+    @contribution_page.save
+    # TODO: restore
+    #Mailer.created_contribution(@contribution_page).deliver
+    redirect_to  "/wiki/#{@contribution_page.nice_wiki_url}"
   end
 
   def new

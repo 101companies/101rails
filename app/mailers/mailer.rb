@@ -2,13 +2,13 @@ class Mailer < ActionMailer::Base
   default from: "101companies@gmail.com"
 
   def created_contribution(contribution)
-    @contribution = contribution
-    mail(to: @contribution.user.email, subject: "Your have submitted contribution '#{@contribution.title}'")
+    @contribution_page = contribution
+    mail(to: @contribution_page.user.email, subject: "Your have submitted contribution '#{@contribution_page.title}'")
   end
 
   def analyzed_contribution(contribution)
-    @contribution = contribution
-    mail(to: @contribution.user.email, subject: "Your contribution #{@contribution.title} has been analyzed")
+    @contribution_page = contribution
+    mail(to: @contribution_page.user.email, subject: "Your contribution #{@contribution_page.title} has been analyzed")
   end
 
 end

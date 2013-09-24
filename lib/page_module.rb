@@ -59,7 +59,6 @@ module PageModule
       # else namespace will be set to default value 'Concept'
       namespace = title[0] == "@" ?  "101" : "Concept"
     end
-    # TODO: fail case
     { 'namespace' => namespace, 'title' => title }
   end
 

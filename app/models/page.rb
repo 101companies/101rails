@@ -4,6 +4,7 @@ class Page
 
   # include module with static methods
   include PageModule
+  include ContributionModule
 
   include Mongoid::Document
   include Mongoid::Timestamps
@@ -21,24 +22,35 @@ class Page
   field :used_links, type: Array
   field :snapshot, type: String
 
+  # part related to contribution process
+  field :contribution_folder, type: String, :default => ''
+  field :contribution_url, type: String, :default => ''
+  field :worker_findings, type: String, :default => ''
+  # this field is using for validating the uniqueness of paar url+folder
+  field :contribution_url_folder, type: String
+
   # relations here
   has_and_belongs_to_many :users
   has_many :page_changes
-  belongs_to :contribution
+  # TODO: contributor
+  #has_one :contributor
 
+  # TODO: restore
+  #validates_uniqueness_of :contribution_url_folder
   validates_uniqueness_of :page_title_namespace
   validates_presence_of :title
   validates_presence_of :namespace
 
-  attr_accessible :user_ids, :namespace, :title, :contribution_id, :snapshot
+  attr_accessible :user_ids, :namespace, :title, :snapshot, :contribution_folder, :contribution_url, :worker_findings
 
   # validate uniqueness for paar title + namespace
   before_validation do
     # prepare field namespace + title
     self.page_title_namespace = self.namespace.to_s + ':' + self.title.to_s
+    # TODO: restore later
+    #self.inject_namespace_triple
     # fill used_links with links in page
     # parse content and get internal links
-    self.inject_namespace_triple
     wiki_parser = self.create_wiki_parser
     begin
       # this produces internal_links
@@ -47,6 +59,10 @@ class Page
       self.html_content = self.parse
     rescue
       Rails.logger.info "Failed producing html for page #{self.full_title}"
+    end
+    # need for uniqueness of paar folder+url
+    if self.namespace == "Contribution"
+      self.contribution_url_folder = self.contribution_url.to_s + ':' + self.contribution_folder.to_s
     end
     # if exist internal_links -> fill used_links
     if wiki_parser.internal_links
