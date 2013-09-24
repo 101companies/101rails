@@ -4,6 +4,7 @@ class Wiki.Views.Clone extends Backbone.View
 
   events:
     'click #remove' : 'remove'
+    'click #confirm' : 'confirm'
 
   initialize: ->
     self = @
@@ -12,9 +13,14 @@ class Wiki.Views.Clone extends Backbone.View
     )
 
   render: ->
-    $(@el).append(@template(@model.toJSON()))
+    $(@el).html(@template(@model.toJSON()))
 
   remove: ->
     @model.destroy(
-      success: -> window.location = "/clones/"
+      success: ->
     )
+
+  confirm: ->
+    self = @
+    @model.set('status', 'confirmed')
+    @model.save({}, success: -> self.render())

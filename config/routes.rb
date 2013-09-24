@@ -66,7 +66,9 @@ Wiki::Application.routes.draw do
   # json api requests for pages
   scope 'api', :format => :json do
     post 'parse' => 'pages#parse'
-    put 'clones/:title' => 'clones#create'
+    get 'clones/:title' => 'clones#get'
+    post 'clones/:title' => 'clones#create'
+    put 'clones/:title' => 'clones#update'
     get 'clones/:title' => 'clones#get'
     delete 'clones/:title' => 'clones#delete'
     get 'clones' => 'clones#index'

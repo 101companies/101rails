@@ -1,16 +1,29 @@
+#header {
+  height: 70px;
+}
+
 #header h1 {
   float: left;
 }
-#header button {
+#header div {
   float: right;
+}
+
+.header-buttons button {
+  width: 100px;
+  margin-bottom: 3px;
 }
 
 body {
   margin-bottom: 30px;
 }
 
-#creation, #clone {
+#creation {
   margin-top: 30px;
+}
+
+#clone {
+  margin-top: 10px;
 }
 
 .candidate {

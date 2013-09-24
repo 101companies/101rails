@@ -6,14 +6,12 @@ class ClonesController < ApplicationController
   end
 
   def create
-    puts params
-    exists = Clone.where(title: params[:title]).exists?
-    if !exists
-      params[:clone][:status] = 'new'
-      Clone.create(params[:clone])
-      render :json => {:success => true}
+    if not Clone.where(title: params[:title]).exists?
+      attributes = params[:clone]
+      @clone = Clone.create(attributes)
+      render :json => @clone
     else
-      render :json => {:success => false, :message => "Clone already exists, choose another name."}, :status => 409
+      render :json => {:success => false, :message => 'Clone already exists, choose another name.'}, :status => 409
     end
   end
 
@@ -33,6 +31,17 @@ class ClonesController < ApplicationController
     @clone = Clone.where(title: params[:title]).first
     @clone.update_status() unless @clone.nil?
     respond_with @clone
+  end
+
+  def update
+    @clone = Clone.find_bys(title: params[:title])
+    if @clone
+      @clone.update_attributes!(params[:clone])
+      @clone.update_status()
+      render :json => {:success => true}
+    else
+      render :json => {:success => false}, :status => 409
+    end
   end
 
   def delete

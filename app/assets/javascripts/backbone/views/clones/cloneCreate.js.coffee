@@ -73,7 +73,7 @@ class Wiki.Views.CloneCreate extends Backbone.View
 
   submit: ->
     self =@
-    @clone.save({}
+    @clone.save({status: 'new'}
       success: -> window.location = '/clones/check/' + self.clone.get('title')
       error: (model,response) ->
         $('#submit-error').text(JSON.parse(response.responseText)['message'])

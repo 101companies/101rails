@@ -1,7 +1,10 @@
 <div id="header">
   <h1>Status of  "<%= title %>"</h1>
-  <% if (status != 'created') { %>
-    <button class="btn btn-small" id="remove"><i class="icon-remove"></i> Withdraw clone</button>
+  <% if (!_.contains(['confirmed', 'created'], status)) { %>
+  <div class="header-buttons">
+    <button class="btn btn-small btn-danger" id="remove"><i class="icon-remove"></i> Withdraw</button><br/>
+    <button class="btn btn-small btn-success" id="confirm"><i class="icon-ok"></i> Confirm</button>
+  </div>
   <% } %>
 </div>
  <hr>
@@ -9,10 +12,8 @@
 <h3>Clone does not exist. You can create one <a href="/clones/new">here</a>.
   <% } else { %>
 <h3>Current status: <b><%= status.replace('_',' ') %></b></h3>
- <% if (status == 'new') { %>
-  The clone will be prepared soon. Please come back later.
- <% } else if (status == 'in_preparation') { %>
-  The clone is currently beging prepared. Please come back later.
+ <% if (status == 'in_preparation') { %>
+  The clone is currently being prepared. Please come back later.
  <% } else if (status == 'in_inspection') { %>
   The clone has been prepared and needs to be inspected. Please follow these steps:
   <ol>
@@ -20,11 +21,18 @@
   <li> Try to run build and test the contribution by using the Makefile.</li>
  <li>
   If this does not succeed uncomment feature fragments of the code that were commented out.  Repeat until building and testing succeeds.</li>
-  <li> Commit and push your changes using the commit message "done inspecting <%= title %>".</li>
+  <li> One you are done with the inspection you have two options:
+  <ul>
+    <li>Commit and push your changes using the commit message "done inspecting <%= title %>".</li>
+    <li>Click the "Confirm" button on the top of this page.</li>
+  </ul>
+  </li>
   <li> Come back to this page. It will soon provide you a link to the contribution page of your new clone.
 </ol>
  <% } else if (status == 'created') { %>
   The clone was created.
+  <% } else if (status == 'confirmed') { %>
+  The clone was confirmed by the developer and a contribution page will be created. Please come back later.
  <% } %>
  <p>
  <hr>
