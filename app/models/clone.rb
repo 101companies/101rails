@@ -25,8 +25,8 @@ class Clone
   end
 
   def self.trigger_preparation
-    triggerurl = 'worker.101companies.org/services/triggerCloneCreation'
-    return open(url).read
+    triggerurl = 'http://worker.101companies.org/services/triggerCloneCreation'
+    return open(triggerurl).read
   end
 
 end
