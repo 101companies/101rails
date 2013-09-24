@@ -42,7 +42,6 @@ class ClonesController < ApplicationController
     else
       render :json => {:success => false}, :status => 409
     end
-
   end
 
 end
