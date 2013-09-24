@@ -68,6 +68,7 @@ class Page
     metadata_section = get_metadata_section sections
     # not found -> create it
     if metadata_section.empty?
+      self.raw_content = "" if self.raw_content.nil?
       self.raw_content = self.raw_content + "\n== Metadata =="
       wiki_parser = self.create_wiki_parser self.raw_content
       sections = self.sections wiki_parser
@@ -78,6 +79,7 @@ class Page
       return
     end
     unless metadata_section["content"].include? namespace_triple
+      metadata_section["content"] = metadata_section["content"] + "\n<!-- Next link is generated automatically-->"
       metadata_section["content"] = metadata_section["content"] + "\n* [[#{namespace_triple}]]"
     end
     # rebuild content from sections
