@@ -21,7 +21,6 @@ class ClonesController < ApplicationController
   end
 
   def index
-    Clone.trigger_preparation
     @clones = Clone.all
     for c in @clones
       c.update_status()
