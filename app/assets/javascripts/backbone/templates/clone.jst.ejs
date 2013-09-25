@@ -20,13 +20,8 @@
   <li> Checkout <a href="https://github.com/tschmorleiz/101haskell">https://github.com/tschmorleiz/101haskell</a>. Your clone can be found in <a href="https://github.com/tschmorleiz/101haskell/tree/master/contributions/<%=  title %>">/contributions/<%=  title %></a>.</li>
   <li> Try to run build and test the contribution by using the Makefile.</li>
  <li>
-  If this does not succeed uncomment feature fragments of the code that were commented out.  Repeat until building and testing succeeds.</li>
-  <li> One you are done with the inspection you have two options:
-  <ul>
-    <li>Commit and push your changes using the commit message "done inspecting <%= title %>".</li>
-    <li>Click the "Confirm" button on the top of this page.</li>
-  </ul>
-  </li>
+  If this does not succeed uncomment feature fragments of the code that were commented out.  Repeat until building and testing succeeds. You should also delete files that are no longer needed because they contain features you deselected.</li>
+  <li> Once you are done with the inspection click the "Confirm" button on the top of this page.</li>
   <li> Come back to this page. It will soon provide you a link to the contribution page of your new clone.
 </ol>
  <% } else if (status == 'created') { %>
