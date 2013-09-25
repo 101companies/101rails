@@ -49,7 +49,7 @@ class Clone
   end
 
   def features_to_wikitext_triples
-    wikitext_triples = (self.features + self.minusfeatures).map {|f| "* [[implements::Feature:" + f + "]]"}
+    wikitext_triples = self.features.map {|f| "* [[implements::Feature:" + f + "]]"}
     return wikitext_triples.join("\n")
   end
 
