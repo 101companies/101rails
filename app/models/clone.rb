@@ -17,7 +17,7 @@ class Clone
     when 'new' then
       self.status = 'in_preparation'
     when 'in_preparation', 'new' then
-      url = 'https://api.github.com/repos/tschmorleiz/101haskell/contents/contributions'
+      url = 'https://api.github.com/repos/tschmorleiz/101haskellclones/contents/contributions'
       contributions = JSON.parse(open(url).read)
       if contributions.any?{|x| x['type'] == 'dir' and x['name'] == self.title}
         self.status = 'in_inspection'
