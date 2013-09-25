@@ -11,10 +11,13 @@ class Clone
   field :status, type: String, :default => 'new'
   field :features, type: Array
   field :minusfeatures, type: Array
+  field :original_commit_sha, type: String
+  field :clone_commit_sha, type: String
 
   def update_status
     case self.status
     when 'new' then
+      self.record_original_commit_sha
       self.status = 'in_preparation'
     when 'in_preparation', 'new' then
       url = 'https://api.github.com/repos/tschmorleiz/101haskellclones/contents/contributions'
@@ -23,9 +26,26 @@ class Clone
         self.status = 'in_inspection'
       end
     when 'confirmed'
+      self.record_clone_commit_sha
       self.create_contribution_page
+      self.status = 'created'
     end
     self.save!
+  end
+
+  def record_commit_sha(url)
+    url = 'https://api.github.com/repos/' + url
+    return JSON.parse(open(url).read)[0]['sha']
+  end
+
+  def record_original_commit_sha
+    url = '101companies/101haskell/commits'
+    self.original_commit_sha = self.record_commit_sha(url)
+  end
+
+  def record_clone_commit_sha
+    url = 'tschmorleiz/101haskellclones/commits?path=contributions/' + self.title
+    self.clone_commit_sha = self.record_commit_sha(url)
   end
 
   def features_to_wikitext_triples
@@ -40,7 +60,6 @@ class Clone
     content += "\n* [[cloneOf::Contribution:" + self.original + "]]"
     @page.raw_content = content
     @page.save
-    self.status = 'created'
   end
 
   def self.trigger_preparation
