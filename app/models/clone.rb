@@ -58,6 +58,7 @@ class Clone
     content = "== Headline ==\nA variant of [[Contribution:" + self.original + "]].\n\n"
     content += "== Metadata ==\n" + self.features_to_wikitext_triples
     content += "\n* [[cloneOf::Contribution:" + self.original + "]]"
+    content += "\n* [[instanceOf::Namespace:Contribution]]"
     @page.raw_content = content
     @page.save
   end
