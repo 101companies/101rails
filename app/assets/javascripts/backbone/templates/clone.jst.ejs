@@ -1,6 +1,6 @@
 <div id="header">
   <h1>Status of  "<%= title %>"</h1>
-  <% if (!_.contains(['confirmed', 'created', 'non-existent'], status)) { %>
+  <% if (!_.contains(['confirmed', 'non-existent'], status)) { %>
   <div class="header-buttons">
     <button class="btn btn-small btn-danger" id="remove"><i class="icon-remove"></i> Withdraw</button><br/>
     <button class="btn btn-small btn-success" id="confirm"><i class="icon-ok"></i> Confirm</button>

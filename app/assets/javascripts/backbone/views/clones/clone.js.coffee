@@ -17,7 +17,7 @@ class Wiki.Views.Clone extends Backbone.View
 
   remove: ->
     @model.destroy(
-      success: ->
+      success: -> window.location = '/clones'
     )
 
   confirm: ->
