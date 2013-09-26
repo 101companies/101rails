@@ -20,15 +20,12 @@ class ClonesController < ApplicationController
 
   def index
     @clones = Clone.all
-    for c in @clones
-      c.update_status()
-    end
     respond_with @clones
   end
 
   def get
     @clone = Clone.where(title: params[:title]).first
-    @clone.update_status() unless @clone.nil?
+    @clone.update_status() unless @clone.nil? or params[:no_update]
     Clone.trigger_preparation
     respond_with @clone
   end
@@ -37,7 +34,7 @@ class ClonesController < ApplicationController
     @clone = Clone.find_by(title: params[:title])
     if @clone
       @clone.update_attributes!(params[:clone])
-      @clone.update_status()
+      @clone.update_status() unless params[:no_update]
       respond_with @clone
     else
       render :json => {:success => false}, :status => 409
