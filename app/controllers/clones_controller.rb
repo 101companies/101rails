@@ -20,6 +20,13 @@ class ClonesController < ApplicationController
 
   def index
     @clones = Clone.all
+    if params[:no_update]
+      puts "NO_UPDATE"
+    else
+      for c in @clones
+        c.update_status()
+      end
+    end
     respond_with @clones
   end
 
