@@ -13,7 +13,7 @@ class Clone
   field :minusfeatures, type: Array
   field :original_commit_sha, type: String
   field :clone_commit_sha, type: String
-  field :diff
+  field :feature_diff
 
   def update_status
     case self.status
@@ -31,7 +31,7 @@ class Clone
       self.create_contribution_page
       self.status = 'created'
     when 'created'
-      if not self.diff
+      if not self.feature_diff
         self.getDiff
       end
     end
@@ -62,7 +62,7 @@ class Clone
     url = 'http://worker.101companies.org/services/diffClone?clonename=' + self.title
     diff = JSON.parse(open(url).read)
     unless diff.has_key?('error')
-      self.diff = diff
+      self.feature_diff = diff
     end
   end
 
