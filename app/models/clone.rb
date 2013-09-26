@@ -67,7 +67,11 @@ class Clone
   end
 
   def create_contribution_page
-    @page = PageModule.create_page_by_full_title("Contribution:" + self.title)
+    full_title = "Contribution:" + self.title
+    @page = PageModule.create_page_by_full_title(full_title)
+    if @page.nil?
+      @page = PageModule.find_by_full_title(full_title)
+    end
     content = "== Headline ==\nA variant of [[Contribution:" + self.original + "]].\n\n"
     content += "== Metadata ==\n" + self.features_to_wikitext_triples
     content += "\n* [[cloneOf::Contribution:" + self.original + "]]"
