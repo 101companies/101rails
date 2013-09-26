@@ -59,11 +59,7 @@ class Clone
   end
 
   def getDiff
-    url = 'http://worker.101companies.org/services/diffClone?clonename=' + self.title
-    diff = JSON.parse(open(url).read)
-    unless diff.has_key?('error')
-      self.diff = diff
-    end
+
   end
 
   def create_contribution_page
