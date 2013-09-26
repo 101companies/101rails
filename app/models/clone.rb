@@ -13,6 +13,7 @@ class Clone
   field :minusfeatures, type: Array
   field :original_commit_sha, type: String
   field :clone_commit_sha, type: String
+  field :diff
 
   def update_status
     case self.status
@@ -29,6 +30,10 @@ class Clone
       self.record_clone_commit_sha
       self.create_contribution_page
       self.status = 'created'
+    when 'created'
+      if not self.diff
+        self.getDiff
+      end
     end
     self.save!
   end
@@ -51,6 +56,14 @@ class Clone
   def features_to_wikitext_triples
     wikitext_triples = self.features.map {|f| "* [[implements::Feature:" + f + "]]"}
     return wikitext_triples.join("\n")
+  end
+
+  def getDiff
+    url = 'http://worker.101companies.org/services/diffClone?clonename=' + self.title
+    diff = JSON.parse(open(url).read)
+    unless diff.has_key?('error')
+      self.diff = diff
+    end
   end
 
   def create_contribution_page
