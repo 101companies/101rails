@@ -10,6 +10,7 @@ class Wiki.Models.Clone extends Backbone.Model
     original: ""
     features: []
     minusfeatures: []
+    propagation: null
 
 class Wiki.Models.Clones extends Backbone.Collection
 

@@ -14,6 +14,7 @@ class Clone
   field :original_commit_sha, type: String
   field :clone_commit_sha, type: String
   field :feature_diff
+  field :propagation
 
   def update_status
     case self.status
@@ -21,11 +22,7 @@ class Clone
       self.record_original_commit_sha
       self.status = 'in_preparation'
     when 'in_preparation', 'new' then
-      url = 'https://api.github.com/repos/tschmorleiz/101haskellclones/contents/contributions'
-      contributions = JSON.parse(open(url).read)
-      if contributions.any?{|x| x['type'] == 'dir' and x['name'] == self.title}
-        self.status = 'in_inspection'
-      end
+     self.check_creation
     when 'confirmed'
       self.record_clone_commit_sha
       self.create_contribution_page
@@ -34,8 +31,19 @@ class Clone
       if not self.feature_diff
         self.getDiff
       end
+      if not self.propagation
+        self.getPropagations
+      end
     end
     self.save!
+  end
+
+  def check_creation
+   url = 'https://api.github.com/repos/tschmorleiz/101haskellclones/contents/contributions'
+   contributions = JSON.parse(open(url).read)
+   if contributions.any?{|x| x['type'] == 'dir' and x['name'] == self.title}
+    self.status = 'in_inspection'
+   end
   end
 
   def record_commit_sha(url)
@@ -66,6 +74,15 @@ class Clone
     end
   end
 
+  def getPropagations
+    url = 'http://worker.101companies.org/data/dumps/clonehistory.json'
+    propagations = JSON.parse(open(url).read)
+    if propagations.has_key?(self.title)
+      self.propagation = propagations[self.title]['inspection']
+      self.propagation_status = 'in_inspection'
+    end
+  end
+
   def create_contribution_page
     full_title = "Contribution:" + self.title
     @page = PageModule.create_page_by_full_title(full_title)
@@ -85,16 +102,9 @@ class Clone
       triggerurl = 'http://worker.101companies.org/services/triggerCloneCreation'
       http = EM::HttpRequest.new(triggerurl).get
       http.errback do
-        puts "Connection error: #{http.error}"
         EM.stop
       end
       http.callback do
-        if http.response_header.status == 200
-          puts "Success!"
-          puts http.response
-        else
-          puts "Unexpected status code: #{http.response_header.status}"
-        end
         EM.stop
       end
     end

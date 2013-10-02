@@ -5,6 +5,7 @@ class Wiki.Views.Clone extends Backbone.View
   events:
     'click #remove' : 'remove'
     'click #confirm' : 'confirm'
+    'click .prop-respond' : 'propRespond'
 
   initialize: ->
     self = @
@@ -20,7 +21,18 @@ class Wiki.Views.Clone extends Backbone.View
       success: -> window.location = '/clones'
     )
 
+  propRespond: (e) ->
+    self = @
+    propagation = @model.get('propagation')
+    propagation['response'] = $(e.target).val()
+    @model.save({'propagation': propagation},
+      success: -> self.render()
+    )
+
+
   confirm: ->
     self = @
     @model.set('status', 'confirmed')
-    @model.save({}, success: -> self.render())
+    @model.save({},
+      success: -> self.render()
+    )
