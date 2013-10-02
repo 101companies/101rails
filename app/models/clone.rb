@@ -13,7 +13,8 @@ class Clone
   field :minusfeatures, type: Array
   field :original_commit_sha, type: String
   field :clone_commit_sha, type: String
-  field :last_checked_sha, type: String
+  field :last_checked_original_sha, type: String
+  field :last_checked_clone_sha, type: String
   field :feature_diff
   field :propagation
 
@@ -36,12 +37,18 @@ class Clone
       if self.feature_diff.nil?
         self.get_diff
       end
+      if self.propagation == ''
+        self.propagation = nil
+      end
       if not self.propagation.nil? and not self.propagation['response'].nil?
         self.process_response
         self.get_propagations
       end
       if self.propagation.nil?
         self.get_propagations
+      end
+      if not self.last_checked_clone_sha
+        self.get_last_checked_clone_sha
       end
     end
 
@@ -89,14 +96,21 @@ class Clone
     propagations = JSON.parse(open(url).read)
     if propagations.has_key?(self.title)
       candidate = propagations[self.title]['inspection']
-      if not self.propagation or candidate['branch'] != self.propagation['branch']
-        self.propagation = candidate
+      if candidate
+        if not self.propagation or candidate['branch'] != self.propagation['branch']
+          self.propagation = candidate
+        end
       end
     end
   end
 
   def process_response
-    self.last_checked_sha = self.propagation['commits'][0]
+    self.last_checked_original_sha = self.propagation['commits'][0]
+    self.last_checked_clone_sha = nil
+  end
+
+  def get_last_checked_clone_sha
+    # TODO
   end
 
   def create_contribution_page
