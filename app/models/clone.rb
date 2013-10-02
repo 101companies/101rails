@@ -13,29 +13,39 @@ class Clone
   field :minusfeatures, type: Array
   field :original_commit_sha, type: String
   field :clone_commit_sha, type: String
+  field :last_checked_sha, type: String
   field :feature_diff
   field :propagation
 
   def update_status
     case self.status
+
     when 'new' then
       self.record_original_commit_sha
       self.status = 'in_preparation'
+
     when 'in_preparation', 'new' then
      self.check_creation
+
     when 'confirmed'
       self.record_clone_commit_sha
       self.create_contribution_page
       self.status = 'created'
+
     when 'created'
-      if not self.feature_diff
-        self.getDiff
+      if self.feature_diff.nil?
+        self.get_diff
       end
-      if not self.propagation
-        self.getPropagations
+      if not self.propagation.nil? and not self.propagation['response'].nil?
+        self.process_response
+        self.get_propagations
+      end
+      if self.propagation.nil?
+        self.get_propagations
       end
     end
-    self.save!
+
+    self.save
   end
 
   def check_creation
@@ -66,7 +76,7 @@ class Clone
     return wikitext_triples.join("\n")
   end
 
-  def getDiff
+  def get_diff
     url = 'http://worker.101companies.org/services/diffClone?clonename=' + self.title
     diff = JSON.parse(open(url).read)
     unless diff.has_key?('error')
@@ -74,13 +84,19 @@ class Clone
     end
   end
 
-  def getPropagations
+  def get_propagations
     url = 'http://worker.101companies.org/data/dumps/clonehistory.json'
     propagations = JSON.parse(open(url).read)
     if propagations.has_key?(self.title)
-      self.propagation = propagations[self.title]['inspection']
-      self.propagation_status = 'in_inspection'
+      candidate = propagations[self.title]['inspection']
+      if not self.propagation or candidate['branch'] != self.propagation['branch']
+        self.propagation = candidate
+      end
     end
+  end
+
+  def process_response
+    self.last_checked_sha = self.propagation['commits'][0]
   end
 
   def create_contribution_page
