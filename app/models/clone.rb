@@ -47,7 +47,7 @@ class Clone
       if self.propagation.nil?
         self.get_propagations
       end
-      if not self.last_checked_clone_sha
+      if not self.propagation.nil? and self.last_checked_clone_sha.nil?
         self.get_last_checked_clone_sha
       end
     end
@@ -110,7 +110,14 @@ class Clone
   end
 
   def get_last_checked_clone_sha
-    # TODO
+    url = 'http://worker.101companies.org/data/dumps/clonehistory.json'
+    propagations = JSON.parse(open(url).read)
+    if propagations[self.title].has_key?('inspection')
+      inspection = propagations[self.title]['inspection']
+      if inspection.has_key?('merge_commit')
+        self.last_checked_clone_sha = inspection['merge_commit']
+      end
+    end
   end
 
   def create_contribution_page
