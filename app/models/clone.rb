@@ -47,7 +47,7 @@ class Clone
       if self.propagation.nil?
         self.get_propagations
       end
-      if not self.propagation.nil? and self.last_checked_clone_sha.nil?
+      if not self.propagation.nil?
         self.get_last_checked_clone_sha
       end
     end
