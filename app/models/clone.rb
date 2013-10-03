@@ -106,7 +106,6 @@ class Clone
 
   def process_response
     self.last_checked_original_sha = self.propagation['commits'][0]
-    self.last_checked_clone_sha = nil
   end
 
   def get_last_checked_clone_sha
