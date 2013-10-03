@@ -34,7 +34,7 @@ class Clone
       self.status = 'created'
 
     when 'created'
-      if self.feature_diff.nil?
+      if self.feature_diff.nil? or self.feature_diff == ''
         self.get_diff
       end
       if self.propagation == ''
