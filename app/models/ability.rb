@@ -18,6 +18,14 @@ class Ability
       user.role == 'editor' or page.users.include? user
     end
 
+    can :administrate_contribution, Page do
+      user.role == 'editor'
+    end
+
+    can :update_contribution, Page do |page|
+      user.role == 'editor' or page.users.include? user
+    end
+
     # page can be renamed, if user is admin or editor
     can :rename, Page do
       user.role == 'editor'
