@@ -8,6 +8,12 @@ module ContributionModule
     end
   end
 
+  def default_contribution_text
+    "You have created new contribution using [https://github.com Github]. " +
+    "Source code for this contribution you can find [#{self.contribution_url} here]. " +
+    "Please replace this text with something more meaningful."
+  end
+
   def analyse_request
     success = true
     # TODO: check fail case

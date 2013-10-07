@@ -52,8 +52,7 @@ class ContributionsController < ApplicationController
     unless params[:contrb_description].empty?
       @contribution_page.raw_content = "== Headline ==\n\n" + params[:contrb_description]
     else
-      # TODO: change text
-      @contribution_page.raw_content = "== Headline ==\n\n" + "Lorem ipsum"
+      @contribution_page.raw_content = "== Headline ==\n\n" + @contribution_page.default_contribution_text
     end
     # TODO: restore later
     #@contribution_page.user = current_user
@@ -64,6 +63,7 @@ class ContributionsController < ApplicationController
     else
       flash[:notice] = "You have created new contribution. You will retrieve an email, when it will be analyzed."
     end
+    @contribution_page.inject_namespace_triple
     @contribution_page.save
     # TODO: restore
     #Mailer.created_contribution(@contribution_page).deliver
