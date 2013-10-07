@@ -1,0 +1,48 @@
+%ul.nav.nav-tabs
+
+  %li.active
+    %a#page-tab-link.tab-link{"data-toggle" => 'tab', :href => '#page'} 101wiki
+
+  %li
+    %a#discovery-tab-link 101explorer
+
+  - @can_update_contribution = can? :update_contribution, @page
+  - @can_administrate_contribution = can? :update_administrate, @page
+
+  - if (@page.namespace=="Contribution") and (@can_update_contribution && @can_administrate_contribution)
+    %li
+      %a#contribution-tab-link.tab-link{:href => "#contribution"} Contribution properties
+
+  %li#sourcelinks.dropdown
+    %a#drop4.dropdown-toggle{"data-toggle" => "dropdown", :href => "#", :role => "button"}
+      101repo
+      %b.caret
+    %ul#menu1.dropdown-menu{:role => "menu"}
+
+.tab-content
+  #page.tab-pane.active
+    %h3.content-loading
+      %center
+        %img{:src => "/assets/ajax-loader.gif"}/
+        Loading page...
+
+  = render "/pages/contribution_tab"
+
+= render "/pages/shared/default"
+
+%br
+
+  #infofooter
+    #history
+
+  #modal.modal.fade
+    .modal-header
+      %a.close{"data-dismiss" => "modal"} &times;
+    %h3
+      #modal_body
+
+  #disqus_thread
+
+  #disqus_loader{:style => "text-align: center"}
+    %button.btn{:onclick => "$.ajaxSetup({cache:true});$.getScript(\"http://101companies.disqus.com/embed.js\");$.ajaxSetup({cache:false});$(\"#disqus_loader\").remove();"}
+      %strong Load Disqus Comments
