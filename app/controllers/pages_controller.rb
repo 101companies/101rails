@@ -30,6 +30,23 @@ class PagesController < ApplicationController
 
   end
 
+  def apply_findings
+    flash[:success] = "You have successfully added to metadata worker findings"
+    JSON.parse(@page.worker_findings).each do |finding|
+      finding.keys.each do |finding_key|
+        if finding[finding_key]
+          finding[finding_key].each do |one_prop|
+            predicate_part = finding_key == "features" ? 'implements' : 'uses'
+            @page.inject_triple "#{predicate_part}::#{finding_key.singularize.capitalize}:#{one_prop}"
+          end
+        end
+
+      end
+      @page.save
+    end
+    redirect_to  "/wiki/#{@page.nice_wiki_url}"
+  end
+
   def get_rdf
     title = params[:id]
     graph_to_return = RDF::Graph.new
@@ -72,7 +89,7 @@ class PagesController < ApplicationController
       format.html {
         render :html => @doc, :layout => "snapshot"
       }
-    end  
+    end
   end
 
   def show
@@ -81,18 +98,18 @@ class PagesController < ApplicationController
         if @page.snapshot == nil
           logger.debug("Page doesn't have a snapshot")
           @doc = SnapshotModule.get_snapshot(@page)
-        else  
+        else
           logger.debug("Page already has a snapshot")
-          @doc = @page.snapshot 
-        end 
+          @doc = @page.snapshot
+        end
         respond_to do |format|
           format.html {
             render :html => @doc, :layout => "snapshot"
           }
-        end 
+        end
       rescue
-        @error_message="#{$!}" 
-        logger.error(@error_message) 
+        @error_message="#{$!}"
+        logger.error(@error_message)
         redirect_to :status => 404
       end
     else
@@ -129,7 +146,7 @@ class PagesController < ApplicationController
         }}
 
       end
-    end   
+    end
   end
 
   def parse

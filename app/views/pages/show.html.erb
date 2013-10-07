@@ -1,8 +1,22 @@
-    <div class="row-fluid">
-    </div>
     <ul class="nav nav-tabs">
-      <li class="active"><a href="" data-toggle="tab">101wiki</a></li>
-      <li ><a href="" id="discovery-tab-link">101explorer</a></li>
+      <li class="active">
+        <a href="#page" class="tab-link id="page-tab-link" data-toggle="tab">101wiki</a>
+      </li>
+      <li>
+        <a href="" id="discovery-tab-link">101explorer</a>
+      </li>
+
+      <%
+          can_update_contribution = can? :update_contribution, @page
+          can_administrate_contribution = can? :update_administrate, @page
+      %>
+
+      <% if (@page.namespace=="Contribution") and (can_update_contribution && can_administrate_contribution) %>
+        <li>
+          <a href="#contribution" class="tab-link" id="contribution-tab-link">Contribution properties</a>
+        </li>
+      <% end %>
+
       <li class="dropdown" id="sourcelinks">
         <a class="dropdown-toggle" id="drop4" role="button" data-toggle="dropdown" href="#">
           101repo<b class="caret"></b>
@@ -10,17 +24,82 @@
         <ul id="menu1" class="dropdown-menu" role="menu"></ul>
       </li>
     </ul>
-    <div id="page">
-      <h3 class="content-loading">
-        <center><img src="/assets/ajax-loader.gif"/> Loading page...</center>
-      </h3>
-    </div>
+
+    <div class="tab-content">
+
+      <div id="page" class="tab-pane active">
+        <h3 class="content-loading">
+          <center><img src="/assets/ajax-loader.gif"/> Loading page...</center>
+        </h3>
+      </div>
+
+      <!-- show contribution tab, if clicked link #contribution in tabs bar-->
+      <script type="text/javascript">
+          $('.tab-link').on('click', function(){
+              $(this).tab('show');
+          });
+      </script>
+
+      <% if (@page.namespace=="Contribution") %>
+
+          <div id="contribution" class="tab-pane">
+
+            <h2>Information about contribution</h2>
+
+            <% if @page.worker_findings and !@page.worker_findings.empty? %>
+
+                <div id="workerFindings">
+
+                  <h3>Worker findings</h3>
+
+                    <% findings = JSON.parse(@page.worker_findings) %>
+
+                    <% if findings %>
+                      <% findings.each do |one_finding| %>
+
+                          <% one_finding.keys.each do |finding_key| %>
+                            <p>
+                              <b>
+                                <%= finding_key.capitalize %>
+                              </b>
+                              : <%= ContributionModule.contribution_array_to_string(one_finding[finding_key])%>
+                            </p>
+                          <% end %>
+
+                      <% end %>
+
+                    <% end %>
+
+                    <% if  (can_administrate_contribution or can_update_contribution) %>
+                      <% apply_url = PageModule.escape_wiki_url @page.full_title %>
+                      <a id="applyFindings" href="/contribute/apply_findings/<%= apply_url %>" class="btn btn-success">
+                        Apply findings in contribution page
+                      </a>
+                    <% end %>
+
+                </div>
+
+            <% end %>
+
+            <% if (@page.namespace=="Contribution") %>
+                <% if can_administrate_contribution %>
+                <% end %>
+                <% if can_update_contribution %>
+                <% end %>
+            <% end %>
+
+          </div>
+
+        </div>
+
+    <% end %>
+
     <%= render "/pages/shared/default" %>
     <br>
-    <div id="infofooter">
-      <div id="history">
-      </div>
-    </div>
+    <!--<div id="infofooter">-->
+      <!--<div id="history">-->
+      <!--</div>-->
+    <!--</div>-->
     <div class="modal fade" id="modal">
       <div class="modal-header">
         <a class="close" data-dismiss="modal">&times;</a>
