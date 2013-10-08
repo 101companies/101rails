@@ -7,4 +7,4 @@ class Wiki.Views.History extends Backbone.View
 
   render: ->
     self = @
-    $(@el).append(@template(model: self.model.toJSON()))
+    $(@el).html(@template(model: self.model.toJSON()))
