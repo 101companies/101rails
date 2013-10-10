@@ -21,6 +21,10 @@
 
 */
 
+body .row-fluid {
+    margin-top: 50px;
+}
+
 #search-query {
   width: 110px;
 }
@@ -58,7 +62,6 @@ body, p, h1, h2, ul, a, span, strong, select, option, label {
 }
 
 #main101 {
-  margin-top: 70px;
   overflow: hidden;
 }
 
