@@ -34,6 +34,11 @@
     %li
       %a#contribution-tab-link.tab-link{:href => "#contribution"} Contribution properties
 
+  - exist_last_change = !@page.page_changes.nil? ? @page.page_changes.last : nil
+  - if exist_last_change
+    %li
+      %a#history-tab-link.tab-link{:href => "#page-changes"} History of editing
+
   %li#sourcelinks.dropdown
     %a#drop4.dropdown-toggle{"data-toggle" => "dropdown", :href => "#", :role => "button"}
       101repo
@@ -53,6 +58,10 @@
   / tab with all contributions settings
   - if (@page.namespace == "Contribution")
     = render "/pages/contribution_tab"
+
+  / tab with all history revisions
+  - if exist_last_change
+    = render "/pages/history_tab"
 
 %br
 

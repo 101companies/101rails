@@ -95,6 +95,7 @@ class PagesController < ApplicationController
   end
 
   def show
+
     if params.has_key?(:_escaped_fragment_)
        begin
         if @page.snapshot == nil
@@ -114,6 +115,7 @@ class PagesController < ApplicationController
         logger.error(@error_message)
         redirect_to :status => 404
       end
+
     else
 
       respond_to do |format|
@@ -149,6 +151,7 @@ class PagesController < ApplicationController
 
       end
     end
+
   end
 
   def parse

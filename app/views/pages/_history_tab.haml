@@ -1,0 +1,9 @@
+#page-changes.tab-pane
+  %h2 Page changes
+
+  - @page.page_changes.each do |page_change|
+    %div.one-page-change
+      %img.small_avatar{:src => page_change.user.github_avatar}
+      %a{:href=> "mailto:#{page_change.user.email}"}= page_change.user.name
+      edited this article at
+      = page_change.created_at.to_s

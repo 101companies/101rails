@@ -21,6 +21,10 @@
 
 */
 
+.one-page-change {
+    height: 50px;
+}
+
 body .row-fluid {
     margin-top: 50px;
 }
@@ -38,6 +42,8 @@ body .row-fluid {
 }
 
 .small_avatar {
+  height: 24px;
+  width: 24px;
   border-radius: 12px;
 }
 
