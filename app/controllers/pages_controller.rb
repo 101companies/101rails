@@ -31,7 +31,6 @@ class PagesController < ApplicationController
   end
 
   def apply_findings
-    flash[:success] = "You have successfully added to metadata worker findings"
     JSON.parse(@page.worker_findings).each do |finding|
       finding.keys.each do |finding_key|
         if finding[finding_key]
@@ -40,9 +39,12 @@ class PagesController < ApplicationController
             @page.inject_triple "#{predicate_part}::#{finding_key.singularize.capitalize}:#{one_prop}"
           end
         end
-
       end
-      @page.save
+      result = @page.save
+      message_type= result ? :success : :error
+      message = result ? "You have successfully added to metadata worker findings" :
+          "Something was wrong. Please try again later"
+      flash[message_type] = message
     end
     redirect_to  "/wiki/#{@page.nice_wiki_url}"
   end
