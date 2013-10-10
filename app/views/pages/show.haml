@@ -1,3 +1,24 @@
+:javascript
+  $(function(){
+
+    // clicking on tab
+    $('.tab-link').on('click', function(evt){
+        //evt.preventDefault();
+        $(this).tab('show');
+        // prevent scrolling to the bottom of page
+        $(document).scrollTop(0);
+    });
+
+    // if page opened with hash param -> try to open appropriate tab
+    var hash = window.location.hash;
+    if (hash.length) {
+      $('[href="#'+hash+'"]').trigger('click');
+    };
+
+  });
+
+= render "/pages/shared/default"
+
 %ul.nav.nav-tabs
 
   %li.active
@@ -20,29 +41,37 @@
     %ul#menu1.dropdown-menu{:role => "menu"}
 
 .tab-content
+
+  / tab with backbone page
   #page.tab-pane.active
+
     %h3.content-loading
       %center
         %img{:src => "/assets/ajax-loader.gif"}/
         Loading page...
 
-  = render "/pages/contribution_tab"
-
-= render "/pages/shared/default"
+  / tab with all contributions settings
+  - if (@page.namespace == "Contribution")
+    = render "/pages/contribution_tab"
 
 %br
 
-  #infofooter
-    #history
+#infofooter
+  #history
 
-  #modal.modal.fade
-    .modal-header
-      %a.close{"data-dismiss" => "modal"} &times;
-    %h3
-      #modal_body
+#modal.modal.fade
+  .modal-header
+    %a.close{"data-dismiss" => "modal"} &times;
+  %h3
+    #modal_body
 
-  #disqus_thread
+#disqus_thread
 
-  #disqus_loader{:style => "text-align: center"}
-    %button.btn{:onclick => "$.ajaxSetup({cache:true});$.getScript(\"http://101companies.disqus.com/embed.js\");$.ajaxSetup({cache:false});$(\"#disqus_loader\").remove();"}
-      %strong Load Disqus Comments
+- disq = "$ajaxSetup({cache:true});"+
+-  "$.getScript(\"http://101companies.disqus.com/embed.js\");"+
+-  "$.ajaxSetup({cache:false});"+
+-  "$(\"#disqus_loader\").remove();"
+
+#disqus_loader{:style => "text-align: center"}
+  %button.btn{:onclick => "#{disq}"}
+    %strong Load Disqus Comments
