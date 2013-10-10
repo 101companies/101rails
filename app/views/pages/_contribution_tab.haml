@@ -1,37 +1,24 @@
-/ show contribution tab, if clicked link #contribution in tabs bar
-:javascript
+#contribution.tab-pane
 
-  if (document.location.hash=="contribution") $('#contribution-tab-link').tab('show');
-  $('.tab-link').on('click', function(){
-      $(this).tab('show');
-  });
+  %h2 Information about contribution
 
-- if (@page.namespace=="Contribution")
-  #contribution.tab-pane
+  - if @page.worker_findings and !@page.worker_findings.empty?
 
-    %h2 Information about contribution
+    #workerFindings
 
-    - if @page.worker_findings and !@page.worker_findings.empty?
+      %h3 Worker findings
 
-      #workerFindings
+      - findings = JSON.parse(@page.worker_findings)
 
-        %h3 Worker findings
+      - if findings
+        - findings.each do |one_finding|
+          - one_finding.keys.each do |finding_key|
+            %p
+              %b
+                = finding_key.capitalize
+              \: #{ContributionModule.contribution_array_to_string(one_finding[finding_key])}
 
-        - findings = JSON.parse(@page.worker_findings)
-
-        - if findings
-          - findings.each do |one_finding|
-            - one_finding.keys.each do |finding_key|
-              %p
-                %b
-                  = finding_key.capitalize
-                \: #{ContributionModule.contribution_array_to_string(one_finding[finding_key])}
-
-        - if  (@can_administrate_contribution or @can_update_contribution)
-          - apply_url = PageModule.escape_wiki_url @page.full_title
-          %a#applyFindings.btn.btn-success{:href => "/contribute/apply_findings/#{apply_url}"}
-            Apply findings in contribution page
-
-    / - if (@page.namespace=="Contribution")
-    /  / - if can_administrate_contribution
-    /  / - if can_update_contribution
+      - if  (@can_administrate_contribution or @can_update_contribution)
+        - apply_url = PageModule.escape_wiki_url @page.full_title
+        %a#applyFindings.btn.btn-success{:href => "/contribute/apply_findings/#{apply_url}"}
+          Apply findings in contribution page
