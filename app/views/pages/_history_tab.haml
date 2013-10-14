@@ -6,4 +6,4 @@
       %img.small_avatar{:src => page_change.user.github_avatar}
       %a{:href=> "mailto:#{page_change.user.email}"}= page_change.user.name
       edited this article at
-      = page_change.created_at.to_s
+      = time_ago_in_words page_change.created_at
