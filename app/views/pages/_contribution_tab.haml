@@ -22,3 +22,5 @@
         - apply_url = PageModule.escape_wiki_url @page.full_title
         %a#applyFindings.btn.btn-success{:href => "/contribute/apply_findings/#{apply_url}"}
           Apply findings in contribution page
+
+  = render 'contributions/add_contribution_form'
