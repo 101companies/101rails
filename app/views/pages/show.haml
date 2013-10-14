@@ -25,7 +25,7 @@
     %a#page-tab-link.tab-link{"data-toggle" => 'tab', :href => '#page'} 101wiki
 
   %li
-    %a#discovery-tab-link 101explorer
+    %a#discovery-tab-link{:target => '_blank'} 101explorer
 
   - @can_update_contribution = can? :update_contribution, @page
   - @can_administrate_contribution = can? :update_administrate, @page
