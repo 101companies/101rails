@@ -30,10 +30,9 @@ class Page
   field :contribution_url_folder, type: String
 
   # relations here
-  has_and_belongs_to_many :users
   has_many :page_changes
-  # TODO: contributor
-  #has_one :contributor
+  has_and_belongs_to_many :users, :class_name => 'User', :inverse_of => :pages
+  belongs_to :contributor, :class_name => 'User', :inverse_of => :contribution_pages
 
   # TODO: restore
   #validates_uniqueness_of :contribution_url_folder
@@ -41,7 +40,8 @@ class Page
   validates_presence_of :title
   validates_presence_of :namespace
 
-  attr_accessible :user_ids, :namespace, :title, :snapshot, :contribution_folder, :contribution_url, :worker_findings
+  attr_accessible :user_ids, :raw_content, :namespace, :title, :snapshot,
+                  :contribution_folder, :contribution_url, :contributor_id, :worker_findings
 
   # validate uniqueness for paar title + namespace
   before_validation do

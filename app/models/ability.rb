@@ -6,39 +6,21 @@ class Ability
     # get exsiting user or create new temporary user
     user ||= User.new
 
-    # permissions for work in admin interface
-    if user && user.role == 'admin'
+    # admin can manage everyting and has access to admin ui
+    if user.role == 'admin'
       can :manage, :all
       can :access, :rails_admin
       can :dashboard
     end
 
-    # page can be updated, if user is admin or editor, or user owns the page
-    can :update, Page do |page|
-      user.role == 'editor' or page.users.include? user
-    end
+    # editor can work with pages
+    (can :manage, Page) if user.role == 'editor'
 
-    can :administrate_contribution, Page do
-      user.role == 'editor'
-    end
-
-    can :update_contribution, Page do |page|
-      user.role == 'editor' or page.users.include? user
-    end
-
-    # page can be renamed, if user is admin or editor
-    can :rename, Page do
-      user.role == 'editor'
-    end
-
-    # page can be renamed, if user is admin or editor
-    can :delete, Page do
-      user.role == 'editor'
-    end
-
-    # page can be created, if user is admin or editor
-    can :create, Page do
-      user.role == 'editor'
+    # user can change the page, if it's his page
+    # he listed in list of users or is contributor of the page
+    # or he edited this page in old wiki
+    can :manage, Page do |page|
+        page.contributor == user or page.users.include? user
     end
 
   end

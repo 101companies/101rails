@@ -78,11 +78,11 @@ RailsAdmin.config do |config|
     field :created_at
     field :updated_at
 
-    field :pages do
+    field :contribution_pages do
       sortable false
     end
 
-    field :contributions do
+    field :pages do
       sortable false
     end
 
@@ -132,6 +132,10 @@ RailsAdmin.config do |config|
       end
 
       field :raw_content do
+        show
+      end
+
+      field :contributor do
         show
       end
 

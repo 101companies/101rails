@@ -4,7 +4,7 @@ class User
   include Mongoid::Paranoia
 
   def self.role_options
-    ['admin', 'editor', 'guest', 'nobody']
+    ['admin', 'editor', 'guest', 'deprecated']
   end
 
   field :email,          :type => String
@@ -18,17 +18,16 @@ class User
   field :github_uid,     :type => String
 
   has_many :old_wiki_users
-  # TODO: restore
-  #has_many :contributions
   has_many :page_changes
-  has_and_belongs_to_many :pages
+  has_and_belongs_to_many :pages, :class_name => 'Page', :inverse_of => :users
+  has_many :contribution_pages, :class_name => 'Page', :inverse_of => :contributor
 
   validates_uniqueness_of :email
   validates_uniqueness_of :github_uid
 
   validates_presence_of :name, :email, :github_uid, :github_token, :github_name
 
-  attr_accessible :role, :contributions, :page_ids, :old_wiki_user_ids
+  attr_accessible :role, :page_ids, :old_wiki_user_ids, :contribution_page_ids
 
   def populate_data(omniauth)
     self.email = omniauth['info']['email']
