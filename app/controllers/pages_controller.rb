@@ -9,7 +9,8 @@ class PagesController < ApplicationController
   # before_filter need to be before load_and_authorize_resource
   before_filter :get_the_page
   # methods, that need to check permissions
-  load_and_authorize_resource :only => [:delete, :rename, :update]
+  load_and_authorize_resource :only => [:delete, :rename, :update, :apply_findings,
+                                        :update_contribution, :fetch_data_from_worker]
 
   def get_the_page
     # if no title -> set default wiki startpage '@project'
@@ -28,6 +29,25 @@ class PagesController < ApplicationController
       end
     end
 
+  end
+
+  def fetch_data_from_worker
+    result = @page.analyse_request
+    message_type= result ? :success : :error
+    message = result ? "Request on worker sent, wait notification email" : "Failed to send request"
+    flash[message_type] = message
+    redirect_to  "/wiki/#{@page.nice_wiki_url}"
+  end
+
+  def update_contribution
+    @page.contribution_url = params[:contrb_url]
+    @page.contribution_folder = params[:contrb_folder]
+    result = @page.save
+    # TODO: error show?
+    message_type= result ? :success : :error
+    message = result ? "Contribution information was updated" : "Failed to update contribution info"
+    flash[message_type] = message
+    redirect_to  "/wiki/#{@page.nice_wiki_url}"
   end
 
   def apply_findings
@@ -125,6 +145,7 @@ class PagesController < ApplicationController
           if good_link != params[:id]
             redirect_to '/wiki/'+ good_link and return
           end
+
           # no redirect? -> render the page
           render :html => @page
         }

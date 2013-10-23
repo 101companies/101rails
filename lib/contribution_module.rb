@@ -24,7 +24,7 @@ module ContributionModule
                             :folder => self.contribution_folder,
                             :name => PageModule.nice_wiki_url(self.title),
                             #TODO: replace before commit
-                            :backping => "http://141.26.94.157:3000/contribute/analyze/#{self.id}"
+                            :backping => "http://141.26.160.6:3000/contribute/analyze/#{self.id}"
                             #:backping => "http://101companies.org/contribute/analyze/#{@page.id}"
                         }.to_json,
                         :headers => {'Content-Type' => 'application/json'}

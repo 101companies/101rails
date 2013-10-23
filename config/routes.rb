@@ -18,10 +18,12 @@ Wiki::Application.routes.draw do
     # ui for creating contribution
     get '/new' => 'contributions#new'
     get '/apply_findings/:id' => 'pages#apply_findings'
+    post '/update/:id' => 'pages#update_contribution'
     # method where contribution will be created
     post '/new' => 'contributions#create'
     # put analyzed by worker data to contribution
     post '/analyze/:id' => 'contributions#analyze'
+    get '/send_analyze_request/:id' => 'pages#fetch_data_from_worker'
   end
 
   # tours
