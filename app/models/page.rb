@@ -112,7 +112,8 @@ class Page
     # assume that first <p> in html content will be shown as popup
     headline_elem = Nokogiri::HTML(self.html_content).css('p').first
     # TODO: too long text?
-    headline_elem.nil? ? "No headline found for page #{self.full_title}" : (decorate_headline(headline_elem.text)).strip
+    headline_elem.nil? ?
+        "No headline found for page #{self.full_title}" : (decorate_headline(headline_elem.text)).strip
   end
 
   def create_track(user)
