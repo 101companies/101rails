@@ -27,10 +27,7 @@
   %li
     %a#discovery-tab-link{:target => '_blank'} 101explorer
 
-  - @can_update_contribution = can? :update_contribution, @page
-  - @can_administrate_contribution = can? :update_administrate, @page
-
-  - if (@page.namespace=="Contribution") and (@can_update_contribution && @can_administrate_contribution)
+  - if (@page.namespace=="Contribution") and (can? :manage, @page)
     %li
       %a#contribution-tab-link.tab-link{:href => "#contribution"} Contribution properties
 
