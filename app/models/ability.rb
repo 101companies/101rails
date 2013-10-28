@@ -14,14 +14,13 @@ class Ability
     end
 
     # editor can work with pages
-    (can :manage, Page) if user.role == 'editor'
+    can :manage, Page if user.role == 'editor'
 
-    # user can change the page, if it's his page
-    # he listed in list of users or is contributor of the page
-    # or he edited this page in old wiki
-    can :manage, Page do |page|
-        page.contributor == user or page.users.include? user
-    end
+    # user can be manually has permissions to change concrete page
+    can :manage, Page, :user_ids => user.id
+
+    # user can edit page, if he it's contribution page and it's his contribution
+    can :manage, Page, :contributor_id => user.id
 
   end
 
