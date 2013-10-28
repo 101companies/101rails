@@ -53,7 +53,7 @@ gem 'omniauth', '1.1.4'
 gem 'omniauth-github', '1.1.1'
 
 # github integration
-gem 'octokit', '2.4.0'
+gem 'octokit', '2.5.0'
 
 # font with bundled icons
 gem 'font-awesome-rails', '3.2.1.3'
@@ -84,6 +84,7 @@ end
 gem 'rails_admin', '0.4.9'
 
 # web-scraping
+# TODO: fix installing 1.8.1 for json and json-pure
 gem 'json_pure', '1.8.0'
 gem 'json', '1.8.0'
 gem 'httparty', '0.12.0'
