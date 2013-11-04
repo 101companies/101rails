@@ -2,6 +2,9 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
+.red_asterisk
+  color: red
+
 $form_element_width: 450px
 $input_height: 30px
 #create_contribution
@@ -17,23 +20,9 @@ $input_height: 30px
     width: $form_element_width
     margin-top: 20px
 
-.red_asterisk
-  color: red
+  $avatar_size: 80px
 
-$avatar_size: 80px
-
-.github_avatar
-  height: $avatar_size
-  width: $avatar_size
-  border-radius: $avatar_size/2
-
-.contribution
-  float: left
-  margin-bottom: 20px
-  margin-right: 20px
-  background-color: #efefef
-  border: #cccccc
-  width: 35%
-  padding: 15px
-  p
-    text-align: left
+  .github_avatar
+    height: $avatar_size
+    width: $avatar_size
+    border-radius: $avatar_size/2

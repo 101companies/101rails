@@ -4,6 +4,7 @@ class Page
 
   # include module with static methods
   include PageModule
+  include ContributionModule
 
   include Mongoid::Document
   include Mongoid::Timestamps
@@ -16,26 +17,38 @@ class Page
   # namespace for page, need to be set
   field :namespace, type: String
   field :page_title_namespace, type: String
-  field :raw_content, type: String
+  field :raw_content, type: String, :default => ""
   field :html_content, type: String
   field :used_links, type: Array
   field :snapshot, type: String
 
-  # relations here
-  has_and_belongs_to_many :users
-  has_many :page_changes
-  belongs_to :contribution
+  # part related to contribution process
+  field :contribution_folder, type: String, :default => ''
+  field :contribution_url, type: String, :default => ''
+  field :worker_findings, type: String, :default => ''
+  # this field is using for validating the uniqueness of paar url+folder
+  field :contribution_url_folder, type: String
 
+  # relations here
+  has_many :page_changes
+  has_and_belongs_to_many :users, :class_name => 'User', :inverse_of => :pages
+  belongs_to :contributor, :class_name => 'User', :inverse_of => :contribution_pages
+
+  # TODO: restore
+  #validates_uniqueness_of :contribution_url_folder
   validates_uniqueness_of :page_title_namespace
   validates_presence_of :title
   validates_presence_of :namespace
 
-  attr_accessible :user_ids, :namespace, :title, :contribution_id, :snapshot
+  attr_accessible :user_ids, :raw_content, :namespace, :title, :snapshot,
+                  :contribution_folder, :contribution_url, :contributor_id, :worker_findings
 
   # validate uniqueness for paar title + namespace
   before_validation do
     # prepare field namespace + title
     self.page_title_namespace = self.namespace.to_s + ':' + self.title.to_s
+    # TODO: restore later
+    #self.inject_namespace_triple
     # fill used_links with links in page
     # parse content and get internal links
     wiki_parser = self.create_wiki_parser
@@ -47,10 +60,46 @@ class Page
     rescue
       Rails.logger.info "Failed producing html for page #{self.full_title}"
     end
+    # need for uniqueness of paar folder+url
+    if self.namespace == "Contribution"
+      self.contribution_url_folder = self.contribution_url.to_s + ':' + self.contribution_folder.to_s
+    end
     # if exist internal_links -> fill used_links
     if wiki_parser.internal_links
       self.used_links = wiki_parser.internal_links.map { |link| PageModule.unescape_wiki_url link }
     end
+  end
+
+  def get_metadata_section(sections)
+    sections.select { |section| section["title"] == 'Metadata' }
+  end
+
+  def inject_namespace_triple
+    self.inject_triple "instanceOf::Namespace:#{self.namespace}"
+  end
+
+  def inject_triple(namespace_triple)
+    sections = self.sections
+    # find metadata section
+    metadata_section = get_metadata_section sections
+    # not found -> create it
+    if metadata_section.empty?
+      self.raw_content = "" if self.raw_content.nil?
+      self.raw_content = self.raw_content + "\n== Metadata =="
+      wiki_parser = self.create_wiki_parser self.raw_content
+      sections = self.sections wiki_parser
+    end
+    metadata_section = get_metadata_section(sections)[0]
+    unless metadata_section
+      Rails.logger.info "In page #{self.full_title} cannot be any triple injected."
+      return
+    end
+    unless metadata_section["content"].include? namespace_triple
+      metadata_section["content"] = metadata_section["content"] + "\n<!-- Next link is generated automatically-->"
+      metadata_section["content"] = metadata_section["content"] + "\n* [[#{namespace_triple}]]"
+    end
+    # rebuild content from sections
+    self.raw_content = build_content_from_sections sections
   end
 
   def decorate_headline(headline_text)
@@ -62,8 +111,8 @@ class Page
   def get_headline
     # assume that first <p> in html content will be shown as popup
     headline_elem = Nokogiri::HTML(self.html_content).css('p').first
-    # TODO: too long text?
-    headline_elem.nil? ? "No headline found for page #{self.full_title}" : (decorate_headline(headline_elem.text)).strip
+    headline_elem.nil? ?
+        "No headline found for page #{self.full_title}" : (decorate_headline(headline_elem.text)).strip
   end
 
   def create_track(user)
@@ -147,10 +196,16 @@ class Page
     old_backlinks.each { |old_backlink| self.rewrite_backlink old_backlink, old_title }
   end
 
+  def build_content_from_sections(sections)
+    content = ""
+    sections.each { |s| content += s['content'] + "\n" }
+    content
+  end
+
   def update_or_rename_page(new_title, content, sections)
     # if content is empty -> populate content with sections
     if content == ""
-      sections.each { |s| content += s['content'] + "\n" }
+      content = build_content_from_sections(sections)
     end
     self.raw_content = content
     # unescape new title to nice readable url
@@ -180,9 +235,9 @@ class Page
     self.used_links
   end
 
-  def sections
+  def sections(wiki_parser = self.create_wiki_parser)
     sections = []
-    self.create_wiki_parser.sections.first.children.each do |section|
+    wiki_parser.sections.first.children.each do |section|
       sections << { 'title' => section.title, 'content' => section.wikitext.sub(/\s+\Z/, "") }
     end
     sections

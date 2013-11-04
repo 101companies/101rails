@@ -1,8 +1,6 @@
-#= require masonry.pkgd.min
 $ ->
 
-  # pinterest-like presentation for contributions
-  $('#contributions').masonry({item: '.contribution'})
+  #TODO: title
 
   # use for contribution name of repo
   project_select = $("#create_contribution select").first()
@@ -45,4 +43,6 @@ $ ->
       all_is_ok = false
       error_message "You need to define repo for your contribution"
 
+    # false prevents sending the form
+    # true sends the form
     all_is_ok

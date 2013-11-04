@@ -23,7 +23,7 @@ gem 'exception_notification', '4.0.1'
 gem 'request-log-analyzer', '1.12.9'
 
 # twitter bootstrap as sass
-gem 'bootstrap-sass', '2.3.2.1'
+gem 'bootstrap-sass', '2.3.2.2'
 
 group :assets do
   gem 'sass-rails',   '3.2.6'
@@ -40,7 +40,7 @@ gem 'haml-rails', '0.4'
 
 # database
 # TODO: before upgrade to 4.0 include mongoid-paranoia
-gem 'mongoid', '3.1.4'
+gem 'mongoid', '3.1.5'
 
 # search eninge
 gem 'mongoid_search', '0.3.2'
@@ -53,7 +53,7 @@ gem 'omniauth', '1.1.4'
 gem 'omniauth-github', '1.1.1'
 
 # github integration
-gem 'octokit', '2.1.1'
+gem 'octokit', '2.5.0'
 
 # font with bundled icons
 gem 'font-awesome-rails', '3.2.1.3'
@@ -84,9 +84,10 @@ end
 gem 'rails_admin', '0.4.9'
 
 # web-scraping
+# TODO: fix installing 1.8.1 for json and json-pure
 gem 'json_pure', '1.8.0'
 gem 'json', '1.8.0'
-gem 'httparty', '0.11.0'
+gem 'httparty', '0.12.0'
 
 # work with mediawiki
 gem 'mediawiki-gateway', '0.5.2'
@@ -103,7 +104,7 @@ gem 'closure-compiler', '1.1.10'
 gem 'gritter', :git => 'git://github.com/burgua/gritter.git', :branch => 'vendor_dir'
 
 # deploy tool
-gem 'capistrano', '2.15.5'
+gem 'capistrano', '3.0.0'
 
 # for wiki-editor
 gem 'aced_rails', '0.2.1', :git => 'git://github.com/tschmorleiz/aced_rails.git'
@@ -114,4 +115,4 @@ gem 'watir-webdriver', '0.6.4'
 gem 'bootstrap-tour-rails', '0.4.0'
 
 gem 'eventmachine', '1.0.3'
-gem 'em-http-request', '1.1.0'
+gem 'em-http-request', '1.1.1'

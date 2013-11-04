@@ -9,7 +9,8 @@ class PagesController < ApplicationController
   # before_filter need to be before load_and_authorize_resource
   before_filter :get_the_page
   # methods, that need to check permissions
-  load_and_authorize_resource :only => [:delete, :rename, :update]
+  load_and_authorize_resource :only => [:delete, :rename, :update, :apply_findings, :select_contributor,
+                                        :update_contribution, :fetch_data_from_worker]
 
   def get_the_page
     # if no title -> set default wiki startpage '@project'
@@ -27,7 +28,54 @@ class PagesController < ApplicationController
         format.json { render :json => {success: false}, :status => 404 }
       end
     end
+  end
 
+  def select_contributor
+    # TODO: use id
+    user = User.where(:name => params[:contributor][0]).first
+    @page.contributor = user
+    result =  (user.nil? ? false : @page.save)
+    message_type= result ? :success : :error
+    message = result ? "Contributor assigned" : "Failed to assign contributior"
+    flash[message_type] = message
+    redirect_to  "/wiki/#{@page.nice_wiki_url}"
+  end
+
+  def fetch_data_from_worker
+    result = @page.analyze_request
+    message_type= result ? :success : :error
+    message = result ? "Request on worker sent, wait notification email" : "Failed to send request"
+    flash[message_type] = message
+    redirect_to  "/wiki/#{@page.nice_wiki_url}"
+  end
+
+  def update_contribution
+    @page.contribution_url = params[:contrb_url]
+    @page.contribution_folder = (params[:contrb_folder].empty? ? '/' : params[:contrb_folder])
+    result = @page.save
+    message_type= result ? :success : :error
+    message = result ? "Contribution information was updated" : "Failed to update contribution info"
+    flash[message_type] = message
+    redirect_to  "/wiki/#{@page.nice_wiki_url}"
+  end
+
+  def apply_findings
+    JSON.parse(@page.worker_findings).each do |finding|
+      finding.keys.each do |finding_key|
+        if finding[finding_key]
+          finding[finding_key].each do |one_prop|
+            predicate_part = finding_key == "features" ? 'implements' : 'uses'
+            @page.inject_triple "#{predicate_part}::#{finding_key.singularize.capitalize}:#{one_prop}"
+          end
+        end
+      end
+      result = @page.save
+      message_type= result ? :success : :error
+      message = result ? "You have successfully added to metadata worker findings" :
+          "Something was wrong. Please try again later"
+      flash[message_type] = message
+    end
+    redirect_to  "/wiki/#{@page.nice_wiki_url}"
   end
 
   def get_rdf
@@ -72,29 +120,31 @@ class PagesController < ApplicationController
       format.html {
         render :html => @doc, :layout => "snapshot"
       }
-    end  
+    end
   end
 
   def show
+
     if params.has_key?(:_escaped_fragment_)
        begin
         if @page.snapshot == nil
           logger.debug("Page doesn't have a snapshot")
           @doc = SnapshotModule.get_snapshot(@page)
-        else  
+        else
           logger.debug("Page already has a snapshot")
-          @doc = @page.snapshot 
-        end 
+          @doc = @page.snapshot
+        end
         respond_to do |format|
           format.html {
             render :html => @doc, :layout => "snapshot"
           }
-        end 
+        end
       rescue
-        @error_message="#{$!}" 
-        logger.error(@error_message) 
+        @error_message="#{$!}"
+        logger.error(@error_message)
         redirect_to :status => 404
       end
+
     else
 
       respond_to do |format|
@@ -104,6 +154,7 @@ class PagesController < ApplicationController
           if good_link != params[:id]
             redirect_to '/wiki/'+ good_link and return
           end
+
           # no redirect? -> render the page
           render :html => @page
         }
@@ -129,7 +180,8 @@ class PagesController < ApplicationController
         }}
 
       end
-    end   
+    end
+
   end
 
   def parse

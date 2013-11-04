@@ -21,6 +21,14 @@
 
 */
 
+.one-page-change {
+    height: 50px;
+}
+
+body .row-fluid {
+    margin-top: 50px;
+}
+
 #search-query {
   width: 110px;
 }
@@ -34,13 +42,18 @@
 }
 
 .small_avatar {
+  height: 24px;
+  width: 24px;
   border-radius: 12px;
 }
 
-/* set default font */
-@import url(http://fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,800italic,400,700,800);
+#contribution-tab-link {
+  color: blue;
+  font-weight: bold;
+}
+
 body, p, h1, h2, ul, a, span, strong, select, option, label {
-  font-family: 'Open Sans', 'Lucida Grande', sans-serif;
+  font-family: 'Open Sans', Arial, sans-serif;
 }
 
 #page-nav .navbar-inner  {
@@ -53,7 +66,6 @@ body, p, h1, h2, ul, a, span, strong, select, option, label {
 }
 
 #main101 {
-  margin-top: 70px;
   overflow: hidden;
 }
 
