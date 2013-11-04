@@ -104,7 +104,8 @@ gem 'closure-compiler', '1.1.10'
 gem 'gritter', :git => 'git://github.com/burgua/gritter.git', :branch => 'vendor_dir'
 
 # deploy tool
-gem 'capistrano', '2.5.12'
+# TODO: update after reading manual
+gem 'capistrano', '2.15.5'
 
 # for wiki-editor
 gem 'aced_rails', '0.2.1', :git => 'git://github.com/tschmorleiz/aced_rails.git'
