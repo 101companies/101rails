@@ -4,12 +4,16 @@
     %meta{:content => "text/html; charset=UTF-8", "http-equiv" => "Content-Type"}/
   %body
     %h1
-      Dear #{@contribution_page.user.name},
+      Dear #{@contribution_page.contributor.name},
     %p
       You have successfully submitted new contribution to 101companies.
       Please wait, till it will be analyzed. We need some time to extract all interesting data
       from your contribution.
     %p
+      But you can already start to write documentation on the page
+      %a{:href => "http://101companies.org/wiki/#{@contribution_page.nice_wiki_url}"}= @contribution_page.nice_wiki_url
+
+    %p
       Sincerely yours,
-      %br/
+      %br
       your 101companies team.

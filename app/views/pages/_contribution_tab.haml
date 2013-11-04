@@ -4,48 +4,38 @@
 
   - if @page.worker_findings and !@page.worker_findings.empty?
 
-    #workerFindings
+    %h3 Worker findings
+    - findings = JSON.parse(@page.worker_findings)
+    - if findings
+      - findings.each do |one_finding|
+        - one_finding.keys.each do |finding_key|
+          %p
+            %b
+              = finding_key.capitalize
+            \: #{ContributionModule.contribution_array_to_string(one_finding[finding_key])}
 
-      %h3 Worker findings
+    - if  (can? :manage, @page)
+      - apply_url = PageModule.escape_wiki_url @page.full_title
+      %a.btn.btn-success{:href => "/contribute/apply_findings/#{apply_url}"}
+        Apply findings in contribution page
 
-      - findings = JSON.parse(@page.worker_findings)
+  %h3 Input contribution github params
+  = form_tag("/contribute/update/#{@page.nice_wiki_url}", :method => :post) do
+    = label_tag "Github repository url of contribution"
+    %i{:class => 'icon-asterisk red_asterisk'}
+    %input{:name => :contrb_url, :placeholder => 'Obvious', :value => @page.contribution_url}
+    = label_tag "Folder in repo"
+    %input{:name => :contrb_folder, :value => @page.contribution_folder, :placeholder => 'Not obvious'}
+    %button.btn.btn-success{:type => "submit"} Update contribution
 
-      - if findings
-        - findings.each do |one_finding|
-          - one_finding.keys.each do |finding_key|
-            %p
-              %b
-                = finding_key.capitalize
-              \: #{ContributionModule.contribution_array_to_string(one_finding[finding_key])}
+  %h3 Select contributor
+  - if !@page.contributor.nil?
+    Current contributor is:
+    = @page.contributor.name
+  = form_tag("/contribute/select_contributor/#{@page.nice_wiki_url}", :method => :post) do
+    = select(:contributor, nil, User.all.map{ |u| u.name })
+    %button.btn.btn-success Change contributor
 
-      - if  (can? :manage, @page)
-        - apply_url = PageModule.escape_wiki_url @page.full_title
-        %a#applyFindings.btn.btn-success{:href => "/contribute/apply_findings/#{apply_url}"}
-          Apply findings in contribution page
-
-  %hr
-
-    %h2 Input contribution github params
-
-    = form_tag("/contribute/update/#{@page.nice_wiki_url}", :id => 'update_contribution', :method => :post) do
-
-      %p
-        = label_tag "Github repository url of contribution"
-        %i{:class => 'icon-asterisk red_asterisk'}
-
-      %p
-        %input{:name => 'contrb_url', :placeholder => 'Obvious', :value => @page.contribution_url, :id => 'contribution_url'}
-
-      %p
-        = label_tag "Folder in repo"
-        %input{:name => 'contrb_folder', :value => @page.contribution_folder, :placeholder => 'Not obvious'}
-
-      %p
-        %button{:type => "submit", :id => 'contribution_submit', :class => "btn btn-success"}
-          Update contribution
-
-    %h2 Analyze contribution with matching service
-
-    %a#applyFindings.btn.btn-success{:href => "/contribute/send_analyze_request/#{@page.nice_wiki_url}"}
-      Send request on matching server
-
+  %h3 Analyze contribution with matching service
+  = form_tag("/contribute/send_analyze_request/#{@page.nice_wiki_url}", :method => :post) do
+    %input.btn.btn-success{:type => 'submit'} Send request on matching server

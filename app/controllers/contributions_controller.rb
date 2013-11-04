@@ -10,8 +10,7 @@ class ContributionsController < ApplicationController
       end
       @contribution_page.worker_findings = findings.to_json.to_s
       @contribution_page.save!
-      # TODO: restore emails
-      #Mailer.analyzed_contribution(@contribution_page).deliver
+      Mailer.analyzed_contribution(@contribution_page).deliver
     end
     render nothing: true
   end
@@ -54,10 +53,8 @@ class ContributionsController < ApplicationController
     else
       @contribution_page.raw_content = "== Headline ==\n\n" + @contribution_page.default_contribution_text
     end
-    # TODO: restore later
-    #@contribution_page.user = current_user
+    @contribution_page.contributor = current_user
     # send request to matching service
-    # TODO: texts
     unless @contribution_page.analyse_request
       flash[:error] = "You have created new contribution. Request on analyze service wasn't successful. Please retry it later"
     else
@@ -65,8 +62,7 @@ class ContributionsController < ApplicationController
     end
     @contribution_page.inject_namespace_triple
     @contribution_page.save
-    # TODO: restore
-    #Mailer.created_contribution(@contribution_page).deliver
+    Mailer.created_contribution(@contribution_page).deliver
     redirect_to  "/wiki/#{@contribution_page.nice_wiki_url}"
   end
 

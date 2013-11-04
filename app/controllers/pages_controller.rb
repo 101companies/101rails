@@ -9,7 +9,7 @@ class PagesController < ApplicationController
   # before_filter need to be before load_and_authorize_resource
   before_filter :get_the_page
   # methods, that need to check permissions
-  load_and_authorize_resource :only => [:delete, :rename, :update, :apply_findings,
+  load_and_authorize_resource :only => [:delete, :rename, :update, :apply_findings, :select_contributor,
                                         :update_contribution, :fetch_data_from_worker]
 
   def get_the_page
@@ -28,7 +28,17 @@ class PagesController < ApplicationController
         format.json { render :json => {success: false}, :status => 404 }
       end
     end
+  end
 
+  def select_contributor
+    # TODO: use id
+    user = User.where(:name => params[:contributor][0]).first
+    @page.contributor = user
+    result =  (user.nil? ? false : @page.save)
+    message_type= result ? :success : :error
+    message = result ? "Contributor assigned" : "Failed to assign contributior"
+    flash[message_type] = message
+    redirect_to  "/wiki/#{@page.nice_wiki_url}"
   end
 
   def fetch_data_from_worker
@@ -41,9 +51,8 @@ class PagesController < ApplicationController
 
   def update_contribution
     @page.contribution_url = params[:contrb_url]
-    @page.contribution_folder = params[:contrb_folder]
+    @page.contribution_folder = (params[:contrb_folder].empty? ? '/' : params[:contrb_folder])
     result = @page.save
-    # TODO: error show?
     message_type= result ? :success : :error
     message = result ? "Contribution information was updated" : "Failed to update contribution info"
     flash[message_type] = message
