@@ -21,9 +21,9 @@ GIT
 
 GIT
   remote: git://github.com/ruby-rdf/rdf.git
-  revision: a5f0cecf7e8eca26d6004a96267548dac9728be3
+  revision: a5ef31557475f74905d2a8f28a95f8c728a2a0d2
   specs:
-    rdf (1.0.9)
+    rdf (1.0.10)
       addressable (>= 2.3)
 
 GIT
@@ -117,7 +117,7 @@ GEM
     faraday (0.8.8)
       multipart-post (~> 1.2.0)
     fast-stemmer (1.0.2)
-    ffi (1.9.0)
+    ffi (1.9.3)
     font-awesome-rails (3.2.1.3)
       railties (>= 3.2, < 5.0)
     fssm (0.2.10)
