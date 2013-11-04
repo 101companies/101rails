@@ -55,7 +55,7 @@ class ContributionsController < ApplicationController
     end
     @contribution_page.contributor = current_user
     # send request to matching service
-    unless @contribution_page.analyse_request
+    unless @contribution_page.analyze_request
       flash[:error] = "You have created new contribution. Request on analyze service wasn't successful. Please retry it later"
     else
       flash[:notice] = "You have created new contribution. You will retrieve an email, when it will be analyzed."

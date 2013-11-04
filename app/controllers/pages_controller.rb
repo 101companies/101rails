@@ -42,7 +42,7 @@ class PagesController < ApplicationController
   end
 
   def fetch_data_from_worker
-    result = @page.analyse_request
+    result = @page.analyze_request
     message_type= result ? :success : :error
     message = result ? "Request on worker sent, wait notification email" : "Failed to send request"
     flash[message_type] = message

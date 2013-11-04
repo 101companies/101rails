@@ -14,7 +14,7 @@ module ContributionModule
     "Please replace this text with something more meaningful."
   end
 
-  def analyse_request
+  def analyze_request
     success = true
     # TODO: check fail case
     #begin
@@ -23,9 +23,7 @@ module ContributionModule
                             :url => self.contribution_url+'.git',
                             :folder => self.contribution_folder,
                             :name => PageModule.nice_wiki_url(self.title),
-                            #TODO: replace before commit
-                            :backping => "http://141.26.160.6:3000/contribute/analyze/#{self.id}"
-                            #:backping => "http://101companies.org/contribute/analyze/#{@page.id}"
+                            :backping => "http://101companies.org/contribute/analyze/#{@page.id}"
                         }.to_json,
                         :headers => {'Content-Type' => 'application/json'}
     #rescue
