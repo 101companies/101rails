@@ -23,7 +23,7 @@ module ContributionModule
                             :url => self.contribution_url+'.git',
                             :folder => self.contribution_folder,
                             :name => PageModule.nice_wiki_url(self.title),
-                            :backping => "http://101companies.org/contribute/analyze/#{@page.id}"
+                            :backping => "http://101companies.org/contribute/analyze/#{self.id}"
                         }.to_json,
                         :headers => {'Content-Type' => 'application/json'}
     #rescue
