@@ -16,19 +16,19 @@ module ContributionModule
 
   def analyze_request
     success = true
-    # TODO: check fail case
-    #begin
-      HTTParty.post 'http://worker.101companies.org/services/analyzeSubmission',
-                        :body => {
-                            :url => self.contribution_url+'.git',
-                            :folder => self.contribution_folder,
-                            :name => PageModule.nice_wiki_url(self.title),
-                            :backping => "http://101companies.org/contribute/analyze/#{self.id}"
-                        }.to_json,
-                        :headers => {'Content-Type' => 'application/json'}
-    #rescue
-    #  success = false
-    #end
+    begin
+      url = 'http://worker.101companies.org/services/analyzeSubmission'
+      HTTParty.post url,
+        :body => {
+            :url => self.contribution_url+'.git',
+            :folder => self.contribution_folder,
+            :name => PageModule.nice_wiki_url(self.title),
+            :backping => "http://101companies.org/contribute/analyze/#{self.id}"
+        }.to_json,
+        :headers => {'Content-Type' => 'application/json'}
+    rescue
+      success = false
+    end
     success
   end
 
