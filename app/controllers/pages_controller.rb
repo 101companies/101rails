@@ -30,33 +30,23 @@ class PagesController < ApplicationController
     end
   end
 
-  def select_contributor
-    # TODO: use id
-    user = User.where(:name => params[:contributor][0]).first
-    @page.contributor = user
-    result =  (user.nil? ? false : @page.save)
-    message_type= result ? :success : :error
-    message = result ? "Contributor assigned" : "Failed to assign contributior"
-    flash[message_type] = message
-    redirect_to  "/wiki/#{@page.nice_wiki_url}"
-  end
-
-  def fetch_data_from_worker
-    result = @page.analyze_request
-    message_type= result ? :success : :error
-    message = result ? "Request on worker sent, wait notification email" : "Failed to send request"
-    flash[message_type] = message
-    redirect_to  "/wiki/#{@page.nice_wiki_url}"
-  end
-
   def update_contribution
-    @page.contribution_url = params[:contrb_url]
-    @page.contribution_folder = (params[:contrb_folder].empty? ? '/' : params[:contrb_folder])
-    result = @page.save
-    message_type= result ? :success : :error
-    message = result ? "Contribution information was updated" : "Failed to update contribution info"
-    flash[message_type] = message
-    redirect_to  "/wiki/#{@page.nice_wiki_url}"
+    @page.contribution_url = params[:contribution_url]
+    @page.contribution_folder = (params[:contribution_folder].empty? ? '/' : params[:contribution_folder])
+    user = User.where(:name => params[:contributor][0]).first
+    @page.contributor = user if user
+    flash_message = ''
+    if @page.save
+      flash_message = "Failed to send contribution to matching server" if !@page.analyze_request
+    else
+      flash_message = "Failed to update contribution"
+    end
+    if flash_message == ''
+      flash[:success] = 'Contribution updated successfully'
+    else
+      flash[:error] = flash_message
+    end
+    redirect_to  "/wiki/#{@page.nice_wiki_url}#contribution"
   end
 
   def apply_findings
@@ -105,7 +95,7 @@ class PagesController < ApplicationController
 
   def delete
     result = @page.delete
-    # generate message if deleting was successful
+    # generate flash_message if deleting was successful
     flash[:notice] = 'Page ' + @page.full_title + ' was deleted' if result
     render :json => {:success => result}
   end

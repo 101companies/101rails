@@ -1,10 +1,8 @@
 #contribution.tab-pane
 
-  %h2 Information about contribution
-
   - if @page.worker_findings and !@page.worker_findings.empty?
 
-    %h3 Worker findings
+    %h2 Worker findings
     - findings = JSON.parse(@page.worker_findings)
     - if findings
       - findings.each do |one_finding|
@@ -19,23 +17,20 @@
       %a.btn.btn-success{:href => "/contribute/apply_findings/#{apply_url}"}
         Apply findings in contribution page
 
-  %h3 Input contribution github params
-  = form_tag("/contribute/update/#{@page.nice_wiki_url}", :method => :post) do
-    = label_tag "Github repository url of contribution"
-    %i{:class => 'icon-asterisk red_asterisk'}
-    %input{:name => :contrb_url, :placeholder => 'Obvious', :value => @page.contribution_url}
-    = label_tag "Folder in repo"
-    %input{:name => :contrb_folder, :value => @page.contribution_folder, :placeholder => 'Not obvious'}
-    %button.btn.btn-success{:type => "submit"} Update contribution
-
-  %h3 Select contributor
-  - if !@page.contributor.nil?
-    Current contributor is:
-    = @page.contributor.name
-  = form_tag("/contribute/select_contributor/#{@page.nice_wiki_url}", :method => :post) do
-    = select(:contributor, nil, User.all.map{ |u| u.name })
-    %button.btn.btn-success Change contributor
-
-  %h3 Analyze contribution with matching service
-  = form_tag("/contribute/send_analyze_request/#{@page.nice_wiki_url}", :method => :post) do
-    %input.btn.btn-success{:type => 'submit'} Send request on matching server
+  %h2 Input contribution github params
+  = form_tag("/contribute/update/#{@page.nice_wiki_url}", :method => :post, :class => "form-horizontal") do
+    .control-group
+      %label{:class => 'control-label'} Github repository url
+      .controls
+        %input{:name => :contribution_url, :type => "text", :placeholder => 'Obvious', :value => @page.contribution_url}
+    .control-group
+      %label{:class => 'control-label'} Folder in repo
+      .controls
+        %input{:name => :contribution_folder, :type => "text", :value => @page.contribution_folder, :placeholder => 'Not obvious'}
+    .control-group
+      %label{:class => 'control-label'} Current contributor
+      .controls
+        = select(:contributor, nil, (User.all.map{ |u| u.name }).unshift('') )
+    .control-group
+      .controls
+        %input.btn.btn-success{:type => 'submit', :value => "Apply changes"}

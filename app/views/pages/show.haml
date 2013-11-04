@@ -28,12 +28,12 @@
     %a#discovery-tab-link{:target => '_blank'} 101explorer
 
   - if (@page.namespace=="Contribution") and (can? :manage, @page)
-    %li{:style => 'display:none;'}
+    %li
       %a#contribution-tab-link.tab-link{:href => "#contribution"} Contribution properties
 
   - exist_last_change = !@page.page_changes.nil? ? @page.page_changes.last : nil
   - if exist_last_change
-    %li{:style => 'display:none;'}
+    %li
       %a#history-tab-link.tab-link{:href => "#page-changes"} History of editing
 
   %li#sourcelinks.dropdown
