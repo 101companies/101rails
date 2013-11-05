@@ -18,7 +18,7 @@ Wiki::Application.routes.draw do
     # ui for creating contribution
     get '/new' => 'contributions#new'
     get '/apply_findings/:id' => 'pages#apply_findings', :constraints => { :id => /.*/ }, :as => :page
-    post '/update/:id' => 'pages#update_contribution', :constraints => { :id => /.*/ }, :as => :page
+    put '/update/:id' => 'pages#update_contribution', :constraints => { :id => /.*/ }, :as => :page
     # method where contribution will be created
     post '/new' => 'contributions#create'
     # put analyzed by worker data to contribution
