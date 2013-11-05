@@ -53,7 +53,7 @@
         Loading page...
 
   / tab with all contributions settings
-  - if (@page.namespace == "Contribution")
+  - if "%wContribution Language Feature Technology".include? @page.namespace
     = render "/pages/contribution_tab"
 
   / tab with all history revisions
