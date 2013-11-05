@@ -100,6 +100,8 @@ gem 'rdf', :git => 'git://github.com/ruby-rdf/rdf.git'
 gem 'pygments.rb', '0.5.2'
 gem 'closure-compiler', '1.1.10'
 
+gem 'simple_form', '2.1.0'
+
 # growl-like notifications
 gem 'gritter', :git => 'git://github.com/burgua/gritter.git', :branch => 'vendor_dir'
 

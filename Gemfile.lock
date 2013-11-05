@@ -288,6 +288,9 @@ GEM
       multi_json (~> 1.0)
       rubyzip (~> 1.0.0)
       websocket (~> 1.0.4)
+    simple_form (2.1.0)
+      actionpack (~> 3.0)
+      activemodel (~> 3.0)
     sprockets (2.2.2)
       hike (~> 1.2)
       multi_json (~> 1.0)
@@ -353,6 +356,7 @@ DEPENDENCIES
   request-log-analyzer (= 1.12.9)
   ruby-prof (= 0.13.0)
   sass-rails (= 3.2.6)
+  simple_form (= 2.1.0)
   uglifier (= 2.2.1)
   watir-webdriver (= 0.6.4)
   wikicloth!
