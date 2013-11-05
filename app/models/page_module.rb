@@ -1,4 +1,7 @@
-module PageModule
+# this module includes all static methods for pages
+# it was removed to make page model less fat
+
+class PageModule
   require 'media_wiki'
 
   def self.match_page_score(found_page, query_string)
@@ -62,6 +65,12 @@ module PageModule
     { 'namespace' => namespace, 'title' => title }
   end
 
+  def self.default_contribution_text
+    "You have created new contribution using [https://github.com Github]. " +
+        "Source code for this contribution you can find [#{self.contribution_url} here]. " +
+        "Please replace this text with something more meaningful."
+  end
+
   def self.search(query_string)
     found_pages = Page.full_text_search query_string
     # nothing found -> go out
@@ -81,11 +90,6 @@ module PageModule
     end
     # sort by score and return
     results.sort_by { |a| a[:score] }
-  end
-
-  def create_wiki_parser(content=nil)
-    WikiCloth::Parser.context = {:ns => (MediaWiki::send :upcase_first_char, self.namespace), :title => self.title}
-    WikiCloth::Parser.new(:data => ((content.nil?) ? self.raw_content : content), :noedit => true)
   end
 
   # link for using in html rendering

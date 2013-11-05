@@ -2,8 +2,6 @@ require 'media_wiki'
 
 class Page
 
-  # include module with static methods
-  include PageModule
   include ContributionModule
 
   include Mongoid::Document
@@ -225,6 +223,11 @@ class Page
 
   def nice_wiki_url
     PageModule.nice_wiki_url self.full_title
+  end
+
+  def create_wiki_parser(content=nil)
+    WikiCloth::Parser.context = {:ns => (MediaWiki::send :upcase_first_char, self.namespace), :title => self.title}
+    WikiCloth::Parser.new(:data => ((content.nil?) ? self.raw_content : content), :noedit => true)
   end
 
   def semantic_links

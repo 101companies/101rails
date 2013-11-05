@@ -51,7 +51,7 @@ class ContributionsController < ApplicationController
     unless params[:contrb_description].empty?
       @contribution_page.raw_content = "== Headline ==\n\n" + params[:contrb_description]
     else
-      @contribution_page.raw_content = "== Headline ==\n\n" + @contribution_page.default_contribution_text
+      @contribution_page.raw_content = "== Headline ==\n\n" + PageModule.default_contribution_text
     end
     @contribution_page.contributor = current_user
     # send request to matching service
