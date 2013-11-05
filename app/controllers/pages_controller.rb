@@ -46,7 +46,7 @@ class PagesController < ApplicationController
     else
       flash[:error] = flash_message
     end
-    redirect_to  "/wiki/#{@page.nice_wiki_url}#contribution"
+    redirect_to  "/wiki/#{@page.url}#contribution"
   end
 
   def apply_findings
@@ -65,7 +65,7 @@ class PagesController < ApplicationController
           "Something was wrong. Please try again later"
       flash[message_type] = message
     end
-    redirect_to  "/wiki/#{@page.nice_wiki_url}"
+    redirect_to  "/wiki/#{@page.url}"
   end
 
   def get_rdf
@@ -140,7 +140,7 @@ class PagesController < ApplicationController
       respond_to do |format|
         format.html {
           # if need redirect? -> wiki url conventions -> do a redirect
-          good_link = @page.nice_wiki_url
+          good_link = @page.url
           if good_link != params[:id]
             redirect_to '/wiki/'+ good_link and return
           end
@@ -216,7 +216,7 @@ class PagesController < ApplicationController
     # TODO: renaming -> check used page
     render :json => {
       :success => result,
-      :newTitle => @page.nice_wiki_url
+      :newTitle => @page.url
     }
   end
 

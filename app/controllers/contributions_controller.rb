@@ -73,7 +73,7 @@ class ContributionsController < ApplicationController
     @page.save
     Mailer.created_contribution(@page).deliver
 
-    redirect_to  "/wiki/#{@page.nice_wiki_url}"
+    redirect_to  "/wiki/#{@page.url}"
   end
 
   def new

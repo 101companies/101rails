@@ -13,12 +13,12 @@
             \: #{PageModule.contribution_array_to_string(one_finding[finding_key])}
 
     - if  (can? :manage, @page)
-      - apply_url = PageModule.escape_wiki_url @page.full_title
+      - apply_url = @page.url
       %a.btn.btn-success{:href => "/contribute/apply_findings/#{apply_url}"}
         Apply findings in contribution page
 
   %h2 Input contribution github params
-  = simple_form_for(@page, :html => {:class => 'form-horizontal' }) do |f|
+  = simple_form_for(@page, :html => {:class => 'form-horizontal' }, :url => "/contribute/update/#{@page.url}") do |f|
     = f.input :contribution_url
     = f.input :contribution_folder
     = f.input :contributor, collection: User.all.map{ |u| u.name }

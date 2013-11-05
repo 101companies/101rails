@@ -32,7 +32,7 @@ class ApplicationController < ActionController::Base
         xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
         http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">'
     Page.all.each do |page|
-      text = text + '<url><loc>http://101companies.org/wiki/' + page.nice_wiki_url + '</loc></url>'
+      text = text + '<url><loc>http://101companies.org/wiki/' + page.url + '</loc></url>'
     end
     text = text + '</urlset>'
     render :xml => text

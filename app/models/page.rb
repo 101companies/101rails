@@ -125,7 +125,7 @@ class Page
     html = parsed_page.to_html
     # mark empty or non-existing page with class missing-link (red color)
     parsed_page.internal_links.each do |link|
-      nice_link = PageModule.nice_wiki_url link
+      nice_link = PageModule.url link
       used_page = PageModule.find_by_full_title nice_link
       # if not found page or it has no content
       # set in class_attribute additional class for link (mark with red)
@@ -238,8 +238,8 @@ class Page
     end
   end
 
-  def nice_wiki_url
-    PageModule.nice_wiki_url self.full_title
+  def url
+    PageModule.url self.full_title
   end
 
   def create_wiki_parser(content=nil)

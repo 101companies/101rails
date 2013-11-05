@@ -91,7 +91,7 @@ class PageModule
       # prepare array wit results
       results << {
           :title => found_page.full_title,
-          :link  => found_page.nice_wiki_url,
+          :link  => found_page.url,
           # more score -> worst result
           :score => score
       }
@@ -102,7 +102,7 @@ class PageModule
 
   # link for using in html rendering
   # replace ' ' with '_', remove trailing spaces
-  def self.nice_wiki_url title
+  def self.url title
     self.unescape_wiki_url(title).strip.gsub(' ', '_')
   end
 
