@@ -73,9 +73,9 @@ class PageModule
     { 'namespace' => namespace, 'title' => title }
   end
 
-  def self.default_contribution_text
+  def self.default_contribution_text(url)
     "You have created new contribution using [https://github.com Github]. " +
-        "Source code for this contribution you can find [#{self.contribution_url} here]. " +
+        "Source code for this contribution you can find [#{url} here]. " +
         "Please replace this text with something more meaningful."
   end
 
