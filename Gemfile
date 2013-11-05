@@ -67,6 +67,9 @@ group :development do
   gem 'binding_of_caller', '0.7.2'
   # web server
   gem 'thin', '1.6.1'
+  # colorful console
+  gem 'wirble', '0.1.3'
+
 end
 
 # admin interface
