@@ -18,19 +18,8 @@
         Apply findings in contribution page
 
   %h2 Input contribution github params
-  = form_tag("/contribute/update/#{@page.nice_wiki_url}", :method => :post, :class => "form-horizontal") do
-    .control-group
-      %label{:class => 'control-label'} Github repository url
-      .controls
-        %input{:name => :contribution_url, :type => "text", :placeholder => 'Obvious', :value => @page.contribution_url}
-    .control-group
-      %label{:class => 'control-label'} Folder in repo
-      .controls
-        %input{:name => :contribution_folder, :type => "text", :value => @page.contribution_folder, :placeholder => 'Not obvious'}
-    .control-group
-      %label{:class => 'control-label'} Current contributor
-      .controls
-        = select(:contributor, nil, (User.all.map{ |u| u.name }).unshift('') )
-    .control-group
-      .controls
-        %input.btn.btn-success{:type => 'submit', :value => "Apply changes"}
+  = simple_form_for(@p^age, :html => {:class => 'form-horizontal' }) do |f|
+    = f.input :contribution_url
+    = f.input :contribution_folder
+    = f.input :contributor, collection: User.all.map{ |u| u.name }
+    = f.button :submit, :class => 'btn btn-success'
