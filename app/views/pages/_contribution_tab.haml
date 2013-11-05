@@ -10,7 +10,7 @@
           %p
             %b
               = finding_key.capitalize
-            \: #{ContributionModule.contribution_array_to_string(one_finding[finding_key])}
+            \: #{PageModule.contribution_array_to_string(one_finding[finding_key])}
 
     - if  (can? :manage, @page)
       - apply_url = PageModule.escape_wiki_url @page.full_title

@@ -14,6 +14,14 @@ class PageModule
     score
   end
 
+  def self.contribution_array_to_string(array)
+    if !array.nil?
+      array.collect {|u| u}.join ', '
+    else
+      'No information retrieved'
+    end
+  end
+
   def self.backup
     Rails.logger.info 'Started exporting pages to backup'
     Page.all.each do |p|

@@ -2,8 +2,6 @@ require 'media_wiki'
 
 class Page
 
-  include ContributionModule
-
   include Mongoid::Document
   include Mongoid::Timestamps
   include Mongoid::Paranoia
@@ -198,6 +196,25 @@ class Page
     content = ""
     sections.each { |s| content += s['content'] + "\n" }
     content
+  end
+
+  def analyze_request
+    #success = true
+    #begin
+    #  url = 'http://worker.101companies.org/services/analyzeSubmission'
+    #  HTTParty.post url,
+    #    :body => {
+    #        :url => self.contribution_url+'.git',
+    #        :folder => self.contribution_folder,
+    #        :name => PageModule.nice_wiki_url(self.title),
+    #        :backping => "http://101companies.org/contribute/analyze/#{self.id}"
+    #    }.to_json,
+    #    :headers => {'Content-Type' => 'application/json'}
+    #rescue
+    #  success = false
+    #end
+    #success
+    true
   end
 
   def update_or_rename_page(new_title, content, sections)
