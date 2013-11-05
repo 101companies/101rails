@@ -20,13 +20,11 @@ gem 'rails', '3.2.13'
 # send email on error
 gem 'exception_notification', '4.0.1'
 
-gem 'request-log-analyzer', '1.12.9'
-
 # twitter bootstrap as sass
 gem 'bootstrap-sass', '2.3.2.2'
 
 group :assets do
-  gem 'sass-rails',   '3.2.6'
+  gem 'sass-rails', '3.2.6'
   gem 'coffee-rails', '3.2.2'
   gem 'uglifier', '2.2.1'
   gem 'compass-rails', '1.0.3'
@@ -34,7 +32,7 @@ end
 
 # frontend
 gem 'jquery-rails', '2.1.3'
-gem "jquery-ui-rails", "3.0.1"
+gem 'jquery-ui-rails', '3.0.1'
 gem 'rails-backbone', '0.9.10'
 gem 'haml-rails', '0.4'
 
@@ -62,39 +60,29 @@ gem 'font-awesome-rails', '3.2.1.3'
 gem 'cancan', '1.6.10'
 
 group :development do
-# remove assets-logs in console
+  # remove assets-logs in console
   gem 'quiet_assets', '1.0.2'
-  # faster start for rake and rails commands
-  gem 'zeus',  '0.13.3'
-  # profiling
-  gem 'ruby-prof', '0.13.0'
-  # for work with rails panel
-  gem 'meta_request', '0.2.8'
-  # nice ui for errors
+  # nice error output
   gem 'better_errors', '1.0.1'
+  gem 'binding_of_caller', '0.7.2'
   # web server
-  gem 'puma', '2.6.0'
-  # gem for creating db/controller diagrams
-  gem 'railroady', '1.1.1'
-  # colored output in irb and console
-  gem 'wirble', '0.1.3'
+  gem 'thin', '1.6.1'
 end
 
 # admin interface
 gem 'rails_admin', '0.4.9'
 
 # web-scraping
-# TODO: fix installing 1.8.1 for json and json-pure
-gem 'json_pure', '1.8.0'
-gem 'json', '1.8.0'
+gem 'json_pure', '1.8.1'
+gem 'json', '1.8.1'
 gem 'httparty', '0.12.0'
 
 # work with mediawiki
 gem 'mediawiki-gateway', '0.5.2'
 # work with wiki markdown
-gem 'wikicloth', :git => 'git://github.com/avaranovich/wikicloth.git'
+gem 'wikicloth', :github => 'avaranovich/wikicloth'
 
-gem 'rdf', :git => 'git://github.com/ruby-rdf/rdf.git'
+gem 'rdf', :github => 'ruby-rdf/rdf'
 
 # source text highlighting
 gem 'pygments.rb', '0.5.2'
@@ -103,14 +91,15 @@ gem 'closure-compiler', '1.1.10'
 gem 'simple_form', '2.1.0'
 
 # growl-like notifications
-gem 'gritter', :git => 'git://github.com/burgua/gritter.git', :branch => 'vendor_dir'
+# TODO: replace with solid gem
+gem 'gritter', :github => 'burgua/gritter', :branch => 'vendor_dir'
 
 # deploy tool
 # TODO: update after reading manual
 gem 'capistrano', '2.15.5'
 
 # for wiki-editor
-gem 'aced_rails', '0.2.1', :git => 'git://github.com/tschmorleiz/aced_rails.git'
+gem 'aced_rails', '0.2.1', :github => 'tschmorleiz/aced_rails'
 
 # for html snapshots
 gem 'watir-webdriver', '0.6.4'
