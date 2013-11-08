@@ -47,11 +47,6 @@ body .row-fluid {
   border-radius: 12px;
 }
 
-#contribution-tab-link {
-  color: blue;
-  font-weight: bold;
-}
-
 body, p, h1, h2, ul, a, span, strong, select, option, label {
   font-family: 'Open Sans', Arial, sans-serif;
 }
