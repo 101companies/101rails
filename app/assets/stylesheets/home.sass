@@ -1,3 +1,5 @@
+@import "mixins"
+
 html
   padding-top: 0px
 
@@ -49,7 +51,6 @@ table
 
 .header
   padding: 0px 0px 0px 10%
-  /* IE10 Consumer Preview
   background-image: -ms-linear-gradient(top, rgb(250, 250, 250) 0%, rgb(230, 230, 235) 100%)
   background-image: -moz-linear-gradient(top, rgb(250, 250, 250) 0%, rgb(230, 230, 235) 100%)
   background-image: -o-linear-gradient(top, rgb(250, 250, 250) 0%, rgb(230, 230, 235) 100%)
@@ -57,8 +58,6 @@ table
   background-image: -webkit-linear-gradient(top, rgb(250, 250, 250) 0%, rgb(230, 230, 235) 100%)
   background-image: linear-gradient(to bottom, rgb(250, 250, 250) 0%, rgb(230, 230, 245) 100%)
   box-shadow: 0 0 3px 1px #777 ,0 0 2px 1px #397AA1
-
-header
   height: 57.3px
 
 .modal-footer .loading-indicator
@@ -81,7 +80,6 @@ header
     a
       color: white
       text-decoration: none
-
 
 #nav
   border-radius: 3px
@@ -178,7 +176,7 @@ p
 .editormenu
   margin-bottom: 15px
   button
-    font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', 'Droid Sans Mono', 'Consolas', monospace
+    font-family: $monospaced_family
 
 .loading-indicator
   float: right
@@ -295,16 +293,16 @@ p
   height: 100%
 
 .ace_line
-  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', 'Droid Sans Mono', 'Consolas', monospace
+  font-family: $monospaced_family
   span
-    font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', 'Droid Sans Mono', 'Consolas', monospace
+    font-family: $monospaced_family
 
 .triple
   color: gray
   text-align: left
   margin-bottom: 2px
   margin-left: 10px
-  font-family: 'Open Sans', sans-serif
+  font-family: $normal_font_family
 
 .subject, .predicate, .object
   margin-left: 4px
@@ -363,7 +361,7 @@ p
 
 .resourcename
   float: left
-  font-family: 'Open Sans', sans-serif
+  font-family: $normal_font_family
   margin-right: 5px
   margin-top: 5px
   margin-bottom: 5px
@@ -405,11 +403,8 @@ p
   pre
     padding: 7px
     span
-      font-family: Inconsolata
+      font-family: $monospaced_family
       font-size: 14px
-
-/* change font for code snippets
-@import url(http://fonts.googleapis.com/css?family=Inconsolata)
 
 #contentTop
   margin-bottom: 10px
