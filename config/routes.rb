@@ -17,14 +17,11 @@ Wiki::Application.routes.draw do
     get '/' => 'contributions#index'
     # ui for creating contribution
     get '/new' => 'contributions#new'
-    get '/apply_findings/:id' => 'pages#apply_findings', :constraints => { :id => /.*/ }, :as => :page
-    put '/update/:id' => 'pages#update_contribution', :constraints => { :id => /.*/ }, :as => :page
+    post '/apply_findings/:id' => 'pages#apply_findings', :constraints => { :id => /.*/ }
+    put '/update/:id' => 'pages#update_repo', :constraints => { :id => /.*/ }
     # method where contribution will be created
     post '/new' => 'contributions#create'
-    # put analyzed by worker data to contribution
-    post '/analyze/:id' => 'contributions#analyze', :constraints => { :id => /.*/ }, :as => :page
-    post '/send_analyze_request/:id' => 'pages#fetch_data_from_worker', :constraints => { :id => /.*/ }, :as => :page
-    post '/select_contributor/:id' => 'pages#select_contributor', :constraints => { :id => /.*/ }, :as => :page
+
   end
 
   # tours
@@ -59,7 +56,6 @@ Wiki::Application.routes.draw do
   # pages routes
   scope 'wiki' do
     get '/' => redirect("/wiki/@project")
-    match '/clean_cache/:id' => 'pages#clean_cache' , :constraints => { :id => /.*/ }
     match '/:id' => 'pages#show' , :constraints => { :id => /.*/ }, :as => :page
   end
 

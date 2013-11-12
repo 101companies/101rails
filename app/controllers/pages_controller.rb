@@ -9,8 +9,7 @@ class PagesController < ApplicationController
   # before_filter need to be before load_and_authorize_resource
   before_filter :get_the_page
   # methods, that need to check permissions
-  load_and_authorize_resource :only => [:delete, :rename, :update, :apply_findings, :select_contributor,
-                                        :update_contribution, :fetch_data_from_worker]
+  load_and_authorize_resource :only => [:delete, :rename, :update, :apply_findings, :update_repo]
 
   def get_the_page
     # if no title -> set default wiki startpage '@project'
@@ -30,11 +29,13 @@ class PagesController < ApplicationController
     end
   end
 
-  def update_contribution
+  def update_repo
+    # TODO: move to update method
     @page.contribution_url = params[:contribution_url]
-    @page.contribution_folder = (params[:contribution_folder].empty? ? '/' : params[:contribution_folder])
-    user = User.where(:name => params[:contributor][0]).first
-    @page.contributor = user if user
+    param_page = params[:page]
+    @page.contribution_folder = param_page[:contribution_folder]
+    @page.contribution_url = param_page[:contribution_url]
+    @page.contributor.id = param_page[:contributor_id]
     flash_message = ''
     if @page.save
       flash_message = "Failed to send contribution to matching server" if !@page.analyze_request
@@ -46,7 +47,7 @@ class PagesController < ApplicationController
     else
       flash[:error] = flash_message
     end
-    redirect_to  "/wiki/#{@page.url}#contribution"
+    redirect_to  "/wiki/#{@page.url}#repo"
   end
 
   def apply_findings

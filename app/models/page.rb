@@ -19,7 +19,7 @@ class Page
   field :snapshot, type: String
 
   # part related to contribution process
-  field :contribution_folder, type: String, :default => ''
+  field :contribution_folder, type: String, :default => '/'
   field :contribution_url, type: String, :default => ''
   field :worker_findings, type: String, :default => ''
   # this field is using for validating the uniqueness of paar url+folder

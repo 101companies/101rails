@@ -1,4 +1,4 @@
-#contribution.tab-pane
+#repo.tab-pane
 
   - if @page.worker_findings and !@page.worker_findings.empty?
 
@@ -21,5 +21,5 @@
   = simple_form_for(@page, :html => {:class => 'form-horizontal' }, :url => "/contribute/update/#{@page.url}") do |f|
     = f.input :contribution_url
     = f.input :contribution_folder
-    = f.input :contributor, collection: User.all.map{ |u| u.name }
+    = f.select :contributor_id, User.all.map {|u| [u.name, u.id, u == current_user]}, :include_blank => true
     = f.button :submit, :class => 'btn btn-success'
