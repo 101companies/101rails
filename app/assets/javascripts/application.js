@@ -32,4 +32,5 @@
  = require gritter
  = require bootstrap-tour
  = require moment.min
+ = require angular.min
  */
