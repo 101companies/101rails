@@ -51,7 +51,7 @@ gem 'omniauth', '1.1.4'
 gem 'omniauth-github', '1.1.1'
 
 # github integration
-gem 'octokit', '2.5.0'
+gem 'octokit', '2.6.0'
 
 # font with bundled icons
 gem 'font-awesome-rails', '3.2.1.3'

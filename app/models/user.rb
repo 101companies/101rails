@@ -30,16 +30,23 @@ class User
   attr_accessible :role, :page_ids, :old_wiki_user_ids, :contribution_page_ids
 
   def get_repos
-    (Octokit.repositories self.github_name, {:type => 'all'}).map do |repo|
+    # using oauth token to increase limit of request to github api to 5000
+    client = Octokit::Client.new :access_token => self.github_token
+    (client.repositories self.github_name, {:type => 'all'}).map do |repo|
       repo.full_name
     end
   end
 
+
   def get_repo_dirs(repo, recursive = false)
     base_url = "https://api.github.com/repos/"
-    last_commit = JSON.parse(HTTParty.get("#{base_url}#{repo}/commits").body).first["sha"]
-    run_recursive = recursive ? "?recursive=1" : ""
-    files_and_dirs = JSON.parse(HTTParty.get("#{base_url}#{repo}/git/trees/#{last_commit}#{run_recursive}").body)
+    # using oauth token to increase limit of request to github api to 5000
+    last_commit = JSON.parse(HTTParty.get("#{base_url}#{repo}/commits?access_token=#{self.github_token}").body).first["sha"]
+    run_recursive = recursive ? "&recursive=1" : ""
+    # using oauth token to increase limit of request to github api to 5000
+    url = "#{base_url}#{repo}/git/trees/#{last_commit}?access_token=#{self.github_token}#{run_recursive}"
+    puts url
+    files_and_dirs = JSON.parse(HTTParty.get(url).body)
     files_and_dirs["tree"].each.select{|node| node["type"] == 'tree'}.map{|node| node['path']}
   end
 
