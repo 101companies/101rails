@@ -43,7 +43,7 @@ class User
     files_and_dirs["tree"].each.select{|node| node["type"] == 'tree'}.map{|node| node['path']}
   end
 
-  def get_repo_dirs_rec(repo)
+  def get_repo_dirs_recursive(repo)
     self.get_repo_dirs(repo, true)
   end
 
