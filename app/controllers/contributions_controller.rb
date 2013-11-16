@@ -85,11 +85,7 @@ class ContributionsController < ApplicationController
     @user_github_repos = nil
 
     begin
-      # retrieve all repos of user
-      @user_github_repos = (Octokit.repos current_user.github_name, {:type => 'all'}).map do |repo|
-        # retrieve 'username/reponame' from url
-        repo.full_name
-      end
+      @user_github_repos = current_user.get_repos
     rescue
       flash[:warning] = "We couldn't retrieve you github information, please try in 5 minutes. " +
           "If you haven't added github public email - please do it!"
