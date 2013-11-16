@@ -92,6 +92,7 @@ gem 'pygments.rb', '0.5.2'
 gem 'closure-compiler', '1.1.10'
 
 gem 'simple_form', '2.1.0'
+gem 'select2-rails'
 
 # growl-like notifications
 # TODO: replace with solid gem

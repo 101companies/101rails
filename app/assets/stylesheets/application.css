@@ -8,105 +8,20 @@
  * You're free to add application-wide styles to this file and they'll appear at the top of the
  * compiled file, but it's generally better to create a new file per style scope.
  *
- *= require_self
+
  *= require bootstrap
  *= require bootstrap-responsive
  *= require font-awesome
+ *= require gritter
+ *= require select2
+
+ *= require app
  *= require bootstrap-tour
  *= require pygments
  *= require home
  *= require contribution
  *= require login_intro
- *= require gritter
+
+ *= require_self
 
 */
-
-.one-page-change {
-    height: 50px;
-}
-
-body .row-fluid {
-    margin-top: 50px;
-}
-
-#search-query {
-  width: 110px;
-}
-
-.fragment-failed {
-  color: coral;
-}
-
-.fragment-failed:hover {
-  cursor:pointer;
-}
-
-.small_avatar {
-  height: 24px;
-  width: 24px;
-  border-radius: 12px;
-}
-
-body, p, h1, h2, ul, a, span, strong, select, option, label {
-  font-family: 'Open Sans', Arial, sans-serif;
-}
-
-#page-nav .navbar-inner  {
-  padding-left: 17.9%;
-  padding-right: 16.6%;
-}
-
-#page-nav .container-fluid {
-  padding-left: 0px;
-}
-
-#main101 {
-  overflow: hidden;
-}
-
-#main101 p {
-  text-align: justify;
-}
-
-/* error handling for fragments */
-.error {
-  overflow: hidden;
-  width: 350px;
-  font-family: 'Monaco', 'Menlo', 'Consolas', monospaced;
-  padding: 8px;
-  height: 14px;
-  font-size: 12px;
-  line-height: 1.5em;
-  background-color: #ff7b7e;
-  color: #ff7b7e;
-  border: 1px dashed #fff;
-}
-
-.error:hover {
-  height: 100%;
-  width: 100%;
-  background-color: none;
-  color: #fff
-}
-
-.error:before {
-  content: 'Something went wrong. Hover here to see error. ';
-  color: #fff
-}
-
-.error:hover:before {
-  content: '';
-}
-
-.brand {
-  float: left;
-}
-ul.nav {
-  list-style: none;
-  margin: 0 0 2em;
-  padding: 0;
-  margin-top: 10px;
-}
-ul.nav li {
-  display: inline;
-}
