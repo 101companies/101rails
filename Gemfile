@@ -26,7 +26,7 @@ gem 'bootstrap-sass', '2.3.2.2'
 group :assets do
   gem 'sass-rails', '3.2.6'
   gem 'coffee-rails', '3.2.2'
-  gem 'uglifier', '2.2.1'
+  gem 'uglifier', '2.3.1'
   gem 'compass-rails', '1.0.3'
 end
 
@@ -88,7 +88,7 @@ gem 'wikicloth', :github => 'avaranovich/wikicloth'
 gem 'rdf', :github => 'ruby-rdf/rdf'
 
 # source text highlighting
-gem 'pygments.rb', '0.5.2'
+gem 'pygments.rb', '0.5.4'
 gem 'closure-compiler', '1.1.10'
 
 gem 'simple_form', '2.1.0'
