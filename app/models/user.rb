@@ -4,7 +4,7 @@ class User
   include Mongoid::Paranoia
 
   def self.role_options
-    ['admin', 'editor', 'guest', 'deprecated']
+    ['admin', 'editor', 'guest']
   end
 
   field :email,          :type => String
