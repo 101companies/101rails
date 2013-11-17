@@ -46,3 +46,5 @@ $ ->
     # false prevents sending the form
     # true sends the form
     all_is_ok
+  for elem in ["#page_contribution_url", "#page_contribution_folder"]
+    $(elem).select2 width: "70%"

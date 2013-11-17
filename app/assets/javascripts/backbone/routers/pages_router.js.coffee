@@ -7,7 +7,7 @@ class Wiki.Routers.PagesRouter extends Backbone.Router
     @ViewClass = ViewClass
     # Change hash when a tab changes
     $('a[data-toggle="tab"]').on 'shown', (e) ->
-      location.href = event.target.href
+      history.pushState(null, null, event.target.href);
 
   # show page with wiki view
   default: (x) ->

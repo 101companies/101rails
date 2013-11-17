@@ -5,6 +5,7 @@
 
     %meta{:content => "width=device-width, initial-scale=1.0", :name => "viewport"}/
     %title 101wiki
+    %link{:href => "//fonts.googleapis.com", :rel => "dns-prefetch"}/
     %meta{:name => "fragment", :content => "!"}
     %meta{:content => content_for?(:description) ? yield(:description) : "Wiki", :name => "description"}/
     = stylesheet_link_tag "application", :media => "all"

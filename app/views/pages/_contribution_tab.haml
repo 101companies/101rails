@@ -17,9 +17,9 @@
       %a.btn.btn-success{:href => "/contribute/apply_findings/#{apply_url}"}
         Apply findings in contribution page
 
-  %h2 Input contribution github params
+  %h2 Linked Github repo
   = simple_form_for(@page, :html => {:class => 'form-horizontal' }, :url => "/contribute/update/#{@page.url}") do |f|
-    = f.input :contribution_url
     = f.input :contribution_folder
     = f.select :contributor_id, User.all.map {|u| [u.name, u.id, u == current_user]}, :include_blank => true
+    = f.input :contribution_url, :label => 'Github repo', :collection => current_user.get_repos, :include_blank => false
     = f.button :submit, :class => 'btn btn-success'
