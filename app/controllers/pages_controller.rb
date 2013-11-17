@@ -30,13 +30,11 @@ class PagesController < ApplicationController
   end
 
   def update_repo
-    # TODO: move to update method
     @page.contribution_url = params[:contribution_url]
     param_page = params[:page]
     @page.contribution_folder = param_page[:contribution_folder]
     @page.contribution_url = param_page[:contribution_url]
-    @page.contributor.id = param_page[:contributor_id]
-    flash_message = ''
+    # TODO: send notification on current user    flash_message = ''
     if @page.save
       flash_message = "Failed to send contribution to matching server" if !@page.analyze_request
     else
