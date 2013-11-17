@@ -52,19 +52,6 @@ class ApplicationController < ActionController::Base
     go_to_previous_page
   end
 
-  # profiling with ruby-prof
-  # add ?profile=true or &profile=true to url to profile it
-  around_filter :profile if Rails.env == 'development'
-  def profile
-    if params[:profile] && result = RubyProf.profile { yield }
-      out = StringIO.new
-      RubyProf::FlatPrinter.new(result).print out, :min_percent => 0
-      self.response_body = out.string
-    else
-      yield
-    end
-  end
-
   helper_method :current_user
   private
   def current_user
