@@ -37,7 +37,6 @@ class User
     end
   end
 
-
   def get_repo_dirs(repo, recursive = false)
     base_url = "https://api.github.com/repos/"
     # using oauth token to increase limit of request to github api to 5000
@@ -47,7 +46,8 @@ class User
     url = "#{base_url}#{repo}/git/trees/#{last_commit}?access_token=#{self.github_token}#{run_recursive}"
     puts url
     files_and_dirs = JSON.parse(HTTParty.get(url).body)
-    files_and_dirs["tree"].each.select{|node| node["type"] == 'tree'}.map{|node| node['path']}
+    repos = files_and_dirs["tree"].each.select{|node| node["type"] == 'tree'}.map{|node| '/' + node['path']}
+    repos.prepend '/'
   end
 
   def get_repo_dirs_recursive(repo)
