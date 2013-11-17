@@ -92,7 +92,8 @@ gem 'pygments.rb', '0.5.4'
 gem 'closure-compiler', '1.1.10'
 
 gem 'simple_form', '2.1.0'
-gem 'select2-rails'
+gem 'select2-rails', '3.5.1'
+gem 'momentjs-rails', '2.4.0'
 
 # growl-like notifications
 # TODO: replace with solid gem

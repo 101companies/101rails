@@ -21,7 +21,6 @@
  = require backbone_rails_sync
  = require backbone_datalink
  = require backbone/wiki
- = require_tree .
  = require bootstrap
  = require ace/ace
  = require ace/ext-searchbox
@@ -31,6 +30,7 @@
  = require ace/mode-wiki
  = require gritter
  = require bootstrap-tour
- = require moment.min
  = require select2
+ = require moment
+ = require_tree .
  */

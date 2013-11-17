@@ -19,7 +19,6 @@
 
   %h2 Linked Github repo
   = simple_form_for(@page, :html => {:class => 'form-horizontal' }, :url => "/contribute/update/#{@page.url}") do |f|
-    = f.input :contribution_folder
-    = f.select :contributor_id, User.all.map {|u| [u.name, u.id, u == current_user]}, :include_blank => true
     = f.input :contribution_url, :label => 'Github repo', :collection => current_user.get_repos, :include_blank => false
+    = f.input :contribution_folder, :collection => current_user.get_repo_dirs_recursive('101companies/101rails')
     = f.button :submit, :class => 'btn btn-success'

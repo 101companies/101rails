@@ -21,7 +21,7 @@ Wiki::Application.routes.draw do
     put '/update/:id' => 'pages#update_repo', :constraints => { :id => /.*/ }
     # method where contribution will be created
     post '/new' => 'contributions#create'
-
+    get '/repo_dirs/:repo' => 'contributions#get_repo_dirs', :constraints => { :repo => /.*/ }
   end
 
   # tours
