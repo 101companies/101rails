@@ -13,6 +13,9 @@ class ContributionsController < ApplicationController
       Mailer.analyzed_contribution(@page).deliver
     end
     render nothing: true
+
+  def get_repo_dirs(repo)
+    render :json => current_user.get_repo_dirs_recursive(repo)
   end
 
   def index
