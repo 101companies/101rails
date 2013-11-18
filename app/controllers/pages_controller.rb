@@ -34,17 +34,18 @@ class PagesController < ApplicationController
     param_page = params[:page]
     @page.contribution_folder = param_page[:contribution_folder]
     @page.contribution_url = param_page[:contribution_url]
-    # TODO: send notification on current user    flash_message = ''
-    if @page.save
-      flash_message = "Failed to send contribution to matching server" if !@page.analyze_request
-    else
-      flash_message = "Failed to update contribution"
-    end
-    if flash_message == ''
-      flash[:success] = 'Contribution updated successfully'
-    else
-      flash[:error] = flash_message
-    end
+    @page.save
+    # TODO: send request + restore
+    #if @page.save
+    #  flash_message = "Failed to send contribution to matching server"# if !@page.analyze_request
+    #else
+    #  flash_message = "Failed to update contribution"
+    #end
+    #if flash_message == ''
+    #  flash[:success] = 'Contribution updated successfully'
+    #else
+    #  flash[:error] = flash_message
+    #end
     redirect_to  "/wiki/#{@page.url}#repo"
   end
 
