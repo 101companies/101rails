@@ -48,6 +48,21 @@ RailsAdmin.config do |config|
 
   end
 
+  config.model 'MatchingServiceRequest' do
+
+    field :page do
+      searchable true
+    end
+
+    field :user do
+      searchable true
+    end
+
+    field :created_at
+    field :updated_at
+
+  end
+
   config.model 'User' do
 
     field :github_avatar do
