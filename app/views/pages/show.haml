@@ -38,7 +38,8 @@
 
   / tab with all contributions settings
   - if show_repo_tab
-    = render "/pages/contribution_tab"
+    #repo.tab-pane
+      = render "/pages/contribution_tab"
 
   / tab with all history revisions
   - if exist_last_change

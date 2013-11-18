@@ -1,24 +1,22 @@
-#repo.tab-pane
+%h2 Linked Github repo
+= render "/pages/contribution_form"
 
-  - if @page.worker_findings and !@page.worker_findings.empty?
+%h2 Worker findings
 
-    %h2 Worker findings
-    - findings = JSON.parse(@page.worker_findings)
-    - if findings
-      - findings.each do |one_finding|
-        - one_finding.keys.each do |finding_key|
-          %p
-            %b
-              = finding_key.capitalize
-            \: #{PageModule.contribution_array_to_string(one_finding[finding_key])}
+- if @page.worker_findings and !@page.worker_findings.empty?
 
-    - if  (can? :manage, @page)
-      - apply_url = @page.url
-      %a.btn.btn-success{:href => "/contribute/apply_findings/#{apply_url}"}
-        Apply findings in contribution page
+  - findings = JSON.parse(@page.worker_findings)
+  - if findings
+    - findings.each do |one_finding|
+      - one_finding.keys.each do |finding_key|
+        %p
+          %b
+            = finding_key.capitalize
+          \: #{PageModule.contribution_array_to_string(one_finding[finding_key])}
+  - if  (can? :manage, @page)
+    - apply_url = @page.url
+    %a.btn.btn-success{:href => "/contribute/apply_findings/#{apply_url}"}
+      Apply findings in contribution page
 
-  %h2 Linked Github repo
-  = simple_form_for(@page, :html => {:class => 'form-horizontal' }, :url => "/contribute/update/#{@page.url}") do |f|
-    = f.input :contribution_url, :label => 'Github repo', :collection => current_user.get_repos, :include_blank => false
-    = f.input :contribution_folder, :collection => [@page.contribution_folder]
-    = f.button :submit, :class => 'btn btn-success'
+- else
+  We don't have any information about used languages, technologies, concepts and features for this page.

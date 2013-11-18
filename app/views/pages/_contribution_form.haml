@@ -1,0 +1,5 @@
+= simple_form_for(@page, :html => {:class => 'form-horizontal' }, :url => "/contribute/update/#{@page.url}") do |f|
+  = f.input :contribution_url, :label => 'Github repo', :collection => current_user.get_repos, :include_blank => false
+  = f.input :contribution_folder, :collection => [@page.contribution_folder]
+  /= f.input :title
+  = f.button :submit, :class => 'btn btn-success', :id => 'update_page_button'

@@ -20,7 +20,7 @@ class Page
 
   # part related to contribution process
   field :contribution_folder, type: String, :default => '/'
-  field :contribution_url, type: String, :default => ''
+  field :contribution_url, type: String, :default => '101companies/101repo'
   field :worker_findings, type: String, :default => ''
   # this field is using for validating the uniqueness of paar url+folder
   field :contribution_url_folder, type: String
@@ -30,8 +30,6 @@ class Page
   has_and_belongs_to_many :users, :class_name => 'User', :inverse_of => :pages
   belongs_to :contributor, :class_name => 'User', :inverse_of => :contribution_pages
 
-  # TODO: restore
-  #validates_uniqueness_of :contribution_url_folder
   validates_uniqueness_of :page_title_namespace
   validates_presence_of :title
   validates_presence_of :namespace

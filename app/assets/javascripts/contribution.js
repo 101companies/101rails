@@ -1,5 +1,6 @@
 $(function() {
     var folderInput = $('#page_contribution_folder');
+    var updatePageButton = $('#update_page_button');
     folderInput.select2({width: '70%'}).select2('readonly', true);
     $("#page_contribution_url").select2({width: '70%'}).on("change", function(e) {
         var populateInput = function (data) {
@@ -15,9 +16,10 @@ $(function() {
             beforeSend: function () {
                 populateInput(['Loading folders ...'])
                 folderInput.select2({width: '70%'}).select2("readonly", true);
+                updatePageButton.prop('disabled', true);
             },
             complete: function () {
-
+                updatePageButton.prop('disabled', false);
             },
             error: function(){
                 $.gritter.add({
