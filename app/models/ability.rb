@@ -19,9 +19,6 @@ class Ability
     # user can be manually has permissions to change concrete page
     can :manage, Page, :user_ids => user.id
 
-    # user can edit page, if he it's contribution page and it's his contribution
-    can :manage, Page, :contributor_id => user.id
-
   end
 
 end

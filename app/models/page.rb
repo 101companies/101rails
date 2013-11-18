@@ -28,14 +28,13 @@ class Page
   # relations here
   has_many :page_changes
   has_and_belongs_to_many :users, :class_name => 'User', :inverse_of => :pages
-  belongs_to :contributor, :class_name => 'User', :inverse_of => :contribution_pages
 
   validates_uniqueness_of :page_title_namespace
   validates_presence_of :title
   validates_presence_of :namespace
 
   attr_accessible :user_ids, :raw_content, :namespace, :title, :snapshot,
-                  :contribution_folder, :contribution_url, :contributor_id, :worker_findings
+                  :contribution_folder, :contribution_url, :worker_findings
 
   # validate uniqueness for paar title + namespace
   before_validation do
@@ -194,25 +193,6 @@ class Page
     content = ""
     sections.each { |s| content += s['content'] + "\n" }
     content
-  end
-
-  def analyze_request
-    #success = true
-    #begin
-    #  url = 'http://worker.101companies.org/services/analyzeSubmission'
-    #  HTTParty.post url,
-    #    :body => {
-    #        :url => self.contribution_url+'.git',
-    #        :folder => self.contribution_folder,
-    #        :name => PageModule.nice_wiki_url(self.title),
-    #        :backping => "http://101companies.org/contribute/analyze/#{self.id}"
-    #    }.to_json,
-    #    :headers => {'Content-Type' => 'application/json'}
-    #rescue
-    #  success = false
-    #end
-    #success
-    true
   end
 
   def update_or_rename_page(new_title, content, sections)

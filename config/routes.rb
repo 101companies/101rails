@@ -17,9 +17,10 @@ Wiki::Application.routes.draw do
     get '/' => 'contributions#index'
     # ui for creating contribution
     get '/new' => 'contributions#new'
-    post '/apply_findings/:id' => 'pages#apply_findings', :constraints => { :id => /.*/ }
+    get '/apply_findings/:id' => 'pages#apply_findings', :constraints => { :id => /.*/ }
     put '/update/:id' => 'pages#update_repo', :constraints => { :id => /.*/ }
     # method where contribution will be created
+    post '/analyze/:id' => 'contributions#analyze', :constraints => { :id => /.*/ }
     post '/new' => 'contributions#create'
     get '/repo_dirs/:repo' => 'contributions#get_repo_dirs', :constraints => { :repo => /.*/ }
   end

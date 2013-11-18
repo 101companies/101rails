@@ -20,7 +20,6 @@ class User
   has_many :old_wiki_users
   has_many :page_changes
   has_and_belongs_to_many :pages, :class_name => 'Page', :inverse_of => :users
-  has_many :contribution_pages, :class_name => 'Page', :inverse_of => :contributor
 
   validates_uniqueness_of :email
   validates_uniqueness_of :github_uid

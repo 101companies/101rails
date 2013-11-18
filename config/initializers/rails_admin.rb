@@ -61,6 +61,9 @@ RailsAdmin.config do |config|
     field :created_at
     field :updated_at
 
+    field :sent
+    field :analysed
+
   end
 
   config.model 'User' do
@@ -147,10 +150,6 @@ RailsAdmin.config do |config|
       end
 
       field :raw_content do
-        show
-      end
-
-      field :contributor do
         show
       end
 

@@ -4,10 +4,10 @@
     %meta{:content => "text/html; charset=UTF-8", "http-equiv" => "Content-Type"}/
   %body
     %h1
-      Dear #{@page.contributor.name},
+      Dear #{@request.user.name},
     %p
       You contribution submitted to 101companies is analyzed and can been seen
-      %a{:href => "http://101companies.org/wiki/#{@page.url}#repo"} on this page.
+      %a{:href => "http://101companies.org/wiki/#{@request.page.url}#repo"} on this page.
     %p
       Sincerely yours,
       your 101companies team.

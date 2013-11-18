@@ -2,15 +2,22 @@ class ContributionsController < ApplicationController
 
   def analyze
     begin
-      @page = Page.find(params[:id])
+      @request = MatchingServiceRequest.find(params[:id])
       # write worker findings
       findings = []
       %w(languages concepts technologies features).map do |index|
         findings << { index => params[index] } if params[index]
       end
-      @page.worker_findings = findings.to_json.to_s
-      @page.save!
-      Mailer.analyzed_contribution(@page).deliver
+
+      @request.page.worker_findings = findings.to_json.to_s
+      @request.page.save!
+
+      @request.worker_findings = findings.to_json.to_s
+      @request.page.worker_findings = findings.to_json.to_s
+      @request.analysed = true
+      @request.save!
+
+      Mailer.analyzed_contribution(@request).deliver
     end
     render nothing: true
   end
@@ -52,8 +59,7 @@ class ContributionsController < ApplicationController
     end
 
     # define github url to repo
-    # TODO: check contrb url+folder via validation
-    @page.contribution_url = 'https://github.com/' + params[:contrb_repo_url].first
+    @page.contribution_url = params[:contrb_repo_url].first
 
     # set folder to '/' if no folder given
     @page.contribution_folder = params[:contrb_folder].empty?  ? '/' : params[:contrb_folder]
@@ -64,19 +70,24 @@ class ContributionsController < ApplicationController
       @page.raw_content = "== Headline ==\n\n" + PageModule.default_contribution_text(@page.contribution_url)
     end
 
-    @page.contributor = current_user
+    request = MatchingServiceRequest.new
+    request.user = current_user
+    request.page = @page
+    request.save
+
+    request.send_request
 
     # send request to matching service
-    unless @page.analyze_request
+    unless request.sent
       flash[:error] = "You have created new contribution. Request on analyze service wasn't successful. Please retry it later"
     else
       flash[:notice] = "You have created new contribution. You will retrieve an email, when it will be analyzed."
     end
 
     @page.inject_namespace_triple
+    @page.inject_triple "developedBy::#{current_user.name}"
     @page.save
-    Mailer.created_contribution(@page).deliver
-
+    Mailer.created_contribution(request).deliver
     redirect_to  "/wiki/#{@page.url}"
   end
 
