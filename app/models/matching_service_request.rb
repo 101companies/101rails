@@ -22,7 +22,7 @@ class MatchingServiceRequest
                         :url => "https://github.com/#{self.page.contribution_url}.git",
                         :folder => self.page.contribution_folder,
                         :name => self.page.url,
-                        :backping => "http://141.26.88.4:3000/contribute/analyze/#{self.id}"
+                        :backping => "http://101companies.org/contribute/analyze/#{self.id}"
                     }.to_json,
                     :headers => {'Content-Type' => 'application/json'}
     rescue
