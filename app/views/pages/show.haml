@@ -58,10 +58,10 @@
 
 #disqus_thread
 
-- disq = "$ajaxSetup({cache:true});"+
--  "$.getScript(\"http://101companies.disqus.com/embed.js\");"+
--  "$.ajaxSetup({cache:false});"+
--  "$(\"#disqus_loader\").remove();"
+/- disq = "$ajaxSetup({cache:true});"+
+/-  "$.getScript(\"http://101companies.disqus.com/embed.js\");"+
+/-  "$.ajaxSetup({cache:false});"+
+/-  "$(\"#disqus_loader\").remove();"
 
 #disqus_loader{:style => "text-align: center"}
   %button.btn{:onclick => "#{disq}"}
