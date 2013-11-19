@@ -39,6 +39,8 @@ Wiki::Application.routes.draw do
     delete ':title' => 'tours#delete'
   end
 
+  get 'users/logout' => 'authentications#destroy'
+
   # clones
   scope 'clones' do
     get '/new' => 'clones#show_create'
