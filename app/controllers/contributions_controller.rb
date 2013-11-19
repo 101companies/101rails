@@ -20,7 +20,6 @@ class ContributionsController < ApplicationController
       @request.page.save!
 
       @request.worker_findings = findings.to_json.to_s
-      @request.page.worker_findings = findings.to_json.to_s
       @request.analysed = true
       @request.save!
 
