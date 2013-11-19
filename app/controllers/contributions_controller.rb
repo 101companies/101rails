@@ -2,8 +2,15 @@ class ContributionsController < ApplicationController
 
   def analyze
     begin
-      @request = MatchingServiceRequest.find(params[:id])
-      # write worker findings
+      # exception for id check
+      begin
+        @request = MatchingServiceRequest.find(params[:id])
+      rescue
+        Rails.logger "Strange request from matching service with id #{params[:id]}"
+        @request = nil
+      end
+      (render nothing: true and return) if @request.nil?
+
       findings = []
       %w(languages concepts technologies features).map do |index|
         findings << { index => params[index] } if params[index]
