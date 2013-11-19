@@ -2,11 +2,12 @@ Wiki::Application.routes.draw do
 
   # homepage
   root :to => "home#index"
-  get '/search' => 'pages#search'
   # sitemap
   get '/sitemap.xml' => 'application#sitemap'
   # link for downloading slides from slideshare
   get '/get_slide/*slideshare' => 'application#get_slide', :format => false
+
+  get '/search' => 'pages#search'
 
   # admin ui
   mount RailsAdmin::Engine => '/admin', :as => 'rails_admin'
@@ -38,21 +39,12 @@ Wiki::Application.routes.draw do
     delete ':title' => 'tours#delete'
   end
 
-  #users
-  scope 'users' do
-    get '/' => 'users#index'
-    get '/claim_pages' => 'users#claim_pages', :format => false
-    get '/logout' => 'authentications#destroy'
-    get '/:id' => 'users#show', :as => :user
-  end
-
   # clones
   scope 'clones' do
     get '/new' => 'clones#show_create'
     get '/' => 'clones#show'
     get '/check/:title' => 'clones#show'
   end
-
 
   # pages routes
   scope 'wiki' do
@@ -64,13 +56,15 @@ Wiki::Application.routes.draw do
 
   # json api requests for pages
   scope 'api', :format => :json do
-    post 'parse' => 'pages#parse'
+    # clones api
     get 'clones/:title' => 'clones#get'
     post 'clones/:title' => 'clones#create'
     put 'clones/:title' => 'clones#update'
     get 'clones/:title' => 'clones#get'
     delete 'clones/:title' => 'clones#delete'
     get 'clones' => 'clones#index'
+    # pages api
+    post 'parse' => 'pages#parse'
     get 'pages' => 'pages#all'
     resources :pages, :constraints => { :id => /.*/ }, :only => [:section,:show] do
       member do
