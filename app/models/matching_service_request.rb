@@ -7,11 +7,16 @@ class MatchingServiceRequest
   belongs_to :user
   belongs_to :page
 
-  field :worker_findings, type: String, :default => ''
-  field :analysed, type: Boolean, :default => false
-  field :sent, type: Boolean, :default => false
+  field :worker_findings, :type => String, :default => ''
+  field :analysed, :type => Boolean, :default => false
+  field :sent, :type => Boolean, :default => false
 
   attr_accessible  :page_id, :user_id
+
+  def initialize(user, page)
+    self.user = user
+    self.page = page
+  end
 
   def send_request
     success = true
