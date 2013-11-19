@@ -3,7 +3,11 @@
 
   - @page.page_changes.each do |page_change|
     %div.one-page-change
-      %img.small_avatar{:src => page_change.user.github_avatar}
-      %a{:href=> "mailto:#{page_change.user.email}"}= page_change.user.name
-      edited this article at
-      = time_ago_in_words page_change.created_at
+      - if page_change.user
+        %img.small_avatar{:src => page_change.user.github_avatar}
+        %a{:href=> "mailto:#{page_change.user.email}"}= page_change.user.name
+        edited this article at
+        = time_ago_in_words page_change.created_at
+      - else
+        UFO edited this article at
+        = time_ago_in_words page_change.created_at

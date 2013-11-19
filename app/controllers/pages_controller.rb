@@ -139,7 +139,7 @@ class PagesController < ApplicationController
         }
 
         last_change = @page.page_changes.last
-        if last_change
+        if last_change and last_change.user
           history_entry = {
               user_name: last_change.user.name,
               user_pic: last_change.user.github_avatar,
