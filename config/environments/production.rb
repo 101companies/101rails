@@ -1,10 +1,10 @@
-Wiki::Application.config.middleware.use ExceptionNotification::Rack,
-  :email => {
-      :email_format => :html,
-      :email_prefix => "[101wiki | 500 error] ",
-      :sender_address => %{"101companies" <101companies@gmail.com>},
-      :exception_recipients => %w{aleksey.lashin@gmail.com rlaemmel@gmail.com dotnetby@gmail.com tschmorleiz@googlemail.com}
-  }
+#Wiki::Application.config.middleware.use ExceptionNotification::Rack,
+#  :email => {
+#      :email_format => :html,
+#      :email_prefix => "[101wiki | 500 error] ",
+#      :sender_address => %{"101companies" <101companies@gmail.com>},
+#      :exception_recipients => %w{aleksey.lashin@gmail.com rlaemmel@gmail.com dotnetby@gmail.com tschmorleiz@googlemail.com}
+#  }
 
 Wiki::Application.configure do
   # Settings specified here will take precedence over those in config/application.rb
