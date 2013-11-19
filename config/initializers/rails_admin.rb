@@ -96,10 +96,6 @@ RailsAdmin.config do |config|
     field :created_at
     field :updated_at
 
-    field :contribution_pages do
-      sortable false
-    end
-
     field :pages do
       sortable false
     end
