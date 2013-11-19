@@ -30,23 +30,12 @@ class PagesController < ApplicationController
   end
 
   def update_repo
-    @page.contribution_url = params[:contribution_url]
     param_page = params[:page]
     @page.contribution_folder = param_page[:contribution_folder]
     @page.contribution_url = param_page[:contribution_url]
-    @page.save
-    # TODO: send request + restore
-    #if @page.save
-    #  flash_message = "Failed to send contribution to matching server"# if !@page.analyze_request
-    #else
-    #  flash_message = "Failed to update contribution"
-    #end
-    #if flash_message == ''
-    #  flash[:success] = 'Contribution updated successfully'
-    #else
-    #  flash[:error] = flash_message
-    #end
-    redirect_to  "/wiki/#{@page.url}#repo"
+    @page.save ? flash[:success]="Updated linked repo" : flash[:error] = "Failed to update linked repo"
+    # TODO: restore request on matching server
+    redirect_to  "/wiki/#{@page.url}"
   end
 
   def apply_findings
