@@ -48,8 +48,7 @@ class PageModule
 
   def self.default_contribution_text(url)
     "You have created new contribution using [https://github.com Github]. " +
-        "Source code for this contribution you can find [#{url} here]. " +
-        "Please replace this text with something more meaningful."
+        "Source code for this contribution you can find [https://github.com/#{url} here]."
   end
 
   def self.search(query_string)

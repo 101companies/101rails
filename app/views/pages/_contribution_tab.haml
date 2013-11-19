@@ -1,7 +1,7 @@
 %h2 Linked Github repo
 = render "/pages/contribution_form"
 
-%h2 Worker findings
+%h2 Matching service findings
 
 - if @page.worker_findings and !@page.worker_findings.empty?
 
@@ -15,8 +15,9 @@
           \: #{PageModule.contribution_array_to_string(one_finding[finding_key])}
   - if  (can? :manage, @page)
     - apply_url = @page.url
+    %br
     %a.btn.btn-success{:href => "/contribute/apply_findings/#{apply_url}"}
-      Apply findings in contribution page
+      Insert findings as page metadata
 
 - else
   We don't have any information about used languages, technologies, concepts and features for this page.
