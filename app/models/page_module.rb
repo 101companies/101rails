@@ -80,7 +80,11 @@ class PageModule
   end
 
   def self.search(query_string)
-    found_pages = Page.full_text_search query_string
+    begin
+      found_pages = Page.full_text_search query_string
+    rescue
+      found_pages = nil
+    end
     # nothing found -> go out
     return [] if found_pages.nil?
     results = []
