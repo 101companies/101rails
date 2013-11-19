@@ -69,18 +69,9 @@ class ContributionsController < ApplicationController
 
     # set folder to '/' if no folder given
     @page.contribution_folder = params[:contrb_folder].empty?  ? '/' : params[:contrb_folder]
+    @page.raw_content = "== Headline ==\n\n" + PageModule.default_contribution_text(@page.contribution_url)
 
-    unless params[:contrb_description].empty?
-      @page.raw_content = "== Headline ==\n\n" + params[:contrb_description]
-    else
-      @page.raw_content = "== Headline ==\n\n" + PageModule.default_contribution_text(@page.contribution_url)
-    end
-
-    request = MatchingServiceRequest.new
-    request.user = current_user
-    request.page = @page
-    request.save
-
+    request = MatchingServiceRequest.new current_user, @page
     request.send_request
 
     # send request to matching service
@@ -93,6 +84,7 @@ class ContributionsController < ApplicationController
     @page.inject_namespace_triple
     @page.inject_triple "developedBy::#{current_user.name}"
     @page.save
+
     Mailer.created_contribution(request).deliver
     redirect_to  "/wiki/#{@page.url}"
   end
