@@ -52,17 +52,29 @@ RailsAdmin.config do |config|
 
     field :page do
       searchable true
+      read_only true
     end
 
     field :user do
       searchable true
+      read_only true
     end
 
-    field :created_at
-    field :updated_at
+    field :created_at do
+      read_only true
+    end
 
-    field :sent
-    field :analysed
+    field :updated_at do
+      read_only true
+    end
+
+    field :sent do
+      read_only true
+    end
+
+    field :analysed do
+      read_only true
+    end
 
   end
 
@@ -93,8 +105,13 @@ RailsAdmin.config do |config|
       searchable true
     end
 
-    field :created_at
-    field :updated_at
+    field :created_at do
+      read_only true
+    end
+
+    field :updated_at do
+      read_only true
+    end
 
     field :pages do
       sortable false
@@ -112,6 +129,7 @@ RailsAdmin.config do |config|
       label do
         'Wiki Title'
       end
+      read_only true
       searchable true
     end
 
@@ -133,8 +151,13 @@ RailsAdmin.config do |config|
       sortable false
     end
 
-    field :created_at
-    field :updated_at
+    field :created_at do
+      read_only true
+    end
+
+    field :updated_at do
+      read_only true
+    end
 
     edit do
       field :title do
