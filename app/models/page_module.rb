@@ -111,6 +111,7 @@ class PageModule
   end
 
   def self.escape_wiki_url(full_title)
+    # TODO: exception?
     MediaWiki::send :upcase_first_char, MediaWiki::wiki_to_uri(full_title)
   end
 
