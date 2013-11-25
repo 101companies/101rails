@@ -6,8 +6,8 @@
       - if page_change.user
         %img.small_avatar{:src => page_change.user.github_avatar}
         %a{:href=> "mailto:#{page_change.user.email}"}= page_change.user.name
-        edited this article at
-        = time_ago_in_words page_change.created_at
       - else
-        UFO edited this article at
-        = time_ago_in_words page_change.created_at
+        UFO
+      edited this article
+      = time_ago_in_words page_change.created_at
+      ago.
