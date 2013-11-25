@@ -16,9 +16,10 @@
  *= require select2
 
  *= require app
+ *= require home
+
  *= require bootstrap-tour
  *= require pygments
- *= require home
  *= require contribution
  *= require login_intro
 
