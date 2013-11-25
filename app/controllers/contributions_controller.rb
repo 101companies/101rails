@@ -65,6 +65,8 @@ class ContributionsController < ApplicationController
     @page.contribution_folder = params[:contrb_folder].empty?  ? '/' : params[:contrb_folder]
     @page.raw_content = "== Headline ==\n\n" + PageModule.default_contribution_text(@page.contribution_url)
 
+    @page.users << current_user
+
     request = MatchingServiceRequest.new
     request.user = current_user
     request.page = @page
