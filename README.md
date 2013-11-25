@@ -67,7 +67,7 @@ It will be generated a picture in root of the app named **models.png**
 
 ###Local admin rights
 
-To be signed in you need to have github account with public email.
+To be signed in you need to have github account with public email and enter your name in github profile.
 
 ![](http://101companies.org/assets/github-public-email-3ed71b5549eed5cd7235804f3e0054f9.png)
 
