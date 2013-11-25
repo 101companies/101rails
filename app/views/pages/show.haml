@@ -36,10 +36,10 @@
         %img{:src => "/assets/ajax-loader.gif"}/
         Loading page...
 
-  / tab with all contributions settings
+  / tab with all repo settings
   - if show_repo_tab
     #repo.tab-pane
-      = render "/pages/contribution_tab"
+      = render "/pages/repo_tab"
 
   / tab with all history revisions
   - if exist_last_change
