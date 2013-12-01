@@ -22,8 +22,6 @@ class Page
   field :contribution_folder, type: String, :default => '/'
   field :contribution_url, type: String, :default => '101companies/101repo'
   field :worker_findings, type: String, :default => ''
-  # this field is using for validating the uniqueness of paar url+folder
-  field :contribution_url_folder, type: String
 
   # relations here
   has_many :page_changes
@@ -52,10 +50,6 @@ class Page
       self.html_content = self.parse
     rescue
       Rails.logger.info "Failed producing html for page #{self.full_title}"
-    end
-    # need for uniqueness of paar folder+url
-    if self.namespace == "Contribution"
-      self.contribution_url_folder = self.contribution_url.to_s + ':' + self.contribution_folder.to_s
     end
     # if exist internal_links -> fill used_links
     if wiki_parser.internal_links
