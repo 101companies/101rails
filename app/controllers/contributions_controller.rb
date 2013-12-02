@@ -33,6 +33,7 @@ class ContributionsController < ApplicationController
   end
 
   def create
+
     #  not logged in -> go out!
     if !current_user
       flash[:notices] = 'You need to be logged in, if you want to make contribution'
@@ -40,14 +41,16 @@ class ContributionsController < ApplicationController
       return
     end
 
+    page = params[:page]
+
     # check, if title given
-    if params[:contrb_title].nil? || params[:contrb_title].empty?
+    if page[:title].nil? || page[:title].empty?
       flash[:error] = 'You need to define title for contribution'
       redirect_to action: 'new' and return
     end
 
     @page = Page.new
-    full_title = PageModule.unescape_wiki_url "Contribution:#{params[:contrb_title]}"
+    full_title = PageModule.unescape_wiki_url "Contribution:#{page[:title]}"
     namespace_and_title = PageModule.retrieve_namespace_and_title full_title
     @page.title = namespace_and_title["title"]
     @page.namespace = namespace_and_title["namespace"]
@@ -59,10 +62,10 @@ class ContributionsController < ApplicationController
     end
 
     # define github url to repo
-    @page.contribution_url = params[:contrb_repo_url].first
+    @page.contribution_url = page[:contribution_url]
 
     # set folder to '/' if no folder given
-    @page.contribution_folder = params[:contrb_folder].empty?  ? '/' : params[:contrb_folder]
+    @page.contribution_folder = page[:contribution_folder].empty?  ? '/' : page[:contribution_folder]
     @page.raw_content = "== Headline ==\n\n" + PageModule.default_contribution_text(@page.contribution_url)
 
     @page.users << current_user
