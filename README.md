@@ -34,8 +34,8 @@ Before starting work with the application, you need to install dependecies:
 
 If you are using Ubuntu, you can install ruby via [rvm](http://rvm.io)
 
-    rvm install 2.0.0-p247
-    rvm use 2.0.0-p247 --default
+    rvm install 2.0.0-p353
+    rvm use 2.0.0-p353 --default
 
 ###Preparation for OSX only
 
