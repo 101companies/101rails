@@ -3,6 +3,7 @@ class Wiki.Models.Section extends Backbone.Model
   defaults:
     title: ""
     content: ""
+    html_content: ""
 
   validate: (attrs, options) ->
     codeRegex = /\<syntaxhighlight((.|\s)*?)\<\/syntaxhighlight\>/g

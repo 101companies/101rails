@@ -24,10 +24,8 @@ class Wiki.Views.Page extends Backbone.View
   initialize: ->
     self = @
     @inedit = false
-    @model.fetch(success: (model) ->
-      self.bindHanders()
-      self.render()
-    )
+    self.bindHanders()
+    self.render()
 
   bindHanders: ->
     @model.get('sections').bind('add', @addSection, @)
@@ -57,8 +55,8 @@ class Wiki.Views.Page extends Backbone.View
     $('#sections-parsed').html('')
 
     new Wiki.Views.History(model: @model.get('history'))
-    @addSections()
     @addBacklinks()
+    @addSections()
     new Wiki.Views.Resources(model: @model.get('resources'))
     new Wiki.Views.SourceLinks(model: @model.get('sourceLinks'))
 
@@ -127,6 +125,7 @@ class Wiki.Views.Page extends Backbone.View
     $.each @model.get('backlinks'), (i,bl) ->
       if i < 21
         target = '#backlinks-body'
+      # cut visible backlinks after 21
       else
         if i == 21
           $('#backlinks')

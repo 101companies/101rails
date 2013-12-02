@@ -98,6 +98,21 @@ class Page
     (headline_text.length < popup_msg_length)  ? headline_text : "#{headline_text[0..popup_msg_length-1]} ..."
   end
 
+  def get_last_change
+    last_change = self.page_changes.last
+    if last_change
+      history_entry = {
+          user_name: last_change.user.name,
+          user_pic: last_change.user.github_avatar,
+          user_email: last_change.user.email,
+          created_at: last_change.created_at
+      }
+    else
+      history_entry = {}
+    end
+    history_entry
+  end
+
   def get_headline
     # assume that first <p> in html content will be shown as popup
     headline_elem = Nokogiri::HTML(self.html_content).css('p').first
@@ -123,7 +138,7 @@ class Page
       used_page = PageModule.find_by_full_title nice_link
       # if not found page or it has no content
       # set in class_attribute additional class for link (mark with red)
-      class_attribute = (used_page.nil? || used_page.raw_content.nil?) ? 'class="missing-link"' : ''
+      class_attribute = (used_page.nil? || used_page.raw_content.nil? || used_page.raw_content.strip == "") ? 'class="missing-link"' : ''
       # replace page links in html
       html.gsub! "<a href=\"#{link}\"", "<a #{class_attribute}"+
           "data-original-title=\"#{used_page.get_headline if used_page}\" href=\"/wiki/#{nice_link}\""
@@ -232,8 +247,12 @@ class Page
 
   def sections(wiki_parser = self.create_wiki_parser)
     sections = []
-    wiki_parser.sections.first.children.each do |section|
-      sections << { 'title' => section.title, 'content' => section.wikitext.sub(/\s+\Z/, "") }
+    self.create_wiki_parser.sections.first.children.each do |section|
+      content_with_subsections = section.wikitext.sub(/\s+\Z/, "")
+      sections << { 'title' => section.title,
+                    'content' => content_with_subsections,
+                    'html_content' => parse(content_with_subsections)
+      }
     end
     sections
   end

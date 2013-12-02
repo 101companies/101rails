@@ -11,6 +11,20 @@ module RdfModule
     RDF::Statement.new( page_to_resource(st.object.to_s), st.predicate, page_to_resource(title), :context => st.context)
   end
 
+  def get_rdf_json(title, directions)
+    json = []
+    get_rdf_graph(title, directions).each do |res|
+      if directions
+        json << { :direction => res.subject.to_s, :predicate => res.predicate.to_s, :node => res.object.to_s }
+      else
+        # ingoing triples
+        res = reverse_statement res, title if res.subject.to_s == 'IN'
+        json << [ res.subject.to_s, res.predicate.to_s, res.object.to_s ]
+      end
+    end
+    json
+  end
+
   def get_rdf_graph(title, directions=false)
     @page = PageModule.find_by_full_title PageModule.unescape_wiki_url title
     uri = self.page_to_resource title
