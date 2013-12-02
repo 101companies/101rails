@@ -103,10 +103,10 @@ def create_data(filter_pages=false)
       if pages and pages.count!=0
         page = pages.first
         page.repo_link = a
-        #a.page = page
-        #page.save
+        a.page = page
+        page.save
       end
-      #a.save
+      a.save
       migration << a
       puts "#{a.user} #{a.repo} #{a.folder}  #{a.url} " ##{a.page.nil? ? a.page.title : '---'}
     end

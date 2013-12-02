@@ -9,6 +9,8 @@ Wiki::Application.routes.draw do
 
   get '/search' => 'pages#search'
 
+  get '/pullRepo.json' => 'application#pull_repo'
+
   # admin ui
   mount RailsAdmin::Engine => '/admin', :as => 'rails_admin'
 

@@ -62,6 +62,10 @@ RailsAdmin.config do |config|
       searchable true
     end
 
+    field :url do
+      searchable true
+    end
+
     field :page do
       searchable true
     end
