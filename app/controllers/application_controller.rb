@@ -32,7 +32,7 @@ class ApplicationController < ActionController::Base
         xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
         http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">'
     Page.all.each do |page|
-      text = text + '<url><loc>http://101companies.org/wiki/' + page.nice_wiki_url + '</loc></url>'
+      text = text + '<url><loc>http://101companies.org/wiki/' + page.url + '</loc></url>'
     end
     text = text + '</urlset>'
     render :xml => text
@@ -50,19 +50,6 @@ class ApplicationController < ActionController::Base
   rescue_from CanCan::AccessDenied do |exception|
     flash[:notice] = "Sorry, you aren't permitted to execute your last action =/"
     go_to_previous_page
-  end
-
-  # profiling with ruby-prof
-  # add ?profile=true or &profile=true to url to profile it
-  around_filter :profile if Rails.env == 'development'
-  def profile
-    if params[:profile] && result = RubyProf.profile { yield }
-      out = StringIO.new
-      RubyProf::FlatPrinter.new(result).print out, :min_percent => 0
-      self.response_body = out.string
-    else
-      yield
-    end
   end
 
   helper_method :current_user

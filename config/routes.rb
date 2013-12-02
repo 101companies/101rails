@@ -2,11 +2,12 @@ Wiki::Application.routes.draw do
 
   # homepage
   root :to => "home#index"
-  get '/search' => 'pages#search'
   # sitemap
   get '/sitemap.xml' => 'application#sitemap'
   # link for downloading slides from slideshare
   get '/get_slide/*slideshare' => 'application#get_slide', :format => false
+
+  get '/search' => 'pages#search'
 
   # admin ui
   mount RailsAdmin::Engine => '/admin', :as => 'rails_admin'
@@ -17,14 +18,12 @@ Wiki::Application.routes.draw do
     get '/' => 'contributions#index'
     # ui for creating contribution
     get '/new' => 'contributions#new'
-    get '/apply_findings/:id' => 'pages#apply_findings', :constraints => { :id => /.*/ }, :as => :page
-    post '/update/:id' => 'pages#update_contribution', :constraints => { :id => /.*/ }, :as => :page
+    get '/apply_findings/:id' => 'pages#apply_findings', :constraints => { :id => /.*/ }
+    put '/update/:id' => 'pages#update_repo', :constraints => { :id => /.*/ }
     # method where contribution will be created
+    post '/analyze/:id' => 'contributions#analyze', :constraints => { :id => /.*/ }
     post '/new' => 'contributions#create'
-    # put analyzed by worker data to contribution
-    post '/analyze/:id' => 'contributions#analyze', :constraints => { :id => /.*/ }, :as => :page
-    post '/send_analyze_request/:id' => 'pages#fetch_data_from_worker', :constraints => { :id => /.*/ }, :as => :page
-    post '/select_contributor/:id' => 'pages#select_contributor', :constraints => { :id => /.*/ }, :as => :page
+    get '/repo_dirs/:repo' => 'contributions#get_repo_dirs', :constraints => { :repo => /.*/ }
   end
 
   # tours
@@ -40,13 +39,7 @@ Wiki::Application.routes.draw do
     delete ':title' => 'tours#delete'
   end
 
-  #users
-  scope 'users' do
-    get '/' => 'users#index'
-    get '/claim_pages' => 'users#claim_pages', :format => false
-    get '/logout' => 'authentications#destroy'
-    get '/:id' => 'users#show', :as => :user
-  end
+  get 'users/logout' => 'authentications#destroy'
 
   # clones
   scope 'clones' do
@@ -55,11 +48,9 @@ Wiki::Application.routes.draw do
     get '/check/:title' => 'clones#show'
   end
 
-
   # pages routes
   scope 'wiki' do
     get '/' => redirect("/wiki/@project")
-    match '/clean_cache/:id' => 'pages#clean_cache' , :constraints => { :id => /.*/ }
     match '/:id' => 'pages#show' , :constraints => { :id => /.*/ }, :as => :page
   end
 
@@ -67,13 +58,15 @@ Wiki::Application.routes.draw do
 
   # json api requests for pages
   scope 'api', :format => :json do
-    post 'parse' => 'pages#parse'
+    # clones api
     get 'clones/:title' => 'clones#get'
     post 'clones/:title' => 'clones#create'
     put 'clones/:title' => 'clones#update'
     get 'clones/:title' => 'clones#get'
     delete 'clones/:title' => 'clones#delete'
     get 'clones' => 'clones#index'
+    # pages api
+    post 'parse' => 'pages#parse'
     get 'pages' => 'pages#all'
     resources :pages, :constraints => { :id => /.*/ }, :only => [:section,:show] do
       member do

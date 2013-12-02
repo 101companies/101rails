@@ -9,8 +9,7 @@ class PagesController < ApplicationController
   # before_filter need to be before load_and_authorize_resource
   before_filter :get_the_page
   # methods, that need to check permissions
-  load_and_authorize_resource :only => [:delete, :rename, :update, :apply_findings, :select_contributor,
-                                        :update_contribution, :fetch_data_from_worker]
+  load_and_authorize_resource :only => [:delete, :rename, :update, :apply_findings, :update_repo]
 
   def get_the_page
     # if no title -> set default wiki startpage '@project'
@@ -30,23 +29,13 @@ class PagesController < ApplicationController
     end
   end
 
-  def update_contribution
-    @page.contribution_url = params[:contribution_url]
-    @page.contribution_folder = (params[:contribution_folder].empty? ? '/' : params[:contribution_folder])
-    user = User.where(:name => params[:contributor][0]).first
-    @page.contributor = user if user
-    flash_message = ''
-    if @page.save
-      flash_message = "Failed to send contribution to matching server" if !@page.analyze_request
-    else
-      flash_message = "Failed to update contribution"
-    end
-    if flash_message == ''
-      flash[:success] = 'Contribution updated successfully'
-    else
-      flash[:error] = flash_message
-    end
-    redirect_to  "/wiki/#{@page.nice_wiki_url}#contribution"
+  def update_repo
+    param_page = params[:page]
+    @page.contribution_folder = param_page[:contribution_folder]
+    @page.contribution_url = param_page[:contribution_url]
+    @page.save ? flash[:success]="Updated linked repo" : flash[:error] = "Failed to update linked repo"
+    # TODO: restore request on matching server
+    redirect_to  "/wiki/#{@page.url}"
   end
 
   def apply_findings
@@ -65,7 +54,7 @@ class PagesController < ApplicationController
           "Something was wrong. Please try again later"
       flash[message_type] = message
     end
-    redirect_to  "/wiki/#{@page.nice_wiki_url}"
+    redirect_to  "/wiki/#{@page.url}"
   end
 
   def get_rdf
@@ -140,7 +129,7 @@ class PagesController < ApplicationController
       respond_to do |format|
         format.html {
           # if need redirect? -> wiki url conventions -> do a redirect
-          good_link = @page.nice_wiki_url
+          good_link = @page.url
           if good_link != params[:id]
             redirect_to '/wiki/'+ good_link and return
           end
@@ -150,7 +139,7 @@ class PagesController < ApplicationController
         }
 
         last_change = @page.page_changes.last
-        if last_change
+        if last_change and last_change.user
           history_entry = {
               user_name: last_change.user.name,
               user_pic: last_change.user.github_avatar,
@@ -216,7 +205,7 @@ class PagesController < ApplicationController
     # TODO: renaming -> check used page
     render :json => {
       :success => result,
-      :newTitle => @page.nice_wiki_url
+      :newTitle => @page.url
     }
   end
 

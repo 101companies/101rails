@@ -1,23 +1,7 @@
-:javascript
-  $(function(){
-
-    // clicking on tab
-    $('.tab-link').on('click', function(evt){
-        //evt.preventDefault();
-        $(this).tab('show');
-        // prevent scrolling to the bottom of page
-        $(document).scrollTop(0);
-    });
-
-    // if page opened with hash param -> try to open appropriate tab
-    var hash = window.location.hash;
-    if (hash.length) {
-      $('[href="'+hash+'"]').trigger('click');
-    };
-
-  });
-
 = render "/pages/shared/default"
+
+- namespaces_with_repo = "%wContribution Language Feature Technology Concept"
+- show_repo_tab = current_user and (namespaces_with_repo.include? @page.namespace) and (can? :manage, @page)
 
 %ul.nav.nav-tabs
 
@@ -27,14 +11,14 @@
   %li
     %a#discovery-tab-link{:target => '_blank'} 101explorer
 
-  - if (@page.namespace=="Contribution") and (can? :manage, @page)
+  - if show_repo_tab
     %li
-      %a#contribution-tab-link.tab-link{:href => "#contribution"} Contribution properties
+      %a.tab-link{:href => "#repo", "data-toggle" => 'tab'} Repo
 
   - exist_last_change = !@page.page_changes.nil? ? @page.page_changes.last : nil
-  - if exist_last_change
+  - if current_user and exist_last_change
     %li
-      %a#history-tab-link.tab-link{:href => "#page-changes"} History of editing
+      %a#history-tab-link.tab-link{:href => "#page-changes", "data-toggle" => 'tab'} History of editing
 
   %li#sourcelinks.dropdown
     %a#drop4.dropdown-toggle{"data-toggle" => "dropdown", :href => "#", :role => "button"}
@@ -52,9 +36,10 @@
         %img{:src => "/assets/ajax-loader.gif"}/
         Loading page...
 
-  / tab with all contributions settings
-  - if (@page.namespace == "Contribution")
-    = render "/pages/contribution_tab"
+  / tab with all repo settings
+  - if show_repo_tab
+    #repo.tab-pane
+      = render "/pages/repo_tab"
 
   / tab with all history revisions
   - if exist_last_change
@@ -71,13 +56,11 @@
   %h3
     #modal_body
 
-#disqus_thread
-
-- disq = "$ajaxSetup({cache:true});"+
--  "$.getScript(\"http://101companies.disqus.com/embed.js\");"+
--  "$.ajaxSetup({cache:false});"+
--  "$(\"#disqus_loader\").remove();"
-
-#disqus_loader{:style => "text-align: center"}
-  %button.btn{:onclick => "#{disq}"}
-    %strong Load Disqus Comments
+/#disqus_thread
+/- disq = "$ajaxSetup({cache:true});"+
+/-  "$.getScript(\"http://101companies.disqus.com/embed.js\");"+
+/-  "$.ajaxSetup({cache:false});"+
+/-  "$(\"#disqus_loader\").remove();"
+/#disqus_loader{:style => "text-align: center"}
+/  %button.btn{:onclick => "#{disq}"}
+/    %strong Load Disqus Comments

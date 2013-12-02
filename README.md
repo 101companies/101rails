@@ -59,12 +59,6 @@ After installing mongodb you need to start it and then launch application with:
 
     bundle exec rails server
 
-If you want to see all models of app you need to execute next:
-
-    bundle exec railroady -M -e app/models/ability.rb | neato -Tpng > models.png
-
-It will be generated a picture in root of the app named **models.png**
-
 ###Local admin rights
 
 To be signed in you need to have github account with public email and enter your name in github profile.

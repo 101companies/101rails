@@ -1,0 +1,70 @@
+@import "fonts"
+
+.one-page-change
+  height: 50px
+
+body .row-fluid
+  margin-top: 50px
+
+#search-query
+  width: 110px
+
+.fragment-failed
+  color: coral
+  &:hover
+    cursor: pointer
+
+.small_avatar
+  height: 24px
+  width: 24px
+  border-radius: 12px
+
+body, p, h1, h2, ul, a, span, strong, select, option, label
+  font-family: $normal_font_family
+
+#page-nav
+  .navbar-inner
+    padding-left: 17.9%
+    padding-right: 16.6%
+  .container-fluid
+    padding-left: 0px
+
+#main101
+  overflow: hidden
+  p
+    text-align: justify
+
+/* error handling for fragments
+
+.error
+  overflow: hidden
+  width: 350px
+  font-family: $monospaced_family
+  padding: 8px
+  height: 14px
+  font-size: 12px
+  line-height: 1.5em
+  background-color: #ff7b7e
+  color: #ff7b7e
+  border: 1px dashed #fff
+  &:hover
+    height: 100%
+    width: 100%
+    background-color: none
+    color: white
+  &:before
+    content: 'Something went wrong. Hover here to see error. '
+    color: white
+  &:hover:before
+    content: ''
+
+.brand
+  float: left
+
+ul.nav
+  list-style: none
+  margin: 0 0 2em
+  padding: 0
+  margin-top: 10px
+  li
+    display: inline

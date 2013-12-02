@@ -1,0 +1,23 @@
+%h2 Linked Github repo
+= render "/pages/repo_form"
+
+%h2 Matching service findings
+
+- if @page.worker_findings and !@page.worker_findings.empty?
+
+  - findings = JSON.parse(@page.worker_findings)
+  - if findings
+    - findings.each do |one_finding|
+      - one_finding.keys.each do |finding_key|
+        %p
+          %b
+            = finding_key.capitalize
+          \: #{PageModule.contribution_array_to_string(one_finding[finding_key])}
+  - if  (can? :manage, @page)
+    - apply_url = @page.url
+    %br
+    %a.btn.btn-success{:href => "/contribute/apply_findings/#{apply_url}"}
+      Insert findings as page metadata
+
+- else
+  We don't have any information about used languages, technologies, concepts and features for this page.

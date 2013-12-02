@@ -8,7 +8,6 @@
     %link{:href => "//fonts.googleapis.com", :rel => "dns-prefetch"}/
     %meta{:name => "fragment", :content => "!"}
     %meta{:content => content_for?(:description) ? yield(:description) : "Wiki", :name => "description"}/
-    %link{:rel => "stylesheet", :type => "text/css", :href => "http://fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,800italic,400,700,800" }/
     = stylesheet_link_tag "application", :media => "all"
     = csrf_meta_tag
     = javascript_include_tag "application"
@@ -44,7 +43,7 @@
                   %span.caret
                 %ul.dropdown-menu
                   %li
-                    = link_to raw("<i class=\"icon-wrench\"></i> My contributions"), current_user
+                    = link_to raw("<i class=\"icon-wrench\"></i> My page"), "/wiki/Contributor:#{current_user.name}"
                   -if current_user.role == 'admin'
                     %li
                       = link_to raw("<i class=\"icon-lock\"></i> Admin UI"), '/admin'

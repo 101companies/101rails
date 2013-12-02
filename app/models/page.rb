@@ -2,10 +2,6 @@ require 'media_wiki'
 
 class Page
 
-  # include module with static methods
-  include PageModule
-  include ContributionModule
-
   include Mongoid::Document
   include Mongoid::Timestamps
   include Mongoid::Paranoia
@@ -22,26 +18,24 @@ class Page
   field :used_links, type: Array
   field :snapshot, type: String
 
+  field :contribution_folder, type: String, :default => '/'
+  field :contribution_url, type: String, :default => '101companies/101repo'
+
   # part related to contribution process
-  field :contribution_folder, type: String, :default => ''
-  field :contribution_url, type: String, :default => ''
+
   field :worker_findings, type: String, :default => ''
-  # this field is using for validating the uniqueness of paar url+folder
-  field :contribution_url_folder, type: String
 
   # relations here
+  has_one :repo_link
   has_many :page_changes
   has_and_belongs_to_many :users, :class_name => 'User', :inverse_of => :pages
-  belongs_to :contributor, :class_name => 'User', :inverse_of => :contribution_pages
 
-  # TODO: restore
-  #validates_uniqueness_of :contribution_url_folder
   validates_uniqueness_of :page_title_namespace
   validates_presence_of :title
   validates_presence_of :namespace
 
   attr_accessible :user_ids, :raw_content, :namespace, :title, :snapshot,
-                  :contribution_folder, :contribution_url, :contributor_id, :worker_findings
+                  :contribution_folder, :contribution_url, :worker_findings
 
   # validate uniqueness for paar title + namespace
   before_validation do
@@ -59,10 +53,6 @@ class Page
       self.html_content = self.parse
     rescue
       Rails.logger.info "Failed producing html for page #{self.full_title}"
-    end
-    # need for uniqueness of paar folder+url
-    if self.namespace == "Contribution"
-      self.contribution_url_folder = self.contribution_url.to_s + ':' + self.contribution_folder.to_s
     end
     # if exist internal_links -> fill used_links
     if wiki_parser.internal_links
@@ -129,7 +119,7 @@ class Page
     html = parsed_page.to_html
     # mark empty or non-existing page with class missing-link (red color)
     parsed_page.internal_links.each do |link|
-      nice_link = PageModule.nice_wiki_url link
+      nice_link = PageModule.url link
       used_page = PageModule.find_by_full_title nice_link
       # if not found page or it has no content
       # set in class_attribute additional class for link (mark with red)
@@ -223,8 +213,13 @@ class Page
     end
   end
 
-  def nice_wiki_url
-    PageModule.nice_wiki_url self.full_title
+  def url
+    PageModule.url self.full_title
+  end
+
+  def create_wiki_parser(content=nil)
+    WikiCloth::Parser.context = {:ns => (MediaWiki::send :upcase_first_char, self.namespace), :title => self.title}
+    WikiCloth::Parser.new(:data => ((content.nil?) ? self.raw_content : content), :noedit => true)
   end
 
   def semantic_links

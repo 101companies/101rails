@@ -1,4 +1,6 @@
-module PageModule
+# this module includes all static methods for pages
+
+class PageModule
   require 'media_wiki'
 
   def self.match_page_score(found_page, query_string)
@@ -11,30 +13,12 @@ module PageModule
     score
   end
 
-  def self.backup
-    Rails.logger.info 'Started exporting pages to backup'
-    Page.all.each do |p|
-      File.open("#{Rails.root}/wiki_content/#{CGI::escape(p.full_title)}", 'w+') { |file| file.write(p.raw_content) }
+  def self.contribution_array_to_string(array)
+    if !array.nil?
+      array.collect {|u| u}.join ', '
+    else
+      'No information retrieved'
     end
-    Rails.logger.info 'Ended exporting pages to backup'
-  end
-
-  def self.apply_backup
-    Rails.logger.info 'Started exporting pages from backup'
-    folder = "#{Rails.root}/wiki_content/"
-    Dir.foreach(folder) do |fname|
-      next if fname[0] == '.'
-      full_title = CGI::unescape fname
-      page = PageModule.find_by_full_title full_title
-      page = PageModule.create_page_by_full_title full_title if page.nil?
-      if page.nil?
-        Rails.logger.error "Couldn't create page #{full_title}"
-        next
-      end
-      page.raw_content = File.read(folder+fname)
-      page.save!
-    end
-    Rails.logger.info 'Ended exporting pages from backup'
   end
 
   # if no namespace given
@@ -62,8 +46,17 @@ module PageModule
     { 'namespace' => namespace, 'title' => title }
   end
 
+  def self.default_contribution_text(url)
+    "You have created new contribution using [https://github.com Github]. " +
+        "Source code for this contribution you can find [https://github.com/#{url} here]."
+  end
+
   def self.search(query_string)
-    found_pages = Page.full_text_search query_string
+    begin
+      found_pages = Page.full_text_search query_string
+    rescue
+      found_pages = nil
+    end
     # nothing found -> go out
     return [] if found_pages.nil?
     results = []
@@ -74,7 +67,7 @@ module PageModule
       # prepare array wit results
       results << {
           :title => found_page.full_title,
-          :link  => found_page.nice_wiki_url,
+          :link  => found_page.url,
           # more score -> worst result
           :score => score
       }
@@ -83,18 +76,14 @@ module PageModule
     results.sort_by { |a| a[:score] }
   end
 
-  def create_wiki_parser(content=nil)
-    WikiCloth::Parser.context = {:ns => (MediaWiki::send :upcase_first_char, self.namespace), :title => self.title}
-    WikiCloth::Parser.new(:data => ((content.nil?) ? self.raw_content : content), :noedit => true)
-  end
-
   # link for using in html rendering
   # replace ' ' with '_', remove trailing spaces
-  def self.nice_wiki_url title
+  def self.url title
     self.unescape_wiki_url(title).strip.gsub(' ', '_')
   end
 
   def self.escape_wiki_url(full_title)
+    # TODO: exception?
     MediaWiki::send :upcase_first_char, MediaWiki::wiki_to_uri(full_title)
   end
 

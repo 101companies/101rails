@@ -18,5 +18,3 @@ pickle-email-*.html
 # RubyMine project files
 .DS_Store
 .idea
-# TODO: compatibility wit rubymine
-bin
