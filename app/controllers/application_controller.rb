@@ -49,12 +49,12 @@ class ApplicationController < ActionController::Base
   def pull_repo
     entries = Hash.new
     RepoLink.each do |link|
-      #if !link.url.start_with? 'https://github.com/101companies/101repo/tree/master/concepts/'
-      if link.folder.nil? or link.folder.empty?
-        link.folder = link.url.split('/').last
-      end
+      if !link.url.start_with? 'https://github.com/101companies/101repo/tree/master/concepts/'
+        if link.folder.nil? or link.folder.empty?
+          link.folder = link.url.split('/').last
+        end
         entries[link.folder] = link.url
-      #end
+      end
     end
     render :json => entries
   end
