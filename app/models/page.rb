@@ -18,12 +18,15 @@ class Page
   field :used_links, type: Array
   field :snapshot, type: String
 
-  # part related to contribution process
   field :contribution_folder, type: String, :default => '/'
   field :contribution_url, type: String, :default => '101companies/101repo'
+
+  # part related to contribution process
+
   field :worker_findings, type: String, :default => ''
 
   # relations here
+  has_one :repo_link
   has_many :page_changes
   has_and_belongs_to_many :users, :class_name => 'User', :inverse_of => :pages
 

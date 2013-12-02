@@ -48,6 +48,27 @@ RailsAdmin.config do |config|
 
   end
 
+  config.model 'RepoLink' do
+
+    field :user do
+      searchable true
+    end
+
+    field :repo do
+      searchable true
+    end
+
+    field :folder do
+      searchable true
+    end
+
+    field :page do
+      searchable true
+    end
+
+  end
+
+
   config.model 'MatchingServiceRequest' do
 
     field :page do

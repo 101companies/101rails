@@ -26,7 +26,7 @@ gem 'bootstrap-sass', '2.3.2.2'
 group :assets do
   gem 'sass-rails', '3.2.6'
   gem 'coffee-rails', '3.2.2'
-  gem 'uglifier', '2.3.1'
+  gem 'uglifier', '2.3.2'
   gem 'compass-rails', '1.0.3'
 end
 
@@ -51,7 +51,7 @@ gem 'omniauth', '1.1.4'
 gem 'omniauth-github', '1.1.1'
 
 # github integration
-gem 'octokit', '2.6.0'
+gem 'octokit', '2.6.1'
 
 # font with bundled icons
 gem 'font-awesome-rails', '3.2.1.3'
