@@ -135,21 +135,6 @@ class Page
     MediaWiki::Gateway.new('http://mediawiki.101companies.org/api.php').get self.full_title
   end
 
-  # TODO: remove after closing mediawiki
-  def retrieve_old_wiki_content
-    if self.raw_content.nil?
-      begin
-        self.raw_content = Page.gateway.get(self.full_title)
-        self.save
-        Rails.logger.info "Successfully retrieved content for page #{self.full_title}"
-      rescue
-        Rails.logger.info "Failed retrieve content for page #{self.full_title}"
-      end
-    else
-      Rails.logger.info "Content for page #{self.full_title} already exists"
-    end
-  end
-
   # get fullname with namespace and  title
   def full_title
     # if used default namespaces -> remove from full title
