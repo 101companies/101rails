@@ -201,8 +201,6 @@ class PagesController < ApplicationController
     history_track = @page.create_track current_user
     result = @page.update_or_rename_page(new_full_title, content, sections)
     history_track.save if result
-
-    # TODO: renaming -> check used page
     render :json => {
       :success => result,
       :newTitle => @page.url
