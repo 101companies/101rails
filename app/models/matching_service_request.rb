@@ -27,6 +27,7 @@ class MatchingServiceRequest
     address.ip_address+':3000'
   end
 
+  # IMPORTANT: if you are debugging you need to allow access to your ip in network!
   # sends request on matching service
   def send_request
     success = true
