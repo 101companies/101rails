@@ -8,6 +8,12 @@ require "active_resource/railtie"
 require "sprockets/railtie"
 # # require "rails/test_unit/railtie"
 
+# for debugging, ignore ssl
+if Rails.env == 'development'
+  require 'openssl'
+  OpenSSL::SSL::VERIFY_PEER = OpenSSL::SSL::VERIFY_NONE
+end
+
 if defined?(Bundler)
   # If you precompile assets before deploying to production, use this line
   Bundler.require(*Rails.groups(:assets => %w(development test)))
