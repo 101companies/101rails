@@ -16,8 +16,6 @@ Wiki::Application.routes.draw do
 
   # urls for contribution process
   scope 'contribute' do
-    # list of contributions
-    get '/' => 'contributions#index'
     # ui for creating contribution
     get '/new' => 'contributions#new'
     get '/apply_findings/:id' => 'pages#apply_findings', :constraints => { :id => /.*/ }
