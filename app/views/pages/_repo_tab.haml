@@ -2,7 +2,7 @@
 = render "/pages/repo_form"
 
 - if @page.repo_link
-  %a.btn.btn-primary{:href => @page.repo_link.url, :target => '_blank'}
+  %a.btn.btn-primary{:href => @page.repo_link.full_url, :target => '_blank'}
     %i.icon-github-alt
     Look on GitHub
 

@@ -41,16 +41,16 @@ class ContributionsController < ApplicationController
       return
     end
 
-    page = params[:page]
+    repo_link = params[:repo_link]
 
     # check, if title given
-    if page[:title].nil? || page[:title].empty?
+    if repo_link[:page_title].nil? || repo_link[:page_title].empty?
       flash[:error] = 'You need to define title for contribution'
       redirect_to action: 'new' and return
     end
 
     @page = Page.new
-    full_title = PageModule.unescape_wiki_url "Contribution:#{page[:title]}"
+    full_title = PageModule.unescape_wiki_url "Contribution:#{repo_link[:page_title]}"
     namespace_and_title = PageModule.retrieve_namespace_and_title full_title
     @page.title = namespace_and_title["title"]
     @page.namespace = namespace_and_title["namespace"]
@@ -61,19 +61,27 @@ class ContributionsController < ApplicationController
       redirect_to action: 'new' and return
     end
 
-    # define github url to repo
-    @page.contribution_url = page[:contribution_url]
+    page_repo_link = RepoLink.new
+    page_repo_link.user = repo_link[:user_repo].split('/').first
+    page_repo_link.repo = repo_link[:user_repo].split('/').last
+    page_repo_link.folder = repo_link[:folder]
+    page_repo_link.page = @page
+    page_repo_link.save
 
-    # set folder to '/' if no folder given
-    @page.contribution_folder = page[:contribution_folder].empty?  ? '/' : page[:contribution_folder]
-    @page.raw_content = "== Headline ==\n\n" + PageModule.default_contribution_text(@page.contribution_url)
-
+    # save link to github repo
+    @page.repo_link = page_repo_link
+    @page.raw_content = "== Headline ==\n\n" + PageModule.default_contribution_text(@page.repo_link.full_url)
     @page.users << current_user
+    @page.inject_namespace_triple
+    @page.inject_triple "developedBy::Contributor:#{current_user.name}"
+    @page.save
 
     request = MatchingServiceRequest.new
     request.user = current_user
     request.page = @page
     request.save
+
+    Mailer.created_contribution(request).deliver
 
     request.send_request
 
@@ -84,11 +92,6 @@ class ContributionsController < ApplicationController
       flash[:notice] = "You have created new contribution. You will retrieve an email, when it will be analyzed."
     end
 
-    @page.inject_namespace_triple
-    @page.inject_triple "developedBy::Contributor:#{current_user.name}"
-    @page.save
-
-    Mailer.created_contribution(request).deliver
     redirect_to  "/wiki/#{@page.url}"
   end
 

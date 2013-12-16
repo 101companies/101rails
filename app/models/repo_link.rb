@@ -12,7 +12,18 @@ class RepoLink
 
   def out_name
     return name if (!name.nil? and !name.empty?)
-    folder.split('/').last
+    folder_name = folder.split('/').last
+    folder_name.nil? ? repo : folder_name
+  end
+
+  # for compatibility with simple form
+  def user_repo
+    "#{user}/#{repo}"
+  end
+
+  # for compatibility with simple form
+  def page_title
+    page.nil? ? '' : page.title
   end
 
   def full_url

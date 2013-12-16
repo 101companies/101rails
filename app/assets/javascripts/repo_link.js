@@ -1,8 +1,10 @@
 $(function() {
-    var folderInput = $('#page_contribution_folder');
+
+    var repoInput = $("#repo_link_user_repo")
+    var folderInput = $('#repo_link_folder');
     var updatePageButton = $('#update_page_button');
-    var repoInput = $("#page_contribution_url")
-    var titleInput = $('#page_title');
+    var titleInput = $('#repo_link_page_title');
+
     folderInput.select2({width: '70%'}).select2('readonly', true);
     repoInput.select2({width: '70%'}).on("change", function(e) {
         var populateInput = function (data) {

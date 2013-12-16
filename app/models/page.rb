@@ -16,26 +16,22 @@ class Page
   field :raw_content, type: String, :default => ""
   field :html_content, type: String
   field :used_links, type: Array
+
   field :snapshot, type: String
 
-  field :contribution_folder, type: String, :default => '/'
-  field :contribution_url, type: String, :default => '101companies/101repo'
-
-  # part related to contribution process
-
-  field :worker_findings, type: String, :default => ''
+  field :worker_findings, type: String
 
   # relations here
   has_one :repo_link
   has_many :page_changes
+  has_many :matching_service_requests
   has_and_belongs_to_many :users, :class_name => 'User', :inverse_of => :pages
 
   validates_uniqueness_of :page_title_namespace
   validates_presence_of :title
   validates_presence_of :namespace
 
-  attr_accessible :user_ids, :raw_content, :namespace, :title, :snapshot,
-                  :contribution_folder, :contribution_url, :worker_findings
+  attr_accessible :user_ids, :raw_content, :namespace, :title, :snapshot, :repo_link_id, :worker_findings
 
   # validate uniqueness for paar title + namespace
   before_validation do
