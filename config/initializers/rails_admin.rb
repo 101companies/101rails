@@ -197,14 +197,6 @@ RailsAdmin.config do |config|
         show
       end
 
-      field :contribution_folder do
-        show
-      end
-
-      field :contribution_url do
-        show
-      end
-
       field :worker_findings do
         show
       end
