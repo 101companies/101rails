@@ -2,7 +2,6 @@ class Wiki.Models.Page extends Backbone.Model
 
   initialize: ->
     @set('triples', new Wiki.Models.Triples())
-    @set('sourceLinks', new Wiki.Models.SourceLinks())
     @set('resources', new Wiki.Models.Resources())
 
   defaults:
@@ -11,7 +10,6 @@ class Wiki.Models.Page extends Backbone.Model
     sections: null
     backlinks: null
     triples: null
-    sourceLinks: null
     resources: null
     history: null
     content: ''                       # in case the entire page is stored

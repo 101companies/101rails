@@ -1,6 +1,11 @@
 %h2 Linked Github repo
 = render "/pages/repo_form"
 
+- if @page.repo_link
+  %a.btn.btn-primary{:href => @page.repo_link.url, :target => '_blank'}
+    %i.icon-github-alt
+    Look on GitHub
+
 %h2 Matching service findings
 
 - if @page.worker_findings and !@page.worker_findings.empty?
