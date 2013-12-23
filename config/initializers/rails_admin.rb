@@ -66,10 +66,6 @@ RailsAdmin.config do |config|
       searchable true
     end
 
-    field :name do
-      searchable true
-    end
-
   end
 
 
