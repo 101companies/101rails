@@ -228,9 +228,15 @@ class Page
     sections = []
     self.create_wiki_parser.sections.first.children.each do |section|
       content_with_subsections = section.wikitext.sub(/\s+\Z/, "")
-      sections << { 'title' => section.title,
-                    'content' => content_with_subsections,
-                    'html_content' => parse(content_with_subsections)
+      begin
+        parsed_html = parse content_with_subsections
+      rescue
+        parsed_html = "This section wan't properly rendered =/"
+      end
+      sections << {
+          'title' => section.title,
+          'content' => content_with_subsections,
+          'html_content' => parsed_html
       }
     end
     sections
