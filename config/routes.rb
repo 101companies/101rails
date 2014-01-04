@@ -55,8 +55,6 @@ Wiki::Application.routes.draw do
     match '/:id' => 'pages#show' , :constraints => { :id => /.*/ }, :as => :page
   end
 
-  get 'snapshot/:id' => 'pages#snapshot', :constraints => { :id => /.*/ }, :as => :page
-
   # json api requests for pages
   scope 'api', :format => :json do
     # clones api

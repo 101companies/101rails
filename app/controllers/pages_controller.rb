@@ -1,7 +1,6 @@
 class PagesController < ApplicationController
 
   include RdfModule
-  include SnapshotModule
 
   # for calling from view
   helper_method :get_rdf_json

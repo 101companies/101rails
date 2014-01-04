@@ -17,8 +17,6 @@ class Page
   field :html_content, type: String
   field :used_links, type: Array
 
-  field :snapshot, type: String
-
   field :worker_findings, type: String
 
   # relations here
