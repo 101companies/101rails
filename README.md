@@ -10,7 +10,7 @@ Before starting work with the application, you need to install such dependencies
 
     apt-get install curl nodejs build-essenstial libxslt-dev libxml2-dev mongodb
 
-For OSX there are such dependencies:
+For OSX there are such dependencies, that can be installed via [homebrew](http://brew.sh/):
 
     brew install mongodb node
 
