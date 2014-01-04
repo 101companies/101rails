@@ -27,6 +27,7 @@ class MatchingServiceRequest
     address.ip_address+':3000'
   end
 
+  # IMPORTANT: if you are debugging you need to allow access to your ip in network!
   # sends request on matching service
   def send_request
     success = true
@@ -34,8 +35,8 @@ class MatchingServiceRequest
       url = 'http://worker.101companies.org/services/analyzeSubmission'
       HTTParty.post url,
                     :body => {
-                        :url => "https://github.com/#{self.page.contribution_url}.git",
-                        :folder => self.page.contribution_folder,
+                        :url => "https://github.com/#{self.page.repo_link.user_repo}.git",
+                        :folder => self.page.repo_link.folder,
                         :name => self.page.url,
                         :backping => "http://#{backping_ip}/contribute/analyze/#{self.id}"
                     }.to_json,

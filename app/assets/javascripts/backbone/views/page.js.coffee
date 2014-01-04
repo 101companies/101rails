@@ -58,7 +58,6 @@ class Wiki.Views.Page extends Backbone.View
     @addBacklinks()
     @addSections()
     new Wiki.Views.Resources(model: @model.get('resources'))
-    new Wiki.Views.SourceLinks(model: @model.get('sourceLinks'))
 
     # add discovery tab
     upperTitle = @model.get('id').charAt(0).toUpperCase() + @model.get('id').slice(1);

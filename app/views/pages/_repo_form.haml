@@ -1,12 +1,19 @@
 / if creating contribution -> @page will be nil
 / else it's updating extisting page
 
-- page = !@page  ? Page.new : @page
-- url_to_send = !@page  ? "/contribute/new" : "/contribute/update#{@page.url}"
+- @page ||= Page.new
+- repo_link = @page.repo_link || RepoLink.new
 
-= simple_form_for(page, :html => {:class => 'form-horizontal' }, :url => url_to_send) do |f|
-  = f.input :contribution_url, :label => 'Github repo', :collection => current_user.get_repos, :include_blank => false
-  = f.input :contribution_folder, :collection => [page.contribution_folder]
-  - if !@page
-    = f.input :title
+/ if page just created -> contribution process
+- url_to_send = @page.title.nil?  ? "/contribute/new" : "/contribute/update/#{@page.url}"
+
+- repos_to_show = current_user.get_repos
+- if (!repo_link.user.nil? and !repo_link.folder.nil? and !repo_link.repo.nil?)
+  - repos_to_show << repo_link.user_repo
+
+= simple_form_for(repo_link, :html => {:class => 'form-horizontal' }, :url => url_to_send) do |f|
+  = f.input :user_repo, :label => 'Github repo', :collection => repos_to_show, :include_blank => false
+  = f.input :folder, :collection => [repo_link.folder]
+  - if @page.title.nil?
+    = f.input :page_title
   = f.button :submit, :class => 'btn btn-success', :id => 'update_page_button'

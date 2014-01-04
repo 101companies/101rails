@@ -33,10 +33,18 @@ class PagesController < ApplicationController
   end
 
   def update_repo
-    param_page = params[:page]
-    @page.contribution_folder = param_page[:contribution_folder]
-    @page.contribution_url = param_page[:contribution_url]
-    @page.save ? flash[:success]="Updated linked repo" : flash[:error] = "Failed to update linked repo"
+    repo_link = params[:repo_link]
+    # if no link to repo -> create it
+    @page.repo_link = RepoLink.new if @page.repo_link.nil?
+    # fill props
+    @page.repo_link.folder = repo_link[:folder]
+    @page.repo_link.user = repo_link[:user_repo].split('/').first
+    @page.repo_link.repo = repo_link[:user_repo].split('/').last
+    # assign page
+    @page.repo_link.page = @page
+    # save page and link
+    (@page.save and @page.repo_link.save) ?
+      flash[:success]="Updated linked repo" : flash[:error] = "Failed to update linked repo"
     # TODO: restore request on matching server
     redirect_to  "/wiki/#{@page.url}"
   end
@@ -124,22 +132,9 @@ class PagesController < ApplicationController
           if good_link != params[:id]
             redirect_to '/wiki/'+ good_link and return
           end
-
           # no redirect? -> render the page
           render :html => @page
         }
-
-        last_change = @page.page_changes.last
-        if last_change and last_change.user
-          history_entry = {
-              user_name: last_change.user.name,
-              user_pic: last_change.user.github_avatar,
-              user_email: last_change.user.email,
-              created_at: last_change.created_at
-          }
-        else
-          history_entry = {}
-        end
 
         format.json { render :json => {
           'id'        => @page.full_title,
@@ -191,8 +186,6 @@ class PagesController < ApplicationController
     history_track = @page.create_track current_user
     result = @page.update_or_rename_page(new_full_title, content, sections)
     history_track.save if result
-
-    # TODO: renaming -> check used page
     render :json => {
       :success => result,
       :newTitle => @page.url

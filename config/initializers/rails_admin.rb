@@ -62,10 +62,6 @@ RailsAdmin.config do |config|
       searchable true
     end
 
-    field :url do
-      searchable true
-    end
-
     field :page do
       searchable true
     end
@@ -194,14 +190,6 @@ RailsAdmin.config do |config|
       end
 
       field :raw_content do
-        show
-      end
-
-      field :contribution_folder do
-        show
-      end
-
-      field :contribution_url do
         show
       end
 

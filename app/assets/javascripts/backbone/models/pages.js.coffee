@@ -12,7 +12,6 @@ class Wiki.Models.Page extends Backbone.Model
         html_content: el.html_content
       )
     # populate sections for collection of sections
-    # TODO: it was dirty
     class Sections extends Backbone.Collection
       model: Wiki.Models.Section,
       initialize: ->
@@ -32,7 +31,6 @@ class Wiki.Models.Page extends Backbone.Model
       initialize: ->
         this.reset page_triples
     @set('triples', new Triples(Wiki.pageTriples))
-    @set('sourceLinks', new Wiki.Models.SourceLinks())
     @set('resources', new Wiki.Models.Resources())
 
   defaults:
@@ -41,7 +39,6 @@ class Wiki.Models.Page extends Backbone.Model
     sections: null
     backlinks: null
     triples: null
-    sourceLinks: null
     resources: null
     history: null
     content: ''                       # in case the entire page is stored
