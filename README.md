@@ -1,51 +1,30 @@
-#101companies-wiki
+# 101companies-wiki
 
 [![](https://codeclimate.com/github/101companies/101rails.png)](https://codeclimate.com/github/101companies/101rails) [![Dependency Status](http://www.versioneye.com/user/projects/51b5a94f83548c000200dda1/badge.png)](http://www.versioneye.com/user/projects/51b5a94f83548c000200dda1)
 
-##Requirements
+101wiki web app written using Ruby on Rails and backbone.js
 
-This application requires:
+## Software dependencies
 
-*   Ruby
-*   Rails
-*   MongoDB
-*   Node.js
-
-##Development
-
-*   Template Engines: ERB, HAML
-*   Front-end Frameworks: jQuery, Backbone.js, Twitter Bootstrap
-*   Authentication: Omniauth
-*   Authorization: Cancan
-
-##Email
-
-The application is configured to send emails through a Gmail account.
-
-##Getting Started
-
-###Preparation for Ubuntu only
-
-Before starting work with the application, you need to install dependecies:
+Before starting work with the application, you need to install such dependencies, if you are using Ubuntu:
 
     apt-get install curl nodejs build-essenstial libxslt-dev libxml2-dev mongodb
 
-If you are using Ubuntu, you can install ruby via [rvm](http://rvm.io)
-
-    rvm install 2.0.0-p353
-    rvm use 2.0.0-p353 --default
-
-###Preparation for OSX only
-
-Install ruby using [rvm](http://rvm.io) or [rbenv](https://github.com/sstephenson/rbenv/)
-
-And install dependencies for project:
+For OSX there are such dependencies:
 
     brew install mongodb node
 
-###Common part of installation
+## Ruby
 
-At first you need to install gem bundler.
+With OSX you already have Ruby (e.g. 2.0.0p247 for Mavericks).
+
+If you are using Ubuntu you can install ruby via [rvm](http://rvm.io) or [rbenv](https://github.com/sstephenson/rbenv/).
+
+This app was tested with ruby 1.9.3 and higher up to 2.1
+
+## Installing the app
+
+At first you need to install **bundler** gem.
 
     gem install bundler
 
@@ -57,9 +36,9 @@ After installing mongodb you need to start it and then launch application with:
 
     bundle exec rails server
 
-###Local admin rights
+## Admin rights
 
-To be signed in you need to have github account with public email and enter your name in github profile.
+To be signed in you need to have github account with public email and your name in github profile.
 
 ![](http://101companies.org/assets/github-public-email-3ed71b5549eed5cd7235804f3e0054f9.png)
 
@@ -67,11 +46,9 @@ If you have been successfully signed in, you can set another role to your user:
 
     bundle exec rake change_role
 
-You will be asked for your email and new role.
+You will be asked for your email and new role. Just type email from your github account and role **admin**.
 
-Just type email from your github account and role ‘admin’ (or 'editor', 'guest')
-
-##Contributing
+## Contributing
 
 If you make improvements to this application, please share with others.
 
