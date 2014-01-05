@@ -23,6 +23,9 @@
  *= require contribution
  *= require login_intro
 
+ *= require differ
  *= require_self
 
 */
+
+/* TODO: require tree + order*/

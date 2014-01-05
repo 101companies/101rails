@@ -1,8 +1,11 @@
 #page-changes.tab-pane
   %h2 Page changes
 
+  - last = @page.page_changes[0]
+
   - @page.page_changes.each do |page_change|
     %div.one-page-change
+
       - if page_change.user
         %img.small_avatar{:src => page_change.user.github_avatar}
         %a{:href=> "mailto:#{page_change.user.email}"}= page_change.user.name
@@ -11,3 +14,9 @@
       edited this article
       = time_ago_in_words page_change.created_at
       ago.
+
+      %pre.differ
+        = (PageChange.get_diff @page.raw_content, page_change.raw_content)
+
+      %br
+      %hr

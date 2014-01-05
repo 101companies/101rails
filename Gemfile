@@ -96,6 +96,8 @@ gem 'simple_form', '2.1.0'
 gem 'select2-rails', '3.5.1'
 gem 'momentjs-rails', '2.4.0'
 
+gem 'differ', '0.1.2'
+
 # growl-like notifications
 # TODO: replace with solid gem
 gem 'gritter', :github => 'burgua/gritter', :branch => 'vendor_dir'
