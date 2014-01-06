@@ -14,7 +14,7 @@ class PageChange
 
   def self.get_diff(first_content, second_content)
     Differ.format = :html
-    Differ.diff_by_word(first_content, second_content).to_s.html_safe
+    Differ.diff_by_char(first_content, second_content).to_s.html_safe
   end
 
 end
