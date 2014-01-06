@@ -132,7 +132,8 @@ class Page
       used_page = PageModule.find_by_full_title nice_link
       # if not found page or it has no content
       # set in class_attribute additional class for link (mark with red)
-      class_attribute = (used_page.nil? || used_page.raw_content.nil? || used_page.raw_content.strip == "") ? 'class="missing-link"' : ''
+      class_attribute = (used_page.nil? || used_page.raw_content.nil? || used_page.raw_content.strip == "") ?
+          'class="missing-link"' : ''
       # replace page links in html
       html.gsub! "<a href=\"#{link}\"", "<a #{class_attribute}"+
           "data-original-title=\"#{used_page.get_headline if used_page}\" href=\"/wiki/#{nice_link}\""
