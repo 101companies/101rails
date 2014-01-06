@@ -23,7 +23,7 @@
  *= require contribution
  *= require login_intro
 
- *= require differ
+ *= require history
  *= require_self
 
 */
