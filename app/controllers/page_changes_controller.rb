@@ -8,7 +8,7 @@ class PageChangesController < ApplicationController
 
     if page_change.nil? and another_page_change.nil?
       flash[:warning] = 'Unfortunately diff cannot be displayed =/'
-      go_to_previous_page
+      go_to_previous_page and return
     end
 
     # both changes need to be not nil
@@ -36,7 +36,12 @@ class PageChangesController < ApplicationController
 
     if page_change.nil?
       flash[:error] = "Applying the revision wasn't successful"
-      go_to_previous_page
+      go_to_previous_page and return
+    end
+
+    if cannot? :manage, page_change.page
+      flash[:error] = "Not enough permissions for applying revision"
+      go_to_previous_page and return
     end
 
     page = page_change.page
@@ -61,7 +66,7 @@ class PageChangesController < ApplicationController
 
     if page_change.nil?
       flash[:error] = "Cannot show page with content of this revision"
-      go_to_previous_page
+      go_to_previous_page and return
     end
 
     @real_page = page_change.page

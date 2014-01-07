@@ -19,8 +19,9 @@
       %p
         %a{:href => "/page_changes/diff/#{page_change.id}/#{last_shown_version_id}", :target => '_blank'} Show diff
         |
-        %a{:href => "/page_changes/apply/#{page_change.id}"} Apply revision
-        |
+        - if can? :manage, page_change.page
+          %a{:href => "/page_changes/apply/#{page_change.id}"} Apply revision
+          |
         %a{:href => "/page_changes/show/#{page_change.id}", :target => '_blank'} Show revision
       / save previous version for comparing
       - last_shown_version_id = page_change.id
