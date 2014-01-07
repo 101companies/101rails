@@ -12,25 +12,32 @@
  GO AFTER THE REQUIRES BELOW.
 
  = require jquery
+
  = require typo/typo
  = require spellcheck_ace/spellcheck_ace
+
  = require jquery_ujs
  = require jquery-ui
  = require underscore
+
  = require backbone
  = require backbone_rails_sync
  = require backbone_datalink
  = require backbone/wiki
  = require bootstrap
+
  = require ace/ace
  = require ace/ext-searchbox
  = require ace/theme-chrome
  = require ace/theme-textmate
  = require ace/theme-wiki
  = require ace/mode-wiki
+
  = require bootstrap-tour
+
  = require select2
  = require moment
  = require humane-rails
+
  = require_tree .
  */
