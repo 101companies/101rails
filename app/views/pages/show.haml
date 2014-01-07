@@ -15,12 +15,12 @@
 
   - if show_repo_tab
     %li
-      %a.tab-link{:href => "#repo", "data-toggle" => 'tab'} Repo
+      %a#repo-tab-link.tab-link{:href => "#repo", "data-toggle" => 'tab'} Repo
 
   - exist_last_change = !@page.page_changes.nil? ? @page.page_changes.last : nil
   - if current_user and exist_last_change
     %li
-      %a#history-tab-link.tab-link{:href => "#page-changes", "data-toggle" => 'tab'} History of editing
+      %a#page-changes-tab-link.tab-link{:href => "#page-changes", "data-toggle" => 'tab'} History of editing
 
 .tab-content
 
