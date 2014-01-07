@@ -55,6 +55,7 @@ class Wiki.Views.Page extends Backbone.View
     $(@el).html($(@pageTemplate(title: niceTitle)))
     $('#sections-parsed').html('')
 
+    $('#page').append($('<div id="infofooter"></div>').append('<div id="history"></div>'));
     new Wiki.Views.History(model: @model.get('history'))
     @addBacklinks()
     @addSections()
@@ -82,7 +83,6 @@ class Wiki.Views.Page extends Backbone.View
 
     $('a[href^=imported]').remove()
     $('#disqus-loader').show()
-
 
   initRename: ->
     $('#renamemodal').modal()
