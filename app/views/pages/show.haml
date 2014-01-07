@@ -1,5 +1,7 @@
 = render "/pages/shared/default"
 
+= content_for :title, @page.full_title.gsub('@', '101')
+
 - namespaces_with_repo = "%wContribution Language Feature Technology Concept"
 - show_repo_tab = current_user and (namespaces_with_repo.include? @page.namespace) and (can? :manage, @page)
 

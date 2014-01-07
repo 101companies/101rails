@@ -10,6 +10,10 @@ class ApplicationController < ActionController::Base
     redirect_to '/wiki/@project'
   end
 
+  def landing_page
+    render :nothing => true, :layout => 'landing'
+  end
+
   def get_slide
     # get url for slideshare slide
     slideshare_url = params[:slideshare]

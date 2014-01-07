@@ -4,7 +4,7 @@
   %head
 
     %meta{:content => "width=device-width, initial-scale=1.0", :name => "viewport"}/
-    %title 101wiki
+    %title= yield(:title)
     %link{:href => "//fonts.googleapis.com", :rel => "dns-prefetch"}/
     %meta{:content => content_for?(:description) ? yield(:description) : "Wiki", :name => "description"}/
     = stylesheet_link_tag "application", :media => "all"
@@ -15,7 +15,9 @@
 
   %body
 
-    = render 'home/flashes'
+    = content_for :title, "101wiki"
+
+    =raw humane_flash_messages
 
     #page-nav.navbar.navbar-fixed-top
       .navbar-inner

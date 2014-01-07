@@ -28,9 +28,9 @@
  = require ace/theme-textmate
  = require ace/theme-wiki
  = require ace/mode-wiki
- = require gritter
  = require bootstrap-tour
  = require select2
  = require moment
+ = require humane-rails
  = require_tree .
  */

@@ -1,7 +1,7 @@
 Wiki::Application.routes.draw do
 
   # homepage
-  root :to => "home#index"
+  root :to => "application#landing_page"
   # sitemap
   get '/sitemap.xml' => 'application#sitemap'
   # link for downloading slides from slideshare
@@ -53,6 +53,16 @@ Wiki::Application.routes.draw do
   scope 'wiki' do
     get '/' => redirect("/wiki/@project")
     match '/:id' => 'pages#show' , :constraints => { :id => /.*/ }, :as => :page
+  end
+
+  # routes for work with history
+  scope 'page_changes' do
+    # compare with current revision
+    get 'diff/:page_change_id' => 'page_changes#diff'
+    # compare two revisions
+    get 'diff/:page_change_id/:another_page_change_id' => 'page_changes#diff'
+    get 'show/:page_change_id' => 'page_changes#show'
+    post 'apply/:page_change_id' => 'page_changes#apply'
   end
 
   # json api requests for pages

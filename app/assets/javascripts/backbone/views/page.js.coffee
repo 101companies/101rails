@@ -43,8 +43,9 @@ class Wiki.Views.Page extends Backbone.View
 
   render: ->
     self = @
+
     niceTitle = Wiki.Utils.atTo101(@model.get('id').replace(/_/g, ' '))
-    document.title = niceTitle
+
     colonSplit = niceTitle.split(":")
     if colonSplit.length > 1
       niceTitle = $('<span class="title-prefix">')

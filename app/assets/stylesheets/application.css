@@ -12,8 +12,8 @@
  *= require bootstrap
  *= require bootstrap-responsive
  *= require font-awesome
- *= require gritter
  *= require select2
+ *= require humane-rails/jackedup
 
  *= require app
  *= require home

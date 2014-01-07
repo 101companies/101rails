@@ -37,7 +37,6 @@ gem 'rails-backbone', '0.9.10'
 gem 'haml-rails', '0.4'
 
 # database
-# TODO: before upgrade to 4.0 include mongoid-paranoia
 gem 'mongoid', '3.1.5'
 
 # search eninge
@@ -103,12 +102,11 @@ gem 'momentjs-rails', '2.4.0'
 # ui for diff
 gem 'differ', '0.1.2'
 
-# github based versioning
+# github-based versioning
 gem 'gollum-lib', '1.0.9'
 
 # growl-like notifications
-# TODO: replace with solid gem
-gem 'gritter', :github => 'burgua/gritter', :branch => 'vendor_dir'
+gem 'humane-rails'
 
 # deploy tool
 # TODO: update after reading manual
