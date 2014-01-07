@@ -62,7 +62,7 @@ Wiki::Application.routes.draw do
     # compare two revisions
     get 'diff/:page_change_id/:another_page_change_id' => 'page_changes#diff'
     get 'show/:page_change_id' => 'page_changes#show'
-    post 'apply/:page_change_id' => 'page_changes#apply'
+    get 'apply/:page_change_id' => 'page_changes#apply'
   end
 
   # json api requests for pages

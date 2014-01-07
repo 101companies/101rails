@@ -31,8 +31,11 @@ class Page
 
   attr_accessible :user_ids, :raw_content, :namespace, :title, :snapshot, :repo_link_id, :worker_findings
 
-  # validate uniqueness for paar title + namespace
   before_validation do
+    preparing_the_page
+  end
+
+  def preparing_the_page
     # prepare field namespace + title
     self.page_title_namespace = self.namespace.to_s + ':' + self.title.to_s
     # TODO: restore later
@@ -52,6 +55,7 @@ class Page
     if wiki_parser.internal_links
       self.used_links = wiki_parser.internal_links.map { |link| PageModule.unescape_wiki_url link }
     end
+
   end
 
   def get_metadata_section(sections)
@@ -141,10 +145,6 @@ class Page
     return html.html_safe
   end
 
-  def get_content_from_mediawiki
-    MediaWiki::Gateway.new('http://mediawiki.101companies.org/api.php').get self.full_title
-  end
-
   # get fullname with namespace and  title
   def full_title
     # if used default namespaces -> remove from full title
@@ -187,7 +187,7 @@ class Page
     content
   end
 
-  def update_or_rename_page(new_title, content, sections)
+  def update_or_rename(new_title, content, sections)
     # if content is empty -> populate content with sections
     if content == ""
       content = build_content_from_sections(sections)

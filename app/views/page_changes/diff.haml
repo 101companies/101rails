@@ -1,0 +1,10 @@
+= content_for :title, "Difference between revisions"
+
+%h1 Comparing revisions
+
+%a{:href => "/wiki/#{@page.url}#page-changes"} Back to history list
+
+%h2= @title
+
+%pre.differ
+  = @diff

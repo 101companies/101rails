@@ -1,9 +1,11 @@
 #page-changes.tab-pane
   %h2 Page changes
 
-  - last = @page.page_changes[0]
+  / assume, that page itself is last page version
+  - last_shown_version_id = nil
 
   - @page.page_changes.each do |page_change|
+
     %div.one-page-change
 
       - if page_change.user
@@ -14,9 +16,12 @@
       edited this article
       = time_ago_in_words page_change.created_at
       ago.
-
-      %pre.differ
-        = (PageChange.get_diff @page.raw_content, page_change.raw_content)
-
-      %br
+      %p
+        %a{:href => "/page_changes/diff/#{page_change.id}/#{last_shown_version_id}", :target => '_blank'} Show diff
+        |
+        %a{:href => "/page_changes/apply/#{page_change.id}"} Apply revision
+        |
+        %a{:href => "/page_changes/show/#{page_change.id}", :target => '_blank'} Show revision
+      / save previous version for comparing
+      - last_shown_version_id = page_change.id
       %hr

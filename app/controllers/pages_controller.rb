@@ -102,49 +102,27 @@ class PagesController < ApplicationController
 
   def show
 
-    if params.has_key?(:_escaped_fragment_)
-       begin
-        if @page.snapshot == nil
-          logger.debug("Page doesn't have a snapshot")
-          @doc = SnapshotModule.get_snapshot(@page)
-        else
-          logger.debug("Page already has a snapshot")
-          @doc = @page.snapshot
+    respond_to do |format|
+      format.html {
+        # if need redirect? -> wiki url conventions -> do a redirect
+        good_link = @page.url
+        if good_link != params[:id]
+          redirect_to '/wiki/'+ good_link and return
         end
-        respond_to do |format|
-          format.html {
-            render :html => @doc, :layout => "snapshot"
-          }
-        end
-      rescue
-        @error_message="#{$!}"
-        logger.error(@error_message)
-        redirect_to :status => 404
-      end
+        # no redirect? -> render the page
+        render :html => @page
+      }
 
-    else
+      format.json { render :json => {
+        'id'        => @page.full_title,
+        'content'   => @page.raw_content,
+        'sections'  => @page.sections,
+        'history'   => @page.get_last_change,
+        'backlinks' => @page.backlinks
+      }}
 
-      respond_to do |format|
-        format.html {
-          # if need redirect? -> wiki url conventions -> do a redirect
-          good_link = @page.url
-          if good_link != params[:id]
-            redirect_to '/wiki/'+ good_link and return
-          end
-          # no redirect? -> render the page
-          render :html => @page
-        }
-
-        format.json { render :json => {
-          'id'        => @page.full_title,
-          'content'   => @page.raw_content,
-          'sections'  => @page.sections,
-          'history'   => @page.get_last_change,
-          'backlinks' => @page.backlinks
-        }}
-
-      end
     end
+
   end
 
   def parse
@@ -182,7 +160,7 @@ class PagesController < ApplicationController
     content = params[:content]
     new_full_title = PageModule.unescape_wiki_url params[:newTitle]
     history_track = @page.create_track current_user
-    result = @page.update_or_rename_page(new_full_title, content, sections)
+    result = @page.update_or_rename(new_full_title, content, sections)
     history_track.save if result
     render :json => {
       :success => result,
