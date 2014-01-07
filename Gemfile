@@ -98,6 +98,8 @@ gem 'momentjs-rails', '2.4.0'
 
 gem 'differ', '0.1.2'
 
+gem 'gollum-lib', '1.0.9'
+
 # growl-like notifications
 # TODO: replace with solid gem
 gem 'gritter', :github => 'burgua/gritter', :branch => 'vendor_dir'
