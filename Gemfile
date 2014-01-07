@@ -69,7 +69,6 @@ group :development do
   gem 'thin', '1.6.1'
   # colorful console
   gem 'wirble', '0.1.3'
-
 end
 
 # admin interface
@@ -82,6 +81,7 @@ gem 'httparty', '0.12.0'
 
 # work with mediawiki
 gem 'mediawiki-gateway', '0.5.2'
+
 # work with wiki markdown
 gem 'wikicloth', :github => 'avaranovich/wikicloth'
 
@@ -91,13 +91,19 @@ gem 'rdf', :github => 'ruby-rdf/rdf'
 gem 'pygments.rb', '0.5.4'
 gem 'closure-compiler', '1.1.10'
 
-# ui libs
+# better work with form -> bindings to models
 gem 'simple_form', '2.1.0'
+
+# intelligent select
 gem 'select2-rails', '3.5.1'
+
+# work with time in js
 gem 'momentjs-rails', '2.4.0'
 
+# ui for diff
 gem 'differ', '0.1.2'
 
+# github based versioning
 gem 'gollum-lib', '1.0.9'
 
 # growl-like notifications
