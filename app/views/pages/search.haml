@@ -1,0 +1,13 @@
+:javascript
+  Wiki.searchResults = #{j @search_results.to_json.html_safe}
+  Wiki.queryString = #{j @query_string.to_json.html_safe}
+
+  jQuery(document).ready(function ($){
+    window.router = new Wiki.Routers.PagesRouter(Wiki.Views.Search);
+    Backbone.history.start();
+  })
+
+#page
+  %h1#query-string
+  #search-results
+    %ul
