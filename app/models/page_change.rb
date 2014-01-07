@@ -12,6 +12,15 @@ class PageChange
   field :namespace, type: String
   field :raw_content, type: String
 
+  def self.get_by_id(id)
+    return nil if id.nil?
+    begin
+      PageChange.find(id)
+    rescue
+      nil
+    end
+  end
+
   def self.get_diff(first_content, second_content)
     Differ.format = :html
     Differ.diff_by_char(first_content, second_content).to_s.html_safe
