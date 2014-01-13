@@ -2,6 +2,9 @@ class PageChangesController < ApplicationController
 
   respond_to :html
 
+  include RdfModule
+  helper_method :get_rdf_json
+
   def diff
     page_change = PageChange.get_by_id params[:page_change_id]
     another_page_change = PageChange.get_by_id params[:another_page_change_id]

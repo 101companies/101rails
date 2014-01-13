@@ -70,7 +70,7 @@ class PagesController < ApplicationController
   def get_rdf
     title = params[:id]
     graph_to_return = RDF::Graph.new
-    get_rdf_graph(title).each do |st|
+    get_rdf_graph(title, false).each do |st|
       graph_to_return << (st.subject.to_s === "IN" ? (reverse_statement st, title) : st)
     end
     respond_with graph_to_return.dump(:ntriples)

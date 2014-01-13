@@ -25,8 +25,8 @@ module RdfModule
     json
   end
 
-  def get_rdf_graph(title, directions=false)
-    @page = PageModule.find_by_full_title PageModule.unescape_wiki_url title
+  def get_rdf_graph(title, directions, page = nil)
+    @page = !page.nil? ? page : PageModule.find_by_full_title(PageModule.unescape_wiki_url(title))
     uri = self.page_to_resource title
     context   = RDF::URI.new("http://101companies.org")
     graph = add_outgoing_semantic_triples RDF::Graph.new, @page, context, uri, directions

@@ -14,7 +14,7 @@
     Wiki.pageSections= #{j @page.sections.to_json.html_safe};
     Wiki.pageBacklinks= #{j @page.backlinks.to_json.html_safe};
     Wiki.pageHistory= #{j @page.get_last_change.to_json.html_safe};
-    Wiki.pageTriples = [];
+    Wiki.pageTriples = #{get_rdf_json(@page.full_title, true, @page).to_json.html_safe};
     Wiki.currentUser = new Wiki.Models.User(#{j current_user.to_json.html_safe});
     Wiki.currentUser.set('actions', ['View'])
 
