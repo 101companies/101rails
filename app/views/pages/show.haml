@@ -27,10 +27,13 @@
   / tab with backbone page
   #page.tab-pane.active
 
-    %h3.content-loading
-      %center
-        %img{:src => "/assets/ajax-loader.gif"}/
-        Loading page...
+    - if @page.html_content.strip.length == 0
+      %h3.content-loading
+        %center
+          %img{:src => "/assets/ajax-loader.gif"}/
+          Loading page...
+    - else
+      = @page.html_content.html_safe
 
   / tab with all repo settings
   - if show_repo_tab
