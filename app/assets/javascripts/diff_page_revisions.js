@@ -41,4 +41,4 @@ $(function(){
             $('.show_changes_button').removeClass('disabled') : $('.show_changes_button').addClass('disabled');
 
     });
-})();
+});
