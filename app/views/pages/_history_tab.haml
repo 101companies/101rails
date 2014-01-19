@@ -1,13 +1,18 @@
 #page-changes.tab-pane
-  %h2 Page changes
-
   / assume, that page itself is last page version
   - last_shown_version_id = nil
 
+  %a.btn-primary.btn.show_changes_button Compare revisions
+
+  %label.one-page-change
+    %input{:type => "radio", "data-page-change" => ''}
+    Actual version of page
+    %b= @page.full_title.gsub('@', '101')
+
   - @page.page_changes.each do |page_change|
-
-    %div.one-page-change
-
+    %label.one-page-change
+      %input{:type => "radio", "data-page-change" => page_change.id}
+      - last_shown_version_id = page_change.id
       - if page_change.user
         %img.small_avatar{:src => page_change.user.github_avatar}
         %a{:href=> "mailto:#{page_change.user.email}"}= page_change.user.name
@@ -16,13 +21,12 @@
       edited this article
       = time_ago_in_words page_change.created_at
       ago.
-      %p
-        %a{:href => "/page_changes/diff/#{page_change.id}/#{last_shown_version_id}", :target => '_blank'} Show diff
+
+      %a{:href => "/page_changes/diff/#{page_change.id}/#{last_shown_version_id}", :target => '_blank'} Show diff with previous revision
+      |
+      - if can? :manage, page_change.page
+        %a{:href => "/page_changes/apply/#{page_change.id}"} Apply revision
         |
-        - if can? :manage, page_change.page
-          %a{:href => "/page_changes/apply/#{page_change.id}"} Apply revision
-          |
-        %a{:href => "/page_changes/show/#{page_change.id}", :target => '_blank'} Show revision
-      / save previous version for comparing
-      - last_shown_version_id = page_change.id
-      %hr
+      %a{:href => "/page_changes/show/#{page_change.id}", :target => '_blank'} Show revision
+
+  %a.btn-primary.btn.show_changes_button Compare revisions
