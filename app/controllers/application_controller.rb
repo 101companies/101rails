@@ -66,6 +66,7 @@ class ApplicationController < ActionController::Base
     render :json => entries
   end
 
+  # kills normal caching and back button triggers retrieving data from server
   before_filter :set_cache_buster
   def set_cache_buster
     response.headers["Cache-Control"] = "no-cache, no-store, max-age=0, must-revalidate"
