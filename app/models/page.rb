@@ -235,6 +235,7 @@ class Page
         parsed_html = "This section wan't properly rendered =/"
       end
       sections << {
+          'is_resource' => section.is_resource_section,
           'title' => section.title,
           'content' => content_with_subsections,
           'html_content' => parsed_html
