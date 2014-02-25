@@ -2,9 +2,6 @@
 
 = content_for :title, @page.full_title.gsub('@', '101')
 
-- namespaces_with_repo = "%wContribution Language Feature Technology Concept"
-- show_repo_tab = current_user and (namespaces_with_repo.include? @page.namespace) and (can? :manage, @page)
-
 %ul.nav.nav-tabs
 
   %li.active
@@ -13,9 +10,8 @@
   %li
     %a#discovery-tab-link{:target => '_blank'} 101explorer
 
-  - if show_repo_tab
-    %li
-      %a#repo-tab-link.tab-link{:href => "#repo", "data-toggle" => 'tab'} Repo
+  %li
+    %a#repo-tab-link.tab-link{:href => "#repo", "data-toggle" => 'tab'} 101repo
 
   - exist_last_change = !@page.page_changes.nil? ? @page.page_changes.last : nil
   - if current_user and exist_last_change
@@ -36,14 +32,12 @@
       = @page.html_content.html_safe
 
   / tab with all repo settings
-  - if show_repo_tab
-    #repo.tab-pane
-      = render "/pages/repo_tab"
+  #repo.tab-pane
+    = render "/pages/repo_tab"
 
   / tab with all history revisions
   - if exist_last_change
     = render "/pages/history_tab"
-
 
 #modal.modal.fade
   .modal-header

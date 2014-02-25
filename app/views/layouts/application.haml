@@ -23,11 +23,9 @@
           %a.brandname{:href => "/", :name => "top"}
             101companies
           %ul.nav.pull-right
-
             %li
               %form.navbar-search.pull-left{:action => "/search"}
                 %input.search-query{:name => "q", :id => 'search-query', :placeholder => "Search", :type => "text"}/
-
             %li
               - if !current_user
                 %a{:href => "/auth/github"}

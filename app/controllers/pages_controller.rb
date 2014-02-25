@@ -102,6 +102,8 @@ class PagesController < ApplicationController
 
   def show
 
+    @current_user_can_change_page = (!current_user.nil?) and (can? :manage, @page)
+
     respond_to do |format|
       format.html {
         # if need redirect? -> wiki url conventions -> do a redirect

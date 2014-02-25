@@ -1,14 +1,22 @@
 %h2 Linked GitHub repo
-= render "/pages/repo_form"
+- if @current_user_can_change_page
+  = render "/pages/repo_form"
 
 - if @page.repo_link
   %a.btn.btn-primary{:href => @page.repo_link.full_url, :target => '_blank'}
     %i.icon-github-alt
-    Go To GitHub
+    Go to GitHub
+- else
+
+  %p
+    This page doesn't have link to GitHub repo now.
+    - if !current_user
+      %a{:href => "/auth/github"}
+        Click here to log in and continue.
 
 %h2 Matching service findings
 
-- if @page.worker_findings and !@page.worker_findings.empty?
+- if @page.worker_findings and !@page.worker_findings.empty? and @current_user_can_change_page
 
   - findings = JSON.parse(@page.worker_findings)
   - if findings
