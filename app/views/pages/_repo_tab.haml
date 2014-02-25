@@ -1,10 +1,10 @@
-%h2 Linked Github repo
+%h2 Linked GitHub repo
 = render "/pages/repo_form"
 
 - if @page.repo_link
   %a.btn.btn-primary{:href => @page.repo_link.full_url, :target => '_blank'}
     %i.icon-github-alt
-    Look on GitHub
+    Go To GitHub
 
 %h2 Matching service findings
 
@@ -25,4 +25,4 @@
       Insert findings as page metadata
 
 - else
-  We don't have any information about used languages, technologies, concepts and features for this page.
+  We don't have any information about used languages, technologies, concepts, and features for this page.

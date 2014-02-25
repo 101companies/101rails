@@ -12,8 +12,8 @@
   - repos_to_show << repo_link.user_repo
 
 = simple_form_for(repo_link, :html => {:class => 'form-horizontal' }, :url => url_to_send) do |f|
-  = f.input :user_repo, :label => 'Github repo', :collection => repos_to_show, :include_blank => false
+  = f.input :user_repo, :label => 'GitHub repo', :collection => repos_to_show, :include_blank => false
   = f.input :folder, :collection => [repo_link.folder]
   - if @page.title.nil?
     = f.input :page_title
-  = f.button :submit, :class => 'btn btn-success', :id => 'update_page_button'
+  = f.submit 'Save repo link', :class => 'btn btn-success', :id => 'update_page_button'

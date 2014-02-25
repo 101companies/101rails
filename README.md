@@ -38,7 +38,7 @@ After installing mongodb you need to start it and then launch application with:
 
 ## Admin rights
 
-To be signed in you need to have github account with public email and your name in github profile.
+To be signed in you need to have GitHub account with public email and your name in GitHub profile.
 
 ![](http://101companies.org/assets/github-public-email-3ed71b5549eed5cd7235804f3e0054f9.png)
 
@@ -46,7 +46,7 @@ If you have been successfully signed in, you can set another role to your user:
 
     bundle exec rake change_role
 
-You will be asked for your email and new role. Just type email from your github account and role **admin**.
+You will be asked for your email and new role. Just type email from your GitHub account and role **admin**.
 
 ## Contributing
 

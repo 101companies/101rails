@@ -16,7 +16,7 @@ class AuthenticationsController < ApplicationController
       session[:user_id] = user.id
       flash[:notice] = t :signed_in
     else
-      flash[:warning] = "Sorry, but we couldn't read you data from github. Have you added public github email?"
+      flash[:warning] = "Sorry, but we couldn't read you data from GitHub. Have you added public GitHub email?"
     end
     go_to_previous_page
   end
