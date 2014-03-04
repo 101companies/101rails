@@ -5,9 +5,6 @@ class PageChange
   include Mongoid::Document
   include Mongoid::Timestamps::Created
 
-  belongs_to :page
-  belongs_to :user
-
   field :title, type: String
   field :namespace, type: String
   field :raw_content, type: String
@@ -15,6 +12,11 @@ class PageChange
   field :git_commit_message, type: String
   field :git_commit_hash, type: String
   field :propagation_status, type: String
+
+  belongs_to :page
+  belongs_to :user
+
+  has_many :pages, as: changed_related_pages
 
   def self.get_by_id(id)
 
