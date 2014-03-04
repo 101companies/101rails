@@ -68,6 +68,8 @@ group :development do
   gem 'thin', '1.6.1'
   # colorful console
   gem 'wirble', '0.1.3'
+  # for drawing models relations
+  gem 'railroady', '1.1.1'
 end
 
 # admin interface

@@ -5,6 +5,7 @@ class RepoLink
 
   field :repo, type: String
   field :folder, type: String, :default => '/'
+  # nickname for github user
   field :user, type: String
 
   belongs_to :page

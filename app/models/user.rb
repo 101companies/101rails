@@ -19,6 +19,8 @@ class User
 
   has_many :old_wiki_users
   has_many :page_changes
+  has_many :matching_service_requests
+
   has_and_belongs_to_many :pages, :class_name => 'Page', :inverse_of => :users
 
   validates_uniqueness_of :email

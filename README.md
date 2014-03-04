@@ -48,6 +48,20 @@ If you have been successfully signed in, you can set another role to your user:
 
 You will be asked for your email and new role. Just type email from your GitHub account and role **admin**.
 
+## Get the content
+
+    TODO:
+
+## Models relations
+
+To draw diagram for models dependecies use next command:
+
+    bundle exec railroady -M -e app/models/ability.rb | neato -Tpng > models.png
+
+To do it on OSX you will need to install graphviz
+
+    brew install graphviz
+
 ## Contributing
 
 If you make improvements to this application, please share with others.
