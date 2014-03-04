@@ -24,7 +24,9 @@ class RepoLink
   end
 
   def out_name
-    return page.title if !page.nil?
+    if !page.nil?
+      return page.title
+    end
     folder.split('/').last
   end
 

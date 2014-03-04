@@ -6,10 +6,17 @@ class PageModule
   def self.match_page_score(found_page, query_string)
     # find match ignoring case
     score = found_page.full_title.downcase.index query_string.downcase
+
     # not found match in title, make score worst
-    score = 10000 if score == nil
+    if score == nil
+      score = 10000
+    end
+
     # exact match -> best score (lowest)
-    score = -1 if found_page.full_title.downcase == query_string.downcase
+    if found_page.full_title.downcase == query_string.downcase
+      score = -1
+    end
+
     score
   end
 
@@ -57,13 +64,20 @@ class PageModule
     rescue
       found_pages = nil
     end
+
     # nothing found -> go out
-    return [] if found_pages.nil?
+    if found_pages.nil?
+      return []
+    end
+
     results = []
     found_pages.each do |found_page|
       # do not show pages without content
-      next if found_page.raw_content.nil?
+      if found_page.raw_content.nil?
+        next
+      end
       score = PageModule.match_page_score found_page, query_string
+
       # prepare array wit results
       results << {
           :title => found_page.full_title,
@@ -72,6 +86,7 @@ class PageModule
           :score => score
       }
     end
+
     # sort by score and return
     results.sort_by { |a| a[:score] }
   end
@@ -91,6 +106,21 @@ class PageModule
     MediaWiki::send :upcase_first_char, MediaWiki::uri_to_wiki(full_title)
   end
 
+  def self.write_all_pages_to_hard_disk
+    # folder for content
+    content_folder = "content"
+    # create folder if not exists
+    unless File.directory?(content_folder)
+      FileUtils.mkdir_p(content_folder)
+    end
+    # delete all wiki article-files
+    Dir.glob("#{content_folder}/*.wiki").each { |f| File.delete(f) }
+    # create all wiki article-files
+    Page.all.each do |page|
+      File.open("#{content_folder}/#{page.full_title}.wiki", 'w') {|f| f.write(page.raw_content) }
+    end
+  end
+
   def self.create_page_by_full_title(full_title)
     page = Page.new
     full_title = self.unescape_wiki_url full_title
@@ -106,7 +136,9 @@ class PageModule
     nt = self.retrieve_namespace_and_title full_title
     Page.where(:page_title_namespace => nt['namespace'] + ':' + nt['title']).first do |page|
       # if page was found create wiki parser
-      page.create_wiki_parser if !page.nil?
+      if !page.nil?
+        page.create_wiki_parser
+      end
     end
   end
 

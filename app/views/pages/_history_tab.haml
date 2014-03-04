@@ -7,7 +7,7 @@
   %label.one-page-change
     %input{:type => "radio", "data-page-change" => ''}
     Actual version of page
-    %b= @page.full_title.gsub('@', '101')
+    %b= @page.full_title_101
 
   - @page.page_changes.each do |page_change|
     %label.one-page-change

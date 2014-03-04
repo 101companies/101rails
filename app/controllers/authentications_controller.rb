@@ -4,12 +4,20 @@ class AuthenticationsController < ApplicationController
   # the authentication provider callback.
   def create
     omniauth = request.env["omniauth.auth"]
+
     # try to catch user by uid
     user = User.where(:github_uid => omniauth['uid']).first
+
     # try to catch user by email
-    user = User.where(:email => omniauth['info']['email']).first if user.nil?
+    if user.nil?
+      user = User.where(:email => omniauth['info']['email']).first
+    end
+
     # create new user
-    user = User.new if user.nil?
+    if user.nil?
+      user = User.new
+    end
+
     # fill user info from omniauth
     user.populate_data omniauth
     if user.save

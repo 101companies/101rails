@@ -17,8 +17,12 @@ class PagesController < ApplicationController
     # if no title -> set default wiki startpage '@project'
     full_title = params[:id].nil? ? '@project' : params[:id]
     @page = PageModule.find_by_full_title full_title
+
     # page not found and user can create page -> create new page by full_title
-    @page = PageModule.create_page_by_full_title full_title if @page.nil? && (can? :create, Page.new)
+    if @page.nil? && (can? :create, Page.new)
+      @page = PageModule.create_page_by_full_title full_title
+    end
+
     # if no page created/found
     if !@page
       respond_to do |format|
@@ -34,16 +38,22 @@ class PagesController < ApplicationController
   def update_repo
     repo_link = params[:repo_link]
     # if no link to repo -> create it
-    @page.repo_link = RepoLink.new if @page.repo_link.nil?
+    if @page.repo_link.nil?
+      @page.repo_link = RepoLink.new
+    end
+
     # fill props
     @page.repo_link.folder = repo_link[:folder]
     @page.repo_link.user = repo_link[:user_repo].split('/').first
     @page.repo_link.repo = repo_link[:user_repo].split('/').last
+
     # assign page
     @page.repo_link.page = @page
+
     # save page and link
     (@page.save and @page.repo_link.save) ?
       flash[:success]="Updated linked repo" : flash[:error] = "Failed to update linked repo"
+
     # TODO: restore request on matching server
     redirect_to  "/wiki/#{@page.url}"
   end
@@ -58,13 +68,17 @@ class PagesController < ApplicationController
           end
         end
       end
+
       result = @page.save
       message_type= result ? :success : :error
       message = result ? "You have successfully added to metadata worker findings" :
           "Something was wrong. Please try again later"
+
       flash[message_type] = message
+
     end
-    redirect_to  "/wiki/#{@page.url}"
+
+    redirect_to "/wiki/#{@page.url}"
   end
 
   def get_rdf
@@ -81,23 +95,14 @@ class PagesController < ApplicationController
   end
 
   def delete
+    old_page = @page
     result = @page.delete
     # generate flash_message if deleting was successful
-    flash[:notice] = 'Page ' + @page.full_title + ' was deleted' if result
-    render :json => {:success => result}
-  end
-
-  def snapshot
-    @doc = SnapshotModule.get_snapshot(@page)
-    @page.snapshot = @doc
-    @page.save
-    @doc = @page.snapshot
-    logger.info("snapshot: #{@s}")
-    respond_to do |format|
-      format.html {
-        render :html => @doc, :layout => "snapshot"
-      }
+    if result
+      flash[:notice] = 'Page ' + @page.full_title + ' was deleted'
     end
+
+    render :json => {:success => result}
   end
 
   def show
@@ -160,10 +165,13 @@ class PagesController < ApplicationController
   def update
     sections = params[:sections]
     content = params[:content]
+
     new_full_title = PageModule.unescape_wiki_url params[:newTitle]
+
     history_track = @page.create_track current_user
     result = @page.update_or_rename(new_full_title, content, sections)
     history_track.save if result
+
     render :json => {
       :success => result,
       :newTitle => @page.url

@@ -12,8 +12,16 @@ class PageChange
   field :namespace, type: String
   field :raw_content, type: String
 
+  field :git_commit_message, type: String
+  field :git_commit_hash, type: String
+  field :propagation_status, type: String
+
   def self.get_by_id(id)
-    return nil if id.nil?
+
+    if id.nil?
+      return nil
+    end
+
     begin
       PageChange.find(id)
     rescue

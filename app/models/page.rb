@@ -16,6 +16,7 @@ class Page
   field :raw_content, type: String, :default => ""
   field :html_content, type: String
   field :used_links, type: Array
+  field :git_commit_hash, type: String
 
   field :worker_findings, type: String
 
@@ -38,9 +39,11 @@ class Page
   def preparing_the_page
     # prepare field namespace + title
     self.page_title_namespace = self.namespace.to_s + ':' + self.title.to_s
+
     # TODO: restore later
     #self.inject_namespace_triple
     # fill used_links with links in page
+
     # parse content and get internal links
     wiki_parser = self.create_wiki_parser
     begin
@@ -51,6 +54,7 @@ class Page
     rescue
       Rails.logger.info "Failed producing html for page #{self.full_title}"
     end
+
     # if exist internal_links -> fill used_links
     if wiki_parser.internal_links
       self.used_links = wiki_parser.internal_links.map { |link| PageModule.unescape_wiki_url link }
@@ -68,24 +72,35 @@ class Page
 
   def inject_triple(namespace_triple)
     sections = self.sections
+
     # find metadata section
     metadata_section = get_metadata_section sections
+
     # not found -> create it
     if metadata_section.empty?
-      self.raw_content = "" if self.raw_content.nil?
+
+      if self.raw_content.nil?
+        self.raw_content = ""
+      end
+
       self.raw_content = self.raw_content + "\n== Metadata =="
       wiki_parser = self.create_wiki_parser self.raw_content
       sections = self.sections wiki_parser
+
     end
+
     metadata_section = get_metadata_section(sections)[0]
+
     unless metadata_section
       Rails.logger.info "In page #{self.full_title} cannot be any triple injected."
       return
     end
+
     unless metadata_section["content"].include? namespace_triple
       metadata_section["content"] = metadata_section["content"] + "\n<!-- Next link is generated automatically-->"
       metadata_section["content"] = metadata_section["content"] + "\n* [[#{namespace_triple}]]"
     end
+
     # rebuild content from sections
     self.raw_content = build_content_from_sections sections
   end
@@ -127,7 +142,8 @@ class Page
   end
 
   def parse(content = self.raw_content)
-    parsed_page = self.create_wiki_parser content
+    self_create_wiki_parser = self.create_wiki_parser content
+    parsed_page = self_create_wiki_parser
     parsed_page.sections.first.auto_toc = false
     html = parsed_page.to_html
     # mark empty or non-existing page with class missing-link (red color)
@@ -147,10 +163,18 @@ class Page
 
   # get fullname with namespace and  title
   def full_title
+
     # if used default namespaces -> remove from full title
-    return self.title if (self.namespace == '101') or (self.namespace == 'Concept')
+    if (self.namespace == '101') or (self.namespace == 'Concept')
+      return self.title
+    end
+
     # else use normal building of full url
     self.namespace + ':' + self.title
+  end
+
+  def full_title_101
+    self.full_title.gsub '@', '101'
   end
 
   def rewrite_backlink(backlink, old_title)
@@ -172,13 +196,18 @@ class Page
     # set new title to page
     nt = PageModule.retrieve_namespace_and_title new_title
     old_title = self.full_title
+
     # save old backlinsk before renaming
     old_backlinks = self.backlinks
+
     # rename the page
     self.namespace = nt['namespace']
     self.title = nt['title']
+
     # rewrite links in pages, that links to the page
-    old_backlinks.each { |old_backlink| self.rewrite_backlink old_backlink, old_title }
+    old_backlinks.each do |old_backlink|
+      self.rewrite_backlink(old_backlink, old_title)
+    end
   end
 
   def build_content_from_sections(sections)
@@ -192,11 +221,17 @@ class Page
     if content == ""
       content = build_content_from_sections(sections)
     end
+
     self.raw_content = content
+
     # unescape new title to nice readable url
     new_title = PageModule.unescape_wiki_url new_title
+
     # if title was changed -> rename page
-    self.rename(new_title) if (new_title!=self.full_title and PageModule.find_by_full_title(new_title).nil?)
+    if (new_title!=self.full_title and PageModule.find_by_full_title(new_title).nil?)
+      self.rename(new_title)
+    end
+
     self.save
   end
 

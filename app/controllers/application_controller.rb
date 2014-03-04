@@ -59,7 +59,9 @@ class ApplicationController < ActionController::Base
     RepoLink.each do |link|
       # filter out concepts
       if !link.folder.starts_with? '/concepts'
-        entries[link.namespace] = Hash.new if entries[link.namespace].nil?
+        if entries[link.namespace].nil?
+          entries[link.namespace] = Hash.new
+        end
         entries[link.namespace][link.out_name] = link.full_url
       end
     end
