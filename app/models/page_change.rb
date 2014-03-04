@@ -16,12 +16,33 @@ class PageChange
   belongs_to :page
   belongs_to :user
 
-  has_many :related_changed_pages, :class_name => 'Page'
+  field :related_changed_pages, type: Array
 
   #before_save do
   #  PageModule.write_all_pages_to_hard_disk
     # TODO: git commit
   #end
+
+  def self.create_track(user, commit_message, page=nil, changed_pages=nil)
+    new_page_change = PageChange.new
+
+    new_page_change.page  = page
+    new_page_change.raw_content = page.raw_content
+    new_page_change.user = user
+    new_page_change.git_commit_message = commit_message
+
+    if !changed_pages.nil? && changed_pages.count != 0
+      new_page_change.related_changed_pages = changed_pages
+    end
+
+    if new_page_change
+      new_page_change.raw_content = page.raw_content
+      new_page_change.title = page.title
+      new_page_change.namespace = page.namespace
+    end
+
+    return new_page_change
+  end
 
   def self.get_by_id(id)
 

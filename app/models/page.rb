@@ -30,7 +30,8 @@ class Page
   validates_presence_of :title
   validates_presence_of :namespace
 
-  attr_accessible :user_ids, :raw_content, :namespace, :title, :snapshot, :repo_link_id, :worker_findings
+  attr_accessible :user_ids, :raw_content, :namespace, :title, :snapshot, :repo_link_id, :worker_findings,
+                  :page_change_ids
 
   before_validation do
     preparing_the_page
@@ -133,14 +134,6 @@ class Page
         "No headline found for page #{self.full_title}" : (decorate_headline(headline_elem.text)).strip
   end
 
-  def create_track(user)
-    PageChange.new :page => self,
-                   :raw_content => self.raw_content,
-                   :title => self.title,
-                   :namespace => self.namespace,
-                   :user => user
-  end
-
   def parse(content = self.raw_content)
     self_create_wiki_parser = self.create_wiki_parser content
     parsed_page = self_create_wiki_parser
@@ -216,26 +209,48 @@ class Page
     content
   end
 
-  def update_or_rename(new_title, content, sections)
+  def update_or_rename(user, new_title, content, sections)
     # if content is empty -> populate content with sections
     if content == ""
       content = build_content_from_sections(sections)
     end
 
-    self.raw_content = content
-
     # unescape new title to nice readable url
     new_title = PageModule.unescape_wiki_url new_title
 
-    # if title was changed -> rename page
-    if (new_title!=self.full_title and PageModule.find_by_full_title(new_title).nil?)
-      self.rename(new_title)
+    renaiming_process = new_title!=self.full_title
+
+    # cannot rename to already existing page
+    if renaiming_process && !PageModule.find_by_full_title(new_title).nil?
+      return false
     end
 
-    self.save
+    # if title was changed -> rename page
+    if renaiming_process
+      old_title = self.full_title_101
+      commit_message = "Renaming page from '#{old_title}' to '#{new_title}' by #{user.name}"
+      page_change = PageChange.create_track(user, commit_message, self, self.backlinks_ids)
+      self.rename(new_title)
+    # or just update content
+    else
+      commit_message = "Updating content for page '#{self.full_title_101}' by #{user.name}"
+      page_change = PageChange.create_track(user, commit_message, self)
+      self.raw_content = content
+    end
+
+    # save page itself
+    result = self.save
+
+    # save history track
+    if result
+      page_change.save
+    else
+      #page_change.delete
+    end
+
+    return result
   end
 
-  # TODO: black magic
   def rewrite_internal_links(from, to)
     regex = /(\[\[:?)([^:\]\[]+::)?(#{Regexp.escape(from.gsub("_", " "))})(\s*)(\|[^\[\]]*)?(\]\])/i
     self.raw_content.gsub("_", " ").gsub(regex) do
@@ -277,6 +292,10 @@ class Page
       }
     end
     sections
+  end
+
+  def backlinks_ids
+    Page.where(:used_links => self.full_title).map { |page| page.id}
   end
 
   def backlinks

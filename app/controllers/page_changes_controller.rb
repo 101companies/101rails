@@ -46,19 +46,9 @@ class PageChangesController < ApplicationController
 
     page = page_change.page
 
-    history_track = nil
-    if (page.title_changed? or page.namespace_changed? or page.raw_content_changed?)
-      history_track = page.create_track current_user
-    end
+    version_restore_result = page.update_or_rename(current_user, page_change.title, page_change.raw_content, nil)
 
-    applying_result = page.update_or_rename(page_change.title, page_change.raw_content, nil)
-
-    flash[:warning] =  applying_result ? 'Restored page from revision' : 'Restoring was unsuccessful'
-
-    # save track, if applying was successful
-    if applying_result and !history_track.nil?
-      history_track.save
-    end
+    flash[:warning] =  version_restore_result ? 'Restored page from revision' : 'Restoring was unsuccessful'
 
     redirect_to "/wiki/#{page.url}"
 

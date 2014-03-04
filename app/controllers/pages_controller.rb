@@ -97,9 +97,13 @@ class PagesController < ApplicationController
   def delete
     old_page = @page
     result = @page.delete
+
     # generate flash_message if deleting was successful
     if result
       flash[:notice] = 'Page ' + @page.full_title + ' was deleted'
+      # generate history track with last version of page
+      commit_message = "Deleted page '#{old_page.full_title_101}' by #{current_user.name}"
+      PageChange.create_track(current_user, commit_message, old_page).save
     end
 
     render :json => {:success => result}
@@ -168,9 +172,7 @@ class PagesController < ApplicationController
 
     new_full_title = PageModule.unescape_wiki_url params[:newTitle]
 
-    history_track = @page.create_track current_user
-    result = @page.update_or_rename(new_full_title, content, sections)
-    history_track.save if result
+    result = @page.update_or_rename(current_user, new_full_title, content, sections)
 
     render :json => {
       :success => result,
