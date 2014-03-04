@@ -108,7 +108,7 @@ class PageModule
 
   def self.write_all_pages_to_hard_disk
     # folder for content
-    content_folder = "content"
+    content_folder = "../content"
     # create folder if not exists
     unless File.directory?(content_folder)
       FileUtils.mkdir_p(content_folder)

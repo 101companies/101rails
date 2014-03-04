@@ -38,6 +38,7 @@
       - else
         %input{:type => "radio", :disabled => true, "data-page-change" => page_change.id}
           %i
-            During this action page was changed
+            During this action page was changed: "
           = page_change.git_commit_message
+          "
   %a.btn-primary.btn.show_changes_button Compare revisions

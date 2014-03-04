@@ -18,10 +18,10 @@ class PageChange
 
   field :related_changed_pages, type: Array
 
-  #before_save do
-  #  PageModule.write_all_pages_to_hard_disk
-    # TODO: git commit
-  #end
+  after_save do
+    PageModule.write_all_pages_to_hard_disk
+    %x[ cd ../content && git add . --all && git commit -m \"#{self.git_commit_message}\"]
+  end
 
   def self.create_track(user, commit_message, page=nil, changed_pages=nil)
     new_page_change = PageChange.new
