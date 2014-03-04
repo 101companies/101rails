@@ -28,7 +28,8 @@ class User
 
   validates_presence_of :name, :email, :github_uid, :github_token, :github_name
 
-  attr_accessible :role, :page_ids, :old_wiki_user_ids, :contribution_page_ids
+  attr_accessible :role, :page_ids, :old_wiki_user_ids, :contribution_page_ids, :matching_service_request_ids,
+                  :github_name, :email, :name, :github_avatar
 
   def get_repos
     # using oauth token to increase limit of request to github api to 5000

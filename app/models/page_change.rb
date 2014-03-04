@@ -16,7 +16,12 @@ class PageChange
   belongs_to :page
   belongs_to :user
 
-  has_many :pages, as: changed_related_pages
+  has_many :related_changed_pages, :class_name => 'Page'
+
+  #before_save do
+  #  PageModule.write_all_pages_to_hard_disk
+    # TODO: git commit
+  #end
 
   def self.get_by_id(id)
 

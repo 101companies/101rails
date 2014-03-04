@@ -122,6 +122,10 @@ RailsAdmin.config do |config|
       end
     end
 
+    field :matching_service_requests do
+      searchable true
+    end
+
     field :github_name do
       searchable true
     end
