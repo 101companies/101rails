@@ -16,6 +16,7 @@ class Page
   field :raw_content, type: String, :default => ""
   field :html_content, type: String
   field :used_links, type: Array
+  field :subresources, type: Array
 
   field :worker_findings, type: String
 
@@ -52,10 +53,24 @@ class Page
       Rails.logger.info "Failed producing html for page #{self.full_title}"
     end
     # if exist internal_links -> fill used_links
-    if wiki_parser.internal_links
-      self.used_links = wiki_parser.internal_links.map { |link| PageModule.unescape_wiki_url link }
-    end
+    # if wiki_parser.internal_links
+    #  self.used_links = wiki_parser.internal_links.map { |link| PageModule.unescape_wiki_url link }
+    #end
 
+    self.subresources = []
+    self.used_links   = []
+    # these are the links which are used in sections annotated as subresources of the page
+    wiki_parser.section_list.each do |s|
+      p = WikiCloth::Parser.new(:data => s.wikitext, :noedit => true)
+      p.to_html
+      l = p.internal_links.map { |link| PageModule.unescape_wiki_url link }
+      if s.is_resource_section
+        self.subresources << {s.title => l}
+      else
+        self.used_links << l
+      end
+    end
+    self.used_links.flatten!
   end
 
   def get_metadata_section(sections)
