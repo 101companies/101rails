@@ -28,9 +28,9 @@ module RdfModule
   def get_rdf_graph(title, directions)
     @page = PageModule.find_by_full_title(PageModule.unescape_wiki_url(title))
     uri = self.page_to_resource title
-    context   = RDF::URI.new("http://101companies.org")
+    context = RDF::URI.new("http://101companies.org")
     graph = add_outgoing_semantic_triples RDF::Graph.new, @page, context, uri, directions
-    # graph = add_subresources graph, @page, context
+    graph = add_subresources graph, @page, context
     unless directions
       graph = add_outgoing_non_semantic_triples graph, context, uri, directions
     end
@@ -54,15 +54,19 @@ module RdfModule
   end
 
   def add_subresources(graph, page, context)
-    page.subresources.each do |s|
-      s.each do |key, value|
-        subject =  page_to_resource(key)
-        value.each do |l|
-          predicate = RDF::URI.new(self.semantic_properties(l.split('::')[0]))
-          object = page_to_resource(l.split('::')[1])
-          graph <<  RDF::Statement.new(subject, predicate, object, :context => context)
+    if page.subresources.nil?
+      graph
+    else
+      page.subresources.each do |s|
+        s.each do |key, value|
+          subject =  page_to_resource(key)
+          value.each do |l|
+            predicate = RDF::URI.new(self.semantic_properties(l.split('::')[0]))
+            object = page_to_resource(l.split('::')[1])
+            graph <<  RDF::Statement.new(subject, predicate, object, :context => context)
+          end
         end
-     end
+      end
     end
     graph
   end
