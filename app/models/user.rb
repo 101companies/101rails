@@ -58,8 +58,7 @@ class User
 
   def populate_data(omniauth)
     self.email = omniauth['info']['email']
-    # if no name added -> use github nickname as name
-    self.name = omniauth['info']['name'].empty? ? omniauth['info']['nickname'] : omniauth['info']['name']
+    self.name = omniauth['info']['name']
     self.github_name = omniauth['info']['nickname']
     self.github_avatar = omniauth['info']['image']
     self.github_token = omniauth['credentials']['token']

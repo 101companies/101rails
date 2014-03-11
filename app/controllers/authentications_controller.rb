@@ -11,12 +11,17 @@ class AuthenticationsController < ApplicationController
     # create new user
     user = User.new if user.nil?
     # fill user info from omniauth
-    user.populate_data omniauth
-    if user.save
+    failed_to_populate_data = false
+    begin
+      user.populate_data omniauth
+    rescue
+      failed_to_populate_data = true
+    end
+    if !failed_to_populate_data and user.save
       session[:user_id] = user.id
       flash[:notice] = t :signed_in
     else
-      flash[:warning] = "Sorry, but we couldn't read you data from GitHub. Have you added public GitHub email?"
+      flash[:error] = "We couldn't read you data from GitHub. Have you added name public email into GitHub account?"
     end
     go_to_previous_page
   end
