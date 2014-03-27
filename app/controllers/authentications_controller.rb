@@ -21,7 +21,7 @@ class AuthenticationsController < ApplicationController
       session[:user_id] = user.id
       flash[:notice] = t :signed_in
     else
-      flash[:error] = "We couldn't read you data from GitHub. Have you added name public email into GitHub account?"
+      flash[:error] = "Failed to login. Have you added name and public email into GitHub account?"
     end
     go_to_previous_page
   end
