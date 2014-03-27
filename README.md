@@ -32,6 +32,14 @@ Now you need go to the project folder und install app:
 
     bundle install --path vendor/bundle
 
+If you have troubles with installing gem on OSX and have error:
+
+     clang: error: unknown argument: '-multiply_definedsuppress' [-Wunused-command-line-argument-hard-error-in-future]
+
+Then try to do next command before installing gems:
+
+    export ARCHFLAGS="-Wno-error=unused-command-line-argument-hard-error-in-future"
+
 After installing mongodb you need to start it and then launch application with:
 
     bundle exec rails server
