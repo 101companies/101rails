@@ -111,6 +111,9 @@ gem 'humane-rails'
 # deploy tool
 # TODO: update after reading manual
 gem 'capistrano', '2.15.5'
+# locking 2 gems to prevent failing updates with capistrano
+gem 'net-ssh', '2.7.0'
+gem 'net-ssh-gateway', '1.2.0'
 
 # for wiki-editor
 gem 'aced_rails', '0.2.1', :github => 'tschmorleiz/aced_rails'
