@@ -48,7 +48,7 @@ After installing mongodb you need to start it and then launch application with:
 
 To be signed in you need to have GitHub account with public email and your name in GitHub profile.
 
-![](https://dl.dropboxusercontent.com/u/795699/profile.png)
+![](https://camo.githubusercontent.com/c18ee944c61a921a0f6675c4f40d973bffcabd52/68747470733a2f2f646c2e64726f70626f7875736572636f6e74656e742e636f6d2f752f3739353639392f70726f66696c652e706e67)
 
 If you have been successfully signed in, you can set another role to your user:
 
