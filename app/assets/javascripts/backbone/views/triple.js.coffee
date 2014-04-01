@@ -23,9 +23,9 @@ class Wiki.Views.Triple extends Backbone.View
     self = @
     resBase = "http://101companies.org/resource/"
     rendertriple = {arrow: "&#9664;", s: "this", o: "this"}
-    rendertriple.p = @decode(@model.get('predicate'), true, true, true)
-    decodedNode = @decode(@model.get('node'), false, false, false)
-    decodedNode_text = @decode(@model.get('node'), false, false, true)
+    rendertriple.p = @decode(@model.get('predicate'))
+    decodedNode = @decode(@model.get('node'))
+    decodedNode_text = @decode(@model.get('node'))
     if @model.get('direction') is "IN"
       rendertriple.arrow = "&#9654;"
       rendertriple.s = decodedNode
