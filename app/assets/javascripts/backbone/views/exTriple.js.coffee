@@ -7,31 +7,11 @@ class Wiki.Views.ExTriple extends Backbone.View
   # which parts of the '/'-split of the URL to show
   prefixToSplit : {'github.com': {'pick': [3, 4], 'tail': 7}}
 
-  decode: (str, toLower, showMore) ->
-    self = @
-
+  decode: (str) ->
     str = decodeURIComponent(str.replace(@resBase,"").replace(/-3A/g,":").replace("Property:", "").replace(/_/g, " "))
-    if showMore
-      str
-    else
-      split = str.split("/")
-      key = split[2].trim()
-      if key of @prefixToSplit
-        str = split.filter((x,i) -> _.contains(self.prefixToSplit[key].pick, i)).join('/')
-        tail = split.slice(@prefixToSplit[key].tail).join('/')
-        if tail
-          str += '/' + tail
-      else
-        str = _.last(split)
-        if str.replace(/\s/g, '') == ''
-          str = split[split.length - 2]
-      if toLower
-        firstLetter = str.substr(0, 1)
-        firstLetter.toLowerCase() + str.substr(1)
-      else
-        str
+    str
 
-  render: (showMore) ->
+  render: () ->
     self = @
     key = @model.get('node').split('/')[2]
     if key of @prefixToName
@@ -40,7 +20,7 @@ class Wiki.Views.ExTriple extends Backbone.View
       fullName = key
     $('#resources').show()
     place = $('#resources').find('.' + fullName.replace(/\./g, ''))
-    info = {'full' : @model.get('node'), 'chapter': @decode(@model.get('node'), false, showMore)}
+    info = {'full' : @model.get('node'), 'chapter': @decode(@model.get('node'))}
     templateOps = {cat: 'primary', link: info, predicate: @decode(@model.get('predicate')), isBook: false}
     if place.length
       $(place).find('.resourcebar').append($(self.resourceBoxTemplate(templateOps)).tooltip("show"))

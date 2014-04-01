@@ -1,6 +1,6 @@
 <script type="text/javascript">
 
-    Wiki.pageTitle =  <%= j @page.full_title.to_json.html_safe -%>;
+    Wiki.pageTitle = <%= j @page.full_title.to_json.html_safe -%>;
 
     Wiki.pageContent= "<%= escape_javascript(@page.raw_content.html_safe) -%>";
     Wiki.pageNiceTitle=  "<%= j @page.url.html_safe -%>";
