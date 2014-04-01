@@ -93,7 +93,7 @@ module RdfModule
     semantic_hash.each do |x|
       x = MediaWiki::send :upcase_first_char, x
       Page.where(:used_links => x+'::'+page.full_title).each do |page|
-        graph << ["IN", x, page.full_title]
+        graph << ["IN", x.camelize(:lower), page.full_title]
       end
     end
     graph

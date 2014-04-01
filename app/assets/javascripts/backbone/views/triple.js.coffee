@@ -1,27 +1,17 @@
 class Wiki.Views.Triple extends Backbone.View
   template : JST['backbone/templates/triple']
 
-  decode: (str, toLower, decodeURI, atTo101) ->
+  decode: (str) ->
     resBase = "http://101companies.org/resource/"
 
     str = str.replace(resBase,"")
         .replace("-3A",":")
         .replace("Property:", "")
         .replace(/_/g, " ")
-    if decodeURI
-      str = decodeURIComponent(str)
-    str = _.last(str.split("/"))
-    str1 = str.substr(0, 1)
-    str1 = if toLower then str1.toLowerCase() else str1.toUpperCase()
-    str = str1 + str.substr(1)
-    if atTo101
-      Wiki.Utils.atTo101(str)
-    else
-      str
+    str = decodeURIComponent(str)
+    str
 
   render: ->
-    self = @
-    resBase = "http://101companies.org/resource/"
     rendertriple = {arrow: "&#9664;", s: "this", o: "this"}
     rendertriple.p = @decode(@model.get('predicate'))
     decodedNode = @decode(@model.get('node'))
