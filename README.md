@@ -46,7 +46,7 @@ After installing mongodb you need to start it and then launch application with:
 
 ## Admin rights
 
-To be signed in you need to have GitHub account with public email and your name in GitHub profile.
+To be signed in you need to have GitHub account with **name** and **public email** in GitHub profile.
 
 ![](app/assets/images/readme_profile.png)
 
