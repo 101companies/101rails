@@ -5,11 +5,11 @@ module RdfModule
     page = PageModule.find_by_full_title title
     return nil if page.nil?
     #RDF::URI.new("http://101companies.org/resources/#{page.namespace.downcase.pluralize}/#{page.title.gsub(' ', '_')}")
-    return "{page.title.gsub(' ', '_')}"
+    return "#{page.namespace}:#{page.title.gsub(' ', '_')}"
   end
 
   def reverse_statement(st, title)
-    RDF::Statement.new( page_to_resource(st.object.to_s), st.predicate, page_to_resource(title), :context => st.context)
+    [page_to_resource(st[0].to_s), st[1], page_to_resource(title)]
   end
 
   def get_rdf_json(title, directions)
@@ -19,8 +19,8 @@ module RdfModule
         json << { :direction => res[0].to_s, :predicate => res[1].to_s, :node => res[2].to_s }
       else
         # ingoing triples
-        res = reverse_statement res, title if res.subject.to_s == 'IN'
-        json << [ res.subject.to_s, res.predicate.to_s, res.object.to_s ]
+        res = reverse_statement res, title if res[0].to_s == 'IN'
+        json << [ res[0].to_s, res[1].to_s, res[2].to_s ]
       end
     end
     json
@@ -33,7 +33,7 @@ module RdfModule
     graph = add_outgoing_semantic_triples graph, @page, uri, directions
     #graph = add_subresources graph, @page, context
     unless directions
-      graph = add_outgoing_non_semantic_triples graph, context, uri, directions
+      graph = add_outgoing_non_semantic_triples graph, uri, directions
     end
     add_ingoing_triples graph, @page#, context
   end
@@ -43,7 +43,7 @@ module RdfModule
     "http://101companies.org/property/#{name}"
   end
 
-  def add_outgoing_non_semantic_triples(graph, context, uri, directions)
+  def add_outgoing_non_semantic_triples(graph, uri, directions)
     (@page.internal_links-@page.semantic_links).each do |link|
       object = directions ? link : page_to_resource(link)
       if !object.nil?
