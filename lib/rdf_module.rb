@@ -88,7 +88,7 @@ module RdfModule
 
     #TODO: need to get all semantic properties in a generic way
     semantic_hash = %w(dependsOn instanceOf identifies cites linksTo uses implements isA developedBy reviewedBy relatesTo
-       implies mentions)
+       implies mentions memberOf)
 
     semantic_hash.each do |x|
       x = MediaWiki::send :upcase_first_char, x
