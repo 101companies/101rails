@@ -37,8 +37,6 @@ class ApplicationController < ActionController::Base
         http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">'
     Page.all.each do |page|
       text = text + '<url><loc>http://101companies.org/wiki/' + page.url + '</loc>'+
-          # todo replace with real update time
-          '<lastmod>2014-01-20</lastmod>'+
           '<changefreq>weekly</changefreq>'+
           '</url>'
     end

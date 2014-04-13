@@ -19,6 +19,7 @@ class Ability
     # user can be manually has permissions to change concrete page
     can :manage, Page, :user_ids => user.id
 
+    cannot :history, :all
   end
 
 end

@@ -99,6 +99,48 @@ RailsAdmin.config do |config|
 
   end
 
+  config.model 'PageChange' do
+
+    field :page do
+      searchable true
+      read_only true
+    end
+
+    field :user do
+      searchable true
+      read_only true
+    end
+
+    field :title do
+      searchable true
+      label do
+        'Old title'
+      end
+      read_only true
+    end
+
+    field :namespace do
+      searchable true
+      label do
+        'Old namespace'
+      end
+      read_only true
+    end
+
+    field :raw_content do
+      label do
+        'Old content'
+      end
+      searchable true
+      read_only true
+    end
+
+    field :created_at do
+      read_only true
+    end
+
+  end
+
   config.model 'User' do
 
     field :github_avatar do
