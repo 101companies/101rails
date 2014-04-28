@@ -102,9 +102,6 @@ gem 'momentjs-rails', '2.4.0'
 # ui for diff
 gem 'differ', '0.1.2'
 
-# github-based versioning
-#gem 'gollum-lib', '1.0.9'
-
 # growl-like notifications
 gem 'humane-rails'
 

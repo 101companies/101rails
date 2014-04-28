@@ -13,8 +13,7 @@
   %li
     %a#repo-tab-link.tab-link{:href => "#repo", "data-toggle" => 'tab'} 101repo
 
-  - exist_last_change = !@page.page_changes.nil? ? @page.page_changes.last : nil
-  - if current_user and exist_last_change
+  - if current_user
     %li
       %a#page-changes-tab-link.tab-link{:href => "#page-changes", "data-toggle" => 'tab'} History
 
@@ -36,8 +35,7 @@
     = render "/pages/repo_tab"
 
   / tab with all history revisions
-  - if exist_last_change
-    = render "/pages/history_tab"
+  = render "/pages/history_tab"
 
 #modal.modal.fade
   .modal-header
