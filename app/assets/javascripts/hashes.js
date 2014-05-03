@@ -11,16 +11,4 @@ $(function() {
 
     $("[href=\"" + getHash() + "\"]").trigger("click");
 
-    $(window).on('hashchange', function() {
-
-        var hash = getHash()
-
-        $('.tab-pane').removeClass('active');
-        $('.nav-tabs li').removeClass('active');
-
-        $(hash+'-tab-link').parent().addClass('active');
-        $(hash).addClass('active');
-
-    });
-
 });
