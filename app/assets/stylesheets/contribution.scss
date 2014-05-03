@@ -1,0 +1,34 @@
+// Place all the styles related to the exporter controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+.red_asterisk {
+  color: red;
+}
+
+$form_element_width: 450px;
+$input_height: 30px;
+
+#create_contribution {
+  select {
+    width: $form_element_width;
+    height: $input_height;
+  }
+  input {
+    width: $form_element_width - 10px;
+    height: $input_height;
+  }
+  textarea {
+    width: $form_element_width - 20px;
+  }
+  button {
+    width: $form_element_width;
+    margin-top: 20px;
+  }
+  $avatar_size: 80px;
+  .github_avatar {
+    height: $avatar_size;
+    width: $avatar_size;
+    border-radius: $avatar_size / 2;
+  }
+}
