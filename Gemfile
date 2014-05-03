@@ -37,20 +37,20 @@ gem 'rails-backbone', '0.9.10'
 gem 'haml-rails', '0.4'
 
 # database
-gem 'mongoid', '3.1.5'
+gem 'mongoid', '3.1.6'
 
 # search eninge
 gem 'mongoid_search', '0.3.2'
 
 # security
-gem 'bcrypt-ruby', '3.1.2'
+gem 'bcrypt-ruby', '3.1.5'
 
 # github auth
-gem 'omniauth', '1.1.4'
-gem 'omniauth-github', '1.1.1'
+gem 'omniauth', '1.2.1'
+gem 'omniauth-github', '1.1.2'
 
 # github integration
-gem 'octokit', '2.6.1'
+gem 'octokit', '3.1.0'
 
 # font with bundled icons
 gem 'font-awesome-rails', '3.2.1.3'
@@ -62,10 +62,10 @@ group :development do
   # remove assets-logs in console
   gem 'quiet_assets', '1.0.2'
   # nice error output
-  gem 'better_errors', '1.0.1'
+  gem 'better_errors', '1.1.0'
   gem 'binding_of_caller', '0.7.2'
   # web server
-  gem 'thin', '1.6.1'
+  gem 'thin', '1.6.2'
   # colorful console
   gem 'wirble', '0.1.3'
 end
@@ -76,10 +76,10 @@ gem 'rails_admin', '0.4.9'
 # web-scraping
 gem 'json_pure', '1.8.1'
 gem 'json', '1.8.1'
-gem 'httparty', '0.12.0'
+gem 'httparty', '0.13.0'
 
 # work with mediawiki
-gem 'mediawiki-gateway', '0.5.2'
+gem 'mediawiki-gateway', '0.6.0'
 
 # work with wiki markdown
 gem 'wikicloth', :github => 'avaranovich/wikicloth'
@@ -94,10 +94,10 @@ gem 'closure-compiler', '1.1.10'
 gem 'simple_form', '2.1.0'
 
 # intelligent select
-gem 'select2-rails', '3.5.1'
+gem 'select2-rails', '3.5.4'
 
 # work with time in js
-gem 'momentjs-rails', '2.4.0'
+gem 'momentjs-rails', '2.6.0'
 
 # ui for diff
 gem 'differ', '0.1.2'
@@ -118,4 +118,4 @@ gem 'aced_rails', '0.2.1', :github => 'tschmorleiz/aced_rails'
 gem 'bootstrap-tour-rails', '0.4.0'
 
 gem 'eventmachine', '1.0.3'
-gem 'em-http-request', '1.1.1'
+gem 'em-http-request', '1.1.2'
