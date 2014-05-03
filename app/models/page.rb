@@ -4,7 +4,6 @@ class Page
 
   include Mongoid::Document
   include Mongoid::Timestamps
-  include Mongoid::Paranoia
   include Mongoid::Search
 
   search_in :title, :namespace, :page_title_namespace, :raw_content
@@ -30,7 +29,7 @@ class Page
   validates_presence_of :title
   validates_presence_of :namespace
 
-  attr_accessible :user_ids, :raw_content, :namespace, :title, :snapshot, :repo_link_id, :worker_findings
+  attr_accessible :user_ids, :raw_content, :namespace, :title, :repo_link_id, :worker_findings
 
   before_validation do
     preparing_the_page

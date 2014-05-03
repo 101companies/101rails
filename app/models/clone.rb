@@ -4,7 +4,6 @@ class Clone
   require 'eventmachine'
   require 'em-http'
   include Mongoid::Document
-  include Mongoid::Paranoia
 
   field :title, type: String
   field :original, type: String

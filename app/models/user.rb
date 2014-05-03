@@ -1,7 +1,6 @@
 class User
   include Mongoid::Document
   include Mongoid::Timestamps
-  include Mongoid::Paranoia
 
   def self.role_options
     ['admin', 'editor', 'guest']

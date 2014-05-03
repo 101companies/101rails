@@ -1,7 +1,6 @@
 class OldWikiUser
 
   include Mongoid::Document
-  include Mongoid::Paranoia
 
   field :email, type: String
   field :name, type: String

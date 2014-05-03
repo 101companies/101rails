@@ -1,6 +1,5 @@
 class Tour
   include Mongoid::Document
-  include Mongoid::Paranoia
 
   field :title, type: String
   field :author, type: String

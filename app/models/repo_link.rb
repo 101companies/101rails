@@ -1,6 +1,5 @@
 class RepoLink
   include Mongoid::Document
-  include Mongoid::Paranoia
   include Mongoid::Timestamps
 
   field :repo, type: String

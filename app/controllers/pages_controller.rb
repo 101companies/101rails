@@ -87,19 +87,6 @@ class PagesController < ApplicationController
     render :json => {:success => result}
   end
 
-  def snapshot
-    @doc = SnapshotModule.get_snapshot(@page)
-    @page.snapshot = @doc
-    @page.save
-    @doc = @page.snapshot
-    logger.info("snapshot: #{@s}")
-    respond_to do |format|
-      format.html {
-        render :html => @doc, :layout => "snapshot"
-      }
-    end
-  end
-
   def show
 
     @current_user_can_change_page = (!current_user.nil?) and (can? :manage, @page)
