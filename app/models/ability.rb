@@ -14,7 +14,9 @@ class Ability
     end
 
     # editor can work with pages
-    can :manage, Page if user.role == 'editor'
+    if user.role == 'editor'
+      can :manage, Page
+    end
 
     # user can be manually has permissions to change concrete page
     can :manage, Page, :user_ids => user.id

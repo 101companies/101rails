@@ -9,11 +9,14 @@ class ContributionsController < ApplicationController
         Rails.logger "Strange request from matching service with id #{params[:id]}"
         @request = nil
       end
-      (render nothing: true and return) if @request.nil?
-
+      if @request.nil?
+        render nothing: true and return
+      end
       findings = []
       %w(languages concepts technologies features).map do |index|
-        findings << { index => params[index] } if params[index]
+        if params[index]
+          findings << {index => params[index]}
+        end
       end
 
       @request.page.worker_findings = findings.to_json.to_s

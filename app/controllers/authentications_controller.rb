@@ -7,9 +7,13 @@ class AuthenticationsController < ApplicationController
     # try to catch user by uid
     user = User.where(:github_uid => omniauth['uid']).first
     # try to catch user by email
-    user = User.where(:email => omniauth['info']['email']).first if user.nil?
-    # create new user
-    user = User.new if user.nil?
+    if user.nil?
+      user = User.where(:email => omniauth['info']['email']).first
+    end
+    # create new user if not found
+    if user.nil?
+      user = User.new
+    end
     # fill user info from omniauth
     failed_to_populate_data = false
     begin

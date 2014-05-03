@@ -18,7 +18,9 @@ class PagesController < ApplicationController
     full_title = params[:id].nil? ? '@project' : params[:id]
     @page = PageModule.find_by_full_title full_title
     # page not found and user can create page -> create new page by full_title
-    @page = PageModule.create_page_by_full_title full_title if @page.nil? && (can? :create, Page.new)
+    if @page.nil? && (can? :create, Page.new)
+      @page = PageModule.create_page_by_full_title full_title
+    end
     # if no page created/found
     if !@page
       respond_to do |format|
@@ -34,7 +36,9 @@ class PagesController < ApplicationController
   def update_repo
     repo_link = params[:repo_link]
     # if no link to repo -> create it
-    @page.repo_link = RepoLink.new if @page.repo_link.nil?
+    if @page.repo_link.nil?
+      @page.repo_link = RepoLink.new
+    end
     # fill props
     @page.repo_link.folder = repo_link[:folder]
     @page.repo_link.user = repo_link[:user_repo].split('/').first
@@ -83,7 +87,9 @@ class PagesController < ApplicationController
   def delete
     result = @page.delete
     # generate flash_message if deleting was successful
-    flash[:notice] = 'Page ' + @page.full_title + ' was deleted' if result
+    if result
+      flash[:notice] = 'Page ' + @page.full_title + ' was deleted'
+    end
     render :json => {:success => result}
   end
 
@@ -150,7 +156,9 @@ class PagesController < ApplicationController
     new_full_title = PageModule.unescape_wiki_url params[:newTitle]
     history_track = @page.create_track current_user
     result = @page.update_or_rename(new_full_title, content, sections)
-    history_track.save if result
+    if result
+      history_track.save
+    end
     render :json => {
       :success => result,
       :newTitle => @page.url

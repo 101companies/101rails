@@ -86,7 +86,9 @@ class Page
     metadata_section = get_metadata_section sections
     # not found -> create it
     if metadata_section.empty?
-      self.raw_content = "" if self.raw_content.nil?
+      if self.raw_content.nil?
+        self.raw_content = ""
+      end
       self.raw_content = self.raw_content + "\n== Metadata =="
       wiki_parser = self.create_wiki_parser self.raw_content
       sections = self.sections wiki_parser
@@ -153,8 +155,9 @@ class Page
       class_attribute = (used_page.nil? || used_page.raw_content.nil? || used_page.raw_content.strip == "") ?
           'class="missing-link"' : ''
       # replace page links in html
+      used_page ? popup = used_page.get_headline : popup = ""
       html.gsub! "<a href=\"#{link}\"", "<a #{class_attribute}"+
-          "data-original-title=\"#{used_page.get_headline if used_page}\" href=\"/wiki/#{nice_link}\""
+          "data-original-title=\"#{popup}\" href=\"/wiki/#{nice_link}\""
     end
     return html.html_safe
   end
@@ -162,7 +165,9 @@ class Page
   # get fullname with namespace and  title
   def full_title
     # if used default namespaces -> remove from full title
-    return self.title if (self.namespace == '101') or (self.namespace == 'Concept')
+    if (self.namespace == '101') or (self.namespace == 'Concept')
+      return self.title
+    end
     # else use normal building of full url
     self.namespace + ':' + self.title
   end
@@ -210,7 +215,9 @@ class Page
     # unescape new title to nice readable url
     new_title = PageModule.unescape_wiki_url new_title
     # if title was changed -> rename page
-    self.rename(new_title) if (new_title!=self.full_title and PageModule.find_by_full_title(new_title).nil?)
+    if (new_title!=self.full_title and PageModule.find_by_full_title(new_title).nil?)
+      self.rename(new_title)
+    end
     self.save
   end
 

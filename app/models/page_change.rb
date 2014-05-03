@@ -13,7 +13,9 @@ class PageChange
   field :raw_content, type: String
 
   def self.get_by_id(id)
-    return nil if id.nil?
+    if id.nil?
+      return nil
+    end
     begin
       PageChange.find(id)
     rescue

@@ -7,9 +7,13 @@ class PageModule
     # find match ignoring case
     score = found_page.full_title.downcase.index query_string.downcase
     # not found match in title, make score worst
-    score = 10000 if score == nil
+    if score == nil
+      score = 10000
+    end
     # exact match -> best score (lowest)
-    score = -1 if found_page.full_title.downcase == query_string.downcase
+    if found_page.full_title.downcase == query_string.downcase
+      score = -1
+    end
     score
   end
 
@@ -58,11 +62,15 @@ class PageModule
       found_pages = nil
     end
     # nothing found -> go out
-    return [] if found_pages.nil?
+    if found_pages.nil?
+      return []
+    end
     results = []
     found_pages.each do |found_page|
       # do not show pages without content
-      next if found_page.raw_content.nil?
+      if found_page.raw_content.nil?
+        next
+      end
       score = PageModule.match_page_score found_page, query_string
       # prepare array wit results
       results << {
@@ -106,7 +114,9 @@ class PageModule
     nt = self.retrieve_namespace_and_title full_title
     Page.where(:page_title_namespace => nt['namespace'] + ':' + nt['title']).first do |page|
       # if page was found create wiki parser
-      page.create_wiki_parser if !page.nil?
+      if !page.nil?
+        page.create_wiki_parser
+      end
     end
   end
 

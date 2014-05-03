@@ -18,7 +18,9 @@ class MatchingServiceRequest
   # dependent of environment send result of matching service on different ip
   def backping_ip
     # for production
-    return '101companies.org' if Rails.env=='production'
+    if Rails.env=='production'
+      return '101companies.org'
+    end
     # for development it's external visible ip + port 3000
     address = Socket.ip_address_list.detect  do |i|
       i.ipv4? and !i.ipv4_loopback? and !i.ipv4_multicast? and !i.ipv4_private?
