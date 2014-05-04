@@ -1,21 +1,21 @@
 $(function() {
 
-    var repoInput = $("#repo_link_user_repo")
+    var repoInput = $("#repo_link_user_repo");
     var folderInput = $('#repo_link_folder');
     var updatePageButton = $('#update_page_button');
     var titleInput = $('#repo_link_page_title');
 
-    folderInput.select2({width: '70%'}).select2('readonly', true);
-    repoInput.select2({width: '70%'}).on("change", function(e) {
-        var populateInput = function (data) {
-            var optionsAsString = "";
-            for (var i=0; i<data.length; i++) {
-                optionsAsString += "<option value='" + data[i] + "'>" + data[i] + "</option>";
-            }
-            folderInput.html('').append(optionsAsString)
-        };
+    var populateInput = function (data) {
+        var optionsAsString = "";
+        for (var i=0; i<data.length; i++) {
+            optionsAsString += "<option value='" + data[i] + "'>" + data[i] + "</option>";
+        }
+        folderInput.html('').append(optionsAsString)
+    };
+
+    var load_repo_dirs = function() {
         $.ajax({
-            url: '/contribute/repo_dirs/'+ e.val,
+            url: '/contribute/repo_dirs/'+ repoInput.val(),
             dataType: 'JSON',
             beforeSend: function () {
                 populateInput(['Loading folders ...'])
@@ -39,5 +39,13 @@ $(function() {
                 titleInput.val(repo.substring(repo.lastIndexOf("/") + 1, repo.length));
             }
         })
+
+    }
+
+    repoInput.select2({width: '70%'}).on("change", function() {
+        load_repo_dirs()
     });
+
+    load_repo_dirs()
+
 });
