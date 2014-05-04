@@ -25,7 +25,8 @@
           %ul.nav.pull-right
             %li
               %form.navbar-search.pull-left{:action => "/search"}
-                %input.search-query{:name => "q", :id => 'search-query', :placeholder => "Search", :type => "text"}/
+                - search_value = (defined? @query_string) ? @query_string : "";
+                %input.search-query{:name => "q", :value => search_value, :id => 'search-query', :placeholder => "Search", :type => "text"}/
             %li
               - if !current_user
                 %a{:href => "/auth/github"}
