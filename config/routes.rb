@@ -57,6 +57,7 @@ Wiki::Application.routes.draw do
 
   # routes for work with history
   scope 'page_changes' do
+    get 'all/:page_id' => 'page_changes#get_all'
     # compare with current revision
     get 'diff/:page_change_id' => 'page_changes#diff'
     # compare two revisions

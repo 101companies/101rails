@@ -128,6 +128,8 @@ class Wiki.Views.Section extends Backbone.View
         type: "POST"
         url: "/api/parse/"
         data: {content: text, id: Wiki.pageTitle}
+        complete:() ->
+          window.reloadHistory()
         success: (data) ->
           unless self.subview
             self.insertHTML(data.html)

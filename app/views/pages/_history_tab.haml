@@ -1,5 +1,4 @@
 #page-changes.tab-pane
-
   / assume, that page itself is last page version
   - last_shown_version_id = nil
 
@@ -14,7 +13,7 @@
       Actual version of page
       %b= @page.full_title.gsub('@', '101')
 
-    - @page.page_changes.each do |page_change|
+    - @page.page_changes.order_by("created_at DESC").each do |page_change|
       %label.one-page-change
         %input{:type => "radio", "data-page-change" => page_change.id}
         - last_shown_version_id = page_change.id
@@ -40,3 +39,23 @@
 
     %h3
       There are no revisions for this page.
+
+:javascript
+
+
+  $(function(){
+
+    window.pageId = "#{@page.id}"
+
+    window.reloadHistory = function () {
+      $.ajax({
+        url: '/page_changes/all/'+ window.pageId,
+        dataType: 'JSON',
+        success: function(data){
+          $('#page-changes').html(data['history_html']);
+          window.prepareCompareRevisionUI();
+        }
+      })
+    };
+
+  });

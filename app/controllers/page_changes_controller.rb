@@ -31,6 +31,15 @@ class PageChangesController < ApplicationController
 
   end
 
+  def get_all
+    data = ""
+    begin
+      @page = Page.find(params[:page_id])
+      data = render_to_string(:partial => 'pages/history_tab', :layout => false)
+    end
+    render :json => {:success => true, :history_html => data.html_safe}
+  end
+
   def apply
     page_change = PageChange.get_by_id params[:page_change_id]
 
