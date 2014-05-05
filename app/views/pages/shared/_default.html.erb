@@ -30,6 +30,9 @@
         if (typeof window.Repo != 'undefined') {
             window.load_repo_dirs(true);
         }
+
+        humane.timeout = 4000;
+
         window.router = new Wiki.Routers.PagesRouter();
         Backbone.history.start();
     })

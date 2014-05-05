@@ -7,13 +7,11 @@
       Dear #{@request.user.name},
     %p
       You have successfully submitted new contribution to 101companies.
-      Please wait, till it will be analyzed. We need some time to extract all interesting data
+      Please wait, till it will be analyzed. We need some time to extract data
       from your contribution.
     %p
       But you can already start to write documentation on the page
       %a{:href => "http://101companies.org/wiki/#{@request.page.url}"}= @request.page.url
 
     %p
-      Sincerely yours,
-      %br
-      your 101companies team.
+      101companies team.

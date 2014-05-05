@@ -68,8 +68,8 @@ RailsAdmin.config do |config|
 
   end
 
-
   config.model 'MatchingServiceRequest' do
+    label 'Submissions'
 
     field :page do
       searchable true
