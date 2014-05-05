@@ -13,13 +13,19 @@ $(function() {
         folderInput.html('').append(optionsAsString)
     };
 
+    var makeSelect2 = function (elem) {
+        elem.select2({width: '70%'});
+        $('.select2-input').attr('placeholder', 'Enter to select or search here ...');
+    };
+
     var load_repo_dirs = function() {
         $.ajax({
             url: '/contribute/repo_dirs/'+ repoInput.val(),
             dataType: 'JSON',
             beforeSend: function () {
                 populateInput(['Loading folders ...'])
-                folderInput.select2({width: '70%'}).select2("readonly", true);
+                makeSelect2(folderInput);
+                folderInput.select2("readonly", true);
                 updatePageButton.prop('disabled', true);
             },
             complete: function () {
@@ -34,7 +40,7 @@ $(function() {
             success: function(data){
                 populateInput(data);
                 folderInput.select2("readonly", false);
-                folderInput.select2({width: '70%'});
+                makeSelect2(folderInput);
                 var repo = repoInput.val();
                 titleInput.val(repo.substring(repo.lastIndexOf("/") + 1, repo.length));
             }
@@ -42,7 +48,8 @@ $(function() {
 
     }
 
-    repoInput.select2({width: '70%'}).on("change", function() {
+    makeSelect2(repoInput);
+    repoInput.on("change", function() {
         load_repo_dirs()
     });
 
