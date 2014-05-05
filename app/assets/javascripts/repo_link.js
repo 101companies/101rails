@@ -14,11 +14,24 @@ $(function() {
     };
 
     var makeSelect2 = function (elem) {
-        elem.select2({width: '70%'});
+
+        var params = {width: '70%'};
+
+        if (elem.is(repoInput)) {
+            params = $.extend(params, {'placeholder': 'Enter repo here ...'});
+        }
+        else if (elem.is(folderInput)) {
+            params = $.extend(params, {'placeholder': 'Enter folder here ...'});
+        }
+
+        elem.select2(params);
+
+        usedSelectFirstTime = false;
+
         $('.select2-input').attr('placeholder', 'Enter to select or search here ...');
     };
 
-    var load_repo_dirs = function() {
+    window.load_repo_dirs = function(firstRun) {
         $.ajax({
             url: '/contribute/repo_dirs/'+ repoInput.val(),
             dataType: 'JSON',
@@ -30,12 +43,18 @@ $(function() {
             },
             complete: function () {
                 updatePageButton.prop('disabled', false);
+
+                if (typeof(firstRun) != 'undefined') {
+                    if (typeof window.Repo != 'unedefined') {
+                        repoInput.select2('val', window.Repo);
+                        folderInput.select2('val', window.Folder);
+                    }
+                }
+
+
             },
             error: function(){
-                $.gritter.add({
-                    title: 'Failed to retrieve folder of repo.',
-                    text: 'Please restart the page and try later.'
-                });
+                humane.error("Failed to retrieve folder of repo.'Please restart the page and try later");
             },
             success: function(data){
                 populateInput(data);
@@ -49,10 +68,10 @@ $(function() {
     }
 
     makeSelect2(repoInput);
-    repoInput.on("change", function() {
-        load_repo_dirs()
-    });
+    makeSelect2(folderInput);
 
-    load_repo_dirs()
+    repoInput.on("change", function() {
+        load_repo_dirs();
+    });
 
 });

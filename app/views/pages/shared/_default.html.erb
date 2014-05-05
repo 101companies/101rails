@@ -27,6 +27,9 @@
     <% end -%>
 
     jQuery(document).ready(function ($){
+        if (typeof window.Repo != 'undefined') {
+            window.load_repo_dirs(true);
+        }
         window.router = new Wiki.Routers.PagesRouter();
         Backbone.history.start();
     })

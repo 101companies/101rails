@@ -3,7 +3,7 @@ class RepoLink
   include Mongoid::Timestamps
 
   field :repo, type: String
-  field :folder, type: String, :default => '/'
+  field :folder, type: String
   field :user, type: String
 
   belongs_to :page
