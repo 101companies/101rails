@@ -9,7 +9,7 @@ end
 
 # DO NOT ENTER GEMS WITHOUT GEM NUMBER!
 
-gem 'rails', '3.2.13'
+gem 'rails', '3.2.18'
 
 # send email on error
 gem 'exception_notification', '4.0.1'
@@ -20,7 +20,7 @@ gem 'bootstrap-sass', '2.3.2.2'
 group :assets do
   gem 'sass-rails', '3.2.6'
   gem 'coffee-rails', '3.2.2'
-  gem 'uglifier', '2.3.2'
+  gem 'uglifier', '2.5.0'
   gem 'compass-rails', '1.0.3'
 end
 
@@ -33,7 +33,7 @@ gem 'haml-rails', '0.4'
 # database
 gem 'mongoid', '3.1.6'
 
-# search eninge
+# search engine
 gem 'mongoid_search', '0.3.2'
 
 # security
@@ -70,7 +70,7 @@ gem 'rails_admin', '0.4.9'
 # web-scraping
 gem 'json_pure', '1.8.1'
 gem 'json', '1.8.1'
-gem 'httparty', '0.13.0'
+gem 'httparty', '0.13.1'
 
 # work with mediawiki
 gem 'mediawiki-gateway', '0.6.0'
@@ -88,7 +88,7 @@ gem 'closure-compiler', '1.1.10'
 gem 'simple_form', '2.1.0'
 
 # intelligent select
-gem 'select2-rails', '3.5.4'
+gem 'select2-rails', '3.5.7'
 
 # work with time in js
 gem 'momentjs-rails', '2.6.0'
