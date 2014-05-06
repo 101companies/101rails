@@ -22,7 +22,7 @@
   / tab with backbone page
   #page.tab-pane.active
 
-    - if @page.html_content.strip.length == 0
+    - if @page.html_content.nil? || @page.html_content.strip.length == 0
       %h3.content-loading
         %center
           %img{:src => "/assets/ajax-loader.gif"}/
