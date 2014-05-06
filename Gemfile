@@ -8,13 +8,7 @@ if RUBY_VERSION =~ /1.9/
 end
 
 # DO NOT ENTER GEMS WITHOUT GEM NUMBER!
-# OR I WILL CUT YOUR FINGER!
 
-# TODO: update to rails 4.0.0
-# need to be updated:
-# * aced_rails
-# * mongoid
-# * rails-backbone
 gem 'rails', '3.2.13'
 
 # send email on error
@@ -106,7 +100,7 @@ gem 'differ', '0.1.2'
 gem 'humane-rails'
 
 # deploy tool
-# TODO: update after reading manual
+# update after reading upgrade manual!
 gem 'capistrano', '2.15.5'
 # locking 2 gems to prevent failing updates with capistrano
 gem 'net-ssh', '2.7.0'

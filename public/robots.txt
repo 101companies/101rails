@@ -7,3 +7,5 @@ Disallow: /endpoint
 Disallow: /index.php
 Disallow: /api
 Disallow: /page_changes
+Disallow: /create_new_page_confirmation
+Disallow: /create_new_page

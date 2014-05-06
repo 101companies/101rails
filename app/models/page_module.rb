@@ -38,7 +38,6 @@ class PageModule
       namespace = full_title_parts[0]
       title = full_title_parts[1]
       # no namespace retrieved, amount_of_full_title_parts == 1
-      # TODO: case crazy
     else
       # then entire param is title
       title = full_title_parts[0]
@@ -91,7 +90,6 @@ class PageModule
   end
 
   def self.escape_wiki_url(full_title)
-    # TODO: exception?
     MediaWiki::send :upcase_first_char, MediaWiki::wiki_to_uri(full_title)
   end
 

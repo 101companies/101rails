@@ -46,7 +46,6 @@ class Page
     begin
       # this produces internal_links
       wiki_parser.to_html
-      # TODO: combine with line above later
       self.html_content = self.parse
     rescue
       Rails.logger.info "Failed producing html for page #{self.full_title}"
@@ -221,7 +220,6 @@ class Page
     self.save
   end
 
-  # TODO: black magic
   def rewrite_internal_links(from, to)
     regex = /(\[\[:?)([^:\]\[]+::)?(#{Regexp.escape(from.gsub("_", " "))})(\s*)(\|[^\[\]]*)?(\]\])/i
     self.raw_content.gsub("_", " ").gsub(regex) do

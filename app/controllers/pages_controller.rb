@@ -9,7 +9,7 @@ class PagesController < ApplicationController
 
   # order of next two lines is very important!
   # before_filter need to be before load_and_authorize_resource
-  before_filter :get_the_page
+  before_filter :get_the_page, :except => [:create_new_page_confirmation,:create_new_page]
   # methods, that need to check permissions
   load_and_authorize_resource :only => [:delete, :rename, :update, :apply_findings, :update_repo]
 
@@ -19,7 +19,7 @@ class PagesController < ApplicationController
     @page = PageModule.find_by_full_title full_title
     # page not found and user can create page -> create new page by full_title
     if @page.nil? && (can? :create, Page.new)
-      @page = PageModule.create_page_by_full_title full_title
+      redirect_to "/wiki/create_new_page_confirmation/#{full_title}" and return
     end
     # if no page created/found
     if !@page
@@ -31,6 +31,21 @@ class PagesController < ApplicationController
         format.json { render :json => {success: false}, :status => 404 }
       end
     end
+  end
+
+  def create_new_page
+    full_title = params[:id]
+    page = PageModule.create_page_by_full_title full_title
+    if page
+      redirect_to "/wiki/#{full_title}" and return
+    else
+      flash[:error] = "You cannot create new page #{full_title}"
+      redirect_to "/wiki/@project" and return
+    end
+  end
+
+  def create_new_page_confirmation
+    @full_title = params[:id]
   end
 
   def update_repo
@@ -48,7 +63,6 @@ class PagesController < ApplicationController
     # save page and link
     (@page.save and @page.repo_link.save) ?
       flash[:success]="Updated linked repo" : flash[:error] = "Failed to update linked repo"
-    # TODO: restore request on matching server
     redirect_to  "/wiki/#{@page.url}"
   end
 
