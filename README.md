@@ -8,7 +8,7 @@
 
 Before starting work with the application, you need to install such dependencies, if you are using Ubuntu:
 
-    apt-get install curl nodejs build-essenstial libxslt-dev libxml2-dev mongodb zlib1g-dev libreadline-dev libssl-dev libcurl4-openssl-dev
+    apt-get install curl nodejs build-essential libxslt-dev libxml2-dev mongodb zlib1g-dev libreadline-dev libssl-dev libcurl4-openssl-dev
 
 For OSX there are such dependencies, that can be installed via [homebrew](http://brew.sh/):
 
