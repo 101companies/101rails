@@ -38,6 +38,10 @@ If you have troubles with installing gem on OSX and have error:
 
 Then try to do next command before installing gems:
 
+    ARCHFLAGS="-Wno-error=unused-command-line-argument-hard-error-in-future"
+    
+or add to your .bashrc (.bash_profile/.zshrc/whatever you have) and open new console:
+
     export ARCHFLAGS="-Wno-error=unused-command-line-argument-hard-error-in-future"
 
 After installing mongodb you need to start it and then launch application with:
