@@ -211,7 +211,7 @@ p {
 .editormenu {
   margin-bottom: 15px;
   button {
-    font-family: $monospaced_font_family;
+    font-family: "Menlo", "Ubuntu Mono", "Droid Sans Mono", "Consolas", monospaced;
   }
 }
 
