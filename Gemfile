@@ -62,6 +62,7 @@ group :development do
   gem 'thin', '1.6.2'
   # colorful console
   gem 'wirble', '0.1.3'
+  gem 'zeus', '0.15.1'
 end
 
 # admin interface
