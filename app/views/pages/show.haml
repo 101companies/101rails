@@ -17,6 +17,9 @@
     %li
       %a#page-changes-tab-link.tab-link{:href => "#page-changes", "data-toggle" => 'tab'} History
 
+  %li
+    %a#editing-help-tab-link.tab-link{:href => "#editing-help", "data-toggle" => 'tab'} Editing help
+
 .tab-content
 
   / tab with backbone page
@@ -36,6 +39,10 @@
 
   / tab with all history revisions
   = render "/pages/history_tab"
+
+  / tab with all repo settings
+  #editing-help.tab-pane
+    = render "/pages/editing_help"
 
 #modal.modal.fade
   .modal-header
