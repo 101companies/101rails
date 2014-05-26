@@ -7,12 +7,16 @@ class Wiki.Views.Page extends Backbone.View
 
   events:
     'click #sectionAddButton' : 'newSectionModal'
-    'click #createSection' : 'createSection'
+    'click #createSection'    : 'createSection'
     'click #pageCancelButton' : 'cancel'
     'click #pageSourceButton' : 'showSource'
     'click #pageDeleteButton' : 'initdelete'
     'click #pageDeleteSubmit' : 'delete'
-    'click #pageSaveButton' : 'save'
+    'click #pageSaveButton'   : 'save'
+    'click #pageRenameButton' : 'initRename'
+    'click #pageRenameSubmit' : 'rename'
+
+    'click #pageSaveButton'   : 'save'
     'click #pageRenameButton' : 'initRename'
     'click #pageRenameSubmit' : 'rename'
 
@@ -160,9 +164,18 @@ class Wiki.Views.Page extends Backbone.View
     helps =
       'bold': {start: "'''", end: "'''"}
       'italic': {start: "''", end: "''"}
+      'underline': {start: "<ins>", end: "</ins>"}
+      'strike': {start: "<del>", end: "</del>"}
       'headline': {start: "==", end: "=="}
       'link': {start: "[[", end: "]]"}
       'code': {start: "<syntaxhighlight lang=\"???\">\n", end: "\n</syntaxhighlight>"}
+      'picture': {start: "", end: ""}
+      'list-ol': {start: "\n*", end: "\n*\n*\n"}
+      'list-ul': {start: "\n#", end: "\n#\n#\n"}
+      'slideshare': {start: "<media url='URL_TO_SLIDEHSARE_PRESENTATION' />", end: ""}
+      'youtube': {start: "<media url='URL_TO_YOUTUBE_VIDEO' />", end: ""}
+      'fragment': {start: "<fragment url='URL_TO_FRGAMENT' explore='true'/>", end: ""}
+
     toInsert = $(options.currentTarget).attr('data-editoraction')
     help = helps[toInsert]
     toWrap = @editor.getSession().getTextRange(@editor.getSelectionRange())

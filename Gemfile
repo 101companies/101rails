@@ -7,7 +7,7 @@ if RUBY_VERSION =~ /1.9/
   Encoding.default_internal = Encoding::UTF_8
 end
 
-# DO NOT ENTER GEMS WITHOUT GEM NUMBER!
+# DO NOT ADD GEMS WITHOUT GEM NUMBER!
 
 gem 'rails', '3.2.18'
 
@@ -101,7 +101,7 @@ gem 'differ', '0.1.2'
 gem 'humane-rails'
 
 # deploy tool
-# update after reading upgrade manual!
+# update only after reading upgrade manual
 gem 'capistrano', '2.15.5'
 # locking 2 gems to prevent failing updates with capistrano
 gem 'net-ssh', '2.7.0'
