@@ -87,3 +87,16 @@ ul.nav {
     display: inline;
   }
 }
+
+#editing-help {
+  p {
+    margin-top: 20px;
+    & button {
+      font-family: $monospaced_font_family_with_bold;
+    }
+  }
+}
+
+.code-button {
+  font-family: $monospaced_font_family;
+}

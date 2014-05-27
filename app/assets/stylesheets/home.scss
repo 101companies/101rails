@@ -4,7 +4,7 @@ html {
   padding-top: 0px;
 }
 
-h1, h2, h3, h4, h5, h6, h7 {
+h1, h2, h3, h4, h5, h6 {
   color: #333333;
 }
 
@@ -212,7 +212,7 @@ p {
   margin-bottom: 15px;
   button {
     /* font need to support bold*/
-    font-family: "Menlo", "Ubuntu Mono", "Droid Sans Mono", "Consolas", monospaced;
+    font-family: $monospaced_font_family_with_bold
   }
 }
 

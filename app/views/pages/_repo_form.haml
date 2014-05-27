@@ -5,7 +5,8 @@
 - repo_link = @page.repo_link || RepoLink.new
 
 / if page just created -> contribution process
-- url_to_send = @page.title.nil?  ? "/contribute/new" : "/contribute/update/#{@page.url}"
+- is_contribution_process = @page.title.nil?
+- url_to_send = is_contribution_process  ? "/contribute/new" : "/contribute/update/#{@page.url}"
 
 - repos_to_show = current_user.get_repos
 - if (!repo_link.user.nil? and !repo_link.folder.nil? and !repo_link.repo.nil?)
@@ -16,7 +17,10 @@
   = f.input :folder, :collection => [repo_link.folder], :include_blank => true
   - if @page.title.nil?
     = f.input :page_title
-  = f.submit 'Save repo link', :class => 'btn btn-success', :id => 'update_page_button'
+  - if is_contribution_process
+    = f.submit 'Create contribution', :class => 'btn btn-success', :id => 'update_page_button'
+  - else
+    = f.submit 'Save repo link', :class => 'btn btn-success', :id => 'update_page_button'
 
 - if (!repo_link.repo.nil?) && (!(repo_link.repo.strip == ''))
   :javascript
