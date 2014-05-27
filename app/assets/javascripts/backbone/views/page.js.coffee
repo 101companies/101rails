@@ -15,11 +15,6 @@ class Wiki.Views.Page extends Backbone.View
     'click #pageSaveButton'   : 'save'
     'click #pageRenameButton' : 'initRename'
     'click #pageRenameSubmit' : 'rename'
-
-    'click #pageSaveButton'   : 'save'
-    'click #pageRenameButton' : 'initRename'
-    'click #pageRenameSubmit' : 'rename'
-
     #editor
     'click #pageeditor button' : "helpEditor"
 
