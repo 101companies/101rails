@@ -12,10 +12,11 @@ class Page
   # namespace for page, need to be set
   field :namespace, type: String
   field :page_title_namespace, type: String
-  field :raw_content, type: String, :default => ""
+  field :raw_content, type: String, :default => ''
   field :html_content, type: String
   field :used_links, type: Array
   field :subresources, type: Array
+  field :headline, type: String, :default => ''
 
   field :worker_findings, type: String
 
@@ -38,27 +39,19 @@ class Page
   def preparing_the_page
     # prepare field namespace + title
     self.page_title_namespace = self.namespace.to_s + ':' + self.title.to_s
-    # TODO: restore later
-    #self.inject_namespace_triple
+    self.inject_namespace_triple
     # fill used_links with links in page
     # parse content and get internal links
-    wiki_parser = self.create_wiki_parser
     begin
       # this produces internal_links
-      wiki_parser.to_html
       self.html_content = self.parse
     rescue
-      Rails.logger.info "Failed producing html for page #{self.full_title}"
+      Rails.logger.info "Failed to create html for page #{self.full_title}"
     end
-    # if exist internal_links -> fill used_links
-    # if wiki_parser.internal_links
-    #  self.used_links = wiki_parser.internal_links.map { |link| PageModule.unescape_wiki_url link }
-    #end
-
     self.subresources = []
     self.used_links   = []
     # these are the links which are used in sections annotated as subresources of the page
-    wiki_parser.section_list.each do |s|
+    self.get_parser.section_list.each do |s|
       p = WikiCloth::Parser.new(:data => s.wikitext, :noedit => true)
       p.to_html
       l = p.internal_links.map { |link| PageModule.unescape_wiki_url link }
@@ -69,10 +62,19 @@ class Page
       end
     end
     self.used_links.flatten!
+    self.headline = get_headline_html_content
   end
 
-  def get_metadata_section(sections)
-    sections.select { |section| section["title"] == 'Metadata' }
+  def get_metadata_section
+    self.sections.select { |section| section["title"] == 'Metadata' }.first
+  end
+
+  def get_headline_html_content
+    begin
+      Nokogiri::HTML(self.html_content).css('#Headline').first.parent.next_element.text.strip
+    rescue
+      ''
+    end
   end
 
   def inject_namespace_triple
@@ -80,29 +82,22 @@ class Page
   end
 
   def inject_triple(namespace_triple)
-    sections = self.sections
     # find metadata section
-    metadata_section = get_metadata_section sections
+    metadata_section = get_metadata_section
     # not found -> create it
-    if metadata_section.empty?
-      if self.raw_content.nil?
-        self.raw_content = ""
-      end
-      self.raw_content = self.raw_content + "\n== Metadata =="
-      wiki_parser = self.create_wiki_parser self.raw_content
-      sections = self.sections wiki_parser
+    if metadata_section.nil?
+      self.raw_content = self.raw_content.nil? ? "== Metadata ==" : self.raw_content + "\n== Metadata =="
     end
-    metadata_section = get_metadata_section(sections)[0]
+    metadata_section = get_metadata_section
     unless metadata_section
       Rails.logger.info "In page #{self.full_title} cannot be any triple injected."
       return
     end
+    # insert namespace triple
     unless metadata_section["content"].include? namespace_triple
-      metadata_section["content"] = metadata_section["content"] + "\n<!-- Next link is generated automatically-->"
-      metadata_section["content"] = metadata_section["content"] + "\n* [[#{namespace_triple}]]"
+      self.raw_content = self.raw_content +
+          "\n* [[#{namespace_triple}]]"
     end
-    # rebuild content from sections
-    self.raw_content = build_content_from_sections sections
   end
 
   def decorate_headline(headline_text)
@@ -142,7 +137,7 @@ class Page
   end
 
   def parse(content = self.raw_content)
-    parsed_page = self.create_wiki_parser content
+    parsed_page = self.get_parser content
     parsed_page.sections.first.auto_toc = false
     html = parsed_page.to_html
     # mark empty or non-existing page with class missing-link (red color)
@@ -231,27 +226,34 @@ class Page
     PageModule.url self.full_title
   end
 
-  def create_wiki_parser(content=nil)
+  def get_parser(content=nil)
     WikiCloth::Parser.context = {:ns => (MediaWiki::send :upcase_first_char, self.namespace), :title => self.title}
-    WikiCloth::Parser.new(:data => ((content.nil?) ? self.raw_content : content), :noedit => true)
+    parser = WikiCloth::Parser.new(:data => ((content.nil?) ? self.raw_content : content), :noedit => true)
+    # this will produce sections and links
+    parser.to_html
+    parser
   end
 
   def semantic_links
-    self.used_links.select {|link| link.include? "::" }
+    self.internal_links.select {|link| link.include? "::" }
   end
 
   def internal_links
-    self.used_links
+    used_links!=nil ? self.used_links : []
   end
 
-  def sections(wiki_parser = self.create_wiki_parser)
+  def sections
     sections = []
-    self.create_wiki_parser.sections.first.children.each do |section|
+    self.get_parser.sections.first.children.each do |section|
       content_with_subsections = section.wikitext.sub(/\s+\Z/, "")
+      parsed_html = "<div class='error'>This section wan't properly rendered</div>"
       begin
-        parsed_html = parse content_with_subsections
-      rescue
-        parsed_html = "This section wan't properly rendered =/"
+        # wait 5 seconds to to render the section
+        Timeout::timeout(5) do
+          parsed_html = parse content_with_subsections
+        end
+      rescue Timeout::Error
+        parsed_html = "<div class='error'>It took to long to render section</div>"
       end
       sections << {
           'is_resource' => section.is_resource_section,
@@ -268,7 +270,7 @@ class Page
   end
 
   def section(section)
-    self.create_wiki_parser.sections.first.children.find { |s| s.full_title.downcase == section.downcase }
+    self.get_parser.sections.first.children.find { |s| s.full_title.downcase == section.downcase }
   end
 
 end

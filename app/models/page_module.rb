@@ -110,12 +110,7 @@ class PageModule
   def self.find_by_full_title(full_title)
     full_title = (self.unescape_wiki_url full_title).strip
     nt = self.retrieve_namespace_and_title full_title
-    Page.where(:page_title_namespace => nt['namespace'] + ':' + nt['title']).first do |page|
-      # if page was found create wiki parser
-      if !page.nil?
-        page.create_wiki_parser
-      end
-    end
+    Page.where(:page_title_namespace => nt['namespace'] + ':' + nt['title']).first
   end
 
   def self.uncapitalize_first_char(string)
