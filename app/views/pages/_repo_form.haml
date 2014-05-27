@@ -8,7 +8,8 @@
 - is_contribution_process = @page.title.nil?
 - url_to_send = is_contribution_process  ? "/contribute/new" : "/contribute/update/#{@page.url}"
 
-- repos_to_show = current_user.get_repos
+- repos_to_show = get_user_repos
+
 - if (!repo_link.user.nil? and !repo_link.folder.nil? and !repo_link.repo.nil?)
   - repos_to_show << repo_link.user_repo
 

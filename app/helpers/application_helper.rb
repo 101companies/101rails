@@ -11,6 +11,14 @@ module ApplicationHelper
     s.html_safe? ? result.html_safe : result
   end
 
+  def get_user_repos
+    begin
+      current_user.get_repos
+    rescue
+      []
+    end
+  end
+
   alias j json_escape
 
 end
