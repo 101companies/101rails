@@ -63,6 +63,7 @@ group :development do
   # colorful console
   gem 'wirble', '0.1.3'
   gem 'zeus', '0.15.1'
+  gem 'colorize', '0.7.3'
 end
 
 # admin interface
