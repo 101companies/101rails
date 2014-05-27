@@ -37,7 +37,8 @@ class ApplicationController < ActionController::Base
         http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">'
     Page.all.each do |page|
       text = text + '<url><loc>http://101companies.org/wiki/' + page.url + '</loc>'+
-          '<changefreq>weekly</changefreq>'+
+          "<lastmod>#{page.updated_at.to_date}</lastmod>" +
+          '<changefreq></changefreq>'+
           '</url>'
     end
     text = text + '</urlset>'
