@@ -81,22 +81,17 @@ class Page
     self.inject_triple "instanceOf::Namespace:#{self.namespace}"
   end
 
-  def inject_triple(namespace_triple)
+  def inject_triple(triple)
     # find metadata section
     metadata_section = get_metadata_section
     # not found -> create it
     if metadata_section.nil?
-      self.raw_content = self.raw_content.nil? ? "== Metadata ==" : self.raw_content + "\n== Metadata =="
-    end
-    metadata_section = get_metadata_section
-    unless metadata_section
-      Rails.logger.info "In page #{self.full_title} cannot be any triple injected."
-      return
-    end
-    # insert namespace triple
-    unless metadata_section["content"].include? namespace_triple
-      self.raw_content = self.raw_content +
-          "\n* [[#{namespace_triple}]]"
+      self.raw_content = self.raw_content.nil? ?
+          "== Metadata ==\n* [[#{triple}]]" : self.raw_content + "\n== Metadata =="
+    else
+      if !metadata_section['content'].include?(triple)
+        self.raw_content = self.raw_content + "\n* [[#{triple}]]"
+      end
     end
   end
 
