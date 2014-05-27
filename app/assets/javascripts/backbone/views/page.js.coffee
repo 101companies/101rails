@@ -169,7 +169,7 @@ class Wiki.Views.Page extends Backbone.View
       'headline': {start: "==", end: "=="}
       'link': {start: "[[", end: "]]"}
       'code': {start: "<syntaxhighlight lang=\"???\">\n", end: "\n</syntaxhighlight>"}
-      'picture': {start: "[[FULL_LINK_TO_PICTURE]]", end: ""}
+      'picture': {start: "[[media:FULL_LINK_TO_PICTURE]]", end: ""}
       'list-ol': {start: "\n*", end: "\n*\n*\n"}
       'list-ul': {start: "\n#", end: "\n#\n#\n"}
       'slideshare': {start: "<media url='URL_TO_SLIDEHSARE_PRESENTATION' />", end: ""}
