@@ -36,11 +36,7 @@ If you have troubles with installing gem on OSX and have error:
 
      clang: error: unknown argument: '-multiply_definedsuppress' [-Wunused-command-line-argument-hard-error-in-future]
 
-Then try to do next command before installing gems:
-
-    ARCHFLAGS="-Wno-error=unused-command-line-argument-hard-error-in-future"
-    
-or add to your .bashrc (.bash_profile/.zshrc/whatever you have) and open new console:
+Add to your .bashrc (.bash_profile/.zshrc/whatever you have) and open new console:
 
     export ARCHFLAGS="-Wno-error=unused-command-line-argument-hard-error-in-future"
 
