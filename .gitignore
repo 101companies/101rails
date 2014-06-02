@@ -3,6 +3,7 @@
 .sass-cache
 capybara-*.html
 dump
+dump_zip
 .rspec
 /.bundle
 /vendor/bundle
