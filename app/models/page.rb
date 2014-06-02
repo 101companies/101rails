@@ -86,7 +86,7 @@ class Page
     metadata_section = get_metadata_section
     # not found -> create it
     if metadata_section.nil?
-      self.raw_content = self.raw_content.nil? ?
+      self.raw_content = (self.raw_content.nil? || self.raw_content.empty?) ?
           "== Metadata ==\n* [[#{triple}]]" : self.raw_content + "\n== Metadata =="
     else
       if !metadata_section['content'].include?(triple)
