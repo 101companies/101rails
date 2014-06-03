@@ -54,7 +54,7 @@ class PageChangesController < ApplicationController
     end
 
     page = page_change.page
-    applying_result = page.update_or_rename(page_change.title, page_change.raw_content, nil)
+    applying_result = page.update_or_rename(page_change.title, page_change.raw_content, nil, current_user)
     flash[:warning] =  applying_result ? 'Restored page from revision' : 'Restoring was unsuccessful'
    redirect_to "/wiki/#{page.url}"
 

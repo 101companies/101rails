@@ -153,9 +153,7 @@ class Page
     self.namespace + ':' + self.title
   end
 
-  def rewrite_backlink(backlink, old_title)
-    # find page by backlink
-    related_page = PageModule.find_by_full_title backlink
+  def rewrite_backlink(related_page, old_title)
     if !related_page.nil?
       # rewrite link in page, found by backlink
       related_page.raw_content = related_page.rewrite_internal_links old_title, self.full_title
@@ -183,8 +181,9 @@ class Page
           :title => old_backlinking_page.title,
           :namespace => old_backlinking_page.namespace,
           :content => old_backlinking_page.raw_content}
-      self.rewrite_backlink old_backlinking_page.full_title, old_title
+      self.rewrite_backlink old_backlinking_page, old_title
     end
+    self.rewrite_backlink self, old_title
   end
 
   def build_content_from_sections(sections)
@@ -193,7 +192,7 @@ class Page
     content
   end
 
-  def update_or_rename(new_title, content, sections)
+  def update_or_rename(new_title, content, sections, user)
 
     # if content is empty -> populate content with sections
     if content == ""
@@ -207,7 +206,9 @@ class Page
                                  :raw_content => self.raw_content,
                                  :new_title => new_title_and_namespace["title"],
                                  :new_namespace => new_title_and_namespace["namespace"],
-                                 :new_raw_content => content
+                                 :new_raw_content => content,
+                                 :page => self,
+                                 :user => user
 
     self.raw_content = content
     # unescape new title to nice readable url

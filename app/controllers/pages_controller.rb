@@ -102,6 +102,11 @@ class PagesController < ApplicationController
     result = @page.delete
     # generate flash_message if deleting was successful
     if result
+      PageChange.new :old_title => @page.title,
+                     :old_namespace => @page.namespace,
+                     :old_raw_content => @page.raw_content,
+                     :page => self,
+                     :user => current_user
       flash[:notice] = 'Page ' + @page.full_title + ' was deleted'
     end
     render :json => {:success => result}
@@ -169,7 +174,7 @@ class PagesController < ApplicationController
     content = params[:content]
     new_full_title = PageModule.unescape_wiki_url params[:newTitle]
     render :json => {
-      :success => @page.update_or_rename(new_full_title, content, sections),
+      :success => @page.update_or_rename(new_full_title, content, sections, current_user),
       :newTitle => @page.url
     }
   end

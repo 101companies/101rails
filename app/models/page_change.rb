@@ -18,6 +18,11 @@ class PageChange
 
   field :pages_changed_by_renaming, type: Array, :default => []
 
+  def self.propagation_status_options
+    ['Failed to propagate', 'Successfully propagated', 'Not propagated']
+  end
+  field :propagation_status, type: String, :default => 'Not propagated'
+
   def self.get_by_id(id)
     if id.nil?
       return nil
