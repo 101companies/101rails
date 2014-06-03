@@ -168,13 +168,8 @@ class PagesController < ApplicationController
     sections = params[:sections]
     content = params[:content]
     new_full_title = PageModule.unescape_wiki_url params[:newTitle]
-    history_track = @page.create_track current_user
-    result = @page.update_or_rename(new_full_title, content, sections)
-    if result
-      history_track.save
-    end
     render :json => {
-      :success => result,
+      :success => @page.update_or_rename(new_full_title, content, sections),
       :newTitle => @page.url
     }
   end

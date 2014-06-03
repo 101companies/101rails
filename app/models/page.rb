@@ -123,14 +123,6 @@ class Page
         "No headline found for page #{self.full_title}" : (decorate_headline(headline_elem.text)).strip
   end
 
-  def create_track(user)
-    PageChange.new :page => self,
-                   :raw_content => self.raw_content,
-                   :title => self.title,
-                   :namespace => self.namespace,
-                   :user => user
-  end
-
   def parse(content = self.raw_content)
     parsed_page = self.get_parser content
     parsed_page.sections.first.auto_toc = false
@@ -176,17 +168,23 @@ class Page
     end
   end
 
-  def rename(new_title)
+  def rename(new_title, page_change)
     # set new title to page
     nt = PageModule.retrieve_namespace_and_title new_title
     old_title = self.full_title
     # save old backlinsk before renaming
-    old_backlinks = self.backlinks
+    old_backlinking_pages = self.backlinking_pages
     # rename the page
     self.namespace = nt['namespace']
     self.title = nt['title']
     # rewrite links in pages, that links to the page
-    old_backlinks.each { |old_backlink| self.rewrite_backlink old_backlink, old_title }
+    old_backlinking_pages.each do |old_backlinking_page|
+      page_change.pages_changed_by_renaming << {
+          :title => old_backlinking_page.title,
+          :namespace => old_backlinking_page.namespace,
+          :content => old_backlinking_page.raw_content}
+      self.rewrite_backlink old_backlinking_page.full_title, old_title
+    end
   end
 
   def build_content_from_sections(sections)
@@ -196,17 +194,29 @@ class Page
   end
 
   def update_or_rename(new_title, content, sections)
+
     # if content is empty -> populate content with sections
     if content == ""
       content = build_content_from_sections(sections)
     end
+
+    new_title_and_namespace = PageModule.retrieve_namespace_and_title new_title
+
+    page_change = PageChange.new :title => self.title,
+                                 :namespace => self.namespace,
+                                 :raw_content => self.raw_content,
+                                 :new_title => new_title_and_namespace["title"],
+                                 :new_namespace => new_title_and_namespace["namespace"],
+                                 :new_raw_content => content
+
     self.raw_content = content
     # unescape new title to nice readable url
     new_title = PageModule.unescape_wiki_url new_title
     # if title was changed -> rename page
     if (new_title!=self.full_title and PageModule.find_by_full_title(new_title).nil?)
-      self.rename(new_title)
+      self.rename(new_title, page_change)
     end
+    page_change.save
     self.save
   end
 
@@ -260,8 +270,12 @@ class Page
     sections
   end
 
+  def backlinking_pages
+    Page.where(:used_links => self.full_title)
+  end
+
   def backlinks
-    Page.where(:used_links => self.full_title).map { |page| page.full_title}
+    backlinking_pages.map { |page| page.full_title}
   end
 
   def section(section)

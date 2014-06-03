@@ -12,6 +12,12 @@ class PageChange
   field :namespace, type: String
   field :raw_content, type: String
 
+  field :new_title, type: String
+  field :new_namespace, type: String
+  field :new_raw_content, type: String
+
+  field :pages_changed_by_renaming, type: Array, :default => []
+
   def self.get_by_id(id)
     if id.nil?
       return nil
