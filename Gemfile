@@ -1,4 +1,3 @@
-# DO NOT REMOVE THIS LINE!
 source 'https://rubygems.org'
 
 # force using encoding
