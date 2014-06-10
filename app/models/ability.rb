@@ -3,7 +3,6 @@ class Ability
 
   def initialize(user)
 
-    # get exsiting user or create new temporary user
     user ||= User.new
 
     # admin can manage everyting and has access to admin ui
@@ -20,6 +19,9 @@ class Ability
 
     # user can be manually has permissions to change concrete page
     can :manage, Page, :user_ids => user.id
+
+    # user can create own contribution page
+    can :manage, Page, :title => user.github_name, :namespace => 'Contributor'
 
     cannot :history, :all
   end
