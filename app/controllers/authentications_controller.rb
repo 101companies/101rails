@@ -23,11 +23,21 @@ class AuthenticationsController < ApplicationController
     end
     if !failed_to_populate_data and user.save
       session[:user_id] = user.id
+      create_user_page_and_set_permissions(user)
       flash[:notice] = t :signed_in
     else
       flash[:error] = "Failed to login. Have you added name and public email into GitHub account?"
     end
     go_to_previous_page
+  end
+
+  def create_user_page_and_set_permissions(user)
+    user_page = Page.where(:title => user.github_name, :namespace => 'Contributor').first
+    if user_page.nil?
+      user_page = Page.new :title => user.github_name,
+                           :namespace => 'Contributor'
+      user_page.save
+    end
   end
 
   def failure
