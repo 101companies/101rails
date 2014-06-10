@@ -17,6 +17,11 @@ class PagesController < ApplicationController
     # if no title -> set default wiki startpage '@project'
     full_title = params[:id].nil? ? '@project' : params[:id]
     @page = PageModule.find_by_full_title full_title
+    # if page doesn't exist, but it's user page -> create page and redirect
+    if @page.nil? && !current_user.nil? && full_title.downcase=="Contributor:#{current_user.github_name}".downcase
+      PageModule.create_page_by_full_title(full_title)
+      redirect_to "/wiki/#{full_title}" and return
+    end
     # page not found and user can create page -> create new page by full_title
     if @page.nil? && (can? :create, Page.new)
       redirect_to "/wiki/create_new_page_confirmation/#{full_title}" and return
