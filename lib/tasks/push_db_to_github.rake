@@ -11,7 +11,7 @@ def get_production_db
     else
       # remove odl dump
       puts "Removing old dump".yellow
-      sh "rm -rf dump/wiki_production"
+      sh "rm -rf dump/*"
       # get new dump
       puts "Importing db".yellow
       sh "mongodump -h db.101companies.org -u #{mongo_user} -p #{mongo_password} --db wiki_production"
