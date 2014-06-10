@@ -34,6 +34,7 @@ class PagesController < ApplicationController
   end
 
   def create_new_page
+    # TODO: new page check perms?
     full_title = params[:id]
     page = PageModule.create_page_by_full_title full_title
     if page
@@ -102,20 +103,19 @@ class PagesController < ApplicationController
     result = @page.delete
     # generate flash_message if deleting was successful
     if result
-      PageChange.new :old_title => @page.title,
+      page_change = PageChange.new :old_title => @page.title,
                      :old_namespace => @page.namespace,
                      :old_raw_content => @page.raw_content,
-                     :page => self,
+                     :page => @page,
                      :user => current_user
+      page_change.save
       flash[:notice] = 'Page ' + @page.full_title + ' was deleted'
     end
     render :json => {:success => result}
   end
 
   def show
-
     @current_user_can_change_page = (!current_user.nil?) and (can? :manage, @page)
-
     respond_to do |format|
       format.html {
         # if need redirect? -> wiki url conventions -> do a redirect
@@ -126,7 +126,6 @@ class PagesController < ApplicationController
         # no redirect? -> render the page
         render :html => @page
       }
-
       format.json { render :json => {
         'id'        => @page.full_title,
         'content'   => @page.raw_content,
@@ -134,9 +133,7 @@ class PagesController < ApplicationController
         'history'   => @page.get_last_change,
         'backlinks' => @page.backlinks
       }}
-
     end
-
   end
 
   def parse
