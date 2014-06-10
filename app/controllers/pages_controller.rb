@@ -39,7 +39,10 @@ class PagesController < ApplicationController
   end
 
   def create_new_page
-    # TODO: new page check perms?
+    if (cannot? :manage, Page.new)
+      flash[:error] = "You don't have enough rights for creating the page."
+      go_to_homepage and return
+    end
     full_title = params[:id]
     page = PageModule.create_page_by_full_title full_title
     if page
