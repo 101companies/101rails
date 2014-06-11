@@ -188,6 +188,10 @@ RailsAdmin.config do |config|
 
   config.model 'Page' do
 
+    object_label_method do
+      :full_title
+    end
+
     field :full_title do
       label do
         'Wiki Title'
