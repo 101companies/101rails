@@ -45,6 +45,9 @@ module RdfModule
 
   def add_outgoing_non_semantic_triples(graph, uri, directions)
     (@page.internal_links-@page.semantic_links).each do |link|
+      if link.start_with?("~")
+        next
+      end
       object = directions ? link : page_to_resource(link)
       if !object.nil?
         graph << [uri, "mentions", object]
