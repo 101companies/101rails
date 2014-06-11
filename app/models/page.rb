@@ -266,7 +266,9 @@ class Page
   end
 
   def backlinks
-    Page.where(:used_links => self.full_title).map { |page| page.full_title}
+    weak_backlinks = Page.where(:used_links => "~" + self.full_title)
+    strong_backlinks = Page.where(:used_links => self.full_title)
+    (weak_backlinks + strong_backlinks).map { |page| page.full_title}
   end
 
   def section(section)
