@@ -175,6 +175,7 @@ class Page
   def rewrite_backlink(backlink, old_title)
     # find page by backlink
     related_page = PageModule.find_by_full_title backlink
+    puts related_page
     if !related_page.nil?
       # rewrite link in page, found by backlink
       related_page.raw_content = related_page.rewrite_internal_links old_title, self.full_title
@@ -223,9 +224,9 @@ class Page
 
   # TODO: black magic
   def rewrite_internal_links(from, to)
-    regex = /(\[\[:?)([^:\]\[]+::)?(#{Regexp.escape(from.gsub("_", " "))})(\s*)(\|[^\[\]]*)?(\]\])/i
+    regex = /(\[\[:?)(~)?([^:\]\[]+::)?(#{Regexp.escape(from.gsub("_", " "))})(\s*)(\|[^\[\]]*)?(\]\])/i
     self.raw_content.gsub("_", " ").gsub(regex) do
-      "#{$1}#{$2}#{$3[0].downcase == $3[0] ? PageModule.uncapitalize_first_char(to) : to}#{$4}#{$5}#{$6}"
+      "#{$1}#{$2}#{$3}#{$4[0].downcase == $4[0] ? PageModule.uncapitalize_first_char(to) : to}#{$5}#{$6}#{$7}"
     end
   end
 
@@ -266,9 +267,7 @@ class Page
   end
 
   def backlinks
-    weak_backlinks = Page.where(:used_links => /^~#{self.full_title}$/i)
-    strong_backlinks = Page.where(:used_links => /^#{self.full_title}$/i)
-    (weak_backlinks + strong_backlinks).map { |page| page.full_title}
+    Page.where(:used_links => /^(~)?(\w+::)?#{self.full_title}$/i).map { |page| page.full_title}
   end
 
   def section(section)
