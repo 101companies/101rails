@@ -266,8 +266,8 @@ class Page
   end
 
   def backlinks
-    weak_backlinks = Page.where(:used_links => "~" + self.full_title)
-    strong_backlinks = Page.where(:used_links => self.full_title)
+    weak_backlinks = Page.where(:used_links => /^~#{self.full_title}$/i)
+    strong_backlinks = Page.where(:used_links => /^#{self.full_title}$/i)
     (weak_backlinks + strong_backlinks).map { |page| page.full_title}
   end
 
