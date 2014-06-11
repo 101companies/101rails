@@ -45,6 +45,9 @@ module RdfModule
 
   def add_outgoing_non_semantic_triples(graph, uri, directions)
     (@page.internal_links-@page.semantic_links).each do |link|
+      if link.start_with?("~")
+        next
+      end
       object = directions ? link : page_to_resource(link)
       if !object.nil?
         graph << [uri, "mentions", object]
@@ -88,7 +91,7 @@ module RdfModule
 
     #TODO: need to get all semantic properties in a generic way
     semantic_hash = %w(dependsOn instanceOf identifies cites linksTo uses implements isA developedBy reviewedBy relatesTo
-       implies mentions memberOf)
+       implies mentions memberOf partOf sameAs similarTo implementedBy exercises varies profile)
 
     semantic_hash.each do |x|
       x = MediaWiki::send :upcase_first_char, x

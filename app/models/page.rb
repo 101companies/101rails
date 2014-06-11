@@ -222,9 +222,9 @@ class Page
   end
 
   def rewrite_internal_links(from, to)
-    regex = /(\[\[:?)([^:\]\[]+::)?(#{Regexp.escape(from.gsub("_", " "))})(\s*)(\|[^\[\]]*)?(\]\])/i
+    regex = /(\[\[:?)(~)?([^:\]\[]+::)?(#{Regexp.escape(from.gsub("_", " "))})(\s*)(\|[^\[\]]*)?(\]\])/i
     self.raw_content.gsub("_", " ").gsub(regex) do
-      "#{$1}#{$2}#{$3[0].downcase == $3[0] ? PageModule.uncapitalize_first_char(to) : to}#{$4}#{$5}#{$6}"
+      "#{$1}#{$2}#{$3}#{$4[0].downcase == $4[0] ? PageModule.uncapitalize_first_char(to) : to}#{$5}#{$6}#{$7}"
     end
   end
 
@@ -272,7 +272,7 @@ class Page
   end
 
   def backlinking_pages
-    Page.where(:used_links => self.full_title)
+    Page.where(:used_links => /^(~)?(\w+::)?#{self.full_title}$/i)
   end
 
   def backlinks
