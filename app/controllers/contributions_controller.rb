@@ -77,6 +77,7 @@ class ContributionsController < ApplicationController
     @page.users << current_user
     @page.inject_namespace_triple
     @page.inject_triple "developedBy::Contributor:#{current_user.github_name}"
+    @page.inject_triple "carries::Tag:Stub"
     @page.save
 
     request = MatchingServiceRequest.new
