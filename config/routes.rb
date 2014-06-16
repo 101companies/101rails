@@ -8,7 +8,7 @@ Wiki::Application.routes.draw do
   get '/get_slide/*slideshare' => 'application#get_slide', :format => false
 
   get '/search' => 'pages#search'
-
+  get '/contributors_without_github_name' => 'application#contributors_without_github_name'
   get '/pullRepo.json' => 'application#pull_repo'
 
   # admin ui

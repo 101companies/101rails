@@ -14,6 +14,28 @@ class ApplicationController < ActionController::Base
     render :nothing => true, :layout => 'landing'
   end
 
+  def contributors_without_github_name
+    person_links = []
+
+    Page.where(:used_links => /Contributor/).each do |page|
+      page.used_links.select{|l| l.include?('Contributor')}.each do |link|
+        links_splits = link.split('::')
+        if links_splits.count == 2
+          person_links << ((link.include? '::') ? links_splits[1] : link)
+        end
+      end
+    end
+
+    @todo_names = []
+
+    person_links.select{|link| link.starts_with? 'Contributor'}.uniq.sort.each do |person|
+      name = person.split(':')[1]
+      if name.include?(' ')
+        @todo_names << name
+      end
+    end
+  end
+
   def get_slide
     # get url for slideshare slide
     slideshare_url = params[:slideshare]

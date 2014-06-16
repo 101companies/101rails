@@ -1,0 +1,7 @@
+%h2 Possible contributors without GitHub name
+
+- if defined?(@todo_names)
+  %ul
+    - @todo_names.each do |name|
+      %li
+        %a{:href => "/wiki/Contributor:#{name}",  :target => '_blank'} Contributor:#{name}
