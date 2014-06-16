@@ -127,6 +127,13 @@ class PagesController < ApplicationController
     respond_to do |format|
       format.html {
         # if need redirect? -> wiki url conventions -> do a redirect
+        if (@page.namespace == 'Contributor')
+          user = User.where(:github_name => @page.title).first
+          if !user.nil?
+            @pages_edits = PageChange.where(:user => user)
+            @contributions = Page.where(:used_links => /developedBy::Contributor:#{user.github_name}/i)
+          end
+        end
         good_link = @page.url
         if good_link != params[:id]
           redirect_to '/wiki/'+ good_link and return
