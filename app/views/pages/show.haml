@@ -7,10 +7,9 @@
   %li.active
     %a#page-tab-link.tab-link{"data-toggle" => 'tab', :href => '#page'} 101wiki
 
-  %li
-    %a#discovery-tab-link{:target => '_blank'} 101explorer
-
   - if @page.namespace != "Contributor"
+    %li
+      %a#discovery-tab-link{:target => '_blank'} 101explorer
     %li
       %a#repo-tab-link.tab-link{:href => "#repo", "data-toggle" => 'tab'} 101repo
   - else
