@@ -87,7 +87,7 @@ class Page
     # not found -> create it
     if metadata_section.nil?
       self.raw_content = (self.raw_content.nil? || self.raw_content.empty?) ?
-          "== Metadata ==\n* [[#{triple}]]" : self.raw_content + "\n== Metadata =="
+          "== Metadata ==\n* [[#{triple}]]" : self.raw_content + "\n== Metadata == \n* [[#{triple}]]"
     else
       if !metadata_section['content'].include?(triple)
         self.raw_content = self.raw_content + "\n* [[#{triple}]]"
