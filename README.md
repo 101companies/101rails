@@ -56,6 +56,13 @@ If you have been successfully signed in, you can set another role to your user:
 
 You will be asked for your email and new role. Just type email from your GitHub account and role **admin**.
 
+## Populating db
+
+You need to have **default** 101companies password before.
+You need to execute this task:
+
+    bundle exec rake import_production_db_to_local_dev_db
+
 ## Contributing
 
 If you make improvements to this application, please share with others.
