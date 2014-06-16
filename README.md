@@ -2,7 +2,7 @@
 
 [![](https://codeclimate.com/github/101companies/101rails.png)](https://codeclimate.com/github/101companies/101rails) [![Dependency Status](http://www.versioneye.com/user/projects/51b5a94f83548c000200dda1/badge.png)](http://www.versioneye.com/user/projects/51b5a94f83548c000200dda1)
 
-101wiki web app written using Ruby on Rails and backbone.js
+101wiki web app written using Ruby on Rails and Backbone.js
 
 ## Software dependencies
 
