@@ -51,22 +51,28 @@
     %h2 User contributions
     - if defined?(@contributions)
       %ul
-      - @contributions.each do |contribution|
-        - if !contribution.nil?
-          %li
-            Developed contribution
-            %a{:href => "/wiki/#{contribution.full_title}", :target => '_blank'} #{contribution.full_title}
+      - if @contributions.count == 0
+        This user never has never made submissions.
+      - else
+        - @contributions.each do |contribution|
+          - if !contribution.nil?
+            %li
+              Developed contribution
+              %a{:href => "/wiki/#{contribution.full_title}", :target => '_blank'} #{contribution.full_title}
 
   #pages-edits.tab-pane
     %h2 User edits
     - if defined?(@pages_edits)
       %ul
-      - @pages_edits.order_by("created_at DESC").each do |page_edit|
-        - if !page_edit.page.nil?
-          %li
-            Edited page
-            %a{:href => "/wiki/#{page_edit.page.full_title}", :target => '_blank'} #{page_edit.page.full_title}
-            %a{:href => "/page_changes/show/#{page_edit.id}", :target => '_blank'} #{time_ago_in_words(page_edit.created_at)} ago
+      - if @pages_edits.count == 0
+        No pages edited by this user.
+      - else
+        - @pages_edits.order_by("created_at DESC").each do |page_edit|
+          - if !page_edit.page.nil?
+            %li
+              Edited page
+              %a{:href => "/wiki/#{page_edit.page.full_title}", :target => '_blank'} #{page_edit.page.full_title}
+              %a{:href => "/page_changes/show/#{page_edit.id}", :target => '_blank'} #{time_ago_in_words(page_edit.created_at)} ago
 
   / tab with all repo settings
   #editing-help.tab-pane
