@@ -75,7 +75,6 @@ class ContributionsController < ApplicationController
     @page.repo_link = page_repo_link
     @page.raw_content = "== Headline ==\n\n" + PageModule.default_contribution_text(@page.repo_link.full_url)
     @page.users << current_user
-    @page.inject_namespace_triple
     @page.inject_triple "developedBy::Contributor:#{current_user.github_name}"
     @page.inject_triple "carries::Tag:Stub"
     @page.save

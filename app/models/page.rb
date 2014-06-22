@@ -39,7 +39,9 @@ class Page
   def preparing_the_page
     # prepare field namespace + title
     self.page_title_namespace = self.namespace.to_s + ':' + self.title.to_s
-    self.inject_namespace_triple
+    if self.namespace != "Contribution"
+      self.inject_namespace_triple
+    end
     # fill used_links with links in page
     # parse content and get internal links
     begin
