@@ -1,18 +1,25 @@
 module RdfModule
 
-  @@semantic_properties = nil
+  @@used_predicates = nil
 
-  def get_semantic_properties
-    if @@semantic_properties == nil
-      @@semantic_properties = []
+  def get_used_predicates
+    if @@used_predicates == nil
+      @@used_predicates = []
       Page.all.each do |page|
         page.used_links.select{|l| l.include?("::")}.each do |link|
-          @@semantic_properties << link.split("::")[0]
+          @@used_predicates << link.split("::")[0]
         end
       end
-      @@semantic_properties.uniq!
+      @@used_predicates.uniq!
     end
-    @@semantic_properties
+    @@used_predicates
+  end
+
+  def update_used_predicates(page)
+    page.used_links.select{|l| l.include?("::")}.each do |link|
+      @@used_predicates << link.split("::")[0]
+    end
+    @@used_predicates.uniq!
   end
 
   def page_to_resource(title)
@@ -103,7 +110,7 @@ module RdfModule
   end
 
   def add_ingoing_triples(graph, page) #, context)
-    get_semantic_properties.each do |x|
+    get_used_predicates.each do |x|
       x = MediaWiki::send :upcase_first_char, x
       Page.where(:used_links => x+'::'+page.full_title).each do |page|
         graph << ["IN", x.camelize(:lower), page.full_title]

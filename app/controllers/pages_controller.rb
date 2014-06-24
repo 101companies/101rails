@@ -185,8 +185,10 @@ class PagesController < ApplicationController
     sections = params[:sections]
     content = params[:content]
     new_full_title = PageModule.unescape_wiki_url params[:newTitle]
+    result = @page.update_or_rename(new_full_title, content, sections, current_user)
+    update_used_predicates(@page)
     render :json => {
-      :success => @page.update_or_rename(new_full_title, content, sections, current_user),
+      :success => result,
       :newTitle => @page.url
     }
   end
