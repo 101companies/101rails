@@ -111,9 +111,9 @@ class PagesController < ApplicationController
     result = @page.delete
     # generate flash_message if deleting was successful
     if result
-      page_change = PageChange.new :old_title => @page.title,
-                     :old_namespace => @page.namespace,
-                     :old_raw_content => @page.raw_content,
+      page_change = PageChange.new :title => @page.title,
+                     :namespace => @page.namespace,
+                     :raw_content => @page.raw_content,
                      :page => @page,
                      :user => current_user
       page_change.save

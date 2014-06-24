@@ -39,9 +39,6 @@ class Page
   def preparing_the_page
     # prepare field namespace + title
     self.page_title_namespace = self.namespace.to_s + ':' + self.title.to_s
-    if self.namespace != "Contribution"
-      self.inject_namespace_triple
-    end
     # fill used_links with links in page
     # parse content and get internal links
     begin
@@ -77,10 +74,6 @@ class Page
     rescue
       ''
     end
-  end
-
-  def inject_namespace_triple
-    self.inject_triple "instanceOf::Namespace:#{self.namespace}"
   end
 
   def inject_triple(triple)
@@ -179,10 +172,6 @@ class Page
     self.title = nt['title']
     # rewrite links in pages, that links to the page
     old_backlinking_pages.each do |old_backlinking_page|
-      page_change.pages_changed_by_renaming << {
-          :title => old_backlinking_page.title,
-          :namespace => old_backlinking_page.namespace,
-          :content => old_backlinking_page.raw_content}
       self.rewrite_backlink old_backlinking_page, old_title
     end
     self.rewrite_backlink self, old_title
@@ -201,14 +190,9 @@ class Page
       content = build_content_from_sections(sections)
     end
 
-    new_title_and_namespace = PageModule.retrieve_namespace_and_title new_title
-
     page_change = PageChange.new :title => self.title,
                                  :namespace => self.namespace,
                                  :raw_content => self.raw_content,
-                                 :new_title => new_title_and_namespace["title"],
-                                 :new_namespace => new_title_and_namespace["namespace"],
-                                 :new_raw_content => content,
                                  :page => self,
                                  :user => user
 
