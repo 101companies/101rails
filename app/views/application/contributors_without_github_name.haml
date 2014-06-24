@@ -4,4 +4,8 @@
   %ul
     - @todo_names.each do |name|
       %li
-        %a{:href => "/wiki/Contributor:#{name}",  :target => '_blank'} Contributor:#{name}
+        Search
+        %a{:href => "/wiki/Contributor:#{name}",  :target => '_blank'} #{name}
+        %a{:href => "https://www.google.de/#q=site%3Agithub.com+#{name.gsub(" ", "+")}", :target => '_blank'}
+          %i.icon-github-alt.icon-large
+          On github
