@@ -5,15 +5,14 @@ module RdfModule
   def get_semantic_properties
     if @@semantic_properties == nil
       @@semantic_properties = []
-      temp = []
       Page.all.each do |page|
         page.used_links.select{|l| l.include?("::")}.each do |link|
-          temp << link.split("::")[0]
+          @@semantic_properties << link.split("::")[0]
         end
       end
-      temp.uniq.each {|l| @@semantic_properties << l}
+      @@semantic_properties.uniq!
     end
-    return @@semantic_properties
+    @@semantic_properties
   end
 
   def page_to_resource(title)
