@@ -1,5 +1,21 @@
 module RdfModule
 
+  @@semantic_properties = nil
+
+  def get_semantic_properties
+    if @@semantic_properties == nil
+      @@semantic_properties = []
+      temp = []
+      Page.all.each do |page|
+        page.used_links.select{|l| l.include?("::")}.each do |link|
+          temp << link.split("::")[0]
+        end
+      end
+      temp.uniq.each {|l| @@semantic_properties << l}
+    end
+    return @@semantic_properties
+  end
+
   def page_to_resource(title)
     return title if title.starts_with?('Http')
     page = PageModule.find_by_full_title title
@@ -88,12 +104,7 @@ module RdfModule
   end
 
   def add_ingoing_triples(graph, page) #, context)
-
-    #TODO: need to get all semantic properties in a generic way
-    semantic_hash = %w(dependsOn instanceOf identifies cites linksTo uses implements isA developedBy reviewedBy relatesTo
-       implies mentions memberOf partOf sameAs similarTo implementedBy exercises varies profile)
-
-    semantic_hash.each do |x|
+    get_semantic_properties.each do |x|
       x = MediaWiki::send :upcase_first_char, x
       Page.where(:used_links => x+'::'+page.full_title).each do |page|
         graph << ["IN", x.camelize(:lower), page.full_title]
