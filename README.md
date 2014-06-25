@@ -78,9 +78,6 @@ You need to execute this task:
 
     bundle exec rake import_production_db_to_local_dev_db
 
-## ENV variables
-
-
 ## Contributing
 
 If you make improvements to this application, please share with others.
