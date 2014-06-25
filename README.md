@@ -56,17 +56,11 @@ If you have been successfully signed in, you can set another role to your user:
 
 You will be asked for your email and new role. Just type email from your GitHub account and role **admin**.
 
-## Populating db
+## Keys
 
-You need to have **default** 101companies password before.
+You need some keys of 101companies before you can start to work.
 You can ask [@avaranovich](https://github.com/avaranovich), [@rlaemmel](https://github.com/rlaemmel) or
 [@tschmorleiz](https://github.com/tschmorleiz) for this password.
-
-You need to execute this task:
-
-    bundle exec rake import_production_db_to_local_dev_db
-
-## ENV variables
 
 For successful work with project in development mode you need to define next ENV variables in your .bashrc/.zshrc
 
@@ -75,6 +69,17 @@ For successful work with project in development mode you need to define next ENV
     export GMAIL_PASSWORD=""
     export GITHUB_KEY_DEV=""
     export GITHUB_SECRET_DEV=""
+    export MONGODB_USER=""
+    export MONGODB_PWD=""
+
+## Populating db
+
+You need to execute this task:
+
+    bundle exec rake import_production_db_to_local_dev_db
+
+## ENV variables
+
 
 ## Contributing
 
