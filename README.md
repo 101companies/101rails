@@ -59,9 +59,22 @@ You will be asked for your email and new role. Just type email from your GitHub 
 ## Populating db
 
 You need to have **default** 101companies password before.
+You can ask [@avaranovich](https://github.com/avaranovich), [@rlaemmel](https://github.com/rlaemmel) or
+[@tschmorleiz](https://github.com/tschmorleiz) for this password.
+
 You need to execute this task:
 
     bundle exec rake import_production_db_to_local_dev_db
+
+## ENV variables
+
+For successful work with project in development mode you need to define next ENV variables in your .bashrc/.zshrc
+
+    export SLIDESHARE_API_KEY=""
+    export SLIDESHARE_API_SECRET=""
+    export GMAIL_PASSWORD=""
+    export GITHUB_KEY_DEV=""
+    export GITHUB_SECRET_DEV=""
 
 ## Contributing
 
