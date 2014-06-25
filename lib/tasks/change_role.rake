@@ -8,7 +8,7 @@ task :change_role => :environment do
   role = STDIN.gets
   # remove newline
   role.delete! "\n"
-  user = User.where(:email => email).first
-  user.role=role
+  user = User.where(:email => email.strip).first
+  user.role=role.strip
   user.save
 end
