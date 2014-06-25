@@ -179,7 +179,9 @@ class Page
 
   def build_content_from_sections(sections)
     content = ""
-    sections.each { |s| content += s['content'] + "\n" }
+    if !sections.nil?
+      sections.each { |s| content += s['content'] + "\n" }
+    end
     content
   end
 
