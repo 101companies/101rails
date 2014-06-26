@@ -50,6 +50,8 @@ RailsAdmin.config do |config|
 
   config.model 'RepoLink' do
 
+    weight -1
+
     field :user do
       searchable true
     end
@@ -70,6 +72,7 @@ RailsAdmin.config do |config|
 
   config.model 'MatchingServiceRequest' do
     label 'Submissions'
+    weight -1
 
     field :page do
       searchable true
@@ -100,6 +103,7 @@ RailsAdmin.config do |config|
   end
 
   config.model 'PageChange' do
+    weight -1
 
     field :page do
       searchable true
@@ -142,7 +146,7 @@ RailsAdmin.config do |config|
   end
 
   config.model 'User' do
-
+    weight -1
     field :github_avatar do
       label do
         'Avatar'
@@ -187,7 +191,7 @@ RailsAdmin.config do |config|
   end
 
   config.model 'Page' do
-
+    weight -1
     object_label_method do
       :full_title
     end
