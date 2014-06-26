@@ -25,7 +25,7 @@
         = time_ago_in_words page_change.created_at
         ago.
 
-        %a{:href => "/page_changes/diff/#{page_change.id}/#{last_shown_version_id}", :target => '_blank'} Show diff with previous revision
+        %a{:href => "/page_changes/diff/#{page_change.id}/#{last_shown_version_id}", :target => '_blank'} Show diff with next revision
         |
         - if can? :manage, page_change.page
           %a{:href => "/page_changes/apply/#{page_change.id}"} Apply revision

@@ -60,7 +60,7 @@ class ApplicationController < ActionController::Base
     Page.all.each do |page|
       text = text + '<url><loc>http://101companies.org/wiki/' + page.url + '</loc>'+
           "<lastmod>#{page.updated_at.to_date}</lastmod>" +
-          '<changefreq></changefreq>'+
+          '<changefreq>weekly</changefreq>'+
           '</url>'
     end
     text = text + '</urlset>'
