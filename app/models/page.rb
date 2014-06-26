@@ -121,7 +121,11 @@ class Page
   def parse(content = self.raw_content)
     parsed_page = self.get_parser content
     parsed_page.sections.first.auto_toc = false
-    html = parsed_page.to_html
+    begin
+      html = parsed_page.to_html
+    rescue
+      html = ""
+    end
     # mark empty or non-existing page with class missing-link (red color)
     parsed_page.internal_links.each do |link|
       nice_link = PageModule.url link
@@ -224,7 +228,10 @@ class Page
     WikiCloth::Parser.context = {:ns => (MediaWiki::send :upcase_first_char, self.namespace), :title => self.title}
     parser = WikiCloth::Parser.new(:data => ((content.nil?) ? self.raw_content : content), :noedit => true)
     # this will produce sections and links
-    parser.to_html
+    begin
+      parser.to_html
+    rescue
+    end
     parser
   end
 
