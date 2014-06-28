@@ -16,10 +16,12 @@ module RdfModule
   end
 
   def update_used_predicates(page)
+    predicates = get_used_predicates
     page.used_links.select{|l| l.include?("::")}.each do |link|
-      @@used_predicates << link.split("::")[0]
+      predicates << link.split("::")[0]
     end
-    @@used_predicates.uniq!
+    predicates.uniq!
+    @@used_predicates = predicates
   end
 
   def page_to_resource(title)
