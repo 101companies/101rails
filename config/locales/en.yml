@@ -11,7 +11,7 @@ en:
     project_go: 'Read 101wiki'
 
     contribution_title: 'Contributions'
-    contribution_text: 'The project relies on the aggregation, organization, an- notation, and analysis of an open-source corpus of contributions to an imaginary Hu- man Resource Management System: the so-called 101companies System, which is pre- scribed by a set of optional features. Contributions may be implementations of system variations and specifications thereof. Each contribution should pick a suitable, typically small set of features and demonstrate original and noteworthy aspects of software tech- nologies and software languages in a focused manner.'
+    contribution_text: 'The project relies on the aggregation, organization, annotation, and analysis of an open-source corpus of contributions to an imaginary Human Resource Management System: the so-called 101companies System, which is prescribed by a set of optional features. Contributions may be implementations of system variations and specifications thereof. Each contribution should pick a suitable, typically small set of features and demonstrate original and noteworthy aspects of software technologies and software languages in a focused manner.'
     contribution_go: 'Create new contribution'
 
     explorer_title: '101explorer'
