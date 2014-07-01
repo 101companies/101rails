@@ -7,3 +7,17 @@
 .span6 {
     text-align: justify;
 }
+
+img {
+    margin-bottom: 10px;
+}
+
+#codercat {
+    width: 300px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.big-list li a {
+    line-height: 2em;
+}

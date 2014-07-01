@@ -100,7 +100,8 @@
         %h2.page-headline.large= t('landing.contribution_title')
       .row-fluid.inner-page
         .span6.pull-right
-          = image_tag("codercat.png", :class=> 'pull-right')
+          %center
+            = image_tag("codercat.png")
         .span6.pull-right
           = t('landing.contribution_text')
           %br/
@@ -146,7 +147,7 @@
           %ul.big-list
             %li
               %a{href: "http://softlang.wikidot.com/", :target => 'blank'}
-                %i.icon-info
+                %i.icon-globe
                 Info
             %li
               %a{href: "mailto:101companies@gmail.com", :target => 'blank'}
