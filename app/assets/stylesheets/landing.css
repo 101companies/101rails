@@ -3,3 +3,7 @@
  *= require style.min
  *= require_self
 */
+
+.span6 {
+    text-align: justify;
+}
