@@ -16,22 +16,20 @@
     :javascript
       // History, and back button
       $(function() {
-        var navigation = responsiveNav("#nav", {
-            insert: "before",
-            customToggle: "#toggle",
-            open: function () {
-                $('#toggle').addClass("btn-highlite");
-            },
-            close: function () {
-                $('#toggle').removeClass("btn-highlite");
-            }
+
+        $('a.scroll').click(function(e) {
+          e.preventDefault();
+          var hash = this.hash;
+          $('html, body').animate({
+            scrollTop: $(this.hash).offset().top - 20
+          }, 500, function(){
+            // when done, add hash to url
+            // (default click behaviour)
+            window.location.hash = hash;
+          });
+
         });
 
-        jQuery.history.listen();
-
-        $('#nav .nav .scroll').click(function() {
-          $.history.push('index.html' + $(this).attr('href'));
-        });
       });
 
   / activate scrollspy
@@ -53,8 +51,6 @@
 
     #project.page.color-4
       %br/
-      %br/
-      %br/
       .inner-page
         %h2.page-headline.large= t('landing.project_title')
       .row-fluid.inner-page
@@ -75,8 +71,6 @@
     / Explorer
     #explorer.page.color-1
       %br/
-      %br/
-      %br/
       .inner-page
         %h2.page-headline.large= t('landing.explorer_title')
       .row-fluid.inner-page
@@ -93,8 +87,6 @@
       %br/
 
     #contributions.page.color-4
-      %br/
-      %br/
       %br/
       .inner-page
         %h2.page-headline.large= t('landing.contribution_title')
