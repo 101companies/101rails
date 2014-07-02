@@ -4,7 +4,6 @@
 capybara-*.html
 dump
 dump_zip
-dump_pages
 .rspec
 /.bundle
 /vendor/bundle

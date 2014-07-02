@@ -6,6 +6,8 @@ load 'deploy/assets'
 set :sync_backups, 3
 set :db_file, "mongoid.yml"
 
+set :shared_children, shared_children + %w{dump_zip}
+
 # keep 10 last revisions of app
 set :keep_releases, 10
 # automatically remove old revisions, except last 10, after deploy
