@@ -29,7 +29,7 @@ task :push_production_db_to_github do
   else
     get_production_db
     sh "zip -P #{def_password} -r dump_zip/full_backup.zip dump"
-    sh "cd dump_zip && git add full_backup.zip && git commit -m 'Full backup, #{Time.now}' && git push origin master"
+    sh "cd dump_zip && git add full_backup.zip && git commit -m 'Full backup, #{Time.now}' && git push origin master && git gc"
   end
 end
 
