@@ -6,7 +6,7 @@ load 'deploy/assets'
 set :sync_backups, 3
 set :db_file, "mongoid.yml"
 
-set :shared_children, shared_children + %w{dump_zip}
+set :shared_children, shared_children + %w{dump_zip dump make_backup.sh}
 
 # keep 10 last revisions of app
 set :keep_releases, 10
