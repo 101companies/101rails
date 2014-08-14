@@ -121,11 +121,11 @@ class Page
   def parse(content = self.raw_content)
     parsed_page = self.get_parser content
     parsed_page.sections.first.auto_toc = false
-    begin
+    #begin
       html = parsed_page.to_html
-    rescue
-      html = ""
-    end
+   # rescue
+     # html = ""
+    #end
     # mark empty or non-existing page with class missing-link (red color)
     parsed_page.internal_links.each do |link|
       nice_link = PageModule.url link
