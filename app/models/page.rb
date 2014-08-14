@@ -254,7 +254,7 @@ class Page
           begin
           	parsed_html = parse content_with_subsections	
           rescue Exception => e
-          	# ignore for now
+          	parsed_html = "<div class='error'>#{e.to_s}</div>"
           end	
         end
       rescue Timeout::Error
