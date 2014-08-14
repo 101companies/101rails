@@ -251,10 +251,14 @@ class Page
       begin
         # wait 5 seconds to to render the section
         Timeout::timeout(5) do
-          parsed_html = parse content_with_subsections
+          begin
+          	parsed_html = parse content_with_subsections	
+          rescue Exception => e
+          	# ignore for now
+          end	
         end
       rescue Timeout::Error
-        parsed_html = "<div class='error'>It took to long to render section</div>"
+        parsed_html = "<div class='error'>It took too long to render section</div>"
       end
       sections << {
           'is_resource' => section.is_resource_section,

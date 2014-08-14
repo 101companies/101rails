@@ -1,6 +1,6 @@
 GIT
-  remote: git://github.com/avaranovich/wikicloth.git
-  revision: 7a77e5821ce8d0b358f9af1ba0f02dcd2535df5d
+  remote: git://github.com/mastermaiknemo/wikicloth.git
+  revision: 8bce3a70524040e59d75d316e864e9754106d091
   specs:
     wikicloth (0.8.0)
       activesupport
@@ -14,9 +14,9 @@ GIT
 
 GIT
   remote: git://github.com/ruby-rdf/rdf.git
-  revision: 4d306f8ffb34e5ddad67d2ebcb8dc697676b4458
+  revision: 78b3b7a4c5cac0494c709b45de889ed4ae8cb5e5
   specs:
-    rdf (1.1.4)
+    rdf (1.1.4.3)
 
 GIT
   remote: git://github.com/tschmorleiz/aced_rails.git
@@ -85,9 +85,9 @@ GEM
     coffee-script (2.2.0)
       coffee-script-source
       execjs
-    coffee-script-source (1.7.0)
+    coffee-script-source (1.7.1)
     colorize (0.7.3)
-    compass (0.12.6)
+    compass (0.12.7)
       chunky_png (~> 1.2)
       fssm (>= 0.2.7)
       sass (~> 3.2.19)
@@ -111,7 +111,7 @@ GEM
     exception_notification (4.0.1)
       actionmailer (>= 3.0.4)
       activesupport (>= 3.0.4)
-    execjs (2.2.0)
+    execjs (2.2.1)
     expression_parser (0.9.0)
     faraday (0.9.0)
       multipart-post (>= 1.2, < 3)
@@ -126,7 +126,7 @@ GEM
       activesupport (>= 3.1, < 4.1)
       haml (>= 3.1, < 4.1)
       railties (>= 3.1, < 4.1)
-    hashie (2.1.1)
+    hashie (2.1.2)
     highline (1.6.21)
     hike (1.2.3)
     http_parser.rb (0.6.0)
@@ -135,7 +135,7 @@ GEM
       multi_xml (>= 0.5.2)
     humane-rails (5.0.2)
       rails (>= 3.1.0)
-    i18n (0.6.9)
+    i18n (0.6.11)
     journey (1.0.4)
     jquery-rails (2.1.3)
       railties (>= 3.1.0, < 5.0)
@@ -145,8 +145,8 @@ GEM
       railties (>= 3.1.0)
     json (1.8.1)
     json_pure (1.8.1)
-    jwt (0.1.13)
-    kaminari (0.15.1)
+    jwt (1.0.0)
+    kaminari (0.16.1)
       actionpack (>= 3.0.0)
       activesupport (>= 3.0.0)
     mail (2.5.4)
@@ -180,9 +180,10 @@ GEM
     net-ssh (2.7.0)
     net-ssh-gateway (1.2.0)
       net-ssh (>= 2.6.5)
-    nokogiri (1.6.2.1)
+    netrc (0.7.7)
+    nokogiri (1.6.3.1)
       mini_portile (= 0.6.0)
-    oauth2 (0.9.4)
+    oauth2 (1.0.0)
       faraday (>= 0.8, < 0.10)
       jwt (~> 1.0)
       multi_json (~> 1.3)
@@ -196,14 +197,14 @@ GEM
     omniauth-github (1.1.2)
       omniauth (~> 1.0)
       omniauth-oauth2 (~> 1.1)
-    omniauth-oauth2 (1.1.2)
+    omniauth-oauth2 (1.2.0)
       faraday (>= 0.8, < 0.10)
       multi_json (~> 1.3)
-      oauth2 (~> 0.9.3)
+      oauth2 (~> 1.0)
       omniauth (~> 1.2)
     origin (1.1.0)
     polyglot (0.3.5)
-    posix-spawn (0.3.8)
+    posix-spawn (0.3.9)
     pygments.rb (0.5.4)
       posix-spawn (~> 0.3.6)
       yajl-ruby (~> 1.1.0)
@@ -258,8 +259,9 @@ GEM
     rdoc (3.12.2)
       json (~> 1.4)
     remotipart (1.2.1)
-    rest-client (1.6.7)
-      mime-types (>= 1.16)
+    rest-client (1.7.2)
+      mime-types (>= 1.16, < 3.0)
+      netrc (~> 0.7)
     rinku (1.7.3)
     safe_yaml (0.9.7)
     sass (3.2.19)
@@ -289,7 +291,7 @@ GEM
     treetop (1.4.15)
       polyglot
       polyglot (>= 0.3.1)
-    tzinfo (0.3.39)
+    tzinfo (0.3.41)
     uglifier (2.5.0)
       execjs (>= 0.3.0)
       json (>= 1.8.0)
