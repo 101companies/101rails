@@ -253,7 +253,7 @@ class Page
           begin
           	parsed_html = parse content_with_subsections	
           rescue Exception => e
-          	parsed_html = "<div class='error'>#{e.backtrace.join("\n")}</div>"
+          	parsed_html = "<div class='error'>Error</div>"
           end	
         end
       rescue Timeout::Error
