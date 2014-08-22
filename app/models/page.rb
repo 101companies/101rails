@@ -246,17 +246,11 @@ class Page
     sections = []
     self.get_parser.sections.first.children.each do |section|
       content_with_subsections = section.wikitext.sub(/\s+\Z/, "")
-      parsed_html = "<div class='error'>This section wan't properly rendered</div>"
-      begin
-        # wait 5 seconds to to render the section
-        Timeout::timeout(5) do
+
+
         
           	parsed_html = parse content_with_subsections	
-       
-        end
-      rescue Timeout::Error
-        parsed_html = "<div class='error'>It took too long to render section</div>"
-      end
+    
       sections << {
           'is_resource' => section.is_resource_section,
           'title' => section.title,
