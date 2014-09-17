@@ -228,7 +228,7 @@ class Page
     WikiCloth::Parser.context = {:ns => (MediaWiki::send :upcase_first_char, self.namespace), :title => self.title}
     parser = WikiCloth::Parser.new(:data => ((content.nil?) ? self.raw_content : content), :noedit => true)
     # this will produce sections and links
-    
+
     parser.to_html
 
     parser
