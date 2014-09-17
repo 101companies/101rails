@@ -78,7 +78,7 @@ gem 'httparty', '0.13.1'
 gem 'mediawiki-gateway', '0.6.0'
 
 # work with wiki markdown
-gem 'wikicloth', :github => 'mastermaiknemo/wikicloth1'
+gem 'wikicloth', :github => 'avaranovich/wikicloth'
 
 gem 'rdf', :github => 'ruby-rdf/rdf'
 

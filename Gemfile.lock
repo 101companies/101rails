@@ -1,6 +1,6 @@
 GIT
-  remote: git://github.com/mastermaiknemo/wikicloth.git
-  revision: 8bce3a70524040e59d75d316e864e9754106d091
+  remote: git://github.com/avaranovich/wikicloth.git
+  revision: 7a77e5821ce8d0b358f9af1ba0f02dcd2535df5d
   specs:
     wikicloth (0.8.0)
       activesupport
