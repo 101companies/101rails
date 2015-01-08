@@ -23,6 +23,8 @@ group :assets do
   gem 'compass-rails', '1.0.3'
 end
 
+gem 'rack-mini-profiler'
+
 # frontend
 gem 'jquery-rails', '2.1.3'
 gem 'jquery-ui-rails', '3.0.1'

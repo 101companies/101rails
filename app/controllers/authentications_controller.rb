@@ -31,6 +31,16 @@ class AuthenticationsController < ApplicationController
     go_to_previous_page
   end
 
+  def local_auth
+    if Rails.env.production?
+      render :file => "public/401.html", :status => :unauthorized
+    end
+
+    user = User.where(role: 'admin').first
+    session[:user_id] = user.id
+    go_to_previous_page
+  end
+
   def create_user_page_and_set_permissions(user)
     user_page = Page.where(:title => user.github_name, :namespace => 'Contributor').first
     if user_page.nil?

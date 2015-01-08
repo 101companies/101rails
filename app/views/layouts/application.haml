@@ -47,6 +47,11 @@
                       = link_to raw("<i class=\"icon-lock\"></i> Admin UI"), '/admin'
                   %li
                     = link_to raw("<i class=\"icon-share\"></i> Logout"), '/users/logout'
+            %li
+              - if !Rails.env.production?
+                %a{ :href => '/auth/local_login' }
+                  Local Login
+              - else
 
     .container-fluid
       .row-fluid

@@ -77,14 +77,12 @@ class ApplicationController < ActionController::Base
 
   def pull_repo
     entries = Hash.new
-    RepoLink.each do |link|
+    RepoLink.not.where(folder: /\/concepts/).each do |link|
       # filter out concepts
-      if !link.folder.starts_with? '/concepts'
-        if entries[link.namespace].nil?
-          entries[link.namespace] = Hash.new
-        end
-        entries[link.namespace][link.out_name] = link.full_url
+      if entries[link.namespace].nil?
+        entries[link.namespace] = Hash.new
       end
+      entries[link.namespace][link.out_name] = link.full_url
     end
     render :json => entries
   end

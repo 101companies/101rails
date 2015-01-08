@@ -146,10 +146,11 @@ class Page
   def full_title
     # if used default namespaces -> remove from full title
     if (self.namespace == '101') or (self.namespace == 'Concept')
-      return self.title
+      self.title
+    else 
+      # else use normal building of full url
+      self.namespace + ':' + self.title
     end
-    # else use normal building of full url
-    self.namespace + ':' + self.title
   end
 
   def rewrite_backlink(related_page, old_title)
@@ -221,7 +222,7 @@ class Page
   end
 
   def url
-    PageModule.url self.full_title
+    PageModule.url full_title
   end
 
   def get_parser(content=nil)
@@ -266,7 +267,8 @@ class Page
   end
 
   def backlinks
-    backlinking_pages.map { |page| page.full_title}
+    # backlinking_pages.map { |page| page.full_title}
+    backlinking_pages.pluck(:full_title)
   end
 
   def section(section)
