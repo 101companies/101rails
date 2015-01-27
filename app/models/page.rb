@@ -17,6 +17,7 @@ class Page
   field :used_links, type: Array
   field :subresources, type: Array
   field :headline, type: String, :default => ''
+  field :db_sections, type: Array
 
   field :worker_findings, type: String
 
@@ -244,6 +245,8 @@ class Page
   end
 
   def sections
+    return db_sections if db_sections
+    
     sections = []
     self.get_parser.sections.first.children.each do |section|
       content_with_subsections = section.wikitext.sub(/\s+\Z/, "")
@@ -259,6 +262,9 @@ class Page
           'html_content' => parsed_html
       }
     end
+    self.db_sections = sections
+    
+    self.save
     sections
   end
 

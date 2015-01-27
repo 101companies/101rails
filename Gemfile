@@ -115,5 +115,7 @@ gem 'aced_rails', '0.2.1', :github => 'tschmorleiz/aced_rails'
 
 gem 'bootstrap-tour-rails', '0.4.0'
 
-gem 'eventmachine', '1.0.3'
+gem 'eventmachine', '1.0.4'
 gem 'em-http-request', '1.1.2'
+
+gem 'syck'
