@@ -148,7 +148,7 @@ class Page
     # if used default namespaces -> remove from full title
     if (self.namespace == '101') or (self.namespace == 'Concept')
       self.title
-    else 
+    else
       # else use normal building of full url
       self.namespace + ':' + self.title
     end
@@ -205,6 +205,8 @@ class Page
                                  :user => user
 
     self.raw_content = content
+    # self.db_sections = []
+    # sections
     # unescape new title to nice readable url
     new_title = PageModule.unescape_wiki_url new_title
     # if title was changed -> rename page
@@ -230,7 +232,7 @@ class Page
     WikiCloth::Parser.context = {:ns => (MediaWiki::send :upcase_first_char, self.namespace), :title => self.title}
     parser = WikiCloth::Parser.new(:data => ((content.nil?) ? self.raw_content : content), :noedit => true)
     # this will produce sections and links
-    
+
     parser.to_html
 
     parser
@@ -246,15 +248,15 @@ class Page
 
   def sections
     return db_sections if db_sections
-    
+
     sections = []
     self.get_parser.sections.first.children.each do |section|
       content_with_subsections = section.wikitext.sub(/\s+\Z/, "")
 
 
-        
-          	parsed_html = parse content_with_subsections	
-    
+
+          	parsed_html = parse content_with_subsections
+
       sections << {
           'is_resource' => section.is_resource_section,
           'title' => section.title,
@@ -263,7 +265,7 @@ class Page
       }
     end
     self.db_sections = sections
-    
+
     self.save
     sections
   end
@@ -273,8 +275,8 @@ class Page
   end
 
   def backlinks
-    # backlinking_pages.map { |page| page.full_title}
-    backlinking_pages.pluck(:full_title)
+    backlinking_pages.map { |page| page.full_title}
+    # backlinking_pages.pluck(:full_title)
   end
 
   def section(section)
