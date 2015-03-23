@@ -1,36 +1,5 @@
 class ContributionsController < ApplicationController
 
-  def analyze
-    begin
-      # exception for id check
-      begin
-        @request = MatchingServiceRequest.find(params[:id])
-      rescue
-        Rails.logger "Strange request from matching service with id #{params[:id]}"
-        @request = nil
-      end
-      if @request.nil?
-        render nothing: true and return
-      end
-      findings = []
-      %w(languages concepts technologies features).map do |index|
-        if params[index]
-          findings << {index => params[index]}
-        end
-      end
-
-      @request.page.worker_findings = findings.to_json.to_s
-      @request.page.save!
-
-      @request.worker_findings = findings.to_json.to_s
-      @request.analysed = true
-      @request.save!
-
-      Mailer.analyzed_contribution(@request).deliver
-    end
-    render nothing: true
-  end
-
   def get_repo_dirs
     render :json => current_user.get_repo_dirs_recursive(params[:repo])
   end
@@ -79,19 +48,20 @@ class ContributionsController < ApplicationController
     @page.inject_triple "carries::Tag:Stub"
     @page.save
 
-    request = MatchingServiceRequest.new
-    request.user = current_user
-    request.page = @page
-    request.save
+    # request = MatchingServiceRequest.new
+    # request.user = current_user
+    # request.page = @page
+    # request.save
 
-    Mailer.created_contribution(request).deliver
+    # Mailer.created_contribution(request).deliver
 
-    request.send_request
+    # request.send_request
 
     # send request to matching service
-    unless request.sent
-      flash[:error] = "You have created new contribution. Request on analyze service wasn't successful. Please retry it later"
-    else
+    # unless request.sent
+      # flash[:error] = "You have created new contribution. Request on analyze service wasn't successful. Please retry it later"
+    # else
+    if
       flash[:notice] = "You have created new contribution. You will retrieve an email, when it will be analyzed."
     end
 
