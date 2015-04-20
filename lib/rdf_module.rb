@@ -108,7 +108,7 @@ module RdfModule
         graph << [subject, semantic_property, object]
       end
     end
-    graph
+    graph.uniq
   end
 
   def add_ingoing_triples(graph, page) #, context)
