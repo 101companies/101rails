@@ -129,6 +129,7 @@ class Page
     #end
     # mark empty or non-existing page with class missing-link (red color)
     parsed_page.internal_links.each do |link|
+      link = link.strip
       nice_link = PageModule.url link
       used_page = PageModule.find_by_full_title nice_link
       # if not found page or it has no content
