@@ -1,3 +1,47 @@
+<style>
+.tour {
+	/*max-width: 700px ;*/
+}
+
+.tour .viewDefault {
+  display: block;
+}
+
+.tour .viewEdit {
+  display: none ;
+}
+
+.tour li {
+	margin: 0px ;
+	padding: 0px ;
+}
+
+.tour .editButtons {
+	display: none ;
+}
+
+.tour .tourAddSection {
+	float: right ;
+}
+
+.section {
+	height: 20px;
+}
+
+.tour .tourMovePage {
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: moz-none;
+	-ms-user-select: none;
+	user-select: none;
+}
+
+.sortable-placeholder {
+	height: 50px;
+}
+
+</style>
 <script type="text/javascript">
 	Wiki.currentUser = new Wiki.Models.User(<%= j current_user.to_json.html_safe %>);
 
