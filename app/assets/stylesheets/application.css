@@ -19,6 +19,7 @@
  *= require home
 
  *= require bootstrap-tour
+ *= require tours
  *= require pygments
  *= require contribution
  *= require login_intro
