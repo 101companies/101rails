@@ -1,0 +1,18 @@
+<%= @page.html_content.html_safe %>
+
+<div class='additional-section'>
+  <div class="section" id="backlinks" style="display: block;">
+     <h2>Backlinks</h2>
+
+     <div class='backlinks-body'>
+       <% @page.backlinks.map do |link| %>
+         <a href="<%= '/wiki/' + link.sub(' ', '_') %>">
+           <span class="label">
+             <%= link %>
+           </span>
+         </a>
+       <% end %>
+     </div>
+
+  </div>
+</div>

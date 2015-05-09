@@ -8,6 +8,7 @@
     %meta{:content => content_for?(:description) ? yield(:description) : "Wiki", :name => "description"}/
     = stylesheet_link_tag "application", :media => "all"
     = javascript_include_tag "application"
+    = aced_tag
     = csrf_meta_tags
     = yield(:head)
 

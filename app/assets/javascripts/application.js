@@ -20,10 +20,6 @@
  = require jquery-ui
  = require underscore
 
- = require backbone
- = require backbone_rails_sync
- = require backbone_datalink
- = require backbone/wiki
  = require bootstrap
 
  = require ace/ace
@@ -38,6 +34,4 @@
  = require select2
  = require moment
  = require humane-rails
-
- = require_tree .
  */
