@@ -9,7 +9,7 @@ class PagesController < ApplicationController
 
   # order of next two lines is very important!
   # before_filter need to be before load_and_authorize_resource
-  before_filter :get_the_page, :except => [:create_new_page_confirmation,:create_new_page]
+  before_filter :get_the_page, :except => [:create_new_page_confirmation, :create_new_page]
   # methods, that need to check permissions
   load_and_authorize_resource :only => [:delete, :rename, :update, :apply_findings, :update_repo]
 
@@ -24,7 +24,8 @@ class PagesController < ApplicationController
     end
     # page not found and user can create page -> create new page by full_title
     if @page.nil? && (can? :create, Page.new)
-      redirect_to "/wiki/create_new_page_confirmation/#{full_title}" and return
+      redirect_to create_new_page_confirmation_page_path(full_title)
+      return
     end
     # if no page created/found
     if !@page
@@ -111,10 +112,6 @@ class PagesController < ApplicationController
 
   end
 
-  def update
-    
-  end
-
   def delete
     result = @page.delete
     # generate flash_message if deleting was successful
@@ -189,11 +186,17 @@ class PagesController < ApplicationController
     respond_with @page.internal_links
   end
 
+  def rename
+    new_name = PageModule.unescape_wiki_url params[:newTitle]
+    @page.update_or_rename(new_name, @page.raw_content, [], current_user)
+
+    
+  end
+
   def update
-    sections = params[:sections]
+    sections = []
     content = params[:content]
-    new_full_title = PageModule.unescape_wiki_url params[:newTitle]
-    result = @page.update_or_rename(new_full_title, content, sections, current_user)
+    result = @page.update_or_rename(@page.full_title, content, sections, current_user)
     update_used_predicates(@page)
     render :json => {
       :success => result,

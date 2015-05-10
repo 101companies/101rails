@@ -1,4 +1,37 @@
-<%= @page.html_content.html_safe %>
+
+<div id='contentTop'>
+  <% if can? :edit, @page %>
+  <div id='topEditBar' class='editBar'>
+    <div class="btn-toolbar notEditing" style="display: block;">
+      <div class="btn-group">
+        <a href='<%= edit_page_path(@page.full_title) %>' class="editbutton  btn btn-small" id="pageEditButton">
+          <i class="icon-pencil"></i>
+          <strong class="editbuttontext"> Edit</strong>
+        </a>
+        <button class="editbutton  btn btn-small" id="pageRenameButton">
+          <i class="icon-share-alt"></i>
+          <strong class="editbuttontext"> Rename</strong>
+        </button>
+        <button class="editbutton  btn btn-small" disabled id="pageDeleteButton">
+          <i class="icon-trash"></i><strong> Delete</strong>
+        </button>
+        <button class="editbutton  btn btn-small" disabled id="sectionAddButton">
+          <i class="icon-plus"></i><strong> Add Section</strong>
+        </button>
+      </div>
+     </div>
+  </div>
+  <% end %>
+
+  <div id="title">
+    <h1><%= @page.title.sub '@', '101' %></h1>
+  </div>
+
+</div>
+
+<div id='sections'>
+  <%= @page.html_content.html_safe %>
+</div>
 
 <div class='additional-section'>
   <div class="section" id="backlinks" style="display: block;">

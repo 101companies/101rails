@@ -50,12 +50,15 @@ Wiki::Application.routes.draw do
   end
 
   # pages routes
-  scope 'wiki' do
-    get '/' => redirect("/wiki/@project")
-    match '/create_new_page/:id' => 'pages#create_new_page', :constraints => { :id => /.*/ }, :as => :page
-    match '/create_new_page_confirmation/:id' => 'pages#create_new_page_confirmation', :constraints => { :id => /.*/ }, :as => :page
-    match '/:id/edit' => 'pages#edit'
-    match '/:id' => 'pages#show', :as => :page
+  resources :pages, path: 'wiki' do
+    # get '/' => redirect("/wiki/@project")
+    get :create_new_page, :on => :member # => 'pages#create_new_page', :constraints => { :id => /.*/ }, :as => :page
+    get :create_new_page_confirmation, :on => :member  # => 'pages#create_new_page_confirmation', :constraints => { :id => /.*/ }, :as => :page
+
+    # match '/:id/edit' => 'pages#edit'
+    # match '/:id/history' => 'pages#history'
+    # match '/:id/update' => 'pages#update'
+    # match '/:id' => 'pages#show', :as => :page
   end
 
   # routes for work with history

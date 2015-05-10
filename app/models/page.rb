@@ -207,7 +207,6 @@ class Page
                                  :user => user
 
     self.raw_content = content
-    # self.db_sections = []
     # sections
     # unescape new title to nice readable url
     new_title = PageModule.unescape_wiki_url new_title
