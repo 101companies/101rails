@@ -46,7 +46,7 @@
   $(function(){
 
     $('#page-changes-tab-link').on('click', function(){
-      window.reloadHistory();
+      //window.reloadHistory();
     });
 
     $('#page-tab-link, #repo-tab-link').on('click', function(){
@@ -55,6 +55,7 @@
 
     window.pageId = "#{@page.id}"
 
+   /*
     window.reloadHistory = function () {
       $.ajax({
         url: '/page_changes/all/'+ window.pageId,
@@ -64,6 +65,6 @@
           window.prepareCompareRevisionUI();
         }
       })
-    };
+    };*/
 
   });

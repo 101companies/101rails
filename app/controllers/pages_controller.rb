@@ -37,6 +37,9 @@ class PagesController < ApplicationController
         format.json { render :json => {success: false}, :status => 404 }
       end
     end
+
+    # get rdf
+    @rdf = get_rdf_json(@page.full_title, true)
   end
 
   def create_new_page
@@ -188,9 +191,11 @@ class PagesController < ApplicationController
 
   def rename
     new_name = PageModule.unescape_wiki_url params[:newTitle]
-    @page.update_or_rename(new_name, @page.raw_content, [], current_user)
-
-    
+    result = @page.update_or_rename(new_name, @page.raw_content, [], current_user)
+    render :json => {
+      success: result,
+      newTitle: @page.url
+    }
   end
 
   def update

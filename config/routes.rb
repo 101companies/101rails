@@ -54,6 +54,7 @@ Wiki::Application.routes.draw do
     # get '/' => redirect("/wiki/@project")
     get :create_new_page, :on => :member # => 'pages#create_new_page', :constraints => { :id => /.*/ }, :as => :page
     get :create_new_page_confirmation, :on => :member  # => 'pages#create_new_page_confirmation', :constraints => { :id => /.*/ }, :as => :page
+    put :rename, on: :member
 
     # match '/:id/edit' => 'pages#edit'
     # match '/:id/history' => 'pages#history'
