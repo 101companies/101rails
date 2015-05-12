@@ -122,26 +122,7 @@ class Page
   def parse(content = self.raw_content)
     parsed_page = self.get_parser content
     parsed_page.sections.first.auto_toc = false
-    #begin
-      html = parsed_page.to_html
-   # rescue
-     # html = ""
-    #end
-    # mark empty or non-existing page with class missing-link (red color)
-    parsed_page.internal_links.each do |link|
-      nice_link = PageModule.url link
-      used_page = PageModule.find_by_full_title nice_link
-      # if not found page or it has no content
-      # set in class_attribute additional class for link (mark with red)
-      class_attribute = (used_page.nil? || used_page.raw_content.nil? || used_page.raw_content.strip == "") ?
-          'class="missing-link"' : ''
-      # puts link
-      # puts nice_link
-      # replace page links in html
-      used_page ? popup = used_page.get_headline : popup = ""
-      html.gsub! "<a href=\"#{link}\"", "<a #{class_attribute}"+
-          "data-original-title=\"#{popup}\" href=\"/wiki/#{nice_link}\""
-    end
+    html = parsed_page.to_html
     return html.html_safe
   end
 

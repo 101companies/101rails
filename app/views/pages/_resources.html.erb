@@ -1,0 +1,54 @@
+
+<%
+
+# annotate resource name
+resources.map do |triple|
+  triple[:name] = triple[:node].split('/')[2]
+end
+
+# group triples
+resources = resources.inject({}) do |all, triple|
+  name = triple[:name]
+  if all[name]
+    all[name] = all[name] + [triple]
+  else
+    all[name] = [triple]
+  end
+  all
+end
+
+%>
+<% resources.each do |_, triples| %>
+<div class="resource" data-toggle="<%= triples.first[:name] %>">
+
+  <h5 class="resourcename"><ul><li><%= triples.first[:name] %></li></ul></h5>
+  <br>
+  <div id="<%= triples.first[:name] %>" class="resourcebar collapse" style="height: auto">
+    <% triples.each do |triple| %>
+    <span class="resourcebox nonbookresource" data-toggle="collapse resource" data-original-title="" title="">
+      <div class="subject label">this</div>
+      <div class="predicate"><%= triple[:predicate] %></div>
+      <a href="<%= triple[:node] %>"><%= triple[:node] %></a>
+
+    </span>
+    <% end %>
+  </div>
+</div>
+<% end %>
+
+<% books.each do |book| %>
+<% next if book['error'] %>
+<div class="resource" data-toggle="<%= book['fullName'] %>">
+
+  <h5 class="resourcename"><ul><li><%= book['fullName'] %></li></ul></h5>
+  <br>
+  <div id="<%= book['fullName'] %>" class="resourcebar collapse" style="height: auto">
+    <% book['secondary'].each do |chapter| %>
+    <span class="resourcebox nonbookresource" data-toggle="collapse resource" data-original-title="" title="">
+      <a href="<%= chapter['full'] %>"><%= chapter['chapter'] %></a>
+
+    </span>
+    <% end %>
+  </div>
+</div>
+<% end %>

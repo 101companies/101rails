@@ -54,59 +54,19 @@
       <h2 class='headline'>Metadata</h2>
     </div>
 
-    <div class='section-content-container'>
-      <div class='section-content'>
-        <div class='section-content-parsed'>
-          <% @rdf.each do |triple| %>
-            <div class='triple'>
-              <% if triple[:direction] == 'OUT' %>
-                <div class='arrow'>
-                  ◀
-                </div>
-                <div class='subject label'>
-                  this
-                </div>
-                <div class='predicate'>
-                  <%= triple[:predicate] %>
-                </div>
-                <div class="object label">
-                  <a href="wiki/../<%= triple[:node] %>">
-                    <%= triple[:node] %>
-                  </a>
-                </div>
-              <% else %>
-                <div class='arrow'>
-                  ◀
-                </div>
-                <div class='subject label'>
-                  <a href="wiki/../<%= triple[:node] %>">
-                    <%= triple[:node] %>
-                  </a>
-                </div>
-                <div class='predicate'>
-                  <%= triple[:predicate] %>
-                </div>
-                <div class="object label">
-                  this
-                </div>
-              <% end %>
-              <br>
-            </div>
-          <% end %>
-        </div>
-      </div>
-    </div>
+    <%= render 'triples', triples: @rdf, hover_show: false %>
 
   </div>
 
 </div>
 
-<div class='additional-section'>
+<% if @page.backlinks.count > 0 %>
+<div class='additional-sections'>
   <div class="section" id="backlinks" style="display: block;">
      <h2>Backlinks</h2>
 
      <div class='backlinks-body'>
-       <% @page.backlinks.map do |link| %>
+       <% @page.backlinks.each do |link| %>
          <a href="<%= '/wiki/' + link.sub(' ', '_') %>">
            <span class="label">
              <%= link %>
@@ -117,19 +77,31 @@
 
   </div>
 </div>
+<% end %>
 
-<script type='text/javascript'>
-$(document).ready(function() {
-  $('#renamePageButton').click(function() {
-    $.ajax({
-      url: '<%= rename_page_path(@page.full_title) %>',
-      type: 'PUT',
-      data: {
-        newTitle: $('#newTitle').val()
-      }
-    }).done(function(data) {
-      window.location.pathname = '/wiki/' + data.newTitle;
-    })
-  });
-});
-</script>
+<% if @resources.count > 0 %>
+<div class='addtional-sections' id='last-section'>
+
+  <div class='section' id='resources' style='display: block;'>
+    <h2 class='headline'>Resources</h2>
+
+    <%= render 'resources', resources: @resources, books: @books %>
+  </div>
+</div>
+<% end %>
+
+<hr>
+
+<div id="infofooter">
+  <div class='history'>
+    <% @change = @page.get_last_change %>
+    <% if @change[:created_at] %>
+    <img class="small_avatar" height="24" src="<%= @change[:user_pic] %>" width="24">
+    <a href="mailto:<%= @change[:user_email] %>"><%= @change[:user_name] %></a>
+
+    edited this article at
+    <%= l @change[:created_at] %>
+    <% end %>
+
+  </div>
+</div>

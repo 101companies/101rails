@@ -1,0 +1,56 @@
+<div class='section-content-container'>
+  <div class='section-content'>
+    <div class='section-content-parsed'>
+      <% triples.each do |triple| %>
+        <div class='triple'>
+          <% if triple[:direction] == 'OUT' %>
+            <div class='arrow'>
+              ◀
+            </div>
+            <div class='subject label'>
+              this
+            </div>
+            <div class='predicate'>
+              <%= triple[:predicate] %>
+            </div>
+            <div class="object label">
+              <%
+              if triple[:node].start_with? 'http://'
+                link = triple[:node]
+              else
+                link = 'wiki/../' + triple[:node]
+              end
+              %>
+              <a href="<%= link %>">
+                <%= triple[:node] %>
+              </a>
+            </div>
+          <% else %>
+            <div class='arrow'>
+              ▶
+            </div>
+            <div class='subject label'>
+              <%
+              if triple[:node].start_with? 'http://'
+                link = triple[:node]
+              else
+                link = 'wiki/../' + triple[:node]
+              end
+              %>
+              <a href="<%= link %>">
+                <%= triple[:node] %>
+              </a>
+            </div>
+            <div class='predicate'>
+              <%= triple[:predicate] %>
+            </div>
+            <div class="object label">
+              this
+            </div>
+            <% end %>
+          <br>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

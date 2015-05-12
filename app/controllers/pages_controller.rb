@@ -40,6 +40,30 @@ class PagesController < ApplicationController
 
     # get rdf
     @rdf = get_rdf_json(@page.full_title, true)
+
+    @rdf = @rdf.sort do |x,y|
+      if x[:predicate] == y[:predicate]
+        x[:node] <=> y[:node]
+      else
+        x[:predicate] <=> y[:predicate]
+      end
+    end
+
+    @resources = @rdf.select do |triple|
+      triple[:node].start_with? 'http://'
+    end
+
+    @rdf = @rdf.select do |triple|
+      not triple[:node].start_with? 'http://'
+    end
+
+    url = "http://worker.101companies.org/services/termResources/#{@page.full_title}.json"
+    url = URI.encode url
+    url = URI(url)
+    response = Net::HTTP.get url
+
+    @books = JSON::parse response
+
   end
 
   def create_new_page
