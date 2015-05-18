@@ -136,7 +136,12 @@ class PagesController < ApplicationController
   # end
 
   def edit
+    @pages = Page.all.map &:full_title
 
+    url = "http://worker.101companies.org/data/dumps/wiki-predicates.json"
+    url = URI.encode url
+    url = URI(url)
+    @predicates = JSON::parse(Net::HTTP.get url)
   end
 
   def delete

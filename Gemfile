@@ -119,3 +119,5 @@ gem 'eventmachine', '1.0.4'
 gem 'em-http-request', '1.1.2'
 
 # gem 'syck'
+
+gem 'react-rails', '~> 1.0'
