@@ -114,6 +114,10 @@
           'fragment': {start: "<fragment url='URL_TO_FRGAMENT' explore='true'/>", end: ""}
         };
 
+        $('#pageCancelButton').click(function() {
+          history.back();
+        });
+
         $('#pageSaveButton').click(function() {
           var content = $('#pageeditor').val();
 
