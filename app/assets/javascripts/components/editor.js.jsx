@@ -45,7 +45,7 @@ var Editor = React.createClass({
     this.editor.setTheme('ace/theme/'+this.props.theme);
     this.editor.setFontSize(this.props.fontSize);
     this.editor.on('change', this.onChange);
-    this.editor.setValue(this.props.value);
+    this.editor.setValue(this.props.value, -1);
     this.editor.renderer.setShowGutter(this.props.showGutter);
     this.editor.setShowPrintMargin(this.props.setShowPrintMargin);
 

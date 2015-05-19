@@ -49,9 +49,9 @@ window.PageEditor = React.createClass({
   onChangeTriples: function(triples) {
     var pageWithoutMetadata = this.state.rawContent.substring(0, this.state.rawContent.indexOf('== Metadata =='));
 
-    var metadata = '== Metadata ==\n' + triples.map(function(triple) {
+    var metadata = '== Metadata ==\n\n' + triples.map(function(triple) {
       return '* [[' + triple.predicate + '::' + triple.object + ']]';
-    }).join('\n');
+    }).join('\n') + '\n\n';
 
     this.setState({ rawContent: pageWithoutMetadata + metadata });
   },
