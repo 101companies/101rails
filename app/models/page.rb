@@ -42,25 +42,38 @@ class Page
     self.page_title_namespace = self.namespace.to_s + ':' + self.title.to_s
     # fill used_links with links in page
     # parse content and get internal links
-    begin
-      # this produces internal_links
-      self.html_content = self.parse
-    rescue
-      Rails.logger.info "Failed to create html for page #{self.full_title}"
-    end
+
+    # removed begin ... rescue, if we cant render a page, it is a 500!
+    self.html_content = self.parse
+
     self.subresources = []
     self.used_links   = []
     # these are the links which are used in sections annotated as subresources of the page
+    # self.get_parser.section_list.each do |s|
+    #   p = WikiCloth::Parser.new(:data => s.wikitext, :noedit => true)
+    #   p.to_html
+    #   l = p.internal_links.map { |link| PageModule.unescape_wiki_url link }
+    #   if s.is_resource_section
+    #     self.subresources << {s.title => l}
+    #   else
+    #     self.used_links << l
+    #   end
+    # end
+    # we hack this for now
     self.get_parser.section_list.each do |s|
-      p = WikiCloth::Parser.new(:data => s.wikitext, :noedit => true)
-      p.to_html
-      l = p.internal_links.map { |link| PageModule.unescape_wiki_url link }
+      links = s.scan /\[\[[a-zA-Z |]*\]\]/
+      links = links.map do |link|
+        link.sub('[[', '').sub(']]', '').sub(/\|.*/, '')
+      end
+      links = links.map { |link| PageModule.unescape_wiki_url link }
       if s.is_resource_section
         self.subresources << {s.title => l}
       else
-        self.used_links << l
+        self.used_links << links
       end
+
     end
+
     self.used_links.flatten!
     self.headline = get_headline_html_content
   end
@@ -120,9 +133,18 @@ class Page
   end
 
   def parse(content = self.raw_content)
-    parsed_page = self.get_parser content
+    parsed_page = self.get_parser
     parsed_page.sections.first.auto_toc = false
     html = parsed_page.to_html
+
+    parsed_page.internal_links.each do |link|
+      link = link
+      nice_link = PageModule.url link
+
+      html.gsub! "<a href=\"#{link}\"", "<a "+
+          "href=\"/wiki/#{nice_link}\""
+    end
+
     return html.html_safe
   end
 
@@ -210,14 +232,16 @@ class Page
     PageModule.url full_title
   end
 
-  def get_parser(content=nil)
+  def get_parser
+    return @parser if @parser
+
     WikiCloth::Parser.context = {:ns => (MediaWiki::send :upcase_first_char, self.namespace), :title => self.title}
-    parser = WikiCloth::Parser.new(:data => ((content.nil?) ? self.raw_content : content), :noedit => true)
+    @parser = WikiCloth::Parser.new(data: self.raw_content, :noedit => true)
     # this will produce sections and links
 
-    parser.to_html
+    @parser.to_html
 
-    parser
+    @parser
   end
 
   def semantic_links

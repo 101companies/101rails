@@ -9,7 +9,7 @@
 
   - if @page.namespace != "Contributor"
     %li
-      %a#discovery-tab-link{:target => '_blank'} 101explorer
+      %a#discovery-tab-link{:href => 'http://101companies.org/resources?format=html&wikititle=' + @page.full_title } 101explorer
     %li
       %a#repo-tab-link.tab-link{:href => "#repo", "data-toggle" => 'tab'} 101repo
   - else

@@ -171,6 +171,8 @@ class PagesController < ApplicationController
           redirect_to '/wiki/'+ good_link and return
         end
         # no redirect? -> render the page
+        # render the page first
+        @page.save!
         render :html => @page
       }
       # format.json { render :json => {
