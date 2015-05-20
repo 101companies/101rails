@@ -4,20 +4,9 @@ $(document).ready(function() {
 
   // hide list
   metadata.parent().next().hide();
+  metadata.parent().next().next().hide();
+  metadata.parent().next().next().next().hide();
   metadata.parent().hide();
-
-  // make resource toggle work
-  var hoverIn = function() {
-    var id = $(this).data('toggle');
-    $('#' + id).css('height', 'auto');
-  };
-
-  var hoverOut = function() {
-    var id = $(this).data('toggle');
-    $('#' + id).css('height', '0px');
-  };
-
-  $('.resource').hover(hoverIn, hoverOut);
 
   $('#renamePageButton').click(function() {
     $.ajax({
