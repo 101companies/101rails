@@ -1,3 +1,8 @@
+<script type='text/javascript'>
+window.pagePath = '<%= page_path(@page.full_title) %>';
+window.renamePath = '<%= rename_page_path(@page.full_title) %>'
+</script>
+
 <div id="renameModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
@@ -29,11 +34,8 @@
           <i class="icon-share-alt"></i>
           <strong class="editbuttontext"> Rename</strong>
         </a>
-        <button class="editbutton  btn btn-small" disabled id="pageDeleteButton">
+        <button class="editbutton  btn btn-small" id="pageDeleteButton">
           <i class="icon-trash"></i><strong> Delete</strong>
-        </button>
-        <button class="editbutton  btn btn-small" disabled id="sectionAddButton">
-          <i class="icon-plus"></i><strong> Add Section</strong>
         </button>
       </div>
      </div>

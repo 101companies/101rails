@@ -139,7 +139,7 @@ class PagesController < ApplicationController
 
   end
 
-  def delete
+  def destroy
     result = @page.delete
     # generate flash_message if deleting was successful
     if result

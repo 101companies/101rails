@@ -8,9 +8,29 @@ $(document).ready(function() {
   metadata.parent().next().next().next().hide();
   metadata.parent().hide();
 
+  $('#pageDeleteButton').click(function() {
+    var ok = confirm("Are you sure?");
+    if(ok == true) {
+      $.ajax({
+        url: window.pagePath,
+        type: 'DELETE'
+      }).done(function(data) {
+        if(data.success) {
+          window.location.href = '/wiki/@project';
+        }
+        else {
+          alert(data.success);
+        }
+      });
+    }
+    else {
+        // do nothing
+    }
+  });
+
   $('#renamePageButton').click(function() {
     $.ajax({
-      url: '<%= rename_page_path(@page.full_title) %>',
+      url: window.renamePath,
       type: 'PUT',
       data: {
         newTitle: $('#newTitle').val()
