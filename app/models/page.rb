@@ -218,7 +218,7 @@ class Page
       self.rename(new_title, page_change)
     end
     page_change.save
-    self.save
+    self.save!
   end
 
   def rewrite_internal_links(from, to)
