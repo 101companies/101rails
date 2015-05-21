@@ -78,6 +78,11 @@ class Page
     self.headline = get_headline_html_content
   end
 
+  def render
+    preparing_the_page
+    self.parse
+  end
+
   def get_metadata_section
     self.sections.select { |section| section["title"] == 'Metadata' }.first
   end
@@ -233,15 +238,13 @@ class Page
   end
 
   def get_parser
-    return @parser if @parser
-
     WikiCloth::Parser.context = {:ns => (MediaWiki::send :upcase_first_char, self.namespace), :title => self.title}
-    @parser = WikiCloth::Parser.new(data: self.raw_content, :noedit => true)
+    parser = WikiCloth::Parser.new(data: self.raw_content, :noedit => true)
     # this will produce sections and links
 
-    @parser.to_html
+    parser.to_html
 
-    @parser
+    parser
   end
 
   def semantic_links

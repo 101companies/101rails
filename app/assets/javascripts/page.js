@@ -3,9 +3,11 @@ $(document).ready(function() {
   var metadata = $('#Metadata');
 
   // hide list
-  metadata.parent().next().hide();
-  metadata.parent().next().next().hide();
-  metadata.parent().next().next().next().hide();
+  metadata.parent().nextAll("ul").hide();
+  metadata.parent().nextAll("p").hide();
+  metadata.parent().nextAll("pre").hide();
+  // metadata.parent().next().next().hide();
+  // metadata.parent().next().next().next().hide();
   metadata.parent().hide();
 
   $('#pageDeleteButton').click(function() {

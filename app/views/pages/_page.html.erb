@@ -49,7 +49,7 @@ window.renamePath = '<%= rename_page_path(@page.full_title) %>'
 </div>
 
 <div id='sections'>
-  <%= @page.html_content.html_safe %>
+  <%= @page.render.html_safe %>
 
   <div class='section' id='metasection'>
     <div class='headlinecontainer'>
