@@ -6,12 +6,11 @@ class Page
   include Mongoid::Timestamps
   include Mongoid::Search
 
-  search_in :title, :namespace, :page_title_namespace, :raw_content
+  search_in :title, :namespace, :raw_content
 
   field :title, type: String
   # namespace for page, need to be set
   field :namespace, type: String
-  field :page_title_namespace, type: String
   field :raw_content, type: String, :default => ''
   field :html_content, type: String
   field :used_links, type: Array
@@ -27,7 +26,6 @@ class Page
   has_many :matching_service_requests
   has_and_belongs_to_many :users, :class_name => 'User', :inverse_of => :pages
 
-  validates_uniqueness_of :page_title_namespace
   validates_presence_of :title
   validates_presence_of :namespace
 
@@ -38,12 +36,6 @@ class Page
   end
 
   def preparing_the_page
-    # prepare field namespace + title
-    if self.namespace.to_s == 'Concept'
-      self.page_title_namespace = self.title.to_s
-    else
-      self.page_title_namespace = self.namespace.to_s + ':' + self.title.to_s
-    end
     # fill used_links with links in page
     # parse content and get internal links
 
