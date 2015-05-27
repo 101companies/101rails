@@ -39,7 +39,11 @@ class Page
 
   def preparing_the_page
     # prepare field namespace + title
-    self.page_title_namespace = self.namespace.to_s + ':' + self.title.to_s
+    if self.namespace.to_s == 'Concept'
+      self.page_title_namespace = self.title.to_s
+    else
+      self.page_title_namespace = self.namespace.to_s + ':' + self.title.to_s
+    end
     # fill used_links with links in page
     # parse content and get internal links
 
@@ -48,17 +52,6 @@ class Page
 
     self.subresources = []
     self.used_links   = []
-    # these are the links which are used in sections annotated as subresources of the page
-    # self.get_parser.section_list.each do |s|
-    #   p = WikiCloth::Parser.new(:data => s.wikitext, :noedit => true)
-    #   p.to_html
-    #   l = p.internal_links.map { |link| PageModule.unescape_wiki_url link }
-    #   if s.is_resource_section
-    #     self.subresources << {s.title => l}
-    #   else
-    #     self.used_links << l
-    #   end
-    # end
     # we hack this for now
     self.get_parser.section_list.each do |s|
       links = s.scan /\[\[[a-zA-Z_\/\.\: |]*\]\]/
