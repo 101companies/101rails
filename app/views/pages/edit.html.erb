@@ -1,18 +1,25 @@
 <div id='page'>
   <div id='contentTop'>
     <div id="topEditBar" class="editBar">
-     <div class="btn-toolbar editing" style="display: block;">
-      <div class="btn-group">
-       <div class="editButton btn btn-small" id="pageCancelButton">
-        <i class="icon-remove"></i>
-        <strong>Cancel</strong>
-       </div>
-       <div class="editButton btn btn-small" id="pageSaveButton">
-        <i class="icon-ok"></i>
-        <strong>Save</strong>
-       </div>
+      <div class="btn-toolbar editing" style="display: block;">
+        <div class="btn-group">
+          <% if can? :edit, @page %>
+          <div class="editButton btn btn-small" id="pageCancelButton">
+            <i class="icon-remove"></i>
+            <strong>Cancel</strong>
+          </div>
+          <div class="editButton btn btn-small" id="pageSaveButton">
+            <i class="icon-ok"></i>
+            <strong>Save</strong>
+          </div>
+          <% else %>
+          <div class="editButton btn btn-small" id="pageCancelButton">
+            <i class="icon-remove"></i>
+            <strong>Back</strong>
+          </div>
+          <% end %>
+        </div>
       </div>
-     </div>
     </div>
 
     <div id='title'>
@@ -97,6 +104,9 @@
         editor.on('change', function() {
           self.editor.replaceAll('[[@', { needle: '[[101' });
         });
+        <% unless can? :edit, @page %>
+        editor.setReadOnly(true)
+        <% end %>
 
         var options = {
           'bold': {start: "'''", end: "'''"},

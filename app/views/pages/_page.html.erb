@@ -20,12 +20,11 @@ window.renamePath = '<%= rename_page_path(@page.full_title) %>'
   </div>
 </div>
 
-
 <div id='contentTop'>
-  <% if can? :edit, @page %>
   <div id='topEditBar' class='editBar'>
     <div class="btn-toolbar notEditing" style="display: block;">
       <div class="btn-group">
+        <% if can? :edit, @page %>
         <a href='<%= edit_page_path(@page.full_title) %>' class="editbutton  btn btn-small" id="pageEditButton">
           <i class="icon-pencil"></i>
           <strong class="editbuttontext"> Edit</strong>
@@ -37,10 +36,15 @@ window.renamePath = '<%= rename_page_path(@page.full_title) %>'
         <button class="editbutton  btn btn-small" id="pageDeleteButton">
           <i class="icon-trash"></i><strong> Delete</strong>
         </button>
+        <% else %>
+        <a href='<%= edit_page_path(@page.full_title) %>' class="editbutton  btn btn-small" id="showSourceButton">
+          <i class="icon-share-alt"></i>
+          <strong class="editbuttontext"> Show Source</strong>
+        </a>
+        <% end %>
       </div>
      </div>
   </div>
-  <% end %>
 
   <div id="title">
     <h1><%= @page.full_title.sub '@', '101' %></h1>
