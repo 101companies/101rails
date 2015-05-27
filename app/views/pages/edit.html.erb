@@ -30,7 +30,7 @@
 
   <div id='sections'>
     <div id="sections-source" style="height: 400px; width: 100%;">
-
+      <% if can? :edit, @page %>
       <div id='edit-options' class="editormenu btn-group">
 
         <button data-editoraction="bold" class="btn btn-small">
@@ -88,7 +88,7 @@
         </button>
 
         </div>
-
+        <% end %>
       <textarea id='pageeditor' style='width: 100%; height: 100%'>
         <%= @page.raw_content %>
       </textarea>
