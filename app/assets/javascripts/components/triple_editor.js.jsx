@@ -1,15 +1,25 @@
 var TripleEditor = React.createClass({
 
   render: function() {
+    if(!this.props.triple.predicate || !this.props.predicates[this.props.triple.predicate]) {
+      return <div></div>;
+    }
+
     var predicateOptions = $.map(this.props.predicates, function(index, key) {
       return <option value={key} key={key}>{key}</option>;
     });
 
+    var objectOptions = $.map(this.props.predicates[this.props.triple.predicate], function(object) {
+      return <option value={object} key={object}>{object}</option>
+    });
+
     return <div>
-      <select onChange={this.onChange} ref='predicateInput' value={this.props.triple.predicate}>
+      <select onChange={this.onPredicateChange} ref='predicateInput' value={this.props.triple.predicate}>
         {predicateOptions}
       </select>
-      <input onChange={this.onChange} type='text' ref='objectInput' value={this.props.triple.object} />
+      <select onChange={this.onObjectChange} ref='objectInput' value={this.props.triple.object}>
+        {objectOptions}
+      </select>
     </div>;
   },
 
@@ -20,11 +30,20 @@ var TripleEditor = React.createClass({
     });
   },
 
-  onChange: function() {
+  onObjectChange: function() {
     this.props.onChange({
       id: this.props.triple.id,
-      predicate: React.findDOMNode(this.refs.predicateInput).value,
+      predicate: this.props.triple.predicate,
       object: React.findDOMNode(this.refs.objectInput).value
+    });
+  },
+
+  onPredicateChange: function() {
+    var predicate = React.findDOMNode(this.refs.predicateInput).value;
+    this.props.onChange({
+      id: this.props.triple.id,
+      predicate: predicate,
+      object: this.props.predicates[predicate][0]
     });
   }
 

@@ -59,12 +59,13 @@ group :development do
   # nice error output
   gem 'better_errors', '1.1.0'
   gem 'binding_of_caller', '0.7.2'
-  # web server
-  gem 'thin', '1.6.2'
   # colorful console
   gem 'wirble', '0.1.3'
   gem 'zeus', '0.15.1'
 end
+
+# web server
+gem 'puma'
 
 gem 'colorize', '0.7.3'
 
