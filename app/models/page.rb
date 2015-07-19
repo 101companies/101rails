@@ -269,7 +269,8 @@ class Page
   end
 
   def backlinks
-    backlinking_pages.map { |page| page.full_title}
+    r = backlinking_pages.map { |page| page.full_title}
+    r.uniq
   end
 
   def section(section)
