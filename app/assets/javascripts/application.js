@@ -36,3 +36,10 @@
  = require humane-rails
  = require page
  */
+
+//= require react
+//= require react_ujs
+//= require classes
+//= require react-input-autosize
+//= require react-select
+//= require components
