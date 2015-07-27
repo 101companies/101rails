@@ -68,7 +68,7 @@ window.PageEditor = React.createClass({
         </div>
       </div>
       <div id="sections">
-        <div id="sections-source" style={{height: '800px', width: '100%' }}>
+        <div id="sections-source" style={{height: '1200px', width: '100%' }}>
           <EditorBar />
           <Editor theme='wiki'
             mode='wiki'
