@@ -8,7 +8,7 @@ end
 
 # DO NOT ADD GEMS WITHOUT GEM NUMBER!
 
-gem 'rails', '3.2.18'
+gem 'rails', '4.2.3'
 
 # send email on error
 gem 'exception_notification', '4.0.1'
@@ -16,29 +16,26 @@ gem 'exception_notification', '4.0.1'
 # twitter bootstrap as sass
 gem 'bootstrap-sass', '2.3.2.2'
 
-group :assets do
-  gem 'sass-rails', '3.2.6'
-  gem 'coffee-rails', '3.2.2'
-  gem 'uglifier', '2.5.0'
-  gem 'compass-rails', '1.0.3'
-end
+gem 'sass-rails'
+gem 'coffee-rails'
+gem 'uglifier'
+gem 'compass-rails'
 
-gem 'rack-mini-profiler'
+gem 'responders', '~> 2.0'
 
 # frontend
-gem 'jquery-rails', '2.1.3'
-gem 'jquery-ui-rails', '3.0.1'
-gem 'rails-backbone', '0.9.10'
-gem 'haml-rails', '0.4'
+gem 'jquery-rails'
+gem 'jquery-ui-rails'
+gem 'haml-rails'
 
 # database
-gem 'mongoid', '3.1.6'
+gem 'mongoid', '~> 5.0.0.beta'
 
 # search engine
-gem 'mongoid_search', '0.3.2'
+gem 'mongoid_search'
 
 # security
-gem 'bcrypt-ruby', '3.1.5'
+gem 'bcrypt-ruby'
 
 # github auth
 gem 'omniauth', '1.2.1'
@@ -48,7 +45,7 @@ gem 'omniauth-github', '1.1.2'
 gem 'octokit', '3.1.0'
 
 # font with bundled icons
-gem 'font-awesome-rails', '3.2.1.3'
+gem 'font-awesome-rails'
 
 # roles and permissions
 gem 'cancan', '1.6.10'
@@ -62,6 +59,7 @@ group :development do
   # colorful console
   gem 'wirble', '0.1.3'
   gem 'zeus', '0.15.1'
+  gem 'rack-mini-profiler'
 end
 
 # web server
@@ -70,11 +68,11 @@ gem 'puma'
 gem 'colorize', '0.7.3'
 
 # admin interface
-gem 'rails_admin', '0.4.9'
+gem 'rails_admin', '0.6.8'
 
 # web-scraping
-gem 'json_pure', '1.8.1'
-gem 'json', '1.8.1'
+gem 'json_pure'
+gem 'json'
 gem 'httparty', '0.13.1'
 
 # work with mediawiki
@@ -90,7 +88,7 @@ gem 'pygments.rb', '0.5.4'
 gem 'closure-compiler', '1.1.10'
 
 # better work with form -> bindings to models
-gem 'simple_form', '2.1.0'
+gem 'simple_form'
 
 # intelligent select
 gem 'select2-rails', '3.5.7'
@@ -106,13 +104,13 @@ gem 'humane-rails'
 
 # deploy tool
 # update only after reading upgrade manual
-gem 'capistrano', '2.15.5'
+# gem 'capistrano', '2.15.5'
 # locking 2 gems to prevent failing updates with capistrano
-gem 'net-ssh', '2.7.0'
-gem 'net-ssh-gateway', '1.2.0'
+# gem 'net-ssh', '2.7.0'
+# gem 'net-ssh-gateway', '1.2.0'
 
 # for wiki-editor
-gem 'aced_rails', '0.2.1', :github => 'tschmorleiz/aced_rails'
+gem 'aced_rails', '0.2.1', :github => 'kevin-klein/aced_rails'
 
 gem 'bootstrap-tour-rails', '0.4.0'
 

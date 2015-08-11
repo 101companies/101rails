@@ -1,6 +1,6 @@
 development:
-  # Configure available database sessions. (required)
-  sessions:
+  # Configure available database clients. (required)
+  clients:
     # Defines the default session. (required)
     default:
       # Defines the name of the default database that Mongoid can connect to.
@@ -59,7 +59,7 @@ development:
     # Ensure all times are UTC in the app side. (default: false)
     # use_utc: false
 test:
-  sessions:
+  clients:
     default:
       database: wiki_test
       hosts:
@@ -67,7 +67,7 @@ test:
       options:
         consistency: :strong
 production:
-  sessions:
+  clients:
     default:
       database: wiki_production
       username: <%= ENV['MONGODB_USER'] %>

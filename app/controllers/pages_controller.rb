@@ -63,7 +63,6 @@ class PagesController < ApplicationController
     response = Net::HTTP.get url
 
     @books = JSON::parse response
-
   end
 
   def create_new_page
@@ -175,8 +174,6 @@ class PagesController < ApplicationController
         if good_link != params[:id]
           redirect_to '/wiki/'+ good_link and return
         end
-        # no redirect? -> render the page
-        render :html => @page
       }
       # format.json { render :json => {
       #   'id'        => @page.full_title,

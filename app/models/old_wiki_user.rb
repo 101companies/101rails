@@ -9,6 +9,6 @@ class OldWikiUser
 
   belongs_to :user
 
-  attr_accessible :email, :name, :user_id
+  # attr_accessible :email, :name, :user_id
 
 end

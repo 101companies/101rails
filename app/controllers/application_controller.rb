@@ -11,7 +11,7 @@ class ApplicationController < ActionController::Base
   end
 
   def landing_page
-    render :nothing => true, :layout => 'landing'
+    render template: 'layouts/landing', layout: false
   end
 
   def contributors_without_github_name
@@ -104,7 +104,7 @@ class ApplicationController < ActionController::Base
   private
   def current_user
     if session[:user_id]
-      @current_user = User.where(:id => session[:user_id]).first
+      @current_user = User.where(id: session[:user_id]).first
     else
       nil
     end

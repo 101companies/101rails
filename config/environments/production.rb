@@ -91,4 +91,6 @@ Wiki::Application.configure do
     password: ENV["GMAIL_PASSWORD"]
   }
 
+  config.eager_load = true
+
 end

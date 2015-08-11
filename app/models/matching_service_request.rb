@@ -13,7 +13,7 @@ class MatchingServiceRequest
   validates_presence_of :page
   validates_presence_of :user
 
-  attr_accessible  :page_id, :user_id
+  # attr_accessible  :page_id, :user_id
 
   # dependent of environment send result of matching service on different ip
   def backping_ip

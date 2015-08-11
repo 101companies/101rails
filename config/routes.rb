@@ -30,7 +30,7 @@ Wiki::Application.routes.draw do
   # tours
   scope 'tours' do
     get '/' => 'tours#index'
-    match '/:title' => 'tours#show'
+    get '/:title' => 'tours#show'
   end
 
   # tours api
@@ -106,8 +106,8 @@ Wiki::Application.routes.draw do
 
   # authentications
   scope 'auth' do
-    match '/github/callback' => 'authentications#create'
-    match '/failure' => 'authentications#failure'
-    match '/local_login' => 'authentications#local_auth'
+    match '/github/callback' => 'authentications#create', via: [:get, :post]
+    match '/failure' => 'authentications#failure', via: [:get, :post]
+    match '/local_login' => 'authentications#local_auth', via: [:get, :post]
   end
 end
