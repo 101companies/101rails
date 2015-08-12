@@ -126,4 +126,64 @@ describe Page do
 
   end
 
+  describe 'update_or_rename' do
+
+    it 'renames page and links to it' do
+      page = create :page
+      abstraction_page = create :abstraction_page
+      user = create :user
+
+      result = abstraction_page.update_or_rename 'Other abstraction', abstraction_page.raw_content, abstraction_page.sections, user
+
+      expect(page.reload.raw_content).to include('other abstraction')
+    end
+
+  end
+
+  describe 'page url' do
+
+    it 'gives url' do
+      page = create :page
+
+      url = page.url
+
+      expect(url).to eq('Contribution:Some_Contribution')
+    end
+
+  end
+
+  describe 'semantic links' do
+
+    it 'lists semantic links' do
+      page = create :page
+
+      links = page.semantic_links
+
+      expect(links).to include('MemberOf::Vocabulary:Programming')
+      expect(links).to include('RelatesTo::Result')
+      expect(links).to include('IsA::Concept')
+    end
+
+    it 'doesnt crash for no metadata section' do
+      page = create :page_without_metadata
+
+      links = page.semantic_links
+
+      expect(links).to eq([])
+    end
+
+  end
+
+  describe 'backlinks' do
+
+    it 'gives backlinks' do
+      page = create :page
+      abstraction_page = create :abstraction_page
+
+      links = abstraction_page.backlinks
+      expect(links).to include('Contribution:Some Contribution')
+    end
+
+  end
+
 end
