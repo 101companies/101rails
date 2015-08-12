@@ -29,7 +29,7 @@ class PagesController < ApplicationController
     end
     # if no page created/found
     if !@page
-      respond_to do |format|
+      return respond_to do |format|
         format.html do
           flash[:error] = "Page wasn't not found. Redirected to main wiki page"
           go_to_homepage
