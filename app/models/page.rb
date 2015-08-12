@@ -16,7 +16,6 @@ class Page
   field :used_links, type: Array
   field :subresources, type: Array
   field :headline, type: String, :default => ''
-  field :db_sections, type: Array
 
   field :worker_findings, type: String
 
@@ -38,7 +37,6 @@ class Page
   def preparing_the_page
     # fill used_links with links in page
     # parse content and get internal links
-
     # removed begin ... rescue, if we cant render a page, it is a 500!
     self.html_content = self.parse
 
@@ -89,7 +87,7 @@ class Page
           "== Metadata ==\n* [[#{triple}]]" : self.raw_content + "\n== Metadata == \n* [[#{triple}]]"
     else
       if !metadata_section['content'].include?(triple)
-        self.raw_content = self.raw_content + "\n* [[#{triple}]]"
+        self.raw_content = self.raw_content.strip + "\n* [[#{triple}]]"
       end
     end
   end
@@ -241,8 +239,6 @@ class Page
   end
 
   def sections
-    return db_sections if db_sections
-
     sections = []
     self.get_parser.sections.first.children.each do |section|
       content_with_subsections = section.wikitext.sub(/\s+\Z/, "")
@@ -258,7 +254,6 @@ class Page
           'html_content' => parsed_html
       }
     end
-    self.db_sections = sections
 
     self.save
     sections

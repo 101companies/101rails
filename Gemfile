@@ -50,7 +50,7 @@ gem 'font-awesome-rails'
 # roles and permissions
 gem 'cancan', '1.6.10'
 
-group :development do
+group :development, :test do
   # remove assets-logs in console
   gem 'quiet_assets', '1.0.2'
   # nice error output
@@ -60,6 +60,10 @@ group :development do
   gem 'wirble', '0.1.3'
   gem 'zeus', '0.15.1'
   gem 'rack-mini-profiler'
+  gem 'rspec-rails', '~> 3.3.0'
+  gem 'mongoid-rspec', '2.3.0.beta'
+  gem 'simplecov', require: false
+  gem 'factory_girl_rails'
 end
 
 # web server
