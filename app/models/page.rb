@@ -22,7 +22,6 @@ class Page
   # relations here
   has_one :repo_link
   has_many :page_changes
-  has_many :matching_service_requests
   has_and_belongs_to_many :users, :class_name => 'User', :inverse_of => :pages
 
   validates_presence_of :title

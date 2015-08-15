@@ -70,38 +70,6 @@ RailsAdmin.config do |config|
 
   end
 
-  config.model 'MatchingServiceRequest' do
-    label 'Submissions'
-    weight -1
-
-    field :page do
-      searchable true
-      read_only true
-    end
-
-    field :user do
-      searchable true
-      read_only true
-    end
-
-    field :created_at do
-      read_only true
-    end
-
-    field :updated_at do
-      read_only true
-    end
-
-    field :sent do
-      read_only true
-    end
-
-    field :analysed do
-      read_only true
-    end
-
-  end
-
   config.model 'PageChange' do
     weight -1
 
