@@ -9,6 +9,7 @@ FactoryGirl.define do
     github_token SecureRandom.hex
     github_name 'test'
     email 'test@test.com'
+    role 'admin'
   end
 
 end

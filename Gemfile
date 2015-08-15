@@ -66,6 +66,8 @@ group :development, :test do
   gem 'factory_girl_rails'
 end
 
+gem 'awesome_print'
+
 # web server
 gem 'puma'
 

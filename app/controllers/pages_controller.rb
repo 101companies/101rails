@@ -102,38 +102,6 @@ class PagesController < ApplicationController
     redirect_to  "/wiki/#{@page.url}"
   end
 
-  # def apply_findings
-  #   JSON.parse(@page.worker_findings).each do |finding|
-  #     finding.keys.each do |finding_key|
-  #       if finding[finding_key]
-  #         finding[finding_key].each do |one_prop|
-  #           predicate_part = finding_key == "features" ? 'implements' : 'uses'
-  #           @page.inject_triple "#{predicate_part}::#{finding_key.singularize.capitalize}:#{one_prop}"
-  #         end
-  #       end
-  #     end
-  #     result = @page.save
-  #     message_type= result ? :success : :error
-  #     message = result ? "You have successfully added to metadata worker findings" :
-  #         "Something was wrong. Please try again later"
-  #     flash[message_type] = message
-  #   end
-  #   redirect_to  "/wiki/#{@page.url}"
-  # end
-  #
-  # def get_rdf
-  #   title = params[:id]
-  #   graph_to_return = RDF::Graph.new
-  #   get_rdf_graph(title, false).each do |st|
-  #     graph_to_return << (st.subject.to_s === "IN" ? (reverse_statement st, title) : st)
-  #   end
-  #   respond_with graph_to_return.dump(:ntriples)
-  # end
-  #
-  # def get_json
-  #   respond_with get_rdf_json(params[:id], params[:directions])
-  # end
-
   def edit
     @pages = Page.all.map &:full_title
 
@@ -144,6 +112,8 @@ class PagesController < ApplicationController
   end
 
   def destroy
+    authorize! :destroy, @page
+
     result = @page.delete
     # generate flash_message if deleting was successful
     if result
@@ -155,7 +125,7 @@ class PagesController < ApplicationController
       page_change.save
       flash[:notice] = 'Page ' + @page.full_title + ' was deleted'
     end
-    render :json => {:success => result}
+    render json: { success: result }
   end
 
   def show
@@ -175,13 +145,6 @@ class PagesController < ApplicationController
           redirect_to '/wiki/'+ good_link and return
         end
       }
-      # format.json { render :json => {
-      #   'id'        => @page.full_title,
-      #   'content'   => @page.raw_content,
-      #   'sections'  => @page.sections,
-      #   'history'   => @page.get_last_change,
-      #   'backlinks' => @page.backlinks
-      # }}
     end
   end
 

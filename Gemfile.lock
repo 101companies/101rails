@@ -66,6 +66,7 @@ GEM
       tzinfo (~> 1.1)
     addressable (2.3.8)
     arel (6.0.3)
+    awesome_print (1.6.1)
     babel-source (5.8.19)
     babel-transpiler (0.7.0)
       babel-source (>= 4.0, < 6)
@@ -383,6 +384,7 @@ PLATFORMS
 
 DEPENDENCIES
   aced_rails (= 0.2.1)!
+  awesome_print
   bcrypt-ruby
   better_errors (= 1.1.0)
   binding_of_caller (= 0.7.2)
