@@ -102,6 +102,6 @@ Wiki::Application.routes.draw do
   scope 'auth' do
     match '/github/callback' => 'authentications#create', via: [:get, :post]
     match '/failure' => 'authentications#failure', via: [:get, :post]
-    match '/local_login' => 'authentications#local_auth', via: [:get, :post]
+    match '/local_login/:admin' => 'authentications#local_auth', via: [:get, :post]
   end
 end
