@@ -1,5 +1,3 @@
-= content_for :title, "Creating new contribution"
-
 %div#help_login
 
   %h1
@@ -12,26 +10,24 @@
 
     %div.half-right
       %b 1.
-      Before you will begin contribution process you need to be logged in with your GitHub profile.
+      Before you will begin contributing process you need to be logged in with your Github profile.
       If you don't have such account - create it now.
       %br
       %a{:href => "https://github.com/signup/free", :target=>"_blank"} It's really simple and absolutely free!
 
   %div#step2.step
     %b 2.
-    Now, please ensure that you have added
-    %b a name
-    and
-    %b a public email address
+    Now, please ensure, that you have added
+    %b  public email
     to your profile account
     %a{:href=>'https://github.com/settings/profile', :target=>"_blank"}
-      on the settings page
+      on settings page
     %p
-    %img{:src => image_path('readme_profile.png')}
+    %img{:src => image_path('github-public-email.png')}
 
 
   %div#step3.step
     %b 3.
-    After completing these two steps you can
+    After doing this 2 steps you can finally
     %a{ href: "/auth/github" }
-      %input{:class => "btn btn-success", :type => "submit", :value => "start contributing"}
+      %input{:class => "btn btn-success", :type => "submit", :value => "Start contributing"}
