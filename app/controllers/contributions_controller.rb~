@@ -43,7 +43,7 @@ class ContributionsController < ApplicationController
     @contribution_page.repo_link = @repo_link
     
     @contribution_page.save
-    Mailer.created_contribution(@contribution_page).deliver
+    #Mailer.created_contribution(@contribution_page).deliver
     redirect_to  "/wiki/#{@contribution_page.nice_wiki_url}"
   end
 
