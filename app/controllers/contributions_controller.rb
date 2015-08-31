@@ -41,10 +41,10 @@ class ContributionsController < ApplicationController
     @repo_link.user = current_user
     @repo_link.namespace
     @contribution_page.repo_link = @repo_link
-    
+    @repo_link.save
     @contribution_page.save
     #Mailer.created_contribution(@contribution_page).deliver
-    redirect_to  "/wiki/#{@contribution_page.nice_wiki_url}"
+    redirect_to  "/wiki/#{@contribution_page.url}"
   end
 
   def new
