@@ -29,25 +29,21 @@ class ContributionsController < ApplicationController
       redirect_to action: 'new' and return
     end
     # define github url to repo
-    # TODO: check contrb url+folder via validation
-    @contribution_page.contribution_url = 'https://github.com/' + params[:contrb_repo_url].first
+    @repo_link = RepoLink.new
+    @repo_link.repo = params[:contrb_repo_url].first
     # set folder to '/' if no folder given
-    @contribution_page.contribution_folder = params[:contrb_folder].empty?  ? '/' : params[:contrb_folder]
+    @repo_link.folder = params[:contrb_folder].empty?  ? '/' : params[:contrb_folder]
     unless params[:contrb_description].empty?
       @contribution_page.raw_content = "== Headline ==\n\n" + params[:contrb_description]
     else
-      @contribution_page.raw_content = "== Headline ==\n\n" + @contribution_page.default_contribution_text
+      @contribution_page.raw_content = "== Headline ==\n\n" + default_contribution_text
     end
-    @contribution_page.contributor = current_user
-    # send request to matching service
-    unless @contribution_page.analyze_request
-      flash[:error] = "You have created new contribution. Request on analyze service wasn't successful. Please retry it later"
-    else
-      flash[:notice] = "You have created new contribution. You will retrieve an email, when it will be analyzed."
-    end
-    @contribution_page.inject_namespace_triple
+    @repo_link.user = current_user
+    @repo_link.namespace
+    @contribution_page.repo_link = @repo_link
+    
     @contribution_page.save
-    Mailer.created_contribution(@contribution_page).deliver
+    #Mailer.created_contribution(@contribution_page).deliver
     redirect_to  "/wiki/#{@contribution_page.nice_wiki_url}"
   end
 
@@ -73,4 +69,9 @@ class ContributionsController < ApplicationController
 
   end
 
+  def default_contribution_text
+    "You have created new contribution using [https://github.com Github]. " +
+    "Source code for this contribution you can find here]. " +
+    "Please replace this text with something more meaningful."
+  end
 end
