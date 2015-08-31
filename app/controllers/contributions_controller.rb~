@@ -1,5 +1,20 @@
 class ContributionsController < ApplicationController
 
+  def analyze
+    begin
+      @contribution_page = Page.find(params[:id])
+      # write worker findings
+      findings = []
+      %w(languages concepts technologies features).map do |index|
+        findings << { index => params[index] } if params[index]
+      end
+      @contribution_page.worker_findings = findings.to_json.to_s
+      @contribution_page.save!
+      Mailer.analyzed_contribution(@contribution_page).deliver
+    end
+    render nothing: true
+  end
+
   def index
     # get all contribution, where already defined folder and url from github
     @contributions = Page.where(:contribution_folder.ne => "", :contribution_folder.exists => true,
