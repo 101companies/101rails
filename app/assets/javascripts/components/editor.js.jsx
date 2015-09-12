@@ -72,7 +72,7 @@ var Editor = React.createClass({
         getCompletions: function(editor, session, pos, prefix, callback) {
             var line = editor.session.getLine(pos.row);
             prefix = retrievePrecedingIdentifier(line, pos.column);
-            if(prefix.indexOf('::') > -1 && prefix.length > 2) {
+            if(prefix.indexOf(':') > -1 && prefix.length > 2) {
               $.getJSON('/autocomplete?prefix=' + prefix, function(members) {
                 callback(null, members.map(function(member) {
                   return {name: member, value: member, score: 1.0, meta: "101"}
