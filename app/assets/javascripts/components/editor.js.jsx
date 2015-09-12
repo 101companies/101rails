@@ -29,6 +29,7 @@ var Editor = React.createClass({
     highlightActiveLine : React.PropTypes.bool,
     showPrintMargin : React.PropTypes.bool
   },
+
   getDefaultProps: function() {
     return {
       name   : 'brace-editor',
@@ -47,6 +48,7 @@ var Editor = React.createClass({
       showPrintMargin     : true
     };
   },
+
   onChange: function() {
     var value = this.editor.getValue();
     if (this.props.onChange) {
@@ -57,6 +59,7 @@ var Editor = React.createClass({
     var self = this;
     this.editor = ace.edit(this.props.name);
     this.editor.getSession().setMode('ace/mode/'+this.props.mode);
+    this.editor.getSession().setUseWrapMode(true);
     this.editor.setTheme('ace/theme/'+this.props.theme);
     this.editor.setFontSize(this.props.fontSize);
     this.editor.on('change', this.onChange);
@@ -79,15 +82,6 @@ var Editor = React.createClass({
             else {
               callback(null, []);
             }
-            // if (prefix.length === 0) { callback(null, []); return }
-            // $.getJSON(
-            //     "http://rhymebrain.com/talk?function=getRhymes&word=" + prefix,
-            //     function(wordList) {
-            //         // wordList like [{"word":"flow","freq":24,"score":300,"flags":"bc","syllables":"1"}]
-            //         callback(null, wordList.map(function(ea) {
-            //             return {name: ea.word, value: ea.word, score: ea.score, meta: "rhyme"}
-            //         }));
-            //     })
         }
     }
     langTools.addCompleter(wikiCompleter);
