@@ -64,6 +64,10 @@ group :development, :test do
   gem 'mongoid-rspec', '2.3.0.beta'
   gem 'simplecov', require: false
   gem 'factory_girl_rails'
+
+  gem 'capistrano-rails',   '~> 1.1', require: false
+  gem 'capistrano-bundler', '~> 1.1', require: false
+  gem 'capistrano3-puma', github: "seuros/capistrano-puma"
 end
 
 gem 'awesome_print'
