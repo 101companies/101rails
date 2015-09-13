@@ -7,6 +7,8 @@ Wiki::Application.routes.draw do
   # link for downloading slides from slideshare
   get '/get_slide/*slideshare' => 'application#get_slide', :format => false
 
+  get '/autocomplete' => 'autocomplete#index'
+
   get '/search' => 'pages#search'
   get '/contributors_without_github_name' => 'application#contributors_without_github_name'
   get '/pullRepo.json' => 'application#pull_repo'

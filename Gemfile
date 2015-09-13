@@ -64,6 +64,10 @@ group :development, :test do
   gem 'mongoid-rspec', '2.3.0.beta'
   gem 'simplecov', require: false
   gem 'factory_girl_rails'
+
+  gem 'capistrano-rails',   '~> 1.1', require: false
+  gem 'capistrano-bundler', '~> 1.1', require: false
+  gem 'capistrano3-puma', github: "seuros/capistrano-puma"
 end
 
 gem 'awesome_print'
@@ -116,7 +120,7 @@ gem 'humane-rails'
 # gem 'net-ssh-gateway', '1.2.0'
 
 # for wiki-editor
-gem 'aced_rails', '0.2.1', :github => 'kevin-klein/aced_rails'
+gem 'aced_rails', '0.3.1', :github => 'kevin-klein/aced_rails'
 
 gem 'bootstrap-tour-rails', '0.4.0'
 

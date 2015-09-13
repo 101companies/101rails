@@ -7,12 +7,6 @@ require "action_mailer/railtie"
 require "sprockets/railtie"
 # # require "rails/test_unit/railtie"
 
-# for debugging, ignore ssl
-if Rails.env == 'development'
-  require 'openssl'
-  OpenSSL::SSL::VERIFY_PEER = OpenSSL::SSL::VERIFY_NONE
-end
-
 if defined?(Bundler)
   # Require the gems listed in Gemfile, including any gems
   # you've limited to :test, :development, or :production.

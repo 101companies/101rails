@@ -1,4 +1,19 @@
 // taken from: https://github.com/securingsincity/react-ace
+
+var ID_REGEX = /[a-zA-Z_0-9\$\-\u00A2-\uFFFF\:]/;
+
+var retrievePrecedingIdentifier = function(text, pos, regex) {
+    regex = regex || ID_REGEX;
+    var buf = [];
+    for (var i = pos-1; i >= 0; i--) {
+        if (regex.test(text[i]))
+            buf.push(text[i]);
+        else
+            break;
+    }
+    return buf.reverse().join("");
+};
+
 var Editor = React.createClass({
   propTypes: {
     mode  : React.PropTypes.string,
@@ -14,6 +29,7 @@ var Editor = React.createClass({
     highlightActiveLine : React.PropTypes.bool,
     showPrintMargin : React.PropTypes.bool
   },
+
   getDefaultProps: function() {
     return {
       name   : 'brace-editor',
@@ -32,6 +48,7 @@ var Editor = React.createClass({
       showPrintMargin     : true
     };
   },
+
   onChange: function() {
     var value = this.editor.getValue();
     if (this.props.onChange) {
@@ -42,12 +59,32 @@ var Editor = React.createClass({
     var self = this;
     this.editor = ace.edit(this.props.name);
     this.editor.getSession().setMode('ace/mode/'+this.props.mode);
+    this.editor.getSession().setUseWrapMode(true);
     this.editor.setTheme('ace/theme/'+this.props.theme);
     this.editor.setFontSize(this.props.fontSize);
     this.editor.on('change', this.onChange);
     this.editor.setValue(this.props.value, -1);
     this.editor.renderer.setShowGutter(this.props.showGutter);
     this.editor.setShowPrintMargin(this.props.setShowPrintMargin);
+
+    var langTools = ace.require("ace/ext/language_tools");
+    var wikiCompleter = {
+        getCompletions: function(editor, session, pos, prefix, callback) {
+            var line = editor.session.getLine(pos.row);
+            prefix = retrievePrecedingIdentifier(line, pos.column);
+            if(prefix.indexOf(':') > -1 && prefix.length > 2) {
+              $.getJSON('/autocomplete?prefix=' + prefix, function(members) {
+                callback(null, members.map(function(member) {
+                  return {name: member, value: member, score: 1.0, meta: "101"}
+                }));
+              });
+            }
+            else {
+              callback(null, []);
+            }
+        }
+    }
+    langTools.addCompleter(wikiCompleter);
 
     if (this.props.onLoad) {
       this.props.onLoad(this.editor);
@@ -56,13 +93,16 @@ var Editor = React.createClass({
 
   componentWillReceiveProps: function(nextProps) {
     this.editor = ace.edit(nextProps.name);
-    this.editor.getSession().setMode('ace/mode/'+nextProps.mode);
-    this.editor.setTheme('ace/theme/'+nextProps.theme);
+    this.editor.getSession().setMode('ace/mode/' + nextProps.mode);
+    this.editor.setTheme('ace/theme/' + nextProps.theme);
     this.editor.setFontSize(nextProps.fontSize);
     this.editor.setShowPrintMargin(nextProps.setShowPrintMargin);
     if (this.editor.getValue() !== nextProps.value) {
       this.editor.setValue(nextProps.value, 1);
     }
+    this.editor.setOptions({
+      enableBasicAutocompletion: true
+    });
     this.editor.renderer.setShowGutter(nextProps.showGutter);
     if (nextProps.onLoad) {
       nextProps.onLoad(this.editor);

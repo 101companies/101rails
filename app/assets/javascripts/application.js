@@ -27,6 +27,7 @@
  = require ace/theme-textmate
  = require ace/theme-wiki
  = require ace/mode-wiki
+ = require ace/ext-language_tools
 
  = require bootstrap-tour
 
@@ -42,3 +43,7 @@
 //= require react-input-autosize
 //= require react-select
 //= require components
+
+String.prototype.endsWith = function (s) {
+  return this.length >= s.length && this.substr(this.length - s.length) == s;
+}
