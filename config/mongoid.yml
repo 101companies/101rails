@@ -70,9 +70,9 @@ production:
   clients:
     default:
       database: wiki_production
-      username: <%= ENV['MONGODB_USER'] %>
-      password: <%= ENV['MONGODB_PWD'] %>
+      #username: <%= ENV['MONGODB_USER'] %>
+      #password: <%= ENV['MONGODB_PWD'] %>
       hosts:
-        - db.101companies.org:27017
+        - localhost:27017
       options:
         consistency: :strong
