@@ -38,12 +38,16 @@ class ContributionsController < ApplicationController
     else
       @contribution_page.raw_content = "== Headline ==\n\n" + default_contribution_text
     end
-    @repo_link.user = current_user
-    @repo_link.namespace
-    @contribution_page.repo_link = @repo_link
-    @repo_link.save
+    @contribution_page.user_ids << current_user.id
     @contribution_page.save
-    #Mailer.created_contribution(@contribution_page).deliver
+    @repo_link.user = current_user.github_name
+    @repo_link.namespace
+    @repo_link.page = @contribution_page
+    @repo_link.save
+    # @contribution_page.repo_link = @repo_link
+    
+    Mailer.user_created_contribution(@contribution_page, current_user.email).deliver_now
+    Mailer.admin_created_contribution(@contribution_page).deliver_now
     redirect_to  "/wiki/#{@contribution_page.url}"
   end
 
@@ -71,7 +75,7 @@ class ContributionsController < ApplicationController
 
   def default_contribution_text
     "You have created new contribution using [https://github.com Github]. " +
-    "Source code for this contribution you can find here]. " +
+    "Source code for this contribution you can find here. " +
     "Please replace this text with something more meaningful."
   end
 end

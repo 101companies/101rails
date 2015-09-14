@@ -1,0 +1,12 @@
+!!!
+%html
+  %head
+    %meta{:content => "text/html; charset=UTF-8", "http-equiv" => "Content-Type"}/
+  %body
+    %h1
+      Dear #{@contribution.user.name},
+    %p
+      Your Contribtion has been verified, so it's officially accepted. Go to %a{:href => "http://101companies.org/wiki/#{@contribution.page.url}"}= @contribution.page.url to edit the wiki page.
+    %p Keep in mind that any change will cause the page to be unverified, so an administrator has to review it again.
+    %p
+      101companies team.
