@@ -1,20 +1,3 @@
-// <%= simple_form_for(repo_link, :html => {:class => 'form-horizontal' }, :url => url_to_send) do |f| %>
-//   <%= f.input :user_repo, :label => 'GitHub repo', :collection => repos_to_show, :include_blank => true %>
-//   <%= f.input :folder, :collection => [repo_link.folder], :include_blank => true %>
-//   <% if @page.title.nil? %>
-//     <%= f.input :page_title %>
-//   <% end %>
-//   <% if is_contribution_process %>
-//     <%= f.submit 'Submit contribution', :class => 'btn btn-success', :id => 'update_page_button' %>
-//   <% else %>
-//     <%= f.submit 'Save repo link', :class => 'btn btn-success', :id => 'update_page_button' %>
-//   <% end %>
-// <% end %>
-//
-// <% if (!repo_link.repo.nil?) && (!(repo_link.repo.strip == '')) %>
-//   <div>Repo Link</div>
-// <% end %>
-
 
 class RepoEditor extends React.Component {
 
