@@ -5,7 +5,6 @@ class ContributionsController < ApplicationController
   end
 
   def create
-
     #  not logged in -> go out!
     if !current_user
       flash[:notices] = 'You need to be logged in, if you want to make contribution'

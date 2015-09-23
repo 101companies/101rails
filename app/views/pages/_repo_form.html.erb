@@ -1,0 +1,26 @@
+ <!-- if creating contribution -> @page will be nil
+ else it's updating extisting page -->
+
+ <%= react_component('RepoEditor',
+ {
+   page:        (@page || Page.new).as_json(methods: [:url]),
+   repo_link:   (@page.repo_link || RepoLink.new).as_json(methods: [:namespace, :user_repo, :page_title, :out_name]),
+   repos:       get_user_repos,
+   csrf_token:  form_authenticity_token,
+   user_repo:   (@page.repo_link.user_repo if @page && @page.repo_link)
+ }) %>
+
+<%
+# @page ||= Page.new
+# repo_link = @page.repo_link || RepoLink.new
+# # if page just created -> contribution process
+#
+# is_contribution_process = @page.title.nil?
+# url_to_send = is_contribution_process  ? "/contribute/new" : "/contribute/update/#{@page.url}"
+#
+# repos_to_show = get_user_repos
+#
+# if (!repo_link.user.nil? and !repo_link.folder.nil? and !repo_link.repo.nil?)
+#   repos_to_show << repo_link.user_repo
+# end
+%>

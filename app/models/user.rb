@@ -45,7 +45,6 @@ class User
     run_recursive = recursive ? "&recursive=1" : ""
     # using oauth token to increase limit of request to github api to 5000
     url = "#{base_url}#{repo}/git/trees/#{last_commit}?access_token=#{self.github_token}#{run_recursive}"
-    puts url
     files_and_dirs = JSON.parse(HTTParty.get(url, :headers => {"User-Agent" => '101wiki'}).body)
     repos = files_and_dirs["tree"].each.select{|node| node["type"] == 'tree'}.map{|node| '/' + node['path']}
     repos.prepend '/'
