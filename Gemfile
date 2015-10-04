@@ -61,7 +61,7 @@ group :development, :test do
   gem 'zeus', '0.15.1'
   gem 'rack-mini-profiler'
   gem 'rspec-rails', '~> 3.3.0'
-  gem 'mongoid-rspec', '2.3.0.beta'
+  gem 'mongoid-rspec', '3.0.0'
   gem 'simplecov', require: false
   gem 'factory_girl_rails'
 
