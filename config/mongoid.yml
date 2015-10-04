@@ -1,5 +1,6 @@
 development:
   # Configure available database clients. (required)
+  adapter: 'monogid'
   clients:
     # Defines the default session. (required)
     default:

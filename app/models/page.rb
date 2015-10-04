@@ -16,6 +16,7 @@ class Page
   field :used_links, type: Array
   field :subresources, type: Array
   field :headline, type: String, :default => ''
+  field :verified, type: Boolean
 
   field :worker_findings, type: String
 

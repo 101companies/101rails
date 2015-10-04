@@ -159,7 +159,7 @@ RailsAdmin.config do |config|
   end
 
   config.model 'Page' do
-    weight -1
+#    weight -1
     object_label_method do
       :full_title
     end
@@ -173,6 +173,7 @@ RailsAdmin.config do |config|
     end
 
     field :raw_content do
+      hide
       searchable true
     end
 
@@ -182,12 +183,16 @@ RailsAdmin.config do |config|
     end
 
     field :title do
-      hide
       searchable true
     end
 
     field :users do
+      read_only true
       sortable false
+    end
+
+    field :verified do
+      searchable true
     end
 
     field :created_at do
@@ -197,7 +202,7 @@ RailsAdmin.config do |config|
     field :updated_at do
       read_only true
     end
-
+	
     edit do
       field :title do
         show

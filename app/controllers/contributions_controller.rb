@@ -38,6 +38,7 @@ class ContributionsController < ApplicationController
     else
       @contribution_page.raw_content = "== Headline ==\n\n" + default_contribution_text
     end
+    @contribution_page.verified = false
     @contribution_page.user_ids << current_user.id
     @contribution_page.save
     @repo_link.user = current_user.github_name
