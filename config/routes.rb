@@ -93,13 +93,6 @@ Wiki::Application.routes.draw do
     end
   end
 
-  scope 'endpoint', :format => :json do
-    get ':id/rdf' => 'pages#get_rdf', :constraints => { :id => /.*/ }
-    get ':id/json' => 'pages#get_json', :constraints => { :id => /.*/ }, :directions => false
-    get ':id/json/directions' => 'pages#get_json', :constraints => { :id => /.*/ }, :directions => true
-    get ':id/summary' => 'pages#summary', :constraints => { :id => /.*/ }
-  end
-
   # authentications
   scope 'auth' do
     match '/github/callback' => 'authentications#create', via: [:get, :post]
