@@ -7,9 +7,13 @@ FactoryGirl.define do
     name 'user'
     github_uid SecureRandom.hex
     github_token SecureRandom.hex
-    github_name 'test'
+    github_name 'Kevin'
     email 'test@test.com'
     role 'admin'
+  end
+
+  factory :editor_user, parent: :user do
+    role 'editor'
   end
 
 end

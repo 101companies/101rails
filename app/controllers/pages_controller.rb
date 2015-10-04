@@ -136,7 +136,7 @@ class PagesController < ApplicationController
         if (@page.namespace == 'Contributor')
           user = User.where(:github_name => @page.title).first
           if !user.nil?
-            @pages_edits = PageChange.where(:user => user)
+            @pages_edits = user.page_changes
             @contributions = Page.where(:used_links => /developedBy::Contributor:#{user.github_name}/i)
           end
         end

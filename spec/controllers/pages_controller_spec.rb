@@ -27,10 +27,12 @@ RSpec.describe PagesController, type: :controller do
 
     it 'gets a contributor page' do
       user = create :user
+      page = create(:contributor_page)
+      change = create(:page_change, user: user)
 
-      get :show, { id: 'contributor:test' }, { user_id: user.id }
+      get :show, { id: page.full_title }, { user_id: user.id }
 
-      expect(response).to redirect_to('/wiki/contributor:test')
+      expect(assigns(:pages_edits)).to eq([change])
     end
 
     it 'auto creates a new page' do
@@ -105,6 +107,22 @@ RSpec.describe PagesController, type: :controller do
 
       expect(flash[:error].length).to be > 0
       expect(response).to redirect_to("/wiki/@project")
+    end
+
+  end
+
+  describe 'update_repo' do
+
+    it 'updates the repo' do
+      user = create :user
+      repo_link = {
+        folder: '/',
+        user_repo: 'kevin-klein/pythonSyb'
+      }
+
+      post :update_repo, { id: @page.url, repo_link: repo_link }, { user_id: user.id }
+
+      expect(@page.reload.repo_link.folder).to eq('/')
     end
 
   end
