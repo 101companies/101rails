@@ -17,9 +17,6 @@ class Ability
       can :manage, Page
     end
 
-    # user can be manually has permissions to change concrete page
-    can :manage, Page, :user_ids => user.id
-
     # user can create own contribution page
     can :manage, Page, :title => user.github_name, :namespace => 'Contributor'
 
