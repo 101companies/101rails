@@ -9,7 +9,11 @@ class RepoLink
   belongs_to :page
 
   def namespace
-    self.page ? page.namespace.pluralize.downcase : folder.split('/')[1]
+    if self.page
+      self.page ? page.namespace.pluralize.downcase : folder.split('/')[1]
+    else
+      ''
+    end
   end
 
   # for compatibility with simple form
@@ -26,7 +30,11 @@ class RepoLink
     if !page.nil?
       return page.title
     end
-    folder.split('/').last
+    unless folder.nil?
+      folder.split('/').last
+    else
+      ''
+    end
   end
 
   def full_url
