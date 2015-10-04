@@ -2,7 +2,7 @@ class AutocompleteController < ApplicationController
 
   def index
     prefix = params[:prefix]
-    @namespace, @title = prefix.split '::'
+    @namespace, @title = prefix.split ':'
 
     if @title
       @title = @title.gsub(/[^a-zA-Z0-9_]/, '')
