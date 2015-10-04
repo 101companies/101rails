@@ -111,6 +111,47 @@ RSpec.describe PagesController, type: :controller do
 
   end
 
+  describe 'update' do
+
+    it 'updates the page' do
+      user = create(:user)
+
+      put :update, { id: @page.full_title, content: 'Some other content' }, { user_id: user.id }
+
+      expect(@page.reload.raw_content).to include('Some other content')
+    end
+
+  end
+
+  describe 'rename' do
+
+    it 'renames the page' do
+      user = create(:user)
+
+      get :rename, { id: @page.full_title, newTitle: 'OtherTitle' }, { user_id: user.id }
+
+      expect(@page.reload.title).to eq('OtherTitle')
+    end
+
+  end
+
+  describe 'search' do
+
+    it 'returns the correct page' do
+      result = get :search, { q: @page.full_title }
+
+      expect(assigns(:search_results).length).to eq(2)
+      expect(response).to render_template(:search)
+    end
+
+    it 'flashes warning if no q is given' do
+      result = get :search
+
+      expect(response).to redirect_to('/wiki/@project')
+    end
+
+  end
+
   describe 'update_repo' do
 
     it 'updates the repo' do

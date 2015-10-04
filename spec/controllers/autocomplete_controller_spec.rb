@@ -7,7 +7,7 @@ RSpec.describe AutocompleteController, type: :controller do
     @page = create :page
   end
 
-  describe 'GET show' do
+  describe 'GET index' do
 
     it 'autocompletes all pages from namespace' do
       get :index, prefix: "#{@page.namespace}::"

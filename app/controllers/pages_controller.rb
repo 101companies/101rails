@@ -9,7 +9,7 @@ class PagesController < ApplicationController
 
   # order of next two lines is very important!
   # before_filter need to be before load_and_authorize_resource
-  before_filter :get_the_page, :except => [:create_new_page_confirmation, :create_new_page]
+  before_filter :get_the_page, :except => [:create_new_page_confirmation, :create_new_page, :search]
   # methods, that need to check permissions
   load_and_authorize_resource :only => [:delete, :rename, :update, :apply_findings, :update_repo]
 
@@ -148,13 +148,8 @@ class PagesController < ApplicationController
     end
   end
 
-  def parse
-    html = @page.parse params[:content]
-    render :json => {:success => true, :html => html}
-  end
-
   def search
-    @query_string = params[:q]
+    @query_string = params[:q] || ''
     if @query_string == ''
       flash[:notice] = 'Please write something, if you want to search something'
       go_to_homepage
@@ -162,20 +157,6 @@ class PagesController < ApplicationController
       @search_results = PageModule.search @query_string
       respond_with @search_results
     end
-  end
-
-  def summary
-    render :json => {:sections => @page.sections, :internal_links => @page.internal_links}
-  end
-
-  # get all sections for a page
-  def sections
-    respond_with @page.sections
-  end
-
-  # get all internal links for the page
-  def internal_links
-    respond_with @page.internal_links
   end
 
   def rename
@@ -196,10 +177,6 @@ class PagesController < ApplicationController
       :success => result,
       :newTitle => @page.url
     }
-  end
-
-  def section
-    respond_with ({:content => @page.section(params[:full_title])}).to_json
   end
 
 end
