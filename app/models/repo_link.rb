@@ -10,7 +10,9 @@ class RepoLink
 
   def namespace
     if self.page
-      self.page ? page.namespace.pluralize.downcase : folder.split('/')[1]
+      page.namespace.pluralize.downcase
+    elsif folder
+      folder.split('/')[1]
     else
       ''
     end
