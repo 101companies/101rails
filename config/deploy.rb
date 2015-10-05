@@ -10,7 +10,7 @@ set :keep_releases, 5
 # ask :branch, `git rev-parse --abbrev-ref HEAD`.chomp
 
 # Default deploy_to directory is /var/www/my_app_name
-set :deploy_to, '/home/ubuntu/101rails'
+set :deploy_to, "/home/ubuntu/101rails"
 
 # Default value for :scm is :git
 # set :scm, :git
@@ -35,7 +35,7 @@ set :deploy_to, '/home/ubuntu/101rails'
 
 # Default value for keep_releases is 5
 # set :keep_releases, 5
-# 
+#
 # on roles :all do
 #   within fetch(:latest_release_directory) do
 #     with rails_env: fetch(:rails_env) do
