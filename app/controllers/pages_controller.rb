@@ -50,12 +50,12 @@ class PagesController < ApplicationController
     end
 
     @resources = @rdf.select do |triple|
-      triple[:node].start_with? 'http://'
+      triple[:node].start_with?('http://') || triple[:node].starts_with?('https://')
     end
 
     @rdf = @rdf.select do |triple|
-      not triple[:node].start_with? 'http://'
-    end
+      not (triple[:node].start_with?('http://') || triple[:node].start_with?('http://'))
+    ensd
 
     url = "http://worker.101companies.org/services/termResources/#{@page.full_title}.json"
     url = URI.encode url
