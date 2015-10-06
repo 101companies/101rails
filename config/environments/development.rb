@@ -36,4 +36,6 @@ Wiki::Application.configure do
   config.assets.debug = true
 
   config.eager_load = false
+
+  config.books_adapter = BooksAdapters::LocalAdapter.new
 end

@@ -32,7 +32,16 @@ RSpec.describe PagesController, type: :controller do
 
       get :show, { id: page.full_title }, { user_id: user.id }
 
-      expect(assigns(:pages_edits)).to eq([change])
+      expect(response.status).to eq(200)
+    end
+
+    it 'gets a new contributor page' do
+      user = create :user
+
+      get :show, { id: "Contributor:#{user.github_name}" }, { user_id: user.id }
+
+      expect(response.status).to eq(302)
+      expect(response).to redirect_to("/wiki/Contributor:#{user.github_name}")
     end
 
     it 'auto creates a new page' do

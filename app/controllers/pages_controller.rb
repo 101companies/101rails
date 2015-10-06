@@ -7,11 +7,10 @@ class PagesController < ApplicationController
 
   respond_to :json, :html
 
-  # order of next two lines is very important!
   # before_filter need to be before load_and_authorize_resource
-  before_filter :get_the_page, :except => [:create_new_page_confirmation, :create_new_page, :search]
   # methods, that need to check permissions
-  load_and_authorize_resource :only => [:delete, :rename, :update, :apply_findings, :update_repo]
+  before_filter :get_the_page, only: [:edit, :rename, :update, :update_repo, :destroy]
+  authorize_resource :only => [:delete, :rename, :update, :apply_findings, :update_repo]
 
   def get_the_page
     # if no title -> set default wiki startpage '@project'
@@ -29,12 +28,15 @@ class PagesController < ApplicationController
     end
     # if no page created/found
     if !@page
+      ap 'page not found'
       return respond_to do |format|
         format.html do
           flash[:error] = "Page wasn't not found. Redirected to main wiki page"
           go_to_homepage
         end
-        format.json { render :json => {success: false}, :status => 404 }
+        format.json {
+          return render :json => {success: false}, :status => 404
+        }
       end
     end
 
@@ -57,12 +59,17 @@ class PagesController < ApplicationController
       !(triple[:node].start_with?('http://') || triple[:node].start_with?('https://'))
     end
 
-    url = "http://worker.101companies.org/services/termResources/#{@page.full_title}.json"
-    url = URI.encode url
-    url = URI(url)
-    response = Net::HTTP.get url
+    begin
+      url = "http://worker.101companies.org/services/termResources/#{@page.full_title}.json"
+      url = URI.encode url
+      url = URI(url)
+      response = Net::HTTP.get url
 
-    @books = JSON::parse response
+      @books = JSON::parse response
+    rescue SocketError
+      Rails.logger.warn("book retrieval failed for #{@page.full_title}")
+      @books = []
+    end
   end
 
   def create_new_page
@@ -105,10 +112,15 @@ class PagesController < ApplicationController
   def edit
     @pages = Page.all.map &:full_title
 
-    url = "http://worker.101companies.org/data/dumps/wiki-predicates.json"
-    url = URI.encode url
-    url = URI(url)
-    @predicates = JSON::parse(Net::HTTP.get url)
+    begin
+      url = "http://worker.101companies.org/data/dumps/wiki-predicates.json"
+      url = URI.encode url
+      url = URI(url)
+      @predicates = JSON::parse(Net::HTTP.get url)
+    rescue
+      @predicates = {}
+      Rails.logger.warn("Predicates retrieval failed")
+    end
   end
 
   def destroy
@@ -129,22 +141,24 @@ class PagesController < ApplicationController
   end
 
   def show
-    @current_user_can_change_page = (!current_user.nil?) and (can? :manage, @page)
-    respond_to do |format|
-      format.html {
-        # if need redirect? -> wiki url conventions -> do a redirect
-        if (@page.namespace == 'Contributor')
-          user = User.where(:github_name => @page.title).first
-          if !user.nil?
-            @pages_edits = user.page_changes
-            @contributions = Page.where(:used_links => /developedBy::Contributor:#{user.github_name}/i)
-          end
-        end
-        good_link = @page.url
-        if good_link != params[:id]
-          redirect_to '/wiki/'+ good_link and return
-        end
-      }
+    begin
+      result = ShowPage.new(logger, Rails.configuration.books_adapter).show(params[:id], current_user)
+
+      # set instance variables
+      @page = result.page
+      @books = result.books
+      @rdf = result.rdf
+      @resources = result.resources
+      @contributions = result.contributions
+    rescue ShowPage::ContributorPageCreated => e
+      redirect_to "/wiki/#{e.message}"
+    rescue ShowPage::PageNotFound => e
+      flash[:error] = "Page wasn't not found. Redirected to main wiki page"
+      go_to_homepage
+    rescue ShowPage::BadLink => e
+      redirect_to e.message
+    rescue ShowPage::PageNotFoundButCreating => e
+      redirect_to create_new_page_confirmation_page_path(e.message)
     end
   end
 

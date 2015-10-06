@@ -37,4 +37,6 @@ Wiki::Application.configure do
   config.action_mailer.default_url_options = { :host => 'example.com' }
 
   config.eager_load = true
+
+  config.books_adapter = BooksAdapters::TestAdapter.new
 end
