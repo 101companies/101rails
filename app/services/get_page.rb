@@ -49,7 +49,7 @@ class GetPage
     begin
       books = @books_adapter.get_books(page.full_title)
     rescue BooksAdapters::Errors::NetworkError
-      logger.critical("book retrieval failed for #{page.full_title}")
+      @logger.warn("book retrieval failed for #{page.full_title}")
       books = []
     end
 
@@ -61,8 +61,8 @@ class GetPage
         contributions = Page.where(:used_links => /developedBy::Contributor:#{user.github_name}/i)
       end
     else
-      contributions = nil
-      pages_edits = nil
+      contributions = []
+      pages_edits = []
     end
     good_link = page.url
     if good_link != title

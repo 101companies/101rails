@@ -1,6 +1,6 @@
 module BooksAdapters
 
-  class LocalAdapter < WorkerAdapter
+  class LocalWorkerAdapter < WorkerAdapter
 
     protected
     def get_url(title)

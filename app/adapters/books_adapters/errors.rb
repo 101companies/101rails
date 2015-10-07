@@ -1,8 +1,8 @@
-module BooksAdapter
+module BooksAdapters
 
   class Errors
-    NetworkError = Class.new(StandardError)
-    InvalidBooks = Class.new(StandardError)
+    class NetworkError < StandardError; end
+    class InvalidBooks < StandardError; end
   end
 
 end

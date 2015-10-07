@@ -10,8 +10,8 @@ module BooksAdapters
         response = Net::HTTP.get url
 
         JSON::parse(response)
-      rescue SocketError
-        raise Errors::BooksUnreachable
+      rescue Timeout::Error, Errno::EINVAL, Errno::ECONNREFUSED, Errno::ECONNRESET, EOFError, Net::HTTPBadResponse, Net::HTTPHeaderSyntaxError, Net::ProtocolError => e
+        raise Errors::NetworkError
       rescue JSON::ParserError
         raise Errors::InvalidBooks
       end
