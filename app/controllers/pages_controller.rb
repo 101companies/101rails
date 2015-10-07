@@ -117,7 +117,7 @@ class PagesController < ApplicationController
       url = URI.encode url
       url = URI(url)
       @predicates = JSON::parse(Net::HTTP.get url)
-    rescue
+    rescue SocketError
       @predicates = {}
       Rails.logger.warn("Predicates retrieval failed")
     end
@@ -142,7 +142,7 @@ class PagesController < ApplicationController
 
   def show
     begin
-      result = ShowPage.new(logger, Rails.configuration.books_adapter).show(params[:id], current_user)
+      result = GetPage.new(logger, Rails.configuration.books_adapter).show(params[:id], current_user)
 
       # set instance variables
       @page = result.page
@@ -150,14 +150,14 @@ class PagesController < ApplicationController
       @rdf = result.rdf
       @resources = result.resources
       @contributions = result.contributions
-    rescue ShowPage::ContributorPageCreated => e
+    rescue GetPage::ContributorPageCreated => e
       redirect_to "/wiki/#{e.message}"
-    rescue ShowPage::PageNotFound => e
+    rescue GetPage::PageNotFound => e
       flash[:error] = "Page wasn't not found. Redirected to main wiki page"
       go_to_homepage
-    rescue ShowPage::BadLink => e
+    rescue GetPage::BadLink => e
       redirect_to e.message
-    rescue ShowPage::PageNotFoundButCreating => e
+    rescue GetPage::PageNotFoundButCreating => e
       redirect_to create_new_page_confirmation_page_path(e.message)
     end
   end

@@ -1,4 +1,4 @@
-class ShowPage
+class GetPage
 
   ContributorPageCreated = Class.new(StandardError)
   PageNotFoundButCreating = Class.new(StandardError)
@@ -48,7 +48,7 @@ class ShowPage
 
     begin
       books = @books_adapter.get_books(page.full_title)
-    rescue BooksAdapters::Adapter::BooksUnreachable
+    rescue BooksAdapters::Errors::NetworkError
       logger.critical("book retrieval failed for #{page.full_title}")
       books = []
     end

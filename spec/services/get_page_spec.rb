@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe ShowPage do
+describe GetPage do
 
   before(:each) do
 
@@ -15,7 +15,7 @@ describe ShowPage do
     it 'gets the namespace' do
       page = create(:abstraction_page)
 
-      result = ShowPage.new(Rails.logger, books_adapter).show(page.full_title, nil)
+      result = GetPage.new(Rails.logger, books_adapter).show(page.full_title, nil)
 
       expect(result.page).to eq(page)
       expect(result.rdf).to eq([])
@@ -28,8 +28,8 @@ describe ShowPage do
       page = create(:page)
 
       expect {
-        ShowPage.new(Rails.logger, Rails.configuration.books_adapter).show(page.full_title, nil)
-      }.to raise_error(ShowPage::BadLink)
+        GetPage.new(Rails.logger, Rails.configuration.books_adapter).show(page.full_title, nil)
+      }.to raise_error(GetPage::BadLink)
     end
 
   end

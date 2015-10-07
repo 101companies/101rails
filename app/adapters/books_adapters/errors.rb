@@ -1,7 +1,7 @@
 module BooksAdapter
 
-  class Adapter
-    BooksUnreachable = Class.new(StandardError)
+  class Errors
+    NetworkError = Class.new(StandardError)
     InvalidBooks = Class.new(StandardError)
   end
 

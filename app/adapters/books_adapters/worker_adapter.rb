@@ -11,9 +11,9 @@ module BooksAdapters
 
         JSON::parse(response)
       rescue SocketError
-        raise Adapter::BooksUnreachable
+        raise Errors::BooksUnreachable
       rescue JSON::ParserError
-        raise Adapter::InvalidBooks
+        raise Errors::InvalidBooks
       end
     end
 
