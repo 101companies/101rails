@@ -1,4 +1,18 @@
 namespace :pages do
+
+  task rename_at_to101: :environment do
+    Page.where(title: /^@/).each do |page|
+      page.update_or_rename(page.title.sub('@', '101'), page.raw_content, [], nil)
+    end
+  end
+
+  task fix_old_links: :environment do
+    Page.where(raw_content: /\[\[@/).each do |page|
+      page.raw_content = page.raw_content.gsub('[[@', '[[101')
+      page.save!
+    end
+  end
+
   desc "TODO"
   task :findDuplicates => :environment do
     dups = []

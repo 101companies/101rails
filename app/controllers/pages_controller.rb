@@ -13,8 +13,8 @@ class PagesController < ApplicationController
   authorize_resource :only => [:delete, :rename, :update, :apply_findings, :update_repo]
 
   def get_the_page
-    # if no title -> set default wiki startpage '@project'
-    full_title = params[:id].nil? ? '@project' : params[:id]
+    # if no title -> set default wiki startpage '101project'
+    full_title = params[:id].nil? ? '101project' : params[:id]
     @page = PageModule.find_by_full_title full_title
     # if page doesn't exist, but it's user page -> create page and redirect
     if @page.nil? && !current_user.nil? && full_title.downcase=="Contributor:#{current_user.github_name}".downcase
@@ -83,7 +83,7 @@ class PagesController < ApplicationController
       redirect_to "/wiki/#{full_title}" and return
     else
       flash[:error] = "You cannot create new page #{full_title}"
-      redirect_to "/wiki/@project" and return
+      redirect_to "/wiki/101project" and return
     end
   end
 

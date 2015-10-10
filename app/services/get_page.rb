@@ -22,8 +22,8 @@ class GetPage
 
   def show(title, current_user)
     ability = Ability.new(current_user)
-    # if no title -> set default wiki startpage '@project'
-    full_title = title.nil? ? '@project' : title
+    # if no title -> set default wiki startpage '101project'
+    full_title = title.nil? ? '101project' : title
     page = PageModule.find_by_full_title full_title
     # if page doesn't exist, but it's user page -> create page and redirect
     if page.nil? && !current_user.nil? && full_title.downcase == "Contributor:#{current_user.github_name}".downcase
