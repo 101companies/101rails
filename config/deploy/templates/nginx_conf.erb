@@ -28,6 +28,14 @@ server {
   listen 80;
 <% end %>
 
+  location = /wiki/ {
+    return 301 /wiki/@project;
+  }
+
+  location = /wiki {
+    return 301 /wiki/@project;
+  }
+
   client_max_body_size 4G;
   keepalive_timeout 10;
 
