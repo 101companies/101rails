@@ -160,6 +160,9 @@ class PagesController < ApplicationController
     rescue GetPage::PageNotFoundButCreating => e
       redirect_to create_new_page_confirmation_page_path(e.message)
     end
+    if (@page.verified == false)
+      flash[:error] = "This page has not been verified yet!"
+    end
   end
 
   def search
