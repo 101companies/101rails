@@ -93,4 +93,5 @@ Wiki::Application.configure do
 
   config.eager_load = true
 
+  config.books_adapter = BooksAdapters::WorkerAdapter.new
 end

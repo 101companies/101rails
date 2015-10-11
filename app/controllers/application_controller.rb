@@ -7,7 +7,7 @@ class ApplicationController < ActionController::Base
   end
 
   def go_to_homepage
-    redirect_to '/wiki/@project'
+    redirect_to '/wiki/101project'
   end
 
   def landing_page

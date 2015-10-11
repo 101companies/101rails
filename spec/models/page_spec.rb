@@ -186,4 +186,27 @@ describe Page do
 
   end
 
+  describe 'last_change' do
+
+    it 'gives last change' do
+      page = create :page_with_changes
+      change = page.page_changes[0]
+
+      result = page.get_last_change
+
+      expect(result).to include(user_name: change.user.name)
+      expect(result).to include(user_pic: change.user.github_avatar)
+      expect(result).to include(user_email: change.user.email)
+    end
+
+    it 'has no last change' do
+      page = create :page
+
+      result = page.get_last_change
+
+      expect(result).to eq({})
+    end
+
+  end
+
 end

@@ -1,7 +1,0 @@
-<span class="resourcebox <%= isBook ? "" : "nonbookresource" %>"  data-toggle="collapse resource">
-	<%if (typeof predicate !== 'undefined') { %>
-	<div class="subject label">this</div>
-	<div class="predicate"><%= predicate %></div>
-	<% } %>
-	<a href=<%=link.full.replace(/\s/g, '_')%> ><%=link.chapter%></a>
-</span>

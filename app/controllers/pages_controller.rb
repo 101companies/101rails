@@ -7,15 +7,14 @@ class PagesController < ApplicationController
 
   respond_to :json, :html
 
-  # order of next two lines is very important!
   # before_filter need to be before load_and_authorize_resource
-  before_filter :get_the_page, :except => [:create_new_page_confirmation, :create_new_page]
   # methods, that need to check permissions
-  load_and_authorize_resource :only => [:delete, :rename, :update, :apply_findings, :update_repo]
+  before_filter :get_the_page, only: [:edit, :rename, :update, :update_repo, :destroy]
+  authorize_resource :only => [:delete, :rename, :update, :apply_findings, :update_repo]
 
   def get_the_page
-    # if no title -> set default wiki startpage '@project'
-    full_title = params[:id].nil? ? '@project' : params[:id]
+    # if no title -> set default wiki startpage '101project'
+    full_title = params[:id].nil? ? '101project' : params[:id]
     @page = PageModule.find_by_full_title full_title
     # if page doesn't exist, but it's user page -> create page and redirect
     if @page.nil? && !current_user.nil? && full_title.downcase=="Contributor:#{current_user.github_name}".downcase
@@ -29,12 +28,15 @@ class PagesController < ApplicationController
     end
     # if no page created/found
     if !@page
+      ap 'page not found'
       return respond_to do |format|
         format.html do
           flash[:error] = "Page wasn't not found. Redirected to main wiki page"
           go_to_homepage
         end
-        format.json { render :json => {success: false}, :status => 404 }
+        format.json {
+          return render :json => {success: false}, :status => 404
+        }
       end
     end
 
@@ -50,19 +52,24 @@ class PagesController < ApplicationController
     end
 
     @resources = @rdf.select do |triple|
-      triple[:node].start_with? 'http://'
+      (triple[:node].start_with?('http://') || triple[:node].starts_with?('https://'))
     end
 
     @rdf = @rdf.select do |triple|
-      not triple[:node].start_with? 'http://'
+      !(triple[:node].start_with?('http://') || triple[:node].start_with?('https://'))
     end
 
-    url = "http://worker.101companies.org/services/termResources/#{@page.full_title}.json"
-    url = URI.encode url
-    url = URI(url)
-    response = Net::HTTP.get url
+    begin
+      url = "http://worker.101companies.org/services/termResources/#{@page.full_title}.json"
+      url = URI.encode url
+      url = URI(url)
+      response = Net::HTTP.get url
 
-    @books = JSON::parse response
+      @books = JSON::parse response
+    rescue SocketError
+      Rails.logger.warn("book retrieval failed for #{@page.full_title}")
+      @books = []
+    end
   end
 
   def create_new_page
@@ -76,7 +83,7 @@ class PagesController < ApplicationController
       redirect_to "/wiki/#{full_title}" and return
     else
       flash[:error] = "You cannot create new page #{full_title}"
-      redirect_to "/wiki/@project" and return
+      redirect_to "/wiki/101project" and return
     end
   end
 
@@ -105,10 +112,15 @@ class PagesController < ApplicationController
   def edit
     @pages = Page.all.map &:full_title
 
-    url = "http://worker.101companies.org/data/dumps/wiki-predicates.json"
-    url = URI.encode url
-    url = URI(url)
-    @predicates = JSON::parse(Net::HTTP.get url)
+    begin
+      url = "http://worker.101companies.org/data/dumps/wiki-predicates.json"
+      url = URI.encode url
+      url = URI(url)
+      @predicates = JSON::parse(Net::HTTP.get url)
+    rescue SocketError
+      @predicates = {}
+      Rails.logger.warn("Predicates retrieval failed")
+    end
   end
 
   def destroy
@@ -129,32 +141,29 @@ class PagesController < ApplicationController
   end
 
   def show
-    @current_user_can_change_page = (!current_user.nil?) and (can? :manage, @page)
-    respond_to do |format|
-      format.html {
-        # if need redirect? -> wiki url conventions -> do a redirect
-        if (@page.namespace == 'Contributor')
-          user = User.where(:github_name => @page.title).first
-          if !user.nil?
-            @pages_edits = PageChange.where(:user => user)
-            @contributions = Page.where(:used_links => /developedBy::Contributor:#{user.github_name}/i)
-          end
-        end
-        good_link = @page.url
-        if good_link != params[:id]
-          redirect_to '/wiki/'+ good_link and return
-        end
-      }
+    begin
+      result = GetPage.new(logger, Rails.configuration.books_adapter).show(params[:id], current_user)
+
+      # set instance variables
+      @page = result.page
+      @books = result.books
+      @rdf = result.rdf
+      @resources = result.resources
+      @contributions = result.contributions
+    rescue GetPage::ContributorPageCreated => e
+      redirect_to "/wiki/#{e.message}"
+    rescue GetPage::PageNotFound => e
+      flash[:error] = "Page wasn't not found. Redirected to main wiki page"
+      go_to_homepage
+    rescue GetPage::BadLink => e
+      redirect_to e.message
+    rescue GetPage::PageNotFoundButCreating => e
+      redirect_to create_new_page_confirmation_page_path(e.message)
     end
   end
 
-  def parse
-    html = @page.parse params[:content]
-    render :json => {:success => true, :html => html}
-  end
-
   def search
-    @query_string = params[:q]
+    @query_string = params[:q] || ''
     if @query_string == ''
       flash[:notice] = 'Please write something, if you want to search something'
       go_to_homepage
@@ -162,20 +171,6 @@ class PagesController < ApplicationController
       @search_results = PageModule.search @query_string
       respond_with @search_results
     end
-  end
-
-  def summary
-    render :json => {:sections => @page.sections, :internal_links => @page.internal_links}
-  end
-
-  # get all sections for a page
-  def sections
-    respond_with @page.sections
-  end
-
-  # get all internal links for the page
-  def internal_links
-    respond_with @page.internal_links
   end
 
   def rename
@@ -196,10 +191,6 @@ class PagesController < ApplicationController
       :success => result,
       :newTitle => @page.url
     }
-  end
-
-  def section
-    respond_with ({:content => @page.section(params[:full_title])}).to_json
   end
 
 end

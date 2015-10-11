@@ -15,6 +15,11 @@ FactoryGirl.define do
     raw_content 'Some stuff'
   end
 
+  factory :contributor_page, parent: :page do
+    title 'Kevin'
+    namespace 'Contributor'
+  end
+
   factory :concept_page, parent: :page do
     title 'Something conceptish'
     namespace 'Concept'
@@ -30,6 +35,12 @@ FactoryGirl.define do
 
   factory :page_with_no_headline, parent: :page do
     raw_content "== Some text =="
+  end
+
+  factory :page_with_changes, parent: :page do
+    after(:create) do |page, evaluator|
+      page.page_changes << create(:page_change)
+    end
   end
 
 end

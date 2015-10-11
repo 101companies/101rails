@@ -18,15 +18,12 @@ $(document).ready(function() {
         type: 'DELETE'
       }).done(function(data) {
         if(data.success) {
-          window.location.href = '/wiki/@project';
+          window.location.href = '/wiki/101project';
         }
         else {
           alert(data.success);
         }
       });
-    }
-    else {
-        // do nothing
     }
   });
 

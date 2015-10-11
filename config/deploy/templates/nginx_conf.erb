@@ -28,6 +28,14 @@ server {
   listen 80;
 <% end %>
 
+  location = /wiki/ {
+    return 301 /wiki/@project;
+  }
+
+  location = /wiki {
+    return 301 /wiki/@project;
+  }
+
   client_max_body_size 4G;
   keepalive_timeout 10;
 
@@ -55,6 +63,14 @@ server {
     gzip_static on;
     expires max;
     add_header Cache-Control public;
+  }
+
+  location /resources {
+    proxy_next_upstream     error timeout invalid_header http_500;
+    proxy_set_header X-Real-IP  $remote_addr;
+    proxy_set_header Host worker.101companies.org;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_pass http://worker.101companies.org/services/discovery;
   }
 
   location = /50x.html {
