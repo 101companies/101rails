@@ -14,13 +14,17 @@ For OSX there are such dependencies, that can be installed via [homebrew](http:/
 
     brew install mongodb node
 
+apt:
+
+    apt-get install mongodb mongodb-tools
+
 ## Ruby
 
 With OSX you already have Ruby (e.g. 2.0.0p247 for Mavericks).
 
 If you are using Ubuntu you can install ruby via [rvm](http://rvm.io) or [rbenv](https://github.com/sstephenson/rbenv/).
 
-This app was tested with ruby 1.9.3 and higher up to 2.1
+This app was tested with ruby 2.2.1.
 
 ## Installing the app
 
@@ -30,19 +34,20 @@ At first you need to install **bundler** gem.
 
 Now you need go to the project folder und install app:
 
-    bundle install --path vendor/bundle
+    bundle install
+
+You need a mongodb dump which must be acquired from the 101companies admins.
+If you have a dump load it like this:
+
+  mongorestore --directoryperdb dump/wiki_development --drop
 
 If you have troubles with installing gem on OSX and have error:
 
      clang: error: unknown argument: '-multiply_definedsuppress' [-Wunused-command-line-argument-hard-error-in-future]
 
-Add to your .bashrc (.bash_profile/.zshrc/whatever you have) and open new console:
-
-    export ARCHFLAGS="-Wno-error=unused-command-line-argument-hard-error-in-future"
-
 After installing mongodb you need to start it and then launch application with:
 
-    bundle exec rails server
+    bundle exec rails s
 
 ## Admin rights
 
