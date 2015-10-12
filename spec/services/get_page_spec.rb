@@ -38,9 +38,9 @@ describe GetPage do
       # this raises bad link as the pages name contains a whitespace
       page = create(:page)
 
-      expect do
+      expect {
         GetPage.new(Rails.logger, Rails.configuration.books_adapter).show(page.full_title, nil)
-      end.to raise_error(GetPage::BadLink)
+      }.to raise_error(GetPage::BadLink)
     end
   end
 end
