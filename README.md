@@ -39,7 +39,7 @@ Now you need go to the project folder und install app:
 You need a mongodb dump which must be acquired from the 101companies admins.
 If you have a dump load it like this:
 
-  mongorestore --directoryperdb dump/wiki_development --drop
+    mongorestore --directoryperdb dump/wiki_development --drop
 
 If you have troubles with installing gem on OSX and have error:
 
