@@ -1,17 +1,28 @@
 require 'rails_helper'
 
 describe GetPage do
-
   before(:each) do
-
   end
 
   # TODO: change to real books
-  let(:books)           { ['book1', 'book2'] }
+  let(:books)           { %w(book1 book2) }
   let(:books_adapter)   { BooksAdapters::TestAdapter.new(books) }
 
-  describe 'show' do
+  describe 'network issues' do
+    it 'catches network error' do
+      adapter = double
+      page = create(:abstraction_page)
 
+      expect(adapter).to receive(:get_books)
+        .with(page.full_title)
+        .and_raise(BooksAdapters::Errors::NetworkError)
+
+      result = GetPage.new(Rails.logger, adapter).show(page.full_title, nil)
+      expect(result.books).to eq([])
+    end
+  end
+
+  describe 'show' do
     it 'gets the namespace' do
       page = create(:abstraction_page)
 
@@ -27,12 +38,9 @@ describe GetPage do
       # this raises bad link as the pages name contains a whitespace
       page = create(:page)
 
-      expect {
+      expect do
         GetPage.new(Rails.logger, Rails.configuration.books_adapter).show(page.full_title, nil)
-      }.to raise_error(GetPage::BadLink)
+      end.to raise_error(GetPage::BadLink)
     end
-
   end
-
-
 end
