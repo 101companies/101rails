@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe GetPage do
+describe ShowPage do
   before(:each) do
   end
 
@@ -17,7 +17,7 @@ describe GetPage do
         .with(page.full_title)
         .and_raise(BooksAdapters::Errors::NetworkError)
 
-      result = GetPage.new(Rails.logger, adapter).show(page.full_title, nil)
+      result = ShowPage.new(Rails.logger, adapter).execute!(page.full_title, nil)
       expect(result.books).to eq([])
     end
   end
@@ -26,7 +26,7 @@ describe GetPage do
     it 'gets the namespace' do
       page = create(:abstraction_page)
 
-      result = GetPage.new(Rails.logger, books_adapter).show(page.full_title, nil)
+      result = ShowPage.new(Rails.logger, books_adapter).execute!(page.full_title, nil)
 
       expect(result.page).to eq(page)
       expect(result.rdf).to eq([])
@@ -39,8 +39,8 @@ describe GetPage do
       page = create(:page)
 
       expect {
-        GetPage.new(Rails.logger, Rails.configuration.books_adapter).show(page.full_title, nil)
-      }.to raise_error(GetPage::BadLink)
+        ShowPage.new(Rails.logger, Rails.configuration.books_adapter).execute!(page.full_title, nil)
+      }.to raise_error(ShowPage::BadLink)
     end
   end
 end
