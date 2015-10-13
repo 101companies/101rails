@@ -15,3 +15,12 @@ img {
 .big-list li a {
     line-height: 2em;
 }
+
+text:hover {
+    opacity: 0.7 !important;
+}
+
+text {
+    cursor: pointer;
+    opacity: 1;
+}
