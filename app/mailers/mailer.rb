@@ -13,12 +13,12 @@ class Mailer < ActionMailer::Base
 
   def contribution_wikipage_verfied(contribution, email)
     @contribution = contribution
-    mail(to: email, subject: "Your last submitted contribution '#{@contribution.title}' has been verified")
+    mail(to: email, subject: "Your submitted contribution '#{@contribution.title}' has been verified")
   end
 
   def contribution_wikipage_denied(contribution, email)
     @contribution = contribution
-    mail(to: email, subject: "Your last submitted contribution '#{@contribution.title}' has been denied")
+    mail(to: email, subject: "Your submitted contribution '#{@contribution.title}' has been denied")
   end
 
 end
