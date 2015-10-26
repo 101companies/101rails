@@ -130,3 +130,5 @@ gem 'em-http-request', '1.1.2'
 # gem 'syck'
 
 gem 'react-rails', '~> 1.3.0'
+
+gem 'jbuilder'

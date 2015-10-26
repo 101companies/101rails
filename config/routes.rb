@@ -1,11 +1,11 @@
 Wiki::Application.routes.draw do
 
   # homepage
-  root :to => "application#landing_page"
+  root to: "application#landing_page"
   # sitemap
   get '/sitemap.xml' => 'application#sitemap'
   # link for downloading slides from slideshare
-  get '/get_slide/*slideshare' => 'application#get_slide', :format => false
+  get '/get_slide/*slideshare' => 'application#get_slide', format: false
 
   get '/autocomplete' => 'autocomplete#index'
 
@@ -14,19 +14,19 @@ Wiki::Application.routes.draw do
   get '/pullRepo.json' => 'application#pull_repo'
 
   # admin ui
-  mount RailsAdmin::Engine => '/admin', :as => 'rails_admin'
+  mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
 
   # urls for contribution process
   scope 'contribute' do
     # ui for creating contribution
     get '/new' => 'contributions#new'
-    get '/apply_findings/:id' => 'pages#apply_findings', :constraints => { :id => /.*/ }
-    post '/update/:id' => 'pages#update_repo', :constraints => { :id => /.*/ }
-    put '/update/:id' => 'pages#update_repo', :constraints => { :id => /.*/ }
+    get '/apply_findings/:id' => 'pages#apply_findings', constraints: { id: /.*/ }
+    post '/update/:id' => 'pages#update_repo', constraints: { id: /.*/ }
+    put '/update/:id' => 'pages#update_repo', constraints: { id: /.*/ }
     # method where contribution will be created
-    post '/analyze/:id' => 'contributions#analyze', :constraints => { :id => /.*/ }
+    post '/analyze/:id' => 'contributions#analyze', constraints: { id: /.*/ }
     post '/new' => 'contributions#create'
-    get '/repo_dirs/:repo' => 'contributions#get_repo_dirs', :constraints => { :repo => /.*/ }
+    get '/repo_dirs/:repo' => 'contributions#get_repo_dirs', constraints: { repo: /.*/ }
   end
 
   # tours
@@ -37,7 +37,7 @@ Wiki::Application.routes.draw do
 
   # tours api
   scope 'api/tours' do
-    get ':title' => 'tours#show', :as => :tour
+    get ':title' => 'tours#show', as: :tour
     put ':title' => 'tours#update'
     delete ':title' => 'tours#delete'
   end
@@ -53,9 +53,13 @@ Wiki::Application.routes.draw do
 
   # pages routes
   resources :pages, path: 'wiki' do
-    get :create_new_page, :on => :member
-    get :create_new_page_confirmation, :on => :member
+    get :create_new_page, on: :member
+    get :create_new_page_confirmation, on: :member
     put :rename, on: :member
+  end
+
+  scope '/api/wiki/' do
+    get '/:id' => 'api_pages#show', defaults: { format: :json }
   end
 
   # routes for work with history
@@ -70,7 +74,7 @@ Wiki::Application.routes.draw do
   end
 
   # json api requests for pages
-  scope 'api', :format => :json do
+  scope 'api', format: :json do
     # clones api
     get 'clones/:title' => 'clones#get'
     post 'clones/:title' => 'clones#create'
