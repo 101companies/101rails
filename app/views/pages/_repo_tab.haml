@@ -1,5 +1,5 @@
 %h2 Linked GitHub repo
-- if @current_user_can_change_page
+- if can? :edit, @page
   = render "/pages/repo_form"
 
 - if @page.repo_link
