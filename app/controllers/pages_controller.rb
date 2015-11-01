@@ -10,12 +10,12 @@ class PagesController < ApplicationController
   # before_filter need to be before load_and_authorize_resource
   # methods, that need to check permissions
   before_filter :get_the_page, only: [:edit, :rename, :update, :update_repo, :destroy]
-  authorize_resource :only => [:delete, :rename, :update, :apply_findings, :update_repo]
+  authorize_resource only: [:delete, :rename, :update, :apply_findings, :update_repo]
 
   def get_the_page
-    # if no title -> set default wiki startpage '101project'
-    full_title = params[:id].nil? ? '101project' : params[:id]
-    @page = PageModule.find_by_full_title full_title
+    full_title = params[:id]
+
+    @page = get_page.execute!(full_title).page
     # if page doesn't exist, but it's user page -> create page and redirect
     if @page.nil? && !current_user.nil? && full_title.downcase=="Contributor:#{current_user.github_name}".downcase
       PageModule.create_page_by_full_title(full_title)
@@ -28,14 +28,13 @@ class PagesController < ApplicationController
     end
     # if no page created/found
     if !@page
-      ap 'page not found'
       return respond_to do |format|
         format.html do
           flash[:error] = "Page wasn't not found. Redirected to main wiki page"
           go_to_homepage
         end
         format.json {
-          return render :json => {success: false}, :status => 404
+          return render json: {success: false}, status: 404
         }
       end
     end
@@ -73,10 +72,11 @@ class PagesController < ApplicationController
   end
 
   def create_new_page
-    if (cannot? :manage, Page.new)
+    if (cannot? :create, Page.new)
       flash[:error] = "You don't have enough rights for creating the page."
       go_to_homepage and return
     end
+
     full_title = params[:id]
     page = PageModule.create_page_by_full_title full_title
     if page
@@ -129,11 +129,11 @@ class PagesController < ApplicationController
     result = @page.delete
     # generate flash_message if deleting was successful
     if result
-      page_change = PageChange.new :title => @page.title,
-                     :namespace => @page.namespace,
-                     :raw_content => @page.raw_content,
-                     :page => @page,
-                     :user => current_user
+      page_change = PageChange.new title: @page.title,
+                     namespace: @page.namespace,
+                     raw_content: @page.raw_content,
+                     page: @page,
+                     user: current_user
       page_change.save
       flash[:notice] = 'Page ' + @page.full_title + ' was deleted'
     end
@@ -142,7 +142,7 @@ class PagesController < ApplicationController
 
   def show
     begin
-      result = GetPage.new(logger, Rails.configuration.books_adapter).show(params[:id], current_user)
+      result = show_page.execute!(params[:id], current_user)
 
       # set instance variables
       @page = result.page
@@ -150,14 +150,14 @@ class PagesController < ApplicationController
       @rdf = result.rdf
       @resources = result.resources
       @contributions = result.contributions
-    rescue GetPage::ContributorPageCreated => e
+    rescue ShowPage::ContributorPageCreated => e
       redirect_to "/wiki/#{e.message}"
-    rescue GetPage::PageNotFound => e
+    rescue ShowPage::PageNotFound => e
       flash[:error] = "Page wasn't not found. Redirected to main wiki page"
       go_to_homepage
-    rescue GetPage::BadLink => e
+    rescue ShowPage::BadLink => e
       redirect_to e.message
-    rescue GetPage::PageNotFoundButCreating => e
+    rescue ShowPage::PageNotFoundButCreating => e
       redirect_to create_new_page_confirmation_page_path(e.message)
     end
     if (@page.verified == false)
@@ -179,7 +179,7 @@ class PagesController < ApplicationController
   def rename
     new_name = PageModule.unescape_wiki_url params[:newTitle]
     result = @page.update_or_rename(new_name, @page.raw_content, [], current_user)
-    render :json => {
+    render json: {
       success: result,
       newTitle: @page.url
     }
@@ -190,10 +190,20 @@ class PagesController < ApplicationController
     content = params[:content]
     result = @page.update_or_rename(@page.full_title, content, sections, current_user)
     update_used_predicates(@page)
-    render :json => {
-      :success => result,
-      :newTitle => @page.url
+    render json: {
+      success: result,
+      newTitle: @page.url
     }
+  end
+
+  private
+
+  def get_page
+    @get_page ||= GetPage.new
+  end
+
+  def show_page
+    @show_page ||= ShowPage.new(logger, Rails.configuration.books_adapter)
   end
 
 end

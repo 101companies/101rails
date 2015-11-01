@@ -33,9 +33,6 @@ class Page
   end
 
   def preparing_the_page
-    # fill used_links with links in page
-    # parse content and get internal links
-    # removed begin ... rescue, if we cant render a page, it is a 500!
     self.html_content = self.parse
 
     self.subresources = []
@@ -200,7 +197,7 @@ class Page
     # unescape new title to nice readable url
     new_title = PageModule.unescape_wiki_url new_title
     # if title was changed -> rename page
-    if (new_title!=self.full_title and PageModule.find_by_full_title(new_title).nil?)
+    if (new_title!=self.full_title and GetPage.new.execute!(new_title).page.nil?)
       self.rename(new_title, page_change)
     end
     page_change.save

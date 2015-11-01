@@ -142,24 +142,6 @@ describe PageModule do
 
   end
 
-  describe 'find_by_full_title' do
-
-    it 'finds a page by its title' do
-      page = create(:page)
-
-      result = PageModule.find_by_full_title(page.full_title)
-
-      expect(result).to eq(page)
-    end
-
-    it 'finds a page by its title' do
-      result = PageModule.find_by_full_title('title')
-
-      expect(result).to be_nil
-    end
-
-  end
-
   describe 'uncapitalize_first_char' do
 
     it 'does it' do

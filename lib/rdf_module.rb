@@ -26,7 +26,7 @@ module RdfModule
 
   def page_to_resource(title)
     return title if title.starts_with?('Http')
-    page = PageModule.find_by_full_title title
+    page = get_page.execute!(title).page
     return nil if page.nil?
     #RDF::URI.new("http://101companies.org/resources/#{page.namespace.downcase.pluralize}/#{page.title.gsub(' ', '_')}")
     return "#{page.namespace}:#{page.title.gsub(' ', '_')}"
@@ -51,7 +51,7 @@ module RdfModule
   end
 
   def get_rdf_graph(title, directions)
-    @page = PageModule.find_by_full_title(PageModule.unescape_wiki_url(title))
+    @page = get_page.execute!(PageModule.unescape_wiki_url(title)).page
     uri = self.page_to_resource title
     graph = []
     graph = add_outgoing_semantic_triples graph, @page, uri, directions
@@ -120,4 +120,11 @@ module RdfModule
     end
     graph
   end
+
+  private
+
+  def get_page
+    @get_page ||= GetPage.new
+  end
+
 end

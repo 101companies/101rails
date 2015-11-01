@@ -3,13 +3,14 @@ lock '3.4.0'
 
 set :application, "101wiki"
 set :repo_url, "git://github.com/101companies/101rails.git"
+set :user, 'ubuntu'
 
 set :keep_releases, 5
 
 # Default branch is :master
 # ask :branch, `git rev-parse --abbrev-ref HEAD`.chomp
 
-# Default deploy_to directory is /var/www/my_app_name
+# Default deploy_to directory is /var/www/my_application
 set :deploy_to, "/home/ubuntu/101rails"
 
 # Default value for :scm is :git
@@ -43,3 +44,34 @@ set :deploy_to, "/home/ubuntu/101rails"
 #     end
 #   end
 # end
+
+namespace :foreman do
+  desc "Export the Procfile to Ubuntu's upstart scripts"
+  task :export do
+    on roles(:app) do
+      puts "cd #{current_path} && sudo foreman export upstart /etc/init -a #{fetch(:application)} -u #{fetch(:user)} -l /var/#{fetch(:application)}/log"
+      execute "cd #{current_path} && sudo foreman export upstart /etc/init -a #{fetch(:application)} -u #{fetch(:user)} -l /var/#{fetch(:application)}/log"
+    end
+  end
+
+  desc "Start the application services"
+  task :start do
+    on roles(:app) do
+      execute "sudo service #{fetch(:application)} start"
+    end
+  end
+
+  desc "Stop the application services"
+  task :stop do
+    on roles(:app) do
+      execute "sudo service #{fetch(:application)} stop"
+    end
+  end
+
+  desc "Restart the application services"
+  task :restart do
+    on roles(:app) do
+      execute "sudo service #{fetch(:application)} start || sudo service #{fetch(:application)} restart"
+    end
+  end
+end
