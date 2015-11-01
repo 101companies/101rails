@@ -76,7 +76,7 @@ class ContributionEditor extends React.Component {
       <form method='post' id='create_contribution' accept-charset='UTF-8' action='/contribute/new'>
         <input name='authenticity_token' type='hidden' value={this.props.csrf_token} />
         <p>
-         <label className="select optional control-label" htmlFor="repo_link_folder">
+         <label>
              Give it a name
          </label>
         </p>
@@ -85,15 +85,14 @@ class ContributionEditor extends React.Component {
         </p>
         <p>
           <label className="select optional control-label" htmlFor="repo_link_user_repo">
-            Choose a GitHub repo <i class="icon-asterisk red_asterisk"></i>
+            Choose a GitHub repo
           </label>
         </p>
         <p>
          <select
-                    name="contrb_repo_url[user_repo]"
-                    id="contrb_repo_url_"
-                    onChange={this.onRepoChanged.bind(this)}
-                    value={repo_link.user_repo}>
+                    name="contrb_repo_url"
+                    id="contrb_repo_url"
+                    onChange={this.onRepoChanged.bind(this)}>
               {options}
          </select>
         </p>
@@ -103,7 +102,7 @@ class ContributionEditor extends React.Component {
           </label>
         </p>
         <p>
-          <select onChange={this.onChangeFolder.bind(this)} id="contrb_folder_" name="contrb_folder[folder]" value={repo_link.folder}>
+          <select onChange={this.onChangeFolder.bind(this)} id="contrb_folder" name="contrb_folder">
               {folders}
           </select>
         </p>
