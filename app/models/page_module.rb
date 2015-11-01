@@ -109,5 +109,5 @@ class PageModule
   def self.uncapitalize_first_char(string)
     string[0,1].downcase + string[1..-1]
   end
-
+  
 end

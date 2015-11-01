@@ -6,6 +6,10 @@ class ContributionsController < ApplicationController
                                 :contribution_url.ne => "", :contribution_url.exists => true)
   end
 
+  def get_repo_dirs
+    render :json => current_user.get_repo_dirs_recursive(params[:repo])
+  end
+
   def create
     #  not logged in -> go out!
     if !current_user
