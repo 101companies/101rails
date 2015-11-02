@@ -32,6 +32,10 @@ server {
     return 301 /wiki/101project;
   }
 
+  location = /wiki {
+    return 301 /wiki/101project;
+  }
+
   client_max_body_size 4G;
   keepalive_timeout 10;
 
