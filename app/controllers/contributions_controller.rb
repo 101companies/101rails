@@ -17,6 +17,12 @@ class ContributionsController < ApplicationController
       go_to_previous_page
       return
     end
+    param_repo_link = params[:repo_link]
+    #check, if repo choosen
+    if param_repo_link[:user_repo].nil? || param_repo_link[:user_repo].empty?
+      flash[:error] = 'You need to choose a repo first'
+      redirect_to action: 'new' and return
+    end
     # check, if title given
     if params[:contrb_title].nil? || params[:contrb_title].empty?
       flash[:error] = 'You need to define title for contribution'
@@ -34,9 +40,9 @@ class ContributionsController < ApplicationController
     end
     # define github url to repo
     @repo_link = RepoLink.new
-    @repo_link.repo = params[:contrb_repo_url].first
+    @repo_link.repo = param_repo_link[:user_repo]
     # set folder to '/' if no folder given
-    @repo_link.folder = params[:contrb_folder].empty?  ? '/' : params[:contrb_folder]
+    @repo_link.folder = param_repo_link[:folder].empty?  ? '/' : param_repo_link[:folder]
     unless params[:contrb_description].empty?
       @contribution_page.raw_content = "== Headline ==\n\n" + params[:contrb_description]
     else
@@ -53,7 +59,6 @@ class ContributionsController < ApplicationController
     @repo_link.namespace
     @repo_link.page = @contribution_page
     @repo_link.save
-    # @contribution_page.repo_link = @repo_link
     
     Mailer.user_created_contribution(@contribution_page, current_user.email).deliver_now
     Mailer.admin_created_contribution(@contribution_page).deliver_now
