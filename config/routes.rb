@@ -56,6 +56,7 @@ Wiki::Application.routes.draw do
     get :create_new_page, on: :member
     get :create_new_page_confirmation, on: :member
     put :rename, on: :member
+    put :verify, on: :member
   end
 
   scope '/api/wiki/' do

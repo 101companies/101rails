@@ -31,8 +31,11 @@
 
   %div#step4.step
     %b 4.
-    After that, start contributing by clicking the button below and follw the other steps
+    After that, start contributing by clicking the button below and follow the instructions
     %p
-    %img{:src=>image_path('contributor-process.png')}
-    %a{ href: "/auth/github" }
-      %input{:class => "btn btn-success", :type => "submit", :value => "Start contributing"}
+      %br
+      %img{:src=>image_path('contributor-process.png')}
+    %br
+    %p
+      %a{ href: "/auth/github" }
+        %input{:class => "btn btn-large btn-success", :type => "submit", :value => "Start contributing"}

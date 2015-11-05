@@ -29,6 +29,10 @@ window.renamePath = '<%= rename_page_path(@page.full_title) %>'
           <i class="icon-pencil"></i>
           <strong class="editbuttontext"> Edit</strong>
         </a>
+	<a href='<%= verify_page_path(@page.full_title) %>' data-method="put" class="editbutton  btn btn-small" id="pageVerifyButton">
+          <i class=""></i>
+          <strong class="editbuttontext"> Verify</strong>
+        </a>
         <a href='#renameModal' data-toggle="modal" class="editbutton  btn btn-small" id="pageRenameButton">
           <i class="icon-share-alt"></i>
           <strong class="editbuttontext"> Rename</strong>

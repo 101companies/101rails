@@ -9,8 +9,8 @@ class PagesController < ApplicationController
 
   # before_filter need to be before load_and_authorize_resource
   # methods, that need to check permissions
-  before_filter :get_the_page, only: [:edit, :rename, :update, :update_repo, :destroy]
-  authorize_resource only: [:delete, :rename, :update, :apply_findings, :update_repo]
+  before_filter :get_the_page, only: [:edit, :rename, :update, :update_repo, :destroy, :verify]
+  authorize_resource only: [:delete, :rename, :update, :apply_findings, :update_repo, :verify]
 
   def get_the_page
     full_title = params[:id]
@@ -108,7 +108,13 @@ class PagesController < ApplicationController
       flash[:success]="Updated linked repo" : flash[:error] = "Failed to update linked repo"
     redirect_to  "/wiki/#{@page.url}"
   end
-
+  
+  def verify
+    @page.verified = true
+    @page.save
+    redirect_to "/wiki/#{@page.url}"
+  end
+  
   def edit
     @pages = Page.all.map &:full_title
 
