@@ -34,11 +34,7 @@ class ContributionsController < ApplicationController
     end
     # define github url to repo
     @repo_link = RepoLink.new
-    if params[:contrb_repo_url].nil? || params[:contrb_repo_url].empty?
-      flash[:error] = 'You need to select a repo to contribute'
-      redirect_to action: 'new' and return
-    end
-    @repo_link.repo = params[:contrb_repo_url]
+    @repo_link.repo = params[:contrb_repo_url].first
     # set folder to '/' if no folder given
     @repo_link.folder = params[:contrb_folder].empty?  ? '/' : params[:contrb_folder]
     unless params[:contrb_description].empty?
