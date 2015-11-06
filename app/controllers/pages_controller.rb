@@ -166,7 +166,7 @@ class PagesController < ApplicationController
     rescue ShowPage::PageNotFoundButCreating => e
       redirect_to create_new_page_confirmation_page_path(e.message)
     end
-    if (@page.verified == false)
+    if (!@page.nil? && @page.verified == false)
       flash[:error] = "This page has not been verified yet!"
     end
   end

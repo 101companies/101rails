@@ -43,4 +43,10 @@ FactoryGirl.define do
     end
   end
 
+  factory :unverified_page, parent: :page do
+    title 'Abstraction'
+    namespace 'Concept'
+    raw_content 'Some stuff'
+    verified 0
+  end
 end
