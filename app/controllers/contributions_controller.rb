@@ -1,11 +1,5 @@
 class ContributionsController < ApplicationController
 
-  def index
-    # get all contribution, where already defined folder and url from github
-    @contributions = Page.where(:contribution_folder.ne => "", :contribution_folder.exists => true,
-                                :contribution_url.ne => "", :contribution_url.exists => true)
-  end
-
   def get_repo_dirs
     render :json => current_user.get_repo_dirs_recursive(params[:repo])
   end
@@ -82,9 +76,8 @@ class ContributionsController < ApplicationController
     rescue
       flash[:warning] = "We couldn't retrieve you github information, please try in 5 minutes. " +
           "If you haven't added github public email - please do it!"
-      redirect_to '/contribute'
+      redirect_to '/contribute/new'
     end
-
   end
 
   def default_contribution_text

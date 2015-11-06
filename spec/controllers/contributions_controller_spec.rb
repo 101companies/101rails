@@ -1,12 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe ContributionsController, type: :controller do
-  describe 'GET index' do
-    it 'should get the index' do
-      get :index
-      expect(response).to render_template(:index)
-    end
-  end
+  
   describe 'Create Contribution' do
     it 'no user' do
 		params = {
