@@ -90,4 +90,11 @@ RSpec.describe ContributionsController, type: :controller do
 			expect(response).to redirect_to('/wiki/Contribution:SomeTitle')
 		end
 	end
+
+	describe 'new' do
+ 		it 'no user' do
+ 			post :new
+ 			expect(response).to render_template('contributions/login_intro')
+ 		end
+ 	end
 end
