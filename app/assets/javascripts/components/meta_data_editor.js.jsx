@@ -11,7 +11,7 @@ var MetaDataEditor = React.createClass({
     }.bind(this));
 
     return <form>
-      <h4>Metadata-Editor</h4>
+      <h4>Metadata Editor</h4>
       <fieldset>
         { triplesView }
       </fieldset>

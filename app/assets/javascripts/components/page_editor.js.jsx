@@ -32,7 +32,7 @@ window.PageEditor = React.createClass({
     var metadata = this.state.rawContent.substring(this.state.rawContent.indexOf('== Metadata =='));
     var lines = metadata.split('\n');
     lines = lines.filter(function(line) {
-      return line[0] == '*' && line.match(/\[\[[0-9a-zA-Z\/\.\:\(\)@\%\- ]+\]\]/);
+      return line[0] == '*' && line.match(/\[\[[\S ]+\]\]/);
     }).map(function(line) {
       line = line.substring(1).trim();
       return line.substring(line.indexOf('[['));
