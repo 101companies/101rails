@@ -40,11 +40,17 @@ class Page
     self.used_links   = []
     # we hack this for now
     self.get_parser.section_list.each do |s|
-      links = s.scan /\[\[[a-zA-Z_\/\.\:\- |]*\]\]/
+      links = s.scan /\[\[[\S ]*\]\]/
       links = links.map do |link|
         link.sub('[[', '').sub(']]', '').sub(/\|.*/, '')
       end
-      links = links.map { |link| PageModule.unescape_wiki_url link }
+      links = links.map do |link|
+        if link.include?('://')
+          link
+        else
+          PageModule.unescape_wiki_url link
+        end
+      end
       if s.is_resource_section
         self.subresources << { s.title => links }
       else

@@ -62,9 +62,9 @@ class PagesController < ApplicationController
       url = "http://worker.101companies.org/services/termResources/#{@page.full_title}.json"
       url = URI.encode url
       url = URI(url)
-      response = Net::HTTP.get url
+      response = Net::HTTP.get(url)
 
-      @books = JSON::parse response
+      @books = JSON::parse(response)
     rescue SocketError
       Rails.logger.warn("book retrieval failed for #{@page.full_title}")
       @books = []
