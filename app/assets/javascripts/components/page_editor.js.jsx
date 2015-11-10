@@ -1,16 +1,18 @@
-window.PageEditor = React.createClass({
+class PageEditor extends React.Component {
 
-  propTypes: {
+  static propTypes = {
     rawContent: React.PropTypes.string.isRequired
-  },
+  };
 
-  getInitialState: function() {
-    return {
+  constructor(props) {
+    super(props);
+
+    this.state = {
       rawContent: this.props.rawContent
     }
-  },
+  }
 
-  savePage: function() {
+  savePage() {
     var url = window.location.pathname.replace(/edit$/, '');
     $.ajax({
       url: url,
@@ -21,14 +23,14 @@ window.PageEditor = React.createClass({
       }
     }).done(function(data) {
       window.location.pathname = '/wiki/' + data.newTitle;
-    })
-  },
+    });
+  }
 
-  onCancel: function() {
+  onCancel() {
     history.back();
-  },
+  }
 
-  render: function() {
+  render() {
     var metadata = this.state.rawContent.substring(this.state.rawContent.indexOf('== Metadata =='));
     var lines = metadata.split('\n');
     lines = lines.filter(function(line) {
@@ -52,11 +54,11 @@ window.PageEditor = React.createClass({
         <div id="topEditBar" className="editBar">
           <div className="btn-toolbar editing" style={{display: 'block'}}>
             <div className="btn-group">
-              <div className="editButton btn btn-small" id="pageCancelButton" onClick={this.onCancel}>
+              <div className="editButton btn btn-small" id="pageCancelButton" onClick={this.onCancel.bind(this)}>
                 <i className="icon-remove" />
                 <strong>Cancel</strong>
               </div>
-              <div className="editButton btn btn-small" id="pageSaveButton" onClick={this.savePage}>
+              <div className="editButton btn btn-small" id="pageSaveButton" onClick={this.savePage.bind(this)}>
                 <i className="icon-ok" />
                 <strong>Save</strong>
               </div>
@@ -69,24 +71,23 @@ window.PageEditor = React.createClass({
       </div>
       <div id="sections">
         <div id="sections-source" style={{height: '1200px', width: '100%' }}>
-          <EditorBar />
           <Editor theme='wiki'
             mode='wiki'
             value={this.state.rawContent}
-            onChange={this.onChangeContent}
+            onChange={this.onChangeContent.bind(this)}
             height='300px'
             width='820px' />
           <MetaDataEditor
             triples={triples}
             pages={this.props.pages}
-            onChange={this.onChangeTriples}
+            onChange={this.onChangeTriples.bind(this)}
             predicates={this.props.predicates}  />
         </div>;
       </div>
     </div>
-  },
+  }
 
-  onChangeTriples: function(triples) {
+  onChangeTriples(triples) {
     var pageWithoutMetadata = this.state.rawContent.substring(0, this.state.rawContent.indexOf('== Metadata =='));
 
     var metadata = '== Metadata ==\n\n' + triples.map(function(triple) {
@@ -94,10 +95,10 @@ window.PageEditor = React.createClass({
     }).join('\n') + '\n\n';
 
     this.setState({ rawContent: pageWithoutMetadata + metadata });
-  },
+  }
 
-  onChangeContent: function(content) {
+  onChangeContent(content) {
     this.setState({ rawContent: content });
   }
 
-});
+}

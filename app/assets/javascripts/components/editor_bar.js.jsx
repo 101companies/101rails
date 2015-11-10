@@ -1,47 +1,53 @@
 var EditorBar = React.createClass({
 
+  onInsert: function(content) {
+    this.props.onInsert(content);
+  },
+
   render: function() {
-    return <div id="edit-options" className="editormenu btn-group">
-        <button data-editoraction="bold" className="btn btn-small">
+    return (
+      <div id="edit-options" className="editormenu btn-group">
+        <button className="btn btn-small" onClick={this.onInsert.bind(this, {start: "'''", end: "'''"})}>
           <b>Bold</b>
         </button>
-        <button data-editoraction="italic" className="btn btn-small">
+        <button className="btn btn-small" onClick={this.onInsert.bind(this, {start: "''", end: "''"})}>
           <i>Italic</i>
         </button>
-        <button data-editoraction="underline" className="btn btn-small">
+        <button className="btn btn-small" onClick={this.onInsert.bind(this, {start: "<ins>", end: "</ins>"})}>
           <u>Underline</u>
         </button>
-        <button data-editoraction="strike" className="btn btn-small">
+        <button className="btn btn-small" onClick={this.onInsert.bind(this, {start: "<del>", end: "</del>"})}>
           <s>Strike</s>
         </button>
-        <button data-editoraction="headline" className="btn btn-small">
+        <button className="btn btn-small" onClick={this.onInsert.bind(this, {start: "==", end: "=="})}>
           <b style={{color: 'rgb(69, 150, 81)'}}>Headline</b>
         </button>
-        <button data-editoraction="link" className="btn btn-small">
+        <button className="btn btn-small" onClick={this.onInsert.bind(this, {start: "[[", end: "]]"})}>
           <u style={{color: 'rgb(62, 133, 201)'}}>Link</u>
         </button>
-        <button data-editoraction="code" className="btn btn-small">
+        <button className="btn btn-small" onClick={this.onInsert.bind(this, {start: "<syntaxhighlight lang=\"???\">\n", end: "\n</syntaxhighlight>"})}>
           <span className="code-button">Code</span>
         </button>
-        <button data-editoraction="picture" className="btn btn-small">
+        <button className="btn btn-small" onClick={this.onInsert.bind(this, {start: "[[media:FULL_LINK_TO_PICTURE]]", end: ""})}>
           <i className="icon-picture" /> Image
         </button>
-        <button data-editoraction="list-ol" className="btn btn-small">
+        <button className="btn btn-small" onClick={this.onInsert.bind(this, {start: "\n#", end: "\n#\n#\n"})}>
           <i className="icon-list-ol" /> List
         </button>
-        <button data-editoraction="list-ul" className="btn btn-small">
+        <button className="btn btn-small" onClick={this.onInsert.bind(this, {start: "\n*", end: "\n*\n*\n"})}>
           <i className="icon-list-ul" /> Counted list
         </button>
-        <button data-editoraction="slideshare" className="btn btn-small">
+        <button className="btn btn-small" onClick={this.onInsert.bind(this, {start: "<media url='URL_TO_SLIDEHSARE_PRESENTATION' />", end: ""})}>
           <i className="icon-desktop" /> Slideshare
         </button>
         <br />
-        <button data-editoraction="youtube" className="btn btn-small">
+        <button className="btn btn-small" onClick={this.onInsert.bind(this, {start: "<media url='URL_TO_YOUTUBE_VIDEO' />", end: ""})}>
           <i className="icon-youtube" /> Youtube
         </button>
-        <button data-editoraction="fragment" className="btn btn-small">
+        <button className="btn btn-small" onClick={this.onInsert.bind(this, {start: "<fragment url='URL_TO_FRGAMENT' explore='true'/>", end: ""})}>
           <i className="icon-code" /> Fragment
         </button>
-      </div>;
+      </div>
+    );
   }
 });
