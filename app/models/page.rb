@@ -204,7 +204,7 @@ class Page
     # unescape new title to nice readable url
     new_title = PageModule.unescape_wiki_url new_title
     # if title was changed -> rename page
-    if (new_title!=self.full_title and GetPage.new.execute!(new_title).page.nil?)
+    if (new_title!=self.full_title and GetPage.run(full_title: new_title).value[:page].nil?)
       self.rename(new_title, page_change)
     end
     page_change.save

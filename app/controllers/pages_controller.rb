@@ -15,7 +15,7 @@ class PagesController < ApplicationController
   def get_the_page
     full_title = params[:id]
 
-    @page = get_page.execute!(full_title).page
+    @page = GetPage.run(full_title: full_title).value[:page]
     # if page doesn't exist, but it's user page -> create page and redirect
     if @page.nil? && !current_user.nil? && full_title.downcase=="Contributor:#{current_user.github_name}".downcase
       PageModule.create_page_by_full_title(full_title)
@@ -141,25 +141,40 @@ class PagesController < ApplicationController
   end
 
   def show
-    begin
-      result = show_page.execute!(params[:id], current_user)
+    args = {
+      full_title: params[:id],
+      current_user: current_user
+    }
 
-      # set instance variables
-      @page = result.page
-      @books = result.books
-      @rdf = result.rdf
-      @resources = result.resources
-      @contributions = result.contributions
-    rescue ShowPage::ContributorPageCreated => e
-      redirect_to "/wiki/#{e.message}"
-    rescue ShowPage::PageNotFound => e
-      flash[:error] = "Page wasn't not found. Redirected to main wiki page"
-      go_to_homepage
-    rescue ShowPage::BadLink => e
-      redirect_to e.message
-    rescue ShowPage::PageNotFoundButCreating => e
-      redirect_to create_new_page_confirmation_page_path(e.message)
+    ShowPage.run(args).match do
+
+      success do |result|
+        @page           = result[:page]
+        @books          = result[:books]
+        @rdf            = result[:rdf]
+        @resources      = result[:resources]
+        @contributions  = result[:contributions]
+      end
+
+      failure(:page_not_found) do |result|
+        flash[:error] = "Page wasn't not found. Redirected to main wiki page"
+        go_to_homepage
+      end
+
+      failure(:bad_link) do |result|
+        redirect_to result[:link]
+      end
+
+      failure(:page_not_found_but_creating) do |result|
+        redirect_to create_new_page_confirmation_page_path(result[:full_title])
+      end
+
+      failure(:contributor_page_created) do |result|
+        redirect_to "/wiki/#{result[:full_title]}"
+      end
+
     end
+
   end
 
   def search
