@@ -11,13 +11,13 @@
     %div.half-right
       %b 1.
       Before you are able to start the contributing process you need to be logged in with your Github profile.
-      If you don't have such account - create it now.
+      If you don't have such an account, please create it now.
       %br
       %a{:href => "https://github.com/signup/free", :target=>"_blank"} It's really simple and absolutely free!
 
   %div#step2.step
     %b 2.
-    Now, please ensure, that you have added
+    Now, please ensure, that you have added a 
     %b  public email
     to your profile account
     %a{:href=>'https://github.com/settings/profile', :target=>"_blank"}
@@ -27,15 +27,17 @@
 
   %div#step3.step
     %b 3.
-    Now make sure, that you have uploaded the project, which you want to contribute with, to a github repo
+    Please upload the project, which you want to contribute with, to a github repo
 
   %div#step4.step
     %b 4.
-    After that, start contributing by clicking the button below and follow the instructions
+    After that, start contributing by clicking the button below and follow the instructions. After you have submitted your contribution, you are able to edit the wiki page, which will be created with your contribution.
     %p
       %br
       %img{:src=>image_path('contributor-process.png')}
     %br
+    %p{ :class => "alert alert-info" }
+      Please notice, that your contribution will be in an unverified state, until an adminstrator has reviewed it.
     %p
       %a{ href: "/auth/github" }
         %input{:class => "btn btn-large btn-success", :type => "submit", :value => "Start contributing"}
