@@ -48,7 +48,7 @@ class ContributionEditor extends React.Component {
         repo_link={repo_link}
         onChangeFolder={this.onChangeFolder.bind(this)}
         onRepoChanged={this.onRepoChanged.bind(this)}>
-        <h2>Now please give it a name (this is mandatory)</h2>
+        <h2>Now please give it a name (this is mandatory) and a description (optional)</h2>
         <div className="control-group select optional repo_link_user_repo">
           <label className="select optional control-label">Contribution Title</label>
           <div className="controls">
