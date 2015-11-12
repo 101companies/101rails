@@ -17,6 +17,12 @@ class Ability
       can :manage, Page
     end
 
+    if user.role == 'contributor'
+      can :show, Page
+      can :update, Page, :user_ids => user.id
+      can :rename, Page, :user_ids => user.id
+    end
+
     # user can create own contribution page
     can :manage, Page, :title => user.github_name, :namespace => 'Contributor'
 

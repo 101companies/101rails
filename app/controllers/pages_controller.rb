@@ -112,6 +112,7 @@ class PagesController < ApplicationController
   def verify
     @page.verified = true
     @page.save
+    Mailer.contribution_wikipage_verfied(@page)
     redirect_to "/wiki/#{@page.url}"
   end
   
@@ -165,9 +166,6 @@ class PagesController < ApplicationController
       redirect_to e.message
     rescue ShowPage::PageNotFoundButCreating => e
       redirect_to create_new_page_confirmation_page_path(e.message)
-    end
-    if (!@page.nil? && @page.verified == false)
-      flash[:error] = "This page has not been verified yet!"
     end
   end
 

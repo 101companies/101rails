@@ -53,7 +53,8 @@ class ContributionsController < ApplicationController
     @repo_link.namespace
     @repo_link.page = @contribution_page
     @repo_link.save
-    
+    @current_user.role = "contributor"
+    @current_user.save
     Mailer.user_created_contribution(@contribution_page, current_user.email).deliver_now
     Mailer.admin_created_contribution(@contribution_page).deliver_now
     redirect_to  "/wiki/#{@contribution_page.url}"
@@ -81,8 +82,8 @@ class ContributionsController < ApplicationController
   end
 
   def default_contribution_text
-    "You have created new contribution using [https://github.com Github]. " +
-    "Source code for this contribution you can find here. " +
+    "You have created a new contribution using [https://github.com Github]. \n" +
+    "Source code for this contribution you can find under: " + @repo_link.full_url + "\n" +
     "Please replace this text with something more meaningful."
   end
 end

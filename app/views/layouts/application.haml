@@ -53,7 +53,7 @@
                 %a.dropdown-toggle{"data-toggle" => "dropdown", :href => ""}
                   Local Login
                 %ul.dropdown-menu
-                  - User.where(role:"admin").each do |user|
+                  - User.each do |user|
                     %li
                       = link_to user.name, "/auth/local_login/#{user.id}"
               - else

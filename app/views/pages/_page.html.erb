@@ -20,6 +20,12 @@ window.renamePath = '<%= rename_page_path(@page.full_title) %>'
   </div>
 </div>
 
+<% if !@page.nil? && @page.verified == false %>
+<div class=alert alert-warning>
+  <strong>The page hasn't been verified by an Adminstrator yet!</strong>
+</div>
+<% end %>
+
 <div id='contentTop'>
   <div id='topEditBar' class='editBar'>
     <div class="btn-toolbar notEditing" style="display: block;">
@@ -29,17 +35,21 @@ window.renamePath = '<%= rename_page_path(@page.full_title) %>'
           <i class="icon-pencil"></i>
           <strong class="editbuttontext"> Edit</strong>
         </a>
+        <% if current_user.role == ('admin' || 'editor') %>
+	<% if !@page.nil? && @page.verified == false %>
 	<a href='<%= verify_page_path(@page.full_title) %>' data-method="put" class="editbutton  btn btn-small" id="pageVerifyButton">
           <i class=""></i>
           <strong class="editbuttontext"> Verify</strong>
         </a>
+	<% end %>
+        <button class="editbutton  btn btn-small" id="pageDeleteButton">
+          <i class="icon-trash"></i><strong> Delete</strong>
+        </button>        
+        <% end %>
         <a href='#renameModal' data-toggle="modal" class="editbutton  btn btn-small" id="pageRenameButton">
           <i class="icon-share-alt"></i>
           <strong class="editbuttontext"> Rename</strong>
         </a>
-        <button class="editbutton  btn btn-small" id="pageDeleteButton">
-          <i class="icon-trash"></i><strong> Delete</strong>
-        </button>
         <% else %>
         <a href='<%= edit_page_path(@page.full_title) %>' class="editbutton  btn btn-small" id="showSourceButton">
           <i class="icon-share-alt"></i>

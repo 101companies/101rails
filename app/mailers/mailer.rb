@@ -3,7 +3,7 @@ class Mailer < ActionMailer::Base
 
   def user_created_contribution(contribution, email)
     @contribution = contribution
-    mail(to: email, subject: "Your have submitted contribution '#{@contribution.title}'")
+    mail(to: email, subject: "Your have submitted your contribution '#{@contribution.title}'")
   end
 
   def admin_created_contribution(contribution)
@@ -11,14 +11,10 @@ class Mailer < ActionMailer::Base
     mail(to: "admin@101companies.org", subject: "A new contribution '#{@contribution.title}' has been submitted")
   end
 
-  def contribution_wikipage_verfied(contribution, email)
+  def contribution_wikipage_verfied(contribution)
     @contribution = contribution
-    mail(to: email, subject: "Your submitted contribution '#{@contribution.title}' has been verified")
+    @contribution.users.each do |u|
+    	mail(to: u.email, subject: "Your submitted contribution '#{@contribution.title}' has been verified")
+    end
   end
-
-  def contribution_wikipage_denied(contribution, email)
-    @contribution = contribution
-    mail(to: email, subject: "Your submitted contribution '#{@contribution.title}' has been denied")
-  end
-
 end
