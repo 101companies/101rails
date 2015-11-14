@@ -79,5 +79,7 @@ module Wiki
       stage: 0
     }
 
+    Mongo::Logger.logger.level = ::Logger::FATAL
+
   end
 end

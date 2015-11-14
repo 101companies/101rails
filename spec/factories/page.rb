@@ -39,6 +39,7 @@ FactoryGirl.define do
 
   factory :page_with_changes, parent: :page do
     after(:create) do |page, evaluator|
+      page.page_changes << create(:page_change, title: 'other title', created_at: Time.now - 2.seconds)
       page.page_changes << create(:page_change)
     end
   end

@@ -101,8 +101,8 @@ class Page
   end
 
   def get_last_change
-    last_change = self.page_changes.order_by(created_at: :desc).last
-    if last_change and last_change.user
+    last_change = self.page_changes.order_by(created_at: :asc).last
+    if last_change && last_change.user
       history_entry = {
           user_name: last_change.user.name,
           user_pic: last_change.user.github_avatar,
