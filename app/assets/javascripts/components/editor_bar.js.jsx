@@ -32,7 +32,7 @@ var EditorBar = React.createClass({
           <i className="icon-picture" /> Image
         </button>
         <button className="btn btn-small" onClick={this.onInsert.bind(this, {start: "\n#", end: "\n#\n#\n"})}>
-          <i className="icon-list-ol" /> List
+          <i className="icon-list-ol" /> Bulleted list
         </button>
         <button className="btn btn-small" onClick={this.onInsert.bind(this, {start: "\n*", end: "\n*\n*\n"})}>
           <i className="icon-list-ul" /> Counted list
