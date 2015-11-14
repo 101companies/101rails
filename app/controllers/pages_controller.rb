@@ -162,7 +162,7 @@ class PagesController < ApplicationController
       end
 
       failure(:bad_link) do |result|
-        redirect_to result[:link]
+        redirect_to result[:url]
       end
 
       failure(:page_not_found_but_creating) do |result|
