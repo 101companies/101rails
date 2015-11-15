@@ -39,11 +39,17 @@ class Page
     self.used_links   = []
     # we hack this for now
     self.get_parser.section_list.each do |s|
-      links = s.scan /\[\[[a-zA-Z_\/\.\:\- |]*\]\]/
+      links = s.scan /\[\[[\S ]*\]\]/
       links = links.map do |link|
         link.sub('[[', '').sub(']]', '').sub(/\|.*/, '')
       end
-      links = links.map { |link| PageModule.unescape_wiki_url link }
+      links = links.map do |link|
+        if link.include?('://')
+          link
+        else
+          PageModule.unescape_wiki_url link
+        end
+      end
       if s.is_resource_section
         self.subresources << { s.title => links }
       else
@@ -94,8 +100,8 @@ class Page
   end
 
   def get_last_change
-    last_change = self.page_changes.last
-    if last_change and last_change.user
+    last_change = self.page_changes.order_by(created_at: :asc).last
+    if last_change && last_change.user
       history_entry = {
           user_name: last_change.user.name,
           user_pic: last_change.user.github_avatar,
@@ -197,7 +203,7 @@ class Page
     # unescape new title to nice readable url
     new_title = PageModule.unescape_wiki_url new_title
     # if title was changed -> rename page
-    if (new_title!=self.full_title and GetPage.new.execute!(new_title).page.nil?)
+    if (new_title!=self.full_title and GetPage.run(full_title: new_title).value[:page].nil?)
       self.rename(new_title, page_change)
     end
     page_change.save

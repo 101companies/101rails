@@ -109,11 +109,21 @@ var Editor = React.createClass({
     }
   },
 
+  onInsert: function(help) {
+    var toWrap = this.editor.getSession().getTextRange(this.editor.getSelectionRange());
+    this.editor.getSession().replace(this.editor.getSelectionRange(), help.start + toWrap + help.end);
+    this.editor.navigateRight(help.end.length);
+  },
+
   render: function() {
     var divStyle = {
       width: this.props.width,
       height: this.props.height
     };
-    return (<div id={this.props.name} onChange={this.onChange} style={divStyle}></div>);
+    return (<div>
+      <EditorBar onInsert={this.onInsert} />
+      <div id={this.props.name} onChange={this.onChange} style={divStyle}>
+      </div>
+    </div>);
   }
 });

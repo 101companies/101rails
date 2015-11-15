@@ -6,6 +6,7 @@ module BooksAdapters
       super
     rescue Errors::NetworkError
       Rails.logger.info('local book retrieval failed')
+      []
     end
 
     protected

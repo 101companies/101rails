@@ -10,6 +10,8 @@ end
 
 gem 'rails', '4.2.3'
 
+gem 'solid_use_case', '~> 2.1.1'
+
 # send email on error
 gem 'exception_notification', '4.0.1'
 

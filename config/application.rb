@@ -74,5 +74,12 @@ module Wiki
     config.assets.version = '1.0'
 
     config.react.addons = true
+
+    config.react.jsx_transform_options = {
+      stage: 0
+    }
+
+    Mongo::Logger.logger.level = ::Logger::FATAL
+
   end
 end

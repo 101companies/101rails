@@ -1,41 +1,20 @@
 class GetTriplesForPage
-
-  class TriplesForPageResult < Struct.new(:triples, :resources)
-    def initialize(*attributes)
-      super
-      yield self
-      freeze
-    end
-  end
-
-  def execute!(page)
-    rdf = rdf_for_page(page)
-
-    resources = resources_for_rdf(rdf)
-
-    rdf = rdf.select do |triple|
-      node = triple[:node]
-      !(node.start_with?('http://') || node.start_with?('https://'))
-    end
-
-    TriplesForPageResult.new do |result|
-      result.resources = resources
-      result.triples = rdf
-    end
-  end
-
-  private
-
+  include SolidUseCase
   include RdfModule
 
-  def resources_for_rdf(rdf)
-    rdf.select do |triple|
-      (triple[:node].start_with?('http://') || triple[:node].starts_with?('https://'))
-    end
+  steps :get_rdf_for_page, :sort_rdf, :get_resources, :get_triples
+
+  def get_rdf_for_page(params)
+    page = params[:page]
+
+    rdf = get_rdf_json(page.full_title, true)
+
+    params[:rdf] = rdf
+    continue(params)
   end
 
-  def rdf_for_page(page)
-    rdf = get_rdf_json(page.full_title, true)
+  def sort_rdf(params)
+    rdf = params[:rdf]
 
     rdf.sort do |x,y|
       if x[:predicate] == y[:predicate]
@@ -44,6 +23,32 @@ class GetTriplesForPage
         x[:predicate] <=> y[:predicate]
       end
     end
+
+    params[:rdf] = rdf
+    continue(params)
+  end
+
+  def get_resources(params)
+    rdf = params[:rdf]
+
+    resources = rdf.select do |triple|
+      triple[:node].include?('://')
+    end
+
+    params[:resources] = resources
+    continue(params)
+  end
+
+  def get_triples(params)
+    rdf = params[:rdf]
+
+    triples = rdf.select do |triple|
+      node = triple[:node]
+      !triple[:node].include?('://')
+    end
+
+    params[:triples] = triples
+    continue(params)
   end
 
 end

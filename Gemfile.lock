@@ -133,6 +133,7 @@ GEM
     connection_pool (2.2.0)
     cookiejar (0.3.2)
     debug_inspector (0.0.2)
+    deterministic (0.6.0)
     diff-lcs (1.2.5)
     differ (0.1.2)
     docile (1.1.5)
@@ -378,6 +379,8 @@ GEM
       json (~> 1.8)
       simplecov-html (~> 0.10.0)
     simplecov-html (0.10.0)
+    solid_use_case (2.1.1)
+      deterministic (~> 0.6.0)
     sprockets (2.12.4)
       hike (~> 1.2)
       multi_json (~> 1.0)
@@ -462,6 +465,7 @@ DEPENDENCIES
   select2-rails (= 3.5.7)
   simple_form
   simplecov
+  solid_use_case (~> 2.1.1)
   uglifier
   wikicloth!
   wirble (= 0.1.3)
