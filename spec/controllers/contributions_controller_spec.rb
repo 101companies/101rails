@@ -22,7 +22,7 @@ RSpec.describe ContributionsController, type: :controller do
 				:repo_link => {:user_repo => '', :folder => ''},
 			}	
 			post :create, params, { user_id: current_user.id }
-			expect(flash[:error])
+			expect(flash[:error]).to eq('You need to choose a repo first')
 			expect(response.status).to eq(302)
 			expect(response).to redirect_to('/contribute/new')
 		end
@@ -35,7 +35,7 @@ RSpec.describe ContributionsController, type: :controller do
 				contrb_description: 'Test describtion',
 			}	
 			post :create, params, { user_id: current_user.id }
-			expect(flash[:error])
+			expect(flash[:error]).to eq('You need to define title for contribution')
 			expect(response.status).to eq(302)
 			expect(response).to redirect_to('/contribute/new')
 		end
@@ -49,7 +49,7 @@ RSpec.describe ContributionsController, type: :controller do
 				contrb_description: 'Test describtion',
 			}	
 			post :create, params, { user_id: current_user.id }
-			expect(flash[:error])
+			expect(flash[:error]).to eq('Sorry, but page with this name is already taken')
 			expect(response.status).to eq(302)
 			expect(response).to redirect_to('/contribute/new')
 		end
