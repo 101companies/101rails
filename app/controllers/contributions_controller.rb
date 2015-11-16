@@ -53,8 +53,10 @@ class ContributionsController < ApplicationController
     @repo_link.namespace
     @repo_link.page = @contribution_page
     @repo_link.save
-    @current_user.role = "contributor"
-    @current_user.save
+    if (@current_user.role == "guest")
+    	@current_user.role = "contributor"
+    	@current_user.save
+    end
     Mailer.user_created_contribution(@contribution_page, current_user.email).deliver_now
     Mailer.admin_created_contribution(@contribution_page).deliver_now
     redirect_to  "/wiki/#{@contribution_page.url}"
