@@ -16,6 +16,7 @@ class Page
   field :used_links, type: Array
   field :subresources, type: Array
   field :headline, type: String, :default => ''
+  field :verified, type: Boolean
 
   field :worker_findings, type: String
 
@@ -26,8 +27,6 @@ class Page
 
   validates_presence_of :title
   validates_presence_of :namespace
-
-  # attr_accessible :user_ids, :raw_content, :namespace, :title, :repo_link_id, :worker_findings
 
   before_validation do
     preparing_the_page

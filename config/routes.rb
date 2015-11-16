@@ -56,6 +56,7 @@ Wiki::Application.routes.draw do
     get :create_new_page, on: :member
     get :create_new_page_confirmation, on: :member
     put :rename, on: :member
+    put :verify, on: :member
   end
 
   scope '/api/wiki/' do
@@ -88,6 +89,6 @@ Wiki::Application.routes.draw do
   scope 'auth' do
     match '/github/callback' => 'authentications#create', via: [:get, :post]
     match '/failure' => 'authentications#failure', via: [:get, :post]
-    match '/local_login' => 'authentications#local_auth', via: [:get, :post]
+    match '/local_login/:admin' => 'authentications#local_auth', via: [:get, :post]
   end
 end

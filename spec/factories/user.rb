@@ -18,4 +18,8 @@ FactoryGirl.define do
     role 'editor'
   end
 
+  factory :contributor_user, parent: :user do
+    role 'contributor'
+  end
+
 end

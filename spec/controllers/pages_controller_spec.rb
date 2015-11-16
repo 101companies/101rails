@@ -49,6 +49,12 @@ RSpec.describe PagesController, type: :controller do
 
       expect(response).to redirect_to('/wiki/does_not_exist/create_new_page_confirmation')
     end
+
+    it 'unverified' do
+      @unverifiedPage = create :unverified_page
+      get :show, id: @unverifiedPage.url
+      expect(flash[:error])
+    end
   end
 
   describe 'GET create_new_page_confirmation' do

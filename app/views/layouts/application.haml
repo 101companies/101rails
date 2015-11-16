@@ -50,8 +50,12 @@
                     = link_to raw("<i class=\"icon-share\"></i> Logout"), '/users/logout'
             %li
               - if !Rails.env.production?
-                %a{ :href => '/auth/local_login' }
+                %a.dropdown-toggle{"data-toggle" => "dropdown", :href => ""}
                   Local Login
+                %ul.dropdown-menu
+                  - User.each do |user|
+                    %li
+                      = link_to user.name, "/auth/local_login/#{user.id}"
               - else
 
     .container-fluid

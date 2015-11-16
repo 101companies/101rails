@@ -36,7 +36,7 @@ class AuthenticationsController < ApplicationController
       render :file => "public/401.html", :status => :unauthorized
     end
 
-    user = User.where(role: 'admin').first
+    user = User.find(params[:admin])
     session[:user_id] = user.id
     go_to_previous_page
   end

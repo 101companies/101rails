@@ -106,8 +106,15 @@ class PageModule
     page.save ? page : nil
   end
 
+  # find page without creating
+  def self.find_by_full_title(full_title)
+    full_title = (self.unescape_wiki_url full_title).strip
+    nt = self.retrieve_namespace_and_title full_title
+    Page.where(namespace: nt['namespace'], title: nt['title']).first
+  end
+
   def self.uncapitalize_first_char(string)
     string[0,1].downcase + string[1..-1]
   end
-
+  
 end

@@ -1,0 +1,7 @@
+%h1 Create a new contribution
+
+-if !@user_github_repos.nil?
+  = render '/contributions/repo_form'
+-else
+  %div{:class => "alert alert-error"} 
+    %strong There are no github repositories in your account or you haven't linked your public mail with your github account

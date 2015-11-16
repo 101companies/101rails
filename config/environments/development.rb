@@ -15,11 +15,12 @@ Wiki::Application.configure do
 
   # ActionMailer Config
   config.action_mailer.default_url_options = { :host => 'localhost:3000' }
-  config.action_mailer.delivery_method = :test
+  config.action_mailer.delivery_method = :file
   # change to true to allow email to be sent during development
-  config.action_mailer.perform_deliveries = false
-  config.action_mailer.raise_delivery_errors = true
-  config.action_mailer.default :charset => "utf-8"
+  # config.action_mailer.perform_deliveries = false
+  config.action_mailer.file_settings = { :location => Rails.root.join('tmp/mail') }
+  # config.action_mailer.raise_delivery_errors = true
+  # config.action_mailer.default :charset => "utf-8"
 
   config.cache_store = :memory_store
 
