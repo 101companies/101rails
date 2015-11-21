@@ -6,7 +6,7 @@ module RdfModule
     if @@used_predicates == nil
       @@used_predicates = []
       Page.all.each do |page|
-        page.used_links.select{|l| l.include?("::")}.each do |link|
+        page.used_links.select { |l| l.include?("::") }.each do |link|
           @@used_predicates << link.split("::")[0]
         end
       end
@@ -57,7 +57,7 @@ module RdfModule
     unless directions
       graph = add_outgoing_non_semantic_triples graph, uri, directions
     end
-    add_ingoing_triples graph, @page#, context
+    add_ingoing_triples graph, @page
   end
 
   def semantic_properties(name)

@@ -37,26 +37,20 @@ class Page
 
     self.subresources = []
     self.used_links   = []
-    # we hack this for now
-    self.get_parser.section_list.each do |s|
-      links = s.scan /\[\[[\S ]*\]\]/
-      links = links.map do |link|
-        link.sub('[[', '').sub(']]', '').sub(/\|.*/, '')
-      end
-      links = links.map do |link|
-        if link.include?('://')
-          link
-        else
-          PageModule.unescape_wiki_url link
-        end
-      end
-      if s.is_resource_section
-        self.subresources << { s.title => links }
-      else
-        self.used_links << links
-      end
 
+    # we hack this for now
+    links = raw_content.scan /\[\[[^\]]*\]\]/
+    links = links.map do |link|
+      link.sub('[[', '').sub(']]', '').sub(/\|.*/, '')
     end
+    links = links.map do |link|
+      if link.include?('://')
+        link
+      else
+        PageModule.unescape_wiki_url(link)
+      end
+    end
+    self.used_links << links
 
     self.used_links.flatten!
     self.headline = get_headline_html_content
@@ -224,7 +218,6 @@ class Page
   def get_parser
     WikiCloth::Parser.context = {:ns => (MediaWiki::send :upcase_first_char, self.namespace), :title => self.title}
     parser = WikiCloth::Parser.new(data: self.raw_content, :noedit => true)
-    # this will produce sections and links
 
     parser.to_html
 
