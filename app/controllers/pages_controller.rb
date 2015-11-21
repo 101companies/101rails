@@ -108,14 +108,14 @@ class PagesController < ApplicationController
       flash[:success]="Updated linked repo" : flash[:error] = "Failed to update linked repo"
     redirect_to  "/wiki/#{@page.url}"
   end
-  
+
   def verify
     @page.verified = true
     @page.save
     Mailer.contribution_wikipage_verfied(@page)
     redirect_to "/wiki/#{@page.url}"
   end
-  
+
   def edit
     @pages = Page.all.map &:full_title
 
@@ -158,7 +158,7 @@ class PagesController < ApplicationController
       success do |result|
         @page           = result[:page]
         @books          = result[:books]
-        @rdf            = result[:rdf]
+        @rdf            = result[:triples]
         @resources      = result[:resources]
         @contributions  = result[:contributions]
       end
