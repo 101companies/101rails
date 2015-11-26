@@ -28,6 +28,8 @@ server {
   listen 80;
 <% end %>
 
+  location =/wiki.json { root /home/ubuntu/101worker/releases/101web/data/dumps/;  }
+
   location = /wiki/ {
     return 301 /wiki/101project;
   }

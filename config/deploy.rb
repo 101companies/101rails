@@ -38,7 +38,7 @@ set :puma_threads, [0, 2]
 # set :default_env, { path: "/opt/ruby/bin:$PATH" }
 
 # Default value for keep_releases is 5
-# set :keep_releases, 5
+set :keep_releases, 2
 #
 # on roles :all do
 #   within fetch(:latest_release_directory) do
