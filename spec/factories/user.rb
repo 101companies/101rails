@@ -8,7 +8,7 @@ FactoryGirl.define do
     github_uid    { SecureRandom.hex }
     github_token  { SecureRandom.hex }
     github_name   'Kevin'
-    email do |n|
+    sequence :email do |n|
       "test#{n}@test.com"
     end
     role 'admin'

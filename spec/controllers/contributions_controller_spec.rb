@@ -1,6 +1,10 @@
 require 'rails_helper'
 
 RSpec.describe ContributionsController, type: :controller do
+
+  # clear emails
+  before { ActionMailer::Base.deliveries = [] }
+
   describe 'Create Contribution' do
     it 'no user' do
       params = {
@@ -75,6 +79,26 @@ RSpec.describe ContributionsController, type: :controller do
       post :create, params, user_id: current_user.id
       expect(response.status).to eq(302)
       expect(response).to redirect_to('/wiki/Contribution:SomeTitle')
+    end
+
+    it 'sends emails' do
+      current_user = create :editor_user
+      email = current_user.email
+
+      params = {
+        contrb_title: 'SomeTitle',
+        repo_link: { user_repo: '101companies/101docs', folder: '/' },
+        contrb_description: 'Test describtion'
+      }
+      expect {
+        post :create, params, user_id: current_user.id
+      }.to change { ActionMailer::Base.deliveries.count }.by(2)
+
+      # user email
+      expect(ActionMailer::Base.deliveries[0].to[0]).to eq(email)
+
+      # admin email
+      expect(ActionMailer::Base.deliveries[1].to[0]).to eq("101companies@gmail.com")
     end
 
     it 'Success with default description' do

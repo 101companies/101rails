@@ -8,7 +8,7 @@ class Mailer < ActionMailer::Base
 
   def admin_created_contribution(contribution)
     @contribution = contribution
-    mail(to: "admin@101companies.org", subject: "A new contribution '#{@contribution.title}' has been submitted")
+    mail(to: "101companies@gmail.com", subject: "A new contribution '#{@contribution.title}' has been submitted")
   end
 
   def contribution_wikipage_verfied(contribution)
