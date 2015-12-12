@@ -17,15 +17,22 @@ class RepoForm extends React.Component {
   onRepoChanged(event) {
     var value = event.target.value;
     this.props.onRepoChanged(value);
+    var folders = this.state.folders;
     this.setState({
       folders: [],
       loading_folders: true
     }, () => {
-      $.getJSON('/contribute/repo_dirs/' + value, (result) => {
+      $.getJSON('/contribute/repo_dirs/' + value).done(result => {
         this.setState({
           folders: result,
           loading_folders: false
-        })
+        });
+      }).fail(() => {
+        humane.error("Could not load folders from repository")
+        this.setState({
+          folders: folders,
+          loading_folders: false
+        });
       });
     });
   }
