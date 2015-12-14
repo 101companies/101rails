@@ -88,7 +88,11 @@ class PageEditor extends React.Component {
   }
 
   onChangeTriples(triples) {
-    var pageWithoutMetadata = this.state.rawContent.substring(0, this.state.rawContent.indexOf('== Metadata =='));
+    var indexMetadata = this.state.rawContent.indexOf('== Metadata ==');
+    var pageWithoutMetadata = this.state.rawContent;
+    if (-1 !== indexMetadata) {
+        pageWithoutMetadata = this.state.rawContent.substring(0, indexMetadata);
+    }
 
     var metadata = '== Metadata ==\n\n' + triples.map(function(triple) {
       return '* [[' + triple.predicate + '::' + triple.object + ']]';
