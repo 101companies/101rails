@@ -20,7 +20,7 @@ class RepoLink
 
   # for compatibility with simple form
   def user_repo
-    "#{user}/#{repo}"
+    "#{repo}"
   end
 
   # for compatibility with simple form
