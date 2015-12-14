@@ -91,7 +91,7 @@ gem 'httparty', '0.13.1'
 gem 'mediawiki-gateway', '0.6.0'
 
 # work with wiki markdown
-gem 'wikicloth', :github => 'avaranovich/wikicloth'
+gem 'wikicloth', :github => '101companies/wikicloth'
 
 gem 'rdf', :github => 'ruby-rdf/rdf'
 
@@ -122,7 +122,7 @@ gem 'humane-rails'
 # gem 'net-ssh-gateway', '1.2.0'
 
 # for wiki-editor
-gem 'aced_rails', '0.3.1', :github => 'kevin-klein/aced_rails'
+gem 'aced_rails', '0.3.1', :github => '101companies/aced_rails'
 
 gem 'bootstrap-tour-rails', '0.4.0'
 
