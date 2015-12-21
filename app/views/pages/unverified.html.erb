@@ -1,0 +1,47 @@
+<h2 class='text-center'>
+  Unverified Pages
+</h2>
+
+<% if @pages.count > 0 %>
+
+  <table class='table table-striped table-bordered'>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Created At</th>
+        <th>Created by</th>
+        <th></th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% @pages.each do |page| %>
+        <tr>
+          <td>
+            <%= link_to(page.full_title, page_path(page.full_title)) %>
+          </td>
+
+          <td>
+            <%= page.created_at.strftime("%d.%m.%Y") %>
+          </td>
+
+          <td>
+            <% if page.users.first %>
+              <%= page.users.first.github_name %>
+            <% else %>
+              No user listed
+            <% end %>
+          </td>
+
+          <td>
+            <%= button_to('Verify Page', verify_page_path(page.full_title), class: 'btn btn-mini btn-success') %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+
+  </table>
+
+<% else %>
+  <h4>All Pages are verified.</h4>
+<% end %>

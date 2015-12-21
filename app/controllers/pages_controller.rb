@@ -9,8 +9,8 @@ class PagesController < ApplicationController
 
   # before_filter need to be before load_and_authorize_resource
   # methods, that need to check permissions
-  before_filter :get_the_page, only: [:edit, :rename, :update, :update_repo, :destroy, :verify]
-  authorize_resource only: [:delete, :rename, :update, :apply_findings, :update_repo, :verify]
+  before_filter :get_the_page, only: [:edit, :rename, :update, :update_repo, :destroy]
+  authorize_resource only: [:delete, :rename, :update, :apply_findings, :update_repo]
 
   def get_the_page
     full_title = params[:id]
@@ -71,6 +71,64 @@ class PagesController < ApplicationController
     end
   end
 
+  def unverify
+    if (cannot? :unverify, Page)
+      flash[:error] = "You don't have enough rights for that."
+      go_to_homepage and return
+    end
+
+    UnverifyPage.run(user_id: current_user.id, page_id: params[:id], full_title: params[:id]).match do
+
+      failure(:page_already_unverified) do
+        flash[:error] = "Page is already unverified."
+        go_to_homepage
+      end
+
+      success do
+        flash[:notice] = 'Page is unverified now.'
+        redirect_to(page_path(params[:id]))
+      end
+
+    end
+  end
+
+  def verify
+    if (cannot? :verify, Page)
+      flash[:error] = "You don't have enough rights for that."
+      go_to_homepage and return
+    end
+
+    VerifyPage.run(user_id: current_user.id, page_id: params[:id], full_title: params[:id]).match do
+
+      failure(:page_already_verified) do
+        flash[:error] = "Page is already verified."
+        go_to_homepage
+      end
+
+      success do
+        flash[:notice] = 'Page is verified now.'
+        redirect_to(page_path(params[:id]))
+      end
+
+    end
+
+  end
+
+  def unverified
+    if (cannot? :list, :unverified_pages)
+      flash[:error] = "You don't have enough rights for that."
+      go_to_homepage and return
+    end
+
+    ListUnverifiedPages.run.match do
+
+      success do |result|
+        @pages = result[:pages]
+      end
+
+    end
+  end
+
   def create_new_page
     if (cannot? :create, Page.new)
       flash[:error] = "You don't have enough rights for creating the page."
@@ -107,13 +165,6 @@ class PagesController < ApplicationController
     (@page.save and @page.repo_link.save) ?
       flash[:success]="Updated linked repo" : flash[:error] = "Failed to update linked repo"
     redirect_to  "/wiki/#{@page.url}"
-  end
-
-  def verify
-    @page.verified = true
-    @page.save
-    Mailer.contribution_wikipage_verfied(@page)
-    redirect_to "/wiki/#{@page.url}"
   end
 
   def edit

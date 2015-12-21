@@ -53,10 +53,12 @@ Wiki::Application.routes.draw do
 
   # pages routes
   resources :pages, path: 'wiki' do
+    get :unverified, on: :collection
+    post :verify, on: :member
+    get :unverify, on: :member
     get :create_new_page, on: :member
     get :create_new_page_confirmation, on: :member
     put :rename, on: :member
-    put :verify, on: :member
   end
 
   scope '/api/wiki/' do

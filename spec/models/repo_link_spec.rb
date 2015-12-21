@@ -33,7 +33,7 @@ describe RepoLink do
 
       result = link.user_repo
 
-      expect(result).to eq('kevin-klein/pythonSyb')
+      expect(result).to eq('pythonSyb')
     end
 
   end
