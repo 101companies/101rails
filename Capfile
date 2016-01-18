@@ -5,9 +5,6 @@ require 'capistrano/setup'
 require 'capistrano/deploy'
 
 require 'capistrano/bundler'
-require 'capistrano/puma'
-require 'capistrano/puma/jungle'  # if you need the jungle tasks
-require 'capistrano/puma/nginx'   # if you want to upload a nginx site template
 
 # Include tasks from other gems included in your Gemfile
 #

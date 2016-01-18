@@ -13,9 +13,6 @@ set :keep_releases, 5
 # Default deploy_to directory is /var/www/my_application
 set :deploy_to, "/home/ubuntu/101rails"
 
-set :puma_workers, 1
-set :puma_threads, [0, 2]
-
 # Default value for :scm is :git
 # set :scm, :git
 
