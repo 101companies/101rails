@@ -16,7 +16,7 @@ Eye.application :puma do
     pid_file 'puma.pid'
     stdall 'puma.log'
 
-    start_command "#{BUNDLE} exec puma -C onfig/puma.rb"
+    start_command "#{BUNDLE} exec puma -C config/puma.rb"
     stop_signals [:TERM, 5.seconds, :KILL]
     restart_command 'kill -USR2 {PID}'
 
