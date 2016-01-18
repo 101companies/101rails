@@ -1,6 +1,6 @@
 BUNDLE = 'bundle'
 RAILS_ENV = 'production'
-ROOT = File.expand_path(File.join(File.dirname(__FILE__), '..'))
+ROOT = '/home/ubuntu/101rails/current/'
 
 Eye.config do
   logger "#{ROOT}/log/eye.log"

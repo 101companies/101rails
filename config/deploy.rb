@@ -45,33 +45,66 @@ set :keep_releases, 2
 #   end
 # end
 
-namespace :foreman do
-  desc "Export the Procfile to Ubuntu's upstart scripts"
-  task :export do
-    on roles(:app) do
-      puts "cd #{current_path} && sudo foreman export upstart /etc/init -a #{fetch(:application)} -u #{fetch(:user)} -l /var/#{fetch(:application)}/log"
-      execute "cd #{current_path} && sudo foreman export upstart /etc/init -a #{fetch(:application)} -u #{fetch(:user)} -l /var/#{fetch(:application)}/log"
-    end
-  end
+namespace :deploy do
 
-  desc "Start the application services"
   task :start do
     on roles(:app) do
-      execute "sudo service #{fetch(:application)} start"
+      execute "eye start 101rails"
     end
   end
 
-  desc "Stop the application services"
   task :stop do
     on roles(:app) do
-      execute "sudo service #{fetch(:application)} stop"
+      execute "eye stop 101rails"
     end
   end
 
-  desc "Restart the application services"
   task :restart do
     on roles(:app) do
-      execute "sudo service #{fetch(:application)} start || sudo service #{fetch(:application)} restart"
+      execute "eye restart 101rails"
     end
   end
+
+  desc "Start or reload eye config"
+  task :load_eye do
+    on roles(:app) do
+      execute "mkdir -p /home/ubuntu/eye"
+      execute "ln -sf #{current_path}/config/config.eye /home/ubuntu/eye/101rails.eye"
+      execute "eye load /home/ubuntu/eye/101rails.eye"
+    end
+  end
+
 end
+
+before "deploy:restart", "deploy:load_eye"
+
+# namespace :foreman do
+#   desc "Export the Procfile to Ubuntu's upstart scripts"
+#   task :export do
+#     on roles(:app) do
+#       puts "cd #{current_path} && sudo foreman export upstart /etc/init -a #{fetch(:application)} -u #{fetch(:user)} -l /var/#{fetch(:application)}/log"
+#       execute "cd #{current_path} && sudo foreman export upstart /etc/init -a #{fetch(:application)} -u #{fetch(:user)} -l /var/#{fetch(:application)}/log"
+#     end
+#   end
+#
+#   desc "Start the application services"
+#   task :start do
+#     on roles(:app) do
+#       execute "sudo service #{fetch(:application)} start"
+#     end
+#   end
+#
+#   desc "Stop the application services"
+#   task :stop do
+#     on roles(:app) do
+#       execute "sudo service #{fetch(:application)} stop"
+#     end
+#   end
+#
+#   desc "Restart the application services"
+#   task :restart do
+#     on roles(:app) do
+#       execute "sudo service #{fetch(:application)} start || sudo service #{fetch(:application)} restart"
+#     end
+#   end
+# end
