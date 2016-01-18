@@ -25,6 +25,6 @@ Eye.application :puma do
     restart_grace 20.seconds
 
     check :cpu, every: 30, below: 80, times: 3
-    check :memory, every: 30, below: 70.megabytes, times: [3, 5]
+    check :memory, every: 30, below: 150.megabytes, times: [3, 5]
   end
 end
