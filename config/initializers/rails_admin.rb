@@ -1,21 +1,3 @@
-# RailsAdmin config file. Generated on February 25, 2013 20:47
-# See github.com/sferik/rails_admin for more informations
-
-# real timezone for rails_admin
-module RailsAdmin
-  module Config
-    module Fields
-      module Types
-        class Datetime
-          def value
-            bindings[:object].send(name)
-          end
-        end
-      end
-    end
-  end
-end
-
 RailsAdmin.config do |config|
 
   ################  Global configuration  ################
@@ -32,191 +14,37 @@ RailsAdmin.config do |config|
   # Number of default rows per-page:
   config.default_items_per_page = 30
 
-  config.model 'OldWikiUser' do
+  ### Popular gems integration
 
-    field :email do
-      searchable true
-    end
+  ## == Devise ==
+  # config.authenticate_with do
+  #   warden.authenticate! scope: :user
+  # end
+  # config.current_user_method(&:current_user)
 
-    field :name do
-      searchable true
-    end
+  ## == Cancan ==
+  # config.authorize_with :cancan
 
-    field :user do
-      searchable true
-    end
+  ## == Pundit ==
+  # config.authorize_with :pundit
 
+  ## == PaperTrail ==
+  # config.audit_with :paper_trail, 'User', 'PaperTrail::Version' # PaperTrail >= 3.0.0
+
+  ### More at https://github.com/sferik/rails_admin/wiki/Base-configuration
+
+  config.actions do
+    dashboard                     # mandatory
+    index                         # mandatory
+    new
+    export
+    bulk_delete
+    edit
+    delete
+    show_in_app
+
+    ## With an audit adapter, you can add:
+    # history_index
+    # history_show
   end
-
-  config.model 'RepoLink' do
-
-    weight -1
-
-    field :user do
-      searchable true
-    end
-
-    field :repo do
-      searchable true
-    end
-
-    field :folder do
-      searchable true
-    end
-
-    field :page do
-      searchable true
-    end
-
-  end
-
-  config.model 'PageChange' do
-    weight -1
-
-    field :page do
-      searchable true
-      read_only true
-    end
-
-    field :user do
-      searchable true
-      read_only true
-    end
-
-    field :title do
-      searchable true
-      label do
-        'Old title'
-      end
-      read_only true
-    end
-
-    field :namespace do
-      searchable true
-      label do
-        'Old namespace'
-      end
-      read_only true
-    end
-
-    field :raw_content do
-      label do
-        'Old content'
-      end
-      searchable true
-      read_only true
-    end
-
-    field :created_at do
-      read_only true
-    end
-
-  end
-
-  config.model 'User' do
-    weight -1
-    field :github_avatar do
-      label do
-        'Avatar'
-      end
-    end
-
-    field :name do
-      searchable true
-    end
-
-    field :email do
-      searchable true
-    end
-
-    field :role, :enum do
-      searchable true
-      enum do
-        User.role_options
-      end
-    end
-
-    field :github_name do
-      searchable true
-    end
-
-    field :created_at do
-      read_only true
-    end
-
-    field :updated_at do
-      read_only true
-    end
-
-    field :pages do
-      sortable false
-    end
-
-    field :old_wiki_users do
-      sortable false
-    end
-
-  end
-
-  config.model 'Page' do
-
-    object_label_method do
-      :full_title
-    end
-
-    field :full_title do
-      label do
-        'Wiki Title'
-      end
-      read_only true
-      searchable true
-    end
-
-    field :raw_content do
-      hide
-      searchable true
-    end
-
-    field :namespace do
-      hide
-      searchable true
-    end
-
-    field :title do
-      searchable true
-    end
-
-    field :verified do
-      searchable true
-    end
-
-    field :created_at do
-      read_only true
-    end
-
-    field :updated_at do
-      read_only true
-    end
-
-    edit do
-      field :title do
-        show
-      end
-
-      field :namespace do
-        show
-      end
-
-      field :raw_content do
-        show
-      end
-
-      field :worker_findings do
-        show
-      end
-
-    end
-
-  end
-
 end

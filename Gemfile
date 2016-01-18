@@ -21,7 +21,6 @@ gem 'bootstrap-sass', '2.3.2.2'
 gem 'sass-rails'
 gem 'coffee-rails'
 gem 'uglifier'
-gem 'compass-rails'
 
 gem 'responders', '~> 2.0'
 
@@ -37,7 +36,7 @@ gem 'mongoid', '~> 5.0.0.beta'
 gem 'mongoid_search'
 
 # security
-gem 'bcrypt-ruby'
+gem 'bcrypt'
 
 # github auth
 gem 'omniauth', '1.2.1'
@@ -80,7 +79,7 @@ gem 'puma'
 gem 'colorize', '0.7.3'
 
 # admin interface
-gem 'rails_admin', '0.6.8'
+gem 'rails_admin'
 
 # web-scraping
 gem 'json_pure'
@@ -106,7 +105,7 @@ gem 'simple_form'
 gem 'select2-rails', '3.5.7'
 
 # work with time in js
-gem 'momentjs-rails', '2.6.0'
+gem 'momentjs-rails'
 
 # ui for diff
 gem 'differ', '0.1.2'

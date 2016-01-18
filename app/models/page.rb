@@ -6,6 +6,24 @@ class Page
   include Mongoid::Timestamps
   include Mongoid::Search
 
+  rails_admin do
+    list do
+      field :title do
+        sort_reverse false
+      end
+
+      field :namespace
+      field :verified
+    end
+
+    field :title
+    field :namespace
+    field :raw_content
+    field :verified
+    field :repo_link
+
+  end
+
   search_in :title, :namespace, :raw_content
 
   field :title, type: String

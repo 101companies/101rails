@@ -5,6 +5,14 @@ class PageChange
   include Mongoid::Document
   include Mongoid::Timestamps::Created
 
+  rails_admin do
+    list do
+      field :title
+      field :namespace
+      field :created_at
+    end
+  end
+
   belongs_to :page
   belongs_to :user
 
