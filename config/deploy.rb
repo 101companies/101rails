@@ -49,19 +49,19 @@ namespace :deploy do
 
   task :start do
     on roles(:app) do
-      execute "eye start 101rails"
+      execute "eye start puma"
     end
   end
 
   task :stop do
     on roles(:app) do
-      execute "eye stop 101rails"
+      execute "eye stop puma"
     end
   end
 
   task :restart do
     on roles(:app) do
-      execute "eye restart 101rails"
+      execute "eye restart puma"
     end
   end
 
@@ -77,6 +77,8 @@ namespace :deploy do
 end
 
 before "deploy:restart", "deploy:load_eye"
+
+after 'deploy:publishing', 'deploy:restart'
 
 # namespace :foreman do
 #   desc "Export the Procfile to Ubuntu's upstart scripts"
