@@ -21,7 +21,6 @@ class Page
     field :raw_content
     field :verified
     field :repo_link
-
   end
 
   search_in :title, :namespace, :raw_content
@@ -69,9 +68,8 @@ class Page
         PageModule.unescape_wiki_url(link)
       end
     end
-    self.used_links << links
+    self.used_links = links.flatten
 
-    self.used_links.flatten!
     self.headline = get_headline_html_content
   end
 

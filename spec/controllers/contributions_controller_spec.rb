@@ -14,6 +14,7 @@ RSpec.describe ContributionsController, type: :controller do
       }
       post :create, params
 
+
       expect(response.status).to eq(302)
       expect(response).to redirect_to('/wiki/101project')
     end
@@ -64,7 +65,10 @@ RSpec.describe ContributionsController, type: :controller do
         repo_link: { user_repo: '101companies/101docs', folder: '/' },
         contrb_description: 'Test describtion'
       }
-      post :create, params, user_id: current_user.id
+      expect {
+        post :create, params, user_id: current_user.id
+      }.to change(Page, :count).by(1)
+
       expect(response.status).to eq(302)
       expect(response).to redirect_to('/wiki/Contribution:SomeTitle')
     end
@@ -76,7 +80,10 @@ RSpec.describe ContributionsController, type: :controller do
         repo_link: { user_repo: '101companies/101docs', folder: '/' },
         contrb_description: 'Test describtion'
       }
-      post :create, params, user_id: current_user.id
+      expect {
+        post :create, params, user_id: current_user.id
+      }.to change(Page, :count).by(1)
+
       expect(response.status).to eq(302)
       expect(response).to redirect_to('/wiki/Contribution:SomeTitle')
     end
@@ -108,7 +115,10 @@ RSpec.describe ContributionsController, type: :controller do
         repo_link: { user_repo: '101companies/101docs', folder: '/' },
         contrb_description: ''
       }
-      post :create, params, user_id: current_user.id
+      expect {
+        post :create, params, user_id: current_user.id
+      }.to change(Page, :count).by(1)
+      
       expect(response.status).to eq(302)
       expect(response).to redirect_to('/wiki/Contribution:SomeTitle')
     end

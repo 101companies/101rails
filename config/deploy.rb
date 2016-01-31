@@ -36,14 +36,6 @@ set :deploy_to, "/home/ubuntu/101rails"
 
 # Default value for keep_releases is 5
 set :keep_releases, 2
-#
-# on roles :all do
-#   within fetch(:latest_release_directory) do
-#     with rails_env: fetch(:rails_env) do
-#       execute :rake, 'assets:precompile'
-#     end
-#   end
-# end
 
 namespace :deploy do
 
@@ -79,34 +71,3 @@ end
 before "deploy:restart", "deploy:load_eye"
 
 after 'deploy:publishing', 'deploy:restart'
-
-# namespace :foreman do
-#   desc "Export the Procfile to Ubuntu's upstart scripts"
-#   task :export do
-#     on roles(:app) do
-#       puts "cd #{current_path} && sudo foreman export upstart /etc/init -a #{fetch(:application)} -u #{fetch(:user)} -l /var/#{fetch(:application)}/log"
-#       execute "cd #{current_path} && sudo foreman export upstart /etc/init -a #{fetch(:application)} -u #{fetch(:user)} -l /var/#{fetch(:application)}/log"
-#     end
-#   end
-#
-#   desc "Start the application services"
-#   task :start do
-#     on roles(:app) do
-#       execute "sudo service #{fetch(:application)} start"
-#     end
-#   end
-#
-#   desc "Stop the application services"
-#   task :stop do
-#     on roles(:app) do
-#       execute "sudo service #{fetch(:application)} stop"
-#     end
-#   end
-#
-#   desc "Restart the application services"
-#   task :restart do
-#     on roles(:app) do
-#       execute "sudo service #{fetch(:application)} start || sudo service #{fetch(:application)} restart"
-#     end
-#   end
-# end

@@ -136,7 +136,7 @@ class PagesController < ApplicationController
     end
 
     full_title = params[:id]
-    page = PageModule.create_page_by_full_title full_title
+    page = PageModule.create_page_by_full_title(full_title)
     if page
       redirect_to "/wiki/#{full_title}" and return
     else
@@ -264,16 +264,6 @@ class PagesController < ApplicationController
       success: result,
       newTitle: @page.url
     }
-  end
-
-  private
-
-  def get_page
-    @get_page ||= GetPage.new
-  end
-
-  def show_page
-    @show_page ||= ShowPage.new(logger, Rails.configuration.books_adapter)
   end
 
 end
