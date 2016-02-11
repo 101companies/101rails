@@ -7,7 +7,7 @@ class GetTriplesForPage
   def get_rdf_for_page(params)
     page = params[:page]
 
-    rdf = get_rdf_json(page.full_title, true)
+    rdf = get_rdf_json(page.full_title, true).uniq
 
     params[:rdf] = rdf
     continue(params)
