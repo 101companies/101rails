@@ -68,7 +68,7 @@ class Page
         PageModule.unescape_wiki_url(link)
       end
     end
-    self.used_links = links.flatten
+    self.used_links = links.flatten.uniq
 
     self.headline = get_headline_html_content
   end
