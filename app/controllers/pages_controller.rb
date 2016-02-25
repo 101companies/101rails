@@ -256,10 +256,7 @@ class PagesController < ApplicationController
   end
 
   def update
-    sections = []
-    content = params[:content]
-    result = @page.update_or_rename(@page.full_title, content, sections, current_user)
-    update_used_predicates(@page)
+    result = @page.update_or_rename(@page.full_title, params[:content], [], current_user)
     render json: {
       success: result,
       newTitle: @page.url

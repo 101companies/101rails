@@ -73,10 +73,10 @@ class PageModule
       score = PageModule.match_page_score found_page, query_string
       # prepare array wit results
       results << {
-          :title => found_page.full_title,
-          :link  => found_page.url,
+          title: found_page.full_title,
+          link:  found_page.url,
           # more score -> worst result
-          :score => score
+          score: score
       }
     end
     # sort by score and return
@@ -98,11 +98,13 @@ class PageModule
   end
 
   def self.create_page_by_full_title(full_title)
-    page = Page.new
     full_title = self.unescape_wiki_url full_title
     namespace_and_title = self.retrieve_namespace_and_title full_title
-    page.title = namespace_and_title['title']
-    page.namespace = namespace_and_title['namespace']
+
+    page = Page.new(
+      title: namespace_and_title['title'],
+      namespace: namespace_and_title['namespace']
+    )
     page.save ? page : nil
   end
 
@@ -116,5 +118,5 @@ class PageModule
   def self.uncapitalize_first_char(string)
     string[0,1].downcase + string[1..-1]
   end
-  
+
 end

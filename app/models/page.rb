@@ -6,6 +6,8 @@ class Page
   include Mongoid::Timestamps
   include Mongoid::Search
 
+  validates_uniqueness_of :title, scope: :namespace
+
   rails_admin do
     list do
       field :title do
@@ -28,11 +30,11 @@ class Page
   field :title, type: String
   # namespace for page, need to be set
   field :namespace, type: String
-  field :raw_content, type: String, :default => ''
+  field :raw_content, type: String, default: ''
   field :html_content, type: String
   field :used_links, type: Array
   field :subresources, type: Array
-  field :headline, type: String, :default => ''
+  field :headline, type: String, default: ''
   field :verified, type: Boolean
 
   field :worker_findings, type: String
@@ -41,7 +43,7 @@ class Page
   has_one :repo_link
   has_many :page_changes
   has_many :page_verifications
-  has_and_belongs_to_many :users, :class_name => 'User', :inverse_of => :pages
+  has_and_belongs_to_many :users, class_name: 'User', inverse_of: :pages
 
   validates_presence_of :title
   validates_presence_of :namespace
@@ -197,27 +199,21 @@ class Page
   end
 
   def update_or_rename(new_title, content, sections, user)
-
-    # if content is empty -> populate content with sections
-    if content == ""
-      content = build_content_from_sections(sections)
-    end
-
-    page_change = PageChange.new :title => self.title,
-                                 :namespace => self.namespace,
-                                 :raw_content => self.raw_content,
-                                 :page => self,
-                                 :user => user
+    page_change = PageChange.new title: self.title,
+                                 namespace: self.namespace,
+                                 raw_content: self.raw_content,
+                                 page: self,
+                                 user: user
 
     self.raw_content = content
     # sections
     # unescape new title to nice readable url
     new_title = PageModule.unescape_wiki_url new_title
     # if title was changed -> rename page
-    if (new_title!=self.full_title and GetPage.run(full_title: new_title).value[:page].nil?)
+    if (new_title != self.full_title and GetPage.run(full_title: new_title).value[:page].nil?)
       self.rename(new_title, page_change)
     end
-    page_change.save
+    page_change.save!
     self.save!
   end
 
@@ -233,8 +229,8 @@ class Page
   end
 
   def get_parser
-    WikiCloth::Parser.context = {:ns => (MediaWiki::send :upcase_first_char, self.namespace), :title => self.title}
-    parser = WikiCloth::Parser.new(data: self.raw_content, :noedit => true)
+    WikiCloth::Parser.context = {ns: (MediaWiki::send :upcase_first_char, self.namespace), title: self.title}
+    parser = WikiCloth::Parser.new(data: self.raw_content, noedit: true)
 
     parser.to_html
 
@@ -271,7 +267,7 @@ class Page
   end
 
   def backlinking_pages
-    Page.where(:used_links => /^(~)?(\w+::)?#{self.full_title}$/i)
+    Page.where(used_links: /^(~)?(\w+::)?#{self.full_title}$/i)
   end
 
   def backlinks

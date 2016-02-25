@@ -1,0 +1,194 @@
+
+<!DOCTYPE html>
+<html lang='en'>
+  <head>
+    <meta charset='utf-8'>
+    <title>Wiki of 101companies</title>
+    <meta content='width=device-width, initial-scale=1.0' name='viewport'>
+    <%= stylesheet_link_tag "landing", media: "all" %>
+    <%= javascript_include_tag "landing" %>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,600' rel='stylesheet' type='text/css'>
+    <!--[if lt IE 9]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js">
+    </script>
+    <![endif]-->
+    <!-- Le fav -->
+    <script>
+      // History, and back button
+      $(function() {
+
+        $('a.scroll').click(function(e) {
+          e.preventDefault();
+          var hash = this.hash;
+          $('html, body').animate({
+            scrollTop: $(this.hash).offset().top - 20
+          }, 500, function(){
+            // when done, add hash to url
+            // (default click behaviour)
+            window.location.hash = hash;
+          });
+
+        });
+
+      });
+    </script>
+  </head>
+  <!-- activate scrollspy -->
+  <body data-offset='50' data-spy='scroll' data-target='.navbar' id='top'>
+    <!-- Nav button -->
+    <a class='closed' id='toggle'>
+      <i class='icon-reorder'></i>
+    </a>
+    <!-- Navigation -->
+    <header class='navbar navbar-fixed-top'>
+      <div class='inner-page'>
+        <div id='nav'>
+          <ul class='nav'>
+            <li class='active'>
+              <a class='scroll brand-4' href='#project'><%= t('landing.project_title') %></a>
+            </li>
+            <li>
+              <a class='scroll brand-1' href='#explorer'><%= t('landing.explorer_title') %></a>
+            </li>
+            <li>
+              <a class='scroll brand-4' href='#contributions'><%= t('landing.contribution_title') %></a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </header>
+    <div class='page color-4' id='project'>
+      <br>
+      <div class='inner-page'>
+        <h2 class='page-headline large'><%= t('landing.project_title') %></h2>
+      </div>
+      <div class='row-fluid inner-page'>
+        <div class='span6 pull-right'>
+          <div class='tag-cloud'></div>
+        </div>
+        <div class='span6 pull-right'>
+          <%= t('landing.project_text') %>
+          <br>
+          <br>
+          <a class='btn btn-centered' href='/wiki/101project' title='Read the wiki'>
+             <%= t('landing.project_go') %>
+          </a>
+        </div>
+      </div>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+    </div>
+    <!-- Explorer -->
+    <div class='page color-1' id='explorer'>
+      <br>
+      <div class='inner-page'>
+        <h2 class='page-headline large'><%= t('landing.explorer_title') %></h2>
+      </div>
+      <div class='row-fluid inner-page'>
+          <div class='span6 pull-right'>
+            <%= image_tag("explorer.jpg", class: 'pull-right') %>
+          </div>
+          <div class='span6 pull-right'>
+            <%= t('landing.explorer_text') %>
+          <br>
+          <br>
+          <a class='btn btn-centered' href='http://101companies.org/resources?format=html' title='Read the wiki'>
+            <%= t('landing.explorer_go') %>
+          </a>
+        </div>
+      </div>
+      <br>
+      <br>
+      <br>
+    </div>
+    <div class='page color-4' id='contributions'>
+      <br>
+      <div class='inner-page'>
+        <h2 class='page-headline large'><%= t('landing.contribution_title') %></h2>
+      </div>
+      <div class='row-fluid inner-page'>
+        <div class='span6 pull-right'>
+          <center>
+            <%= image_tag("codercat.png") %>
+          </center>
+        </div>
+        <div class='span6 pull-right'>
+            <%= t('landing.contribution_text') %>
+          <br>
+          <br>
+          <a class='btn btn-centered' href='/contribute/new' title='Read the wiki'>
+            <%= t('landing.contribution_go') %>
+          </a>
+          <br>
+          <br>
+          <br>
+          <br>
+          <br>
+          <br>
+          <br>
+          <br>
+          <br>
+        </div>
+      </div>
+    </div>
+    <!-- Social icons -->
+    <footer class='page color-1' id='contact'>
+    <div class='inner-page'>
+    <h2 class='page-headline large'>Contact</h2>
+    </div>
+    <div class='inner-page row-fluid'>
+    <div class='span4 social'>
+    <ul class='big-list'>
+    <li>
+    <a href='https://twitter.com/101companies' target='blank'>
+    <i class='icon-twitter'></i>
+    Twitter
+    </a>
+    </li>
+    <li>
+    <a href='https://github.com/101companies' target='blank'>
+    <i class='icon-github-sign'></i>
+    Github
+    </a>
+    </li>
+    </ul>
+    </div>
+    <div class='span4 social'>
+    <ul class='big-list'>
+    <li>
+    <a href='https://www.youtube.com/channel/UCzecm5qz_9KDcxuhgbRDy-w' target='blank'>
+    <i class='icon-youtube-play'></i>
+    Youtube
+    </a>
+    </li>
+    <li>
+    <a href='http://101companies.tumblr.com' target='blank'>
+    <i class='icon-tumblr'></i>
+    Blog
+    </a>
+    </li>
+    </ul>
+    </div>
+    <div class='span4 social'>
+    <ul class='big-list'>
+    <li>
+    <a href='http://softlang.wikidot.com/' target='blank'>
+    <i class='icon-globe'></i>
+    Info
+    </a>
+    </li>
+    <li>
+    <a href='mailto:101companies@gmail.com' target='blank'>
+    <i class='icon-inbox'></i>
+    Email
+    </a>
+    </li>
+    </ul>
+    </div>
+    </div>
+    </footer>
+  </body>
+</html>
