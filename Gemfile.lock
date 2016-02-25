@@ -26,6 +26,14 @@ GIT
     rdf (1.99.0)
       link_header (~> 0.0, >= 0.0.8)
 
+GIT
+  remote: git://github.com/seuros/capistrano-puma.git
+  revision: 19a573e72e2f24029fe687537341f956ee9dfa9d
+  specs:
+    capistrano3-puma (1.2.2)
+      capistrano (~> 3.0)
+      puma (>= 2.6)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -390,6 +398,7 @@ DEPENDENCIES
   cancan (= 1.6.10)
   capistrano-bundler (~> 1.1)
   capistrano-rails (~> 1.1)
+  capistrano3-puma!
   closure-compiler (= 1.1.10)
   coffee-rails
   colorize (= 0.7.3)

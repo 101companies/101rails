@@ -37,37 +37,6 @@ set :deploy_to, "/home/ubuntu/101rails"
 # Default value for keep_releases is 5
 set :keep_releases, 2
 
-namespace :deploy do
-
-  task :start do
-    on roles(:app) do
-      execute "eye start puma"
-    end
-  end
-
-  task :stop do
-    on roles(:app) do
-      execute "eye stop puma"
-    end
-  end
-
-  task :restart do
-    on roles(:app) do
-      execute "eye restart puma"
-    end
-  end
-
-  desc "Start or reload eye config"
-  task :load_eye do
-    on roles(:app) do
-      execute "mkdir -p /home/ubuntu/eye"
-      execute "ln -sf #{current_path}/config/config.eye /home/ubuntu/eye/101rails.eye"
-      execute "eye load /home/ubuntu/eye/101rails.eye"
-    end
-  end
-
-end
-
-before "deploy:restart", "deploy:load_eye"
-
-after 'deploy:publishing', 'deploy:restart'
+set :puma_workers, 1
+set :puma_threads, [0, 2]
+set :puma_bind, %w(tcp://0.0.0.0:9292)
