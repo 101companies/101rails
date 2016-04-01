@@ -1,5 +1,7 @@
 class ContributionsController < ApplicationController
 
+  protect_from_forgery except: :create
+
   def get_repo_dirs
     render :json => current_user.get_repo_dirs_recursive(params[:repo])
   end
