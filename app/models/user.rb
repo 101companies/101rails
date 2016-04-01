@@ -44,7 +44,7 @@ class User
   def get_repos
     # using oauth token to increase limit of request to github api to 5000
     client = Octokit::Client.new access_token: self.github_token
-    (client.repositories self.github_name, {type: 'all'}).map do |repo|
+    (client.repositories self.github_name, type: 'all', per_page: 100).map do |repo|
       repo.full_name
     end
   end
@@ -53,12 +53,12 @@ class User
     base_url = "https://api.github.com/repos/"
     # using oauth token to increase limit of request to github api to 5000
     last_commit = JSON.parse(HTTParty.get(
-                                 "#{base_url}#{repo}/commits?access_token=#{self.github_token}",
+                                 "#{base_url}#{repo}/commits",
                                  headers: {"User-Agent" => '101wiki'}
                              ).body).first["sha"]
     run_recursive = recursive ? "&recursive=1" : ""
     # using oauth token to increase limit of request to github api to 5000
-    url = "#{base_url}#{repo}/git/trees/#{last_commit}?access_token=#{self.github_token}#{run_recursive}"
+    url = "#{base_url}#{repo}/git/trees/#{last_commit}?#{run_recursive}"
     files_and_dirs = JSON.parse(HTTParty.get(url, headers: {"User-Agent" => '101wiki'}).body)
     repos = files_and_dirs["tree"].each.select{|node| node["type"] == 'tree'}.map{|node| '/' + node['path']}
     repos.prepend '/'

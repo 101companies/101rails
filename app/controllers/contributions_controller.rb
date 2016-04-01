@@ -72,7 +72,7 @@ class ContributionsController < ApplicationController
 
     begin
       # retrieve all repos of user
-      @user_github_repos = (Octokit.repos current_user.github_name, {:type => 'all'}).map do |repo|
+      @user_github_repos = (Octokit.repos current_user.github_name, type: 'all', per_page: 100).map do |repo|
         # retrieve 'username/reponame' from url
         repo.full_name
       end
