@@ -9,6 +9,7 @@ end
 # DO NOT ADD GEMS WITHOUT GEM NUMBER!
 
 gem 'rails', '4.2.3'
+gem 'newrelic_rpm'
 
 gem 'solid_use_case', '~> 2.1.1'
 
