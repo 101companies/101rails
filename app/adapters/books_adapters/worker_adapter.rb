@@ -13,7 +13,7 @@ module BooksAdapters
       rescue Timeout::Error, Errno::EINVAL, Errno::ECONNREFUSED, Errno::ECONNRESET, EOFError, Net::HTTPBadResponse, Net::HTTPHeaderSyntaxError, Net::ProtocolError => e
         raise Errors::NetworkError
       rescue JSON::ParserError
-        raise Errors::InvalidBooks
+        []
       end
     end
 
