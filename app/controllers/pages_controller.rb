@@ -58,17 +58,7 @@ class PagesController < ApplicationController
       !(triple[:node].start_with?('http://') || triple[:node].start_with?('https://'))
     end
 
-    begin
-      url = "http://worker.101companies.org/services/termResources/#{@page.full_title}.json"
-      url = URI.encode url
-      url = URI(url)
-      response = Net::HTTP.get(url)
-
-      @books = JSON::parse(response)
-    rescue SocketError
-      Rails.logger.warn("book retrieval failed for #{@page.full_title}")
-      @books = []
-    end
+    @books = []
   end
 
   def unverify
