@@ -29,7 +29,11 @@ namespace :pages do
       ap duplicate.map { |page| page.full_title }
       puts ''
     end
-
+    dups.shift.each do |page|
+      ap 'deleting:'
+      ap page.full_title
+      page.destroy!
+    end
   end
 
 end

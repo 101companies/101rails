@@ -7,10 +7,11 @@ module BooksAdapters
         url = get_url(title)
         url = URI.encode url
         url = URI(url)
-        response = Net::HTTP.get url
+
+        response = Net::HTTP.start(url.host, url.port, read_timeout: 1, connect_timeout: 2) {|http| http.request(request)}
 
         JSON::parse(response)
-      rescue Timeout::Error, Errno::EINVAL, Errno::ECONNREFUSED, Errno::ECONNRESET, EOFError, Net::HTTPBadResponse, Net::HTTPHeaderSyntaxError, Net::ProtocolError => e
+      rescue Timeout::Error, Errno::EHOSTUNREACH, Errno::EINVAL, Errno::ECONNREFUSED, Errno::ECONNRESET, EOFError, Net::HTTPBadResponse, Net::HTTPHeaderSyntaxError, Net::ProtocolError => e
         raise Errors::NetworkError
       rescue JSON::ParserError
         []
