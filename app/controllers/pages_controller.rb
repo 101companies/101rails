@@ -164,8 +164,10 @@ class PagesController < ApplicationController
       url = "http://worker.101companies.org/data/dumps/wiki-predicates.json"
       url = URI.encode url
       url = URI(url)
-      @predicates = JSON::parse(Net::HTTP.get url)
-    rescue SocketError
+
+      response = Net::HTTP.start(url.host, url.port, read_timeout: 0.5, connect_timeout: 1) {|http| http.request(request)}
+      @predicates = JSON::parse(response)
+    rescue Errno::EHOSTUNREACH, Timeout::Error, Errno::EINVAL, Errno::ECONNRESET, EOFError, Net::HTTPBadResponse, Net::HTTPHeaderSyntaxError, Net::ProtocolError => e
       @predicates = {}
       Rails.logger.warn("Predicates retrieval failed")
     end
