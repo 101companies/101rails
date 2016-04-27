@@ -38,5 +38,5 @@ set :deploy_to, "/home/ubuntu/101rails"
 set :keep_releases, 2
 
 set :puma_workers, 1
-set :puma_threads, [0, 2]
+set :puma_threads, [1, 1]
 set :puma_bind, %w(tcp://0.0.0.0:9292)
