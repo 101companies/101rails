@@ -3,7 +3,7 @@ var height = 300;
 
 $(document).ready(function() {
 
-  $.getJSON('http://worker.101companies.org/data/dumps/moretagclouds/technologies.json', function(data) {
+  $.getJSON('http://worker.101companies.org/data/dumps/moretagclouds/languages.json', function(data) {
 
     var word_numbers = $.map(data, function(x) {
       return x;

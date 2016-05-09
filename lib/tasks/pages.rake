@@ -21,7 +21,6 @@ namespace :pages do
       if ds.length > 0
         ds << page
       end
-      dups << ds
     end
     dups = dups.reject { |l| l.empty? }
     dups.each do |duplicate|
@@ -29,6 +28,7 @@ namespace :pages do
       ap duplicate.map { |page| page.full_title }
       puts ''
     end
+    ap dups
     dups.shift.each do |page|
       ap 'deleting:'
       ap page.full_title
