@@ -51,7 +51,7 @@ $(document).ready(function() {
       .style("fill", function(d, i) { return fill(i); })
       .attr("text-anchor", "middle")
       .on("click", function(d) {
-        window.location.href = 'http://101companies.org/wiki/Technology:' + d.text;
+        window.location.href = 'http://101companies.org/wiki/Language:' + d.text;
       })
       .attr("transform", function(d) {
         return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
