@@ -1,0 +1,102 @@
+<%= render "/pages/shared/default" %>
+<%= content_for :title, @page.full_title %>
+<ul class="nav nav-tabs">
+  <li class="active">
+    <a class="tab-link" data-toggle="tab" href="#page" id="page-tab-link">101wiki</a>
+  </li>
+  <% if @page.namespace != "Contributor" %>
+    <li>
+      <a class='disabled' href="http://101companies.org/resources?format=html&wikititle=<%= @page.full_title %>" id="discovery-tab-link">101explorer</a>
+    </li>
+    <li>
+      <a class="tab-link" data-toggle="tab" href="#repo" id="repo-tab-link">101repo</a>
+    </li>
+  <% else %>
+    <li>
+      <a class="tab-link" data-toggle="tab" href="#pages-edits" id="pages-edits-tab-link">Pages edits</a>
+    </li>
+    <li>
+      <a class="tab-link" data-toggle="tab" href="#contributions" id="contributions-tab-link">Contributions</a>
+    </li>
+  <% end %>
+  <li>
+    <a class="tab-link" data-toggle="tab" href="#editing-help" id="editing-help-tab-link">Help</a>
+  </li>
+  <% if current_user %>
+    <li>
+      <a class="tab-link" data-toggle="tab" href="#page-changes" id="page-changes-tab-link">History</a>
+    </li>
+  <% end %>
+</ul>
+<div class="tab-content">
+  <!-- tab with backbone page
+  -->
+  <div class="tab-pane active" id="page">
+    <%= render "pages/page" %>
+  </div>
+  <!-- tab with all repo settings
+  -->
+  <div class="tab-pane" id="repo">
+    <%= render "/pages/repo_tab" %>
+  </div>
+  <!-- tab with all history revisions
+  -->
+  <%= render "/pages/history_tab" %>
+  <!-- tab with all repo settings
+  -->
+  <div class="tab-pane" id="contributions">
+    <h2>User contributions</h2>
+    <% if defined?(@contributions) %>
+      <ul></ul>
+      <% if @contributions.count == 0 %>
+        This user never has never made submissions.
+      <% else %>
+        <% @contributions.each do |contribution| %>
+          <% if !contribution.nil? %>
+            <li>
+              Developed contribution
+              <a href="/wiki/<%= contribution.full_title %>" target="_blank">#{contribution.full_title}</a>
+            </li>
+          <% end %>
+        <% end %>
+      <% end %>
+    <% end %>
+  </div>
+  <div class="tab-pane" id="pages-edits">
+    <h2>User edits</h2>
+    <% if defined?(@pages_edits) %>
+      <ul></ul>
+      <% if @pages_edits.count == 0 %>
+        No pages edited by this user.
+      <% else %>
+        <% @pages_edits.order_by("created_at DESC").each do |page_edit| %>
+          <% if !page_edit.page.nil? %>
+            <li>
+              Edited page
+              <a href="/wiki/<%= page_edit.page.full_title %>" target="_blank">#{page_edit.page.full_title}</a>
+              <a href="/page_changes/show/<%= page_edit.id %>" target="_blank">#{time_ago_in_words(page_edit.created_at)} ago</a>
+            </li>
+          <% end %>
+        <% end %>
+      <% end %>
+    <% end %>
+  </div>
+  <!-- tab with all repo settings
+  -->
+  <div class="tab-pane" id="editing-help">
+    <%= render "/pages/editing_help" %>
+  </div>
+  <!-- tab with all repo settings
+  -->
+  <div class="tab-pane" id="editing-help">
+    <%= render "/pages/editing_help" %>
+  </div>
+</div>
+<div class="modal fade" id="modal">
+  <div class="modal-header">
+    <a class="close" data-dismiss="modal">&times;</a>
+  </div>
+  <h3>
+    <div id="modal_body"></div>
+  </h3>
+</div>
