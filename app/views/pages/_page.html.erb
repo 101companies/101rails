@@ -29,7 +29,9 @@ window.renamePath = '<%= rename_page_path(@page.full_title) %>'
 <div id='contentTop'>
   <div id='topEditBar' class='editBar'>
     <div class="btn-toolbar notEditing" style="display: block;">
+
       <div class="btn-group">
+        <%= render "/pages/repo_tab" %>
         <% if can? :edit, @page %>
         <a href='<%= edit_page_path(@page.full_title) %>' class="editbutton  btn btn-small" id="pageEditButton">
           <i class="icon-pencil"></i>
@@ -61,7 +63,6 @@ window.renamePath = '<%= rename_page_path(@page.full_title) %>'
           </a>
         <% end %>
       </div>
-      <%= render "/pages/repo_tab" %>
      </div>
   </div>
 

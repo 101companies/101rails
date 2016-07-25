@@ -1,17 +1,9 @@
-<% if can? :edit, @page %>
-  <% if @page.repo_link %>
-    <%= link_to(@page.repo_link.full_url, target: '_blank') do %>
-      <i class='icon-github-alt'></i>
-      Go to Github
-    <% end %>
+<% if @page.repo_link %>
+  <%= link_to(@page.repo_link.full_url, target: '_blank', class: 'btn btn-small') do %>
+    <i class='icon-github-alt'></i>
+    Go to Github
   <% end %>
-
+  Has repo link
 <% else %>
   <span>This page doesn't have link to GitHub repo now.</span>
 <% end %>
-
-  %p
-    This page doesn't have link to GitHub repo now.
-    - if !current_user
-      %a{:href => "/auth/github"}
-        Click here to log in and continue.
