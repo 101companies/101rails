@@ -93,7 +93,7 @@ table {
   background-image: url(/assets/logo2.jpg);
 }
 
-#page {
+.page {
   overflow: hidden;
   width: 100%;
   .label {
@@ -502,7 +502,7 @@ p {
 
 #contentTop {
   margin-bottom: 10px;
-  height: 100px;
+  height: auto;
   .btn-toolbar {
     float: right;
   }

@@ -1,7 +1,3 @@
-<script type='text/javascript'>
-window.pagePath = '<%= page_path(@page.full_title) %>';
-window.renamePath = '<%= rename_page_path(@page.full_title) %>'
-</script>
 
 <div id="renameModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-header">
@@ -26,13 +22,15 @@ window.renamePath = '<%= rename_page_path(@page.full_title) %>'
 </div>
 <% end %>
 
+
 <div id='contentTop'>
+  <% if !@script_render %>
   <div id='topEditBar' class='editBar'>
     <div class="btn-toolbar notEditing" style="display: block;">
 
       <div class="btn-group">
         <%= render "/pages/repo_tab" %>
-        <% if can? :edit, @page %>
+        <% if request && can?(:edit, @page) %>
         <a href='<%= edit_page_path(@page.full_title) %>' class="editbutton  btn btn-small" id="pageEditButton">
           <i class="icon-pencil"></i>
           <strong class="editbuttontext"> Edit</strong>
@@ -65,8 +63,9 @@ window.renamePath = '<%= rename_page_path(@page.full_title) %>'
       </div>
      </div>
   </div>
+  <% end %>
 
-  <div id="title">
+  <div id="<%= @page.id %>">
     <h1><%= @page.full_title %></h1>
   </div>
 
@@ -75,18 +74,20 @@ window.renamePath = '<%= rename_page_path(@page.full_title) %>'
 <div id='sections'>
   <%= @page.render.html_safe %>
 
+  <% if @rdf.count > 0 %>
   <div class='section' id='metasection'>
     <div class='headlinecontainer'>
       <h2 class='headline'>Metadata</h2>
     </div>
 
-    <%= render 'triples', triples: @rdf, hover_show: false %>
+    <%= render 'pages/triples', triples: @rdf, hover_show: false %>
 
   </div>
+  <% end %>
 
 </div>
 
-<% if @page.backlinks.count > 0 %>
+<% if !@script_render && @page.backlinks.count > 0 %>
 <div class='additional-sections'>
   <div class="section" id="backlinks" style="display: block;">
      <h2>Backlinks</h2>
@@ -105,7 +106,7 @@ window.renamePath = '<%= rename_page_path(@page.full_title) %>'
 </div>
 <% end %>
 
-<% if @resources.count > 0 %>
+<% if @resources && @resources.count > 0 %>
 <div class='addtional-sections' id='last-section'>
 
   <div class='section' id='resources' style='display: block;'>
@@ -118,16 +119,18 @@ window.renamePath = '<%= rename_page_path(@page.full_title) %>'
 
 <hr>
 
-<div id="infofooter">
-  <div class='history'>
-    <% @change = @page.get_last_change %>
-    <% if @change[:created_at] %>
-    <img class="small_avatar" height="24" src="<%= @change[:user_pic] %>" width="24">
-    <a href="mailto:<%= @change[:user_email] %>"><%= @change[:user_name] %></a>
+<% if !@script_render %>
+  <div id="infofooter">
+    <div class='history'>
+      <% @change = @page.get_last_change %>
+      <% if @change[:created_at] %>
+      <img class="small_avatar" height="24" src="<%= @change[:user_pic] %>" width="24">
+      <a href="mailto:<%= @change[:user_email] %>"><%= @change[:user_name] %></a>
 
-    edited this article at
-    <%= l @change[:created_at] %>
-    <% end %>
+      edited this article at
+      <%= l @change[:created_at] %>
+      <% end %>
 
+    </div>
   </div>
-</div>
+<% end %>

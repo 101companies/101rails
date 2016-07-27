@@ -1,6 +1,6 @@
 $(document).ready(function() {
   // hide metadata
-  var metadata = $('#Metadata');
+  var metadata = $('[class="mw-headline"][id="Metadata"]');
 
   // hide list
   metadata.parent().nextAll("ul").hide();
