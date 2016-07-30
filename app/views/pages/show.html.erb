@@ -8,11 +8,6 @@
     <li>
       <a class='disabled' href="http://101companies.org/resources?format=html&wikititle=<%= @page.full_title %>" id="discovery-tab-link">101explorer</a>
     </li>
-    <% if @page.repo_link || current_user %>
-      <li>
-        <a class="tab-link" data-toggle="tab" href="#repo" id="repo-tab-link">101repo</a>
-      </li>
-    <% end %>
   <% else %>
     <li>
       <a class="tab-link" data-toggle="tab" href="#pages-edits" id="pages-edits-tab-link">Pages edits</a>
