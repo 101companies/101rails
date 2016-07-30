@@ -145,7 +145,7 @@ class PagesController < ApplicationController
     </html>
     "
 
-    File.open('../101web/data/scripts/' + page.full_title + '.html', 'w') { |file| file.write(result) }
+    File.open("#{Dir.home}/101web/data/scripts/" + page.full_title + '.html', 'w') { |file| file.write(result) }
 
     redirect_to request.referer, notice: 'Rendered successfuly'
   end
