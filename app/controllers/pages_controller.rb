@@ -128,6 +128,11 @@ class PagesController < ApplicationController
           });
 
           $.each(window.links, function(index, link) {
+            $('a[href=\"' + 'http://101companies.org/wiki/' + link.full_title.replace('_', ' ') + '\"]').each(function(index, value) {
+              var $value = $(value);
+              $value.attr('href', '#' + link.id);
+            });
+
             $('a[href=\"' + 'http://101companies.org/wiki/' + link.full_title + '\"]').each(function(index, value) {
               var $value = $(value);
               $value.attr('href', '#' + link.id);
