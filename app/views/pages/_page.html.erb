@@ -31,37 +31,37 @@
       <div class="btn-group">
         <%= render "/pages/repo_tab" %>
         <% if request && can?(:edit, @page) %>
-        <a href='<%= render_script_page_path(@page) %>' class="editbutton  btn btn-small" id="pageEditButton">
-          <i class="icon-pencil"></i>
+        <a href='<%= render_script_page_path(@page) %>' class="editbutton  btn btn-sm btn-default" id="pageEditButton">
+          <i class="glyphicon glyphicon-pencil"></i>
           <strong class="editbuttontext"> render script</strong>
         </a>
-        <a href='<%= edit_page_path(@page.full_title) %>' class="editbutton  btn btn-small" id="pageEditButton">
-          <i class="icon-pencil"></i>
+        <a href='<%= edit_page_path(@page.full_title) %>' class="editbutton  btn btn-sm btn-default" id="pageEditButton">
+          <i class="glyphicon glyphicon-pencil"></i>
           <strong class="editbuttontext"> Edit</strong>
         </a>
         <% if current_user.role == ('admin' || 'editor') %>
           <% if !@page.nil? && @page.verified == false %>
-          	<a href='<%= verify_page_path(@page.full_title) %>' data-method="put" class="editbutton  btn btn-small" id="pageVerifyButton">
+          	<a href='<%= verify_page_path(@page.full_title) %>' data-method="put" class="editbutton  btn btn-sm btn-default" id="pageVerifyButton">
               <i class=""></i>
               <strong class="editbuttontext"> Verify</strong>
             </a>
         	<% end %>
-          <button class="editbutton  btn btn-small" id="pageDeleteButton">
-            <i class="icon-trash"></i><strong> Delete</strong>
+          <button class="editbutton  btn btn-sm btn-default" id="pageDeleteButton">
+            <i class="glyphicon glyphicon-trash"></i><strong> Delete</strong>
           </button>
         <% end %>
-          <a href='#renameModal' data-toggle="modal" class="editbutton  btn btn-small" id="pageRenameButton">
-            <i class="icon-share-alt"></i>
+          <a href='#renameModal' data-toggle="modal" class="editbutton  btn btn-sm btn-default" id="pageRenameButton">
+            <i class="glyphicon glyphicon-share-alt"></i>
             <strong class="editbuttontext"> Rename</strong>
           </a>
-          <%= link_to(unverify_page_path(@page.full_title), class: 'editbutton  btn btn-small') do %>
-            <i class="icon-remove-circle"></i>
+          <%= link_to(unverify_page_path(@page.full_title), class: 'editbutton  btn btn-sm btn-default') do %>
+            <i class="glyphicon glyphicon-remove-circle"></i>
             <strong class="editbuttontext"> Unverify</strong>
           <% end %>
         <% else %>
-          <a href='<%= edit_page_path(@page.full_title) %>' class="editbutton  btn btn-small" id="showSourceButton">
-            <i class="icon-share-alt"></i>
-            <strong class="editbuttontext"> Show Source</strong>
+          <a href='<%= edit_page_path(@page.full_title) %>' class="editbutton  btn btn-sm btn-default" id="showSourceButton">
+            <i class="glyphicon glyphicon-share-alt"></i>
+            <strong class="editbuttontext"> Edit</strong>
           </a>
         <% end %>
       </div>
@@ -99,7 +99,7 @@
      <div class='backlinks-body'>
        <% @page.backlinks.each do |link| %>
          <a href="<%= '/wiki/' + link.sub(' ', '_') %>">
-           <span class="label">
+           <span class="backlink">
              <%= link %>
            </span>
          </a>

@@ -17,7 +17,7 @@ gem 'solid_use_case', '~> 2.1.1'
 gem 'exception_notification', '4.0.1'
 
 # twitter bootstrap as sass
-gem 'bootstrap-sass', '2.3.2.2'
+gem 'bootstrap-sass'
 
 gem 'sass-rails'
 gem 'coffee-rails'

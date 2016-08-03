@@ -96,13 +96,46 @@ table {
 .page {
   overflow: hidden;
   width: 100%;
-  .label {
-    background-color: #555555;
-    font-weight: 500;
-    a {
-      color: white;
-      text-decoration: none;
-    }
+}
+
+.backlinks-body {
+  font-weight: 500;
+  a {
+    display: inline-block;
+    padding: 2px 4px;
+    font-size: 11.844px;
+    font-weight: bold;
+    line-height: 14px;
+    color: #fff;
+    vertical-align: baseline;
+    white-space: nowrap;
+    text-shadow: 0 -1px 0 rgba(0,0,0,0.25);
+    background-color: #999;
+    background-color: #999;
+    color: white;
+    text-decoration: none;
+    border-radius: 3px;
+  }
+}
+
+.label {
+  display: inline-block;
+  padding: 2px 4px;
+  font-size: 11.844px;
+  font-weight: bold;
+  line-height: 14px;
+  color: #fff;
+  vertical-align: baseline;
+  white-space: nowrap;
+  text-shadow: 0 -1px 0 rgba(0,0,0,0.25);
+  background-color: #999;
+  background-color: #999;
+  color: white;
+  text-decoration: none;
+  border-radius: 3px;
+
+  a {
+    color: white;
   }
 }
 
@@ -417,10 +450,6 @@ p {
   margin: 3px;
 }
 
-#backlinks-body {
-  width: 50%;
-  height: 40px;
-}
 
 #backlinks-continued {
   width: 50%;
@@ -444,6 +473,7 @@ p {
 .resourcebar {
   float: left;
   width: 100%;
+  margin-left: 40px;
 }
 
 .resourcename {

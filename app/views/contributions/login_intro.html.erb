@@ -1,0 +1,52 @@
+<div id='help_login'>
+  <h1>Welcome to the 101Companies Contribution Process!</h1>
+
+  <div id='step1' class='step row'>
+    <div class='col-md-6'>
+      <img src='<%= image_path('codercat.png') %>' />
+    </div>
+    <div class='col-md-6'>
+      <b> 1.</b>
+      Before you are able to start the contributing process you need to be logged in with your Github profile.
+      If you don't have such an account, please create it now.
+      <br />
+      <%= link_to 'https://github.com/signup/free', target: '_blank' do %>
+        It's really simple and absolutely free!
+      <% end %>
+    </div>
+  </div>
+
+  <div class='step' id='step2'>
+    <b> 2.</b>
+    Now, please ensure, that you have added a <b> public email</b> to your profile account
+    <%= link_to('https://github.com/settings/profile', target: '_blank') do %>
+      on settings page
+    <% end %>
+    <p></p>
+    <img src='<%= image_path('readme_profile.png') %>' />
+  </div>
+
+  <div class='step' id='step3'>
+    <b> 3.</b> Please upload the project, which you want to contribute with, to a github repo
+  </div>
+
+  <div class='step' id='step4'>
+    <b> 4.</b>
+    After that, start contributing by clicking the button below and follow the instructions. After you have submitted your contribution, you are able to edit the wiki page, which will be created with your contribution.
+    <p>
+      <br />
+      <img src='<%= image_path('contributor-process.png') %>' />
+    </p>
+    <br />
+    <p class='alert alert-info'>
+      Please notice, that your contribution will be in an unverified state, until an adminstrator has reviewed it.
+    </p>
+
+    <p>
+      <%= link_to('/auth/github') do %>
+        <input class='btn btn-lg btn-success' type='submit' value='Start contributing'  />
+      <% end %>
+    </p>
+  </div>
+
+</div>

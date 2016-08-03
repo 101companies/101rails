@@ -23,7 +23,7 @@ end
 
   <h5 class="resourcename"><ul><li><%= triples.first[:name] %></li></ul></h5>
   <br>
-  <div id="<%= triples.first[:name] %>" class="resourcebar collapse" style="height: auto">
+  <div id="<%= triples.first[:name] %>" class="resourcebar" style="height: auto">
     <% triples.each do |triple| %>
     <span class="resourcebox nonbookresource" data-toggle="collapse resource" data-original-title="" title="">
       <div class="subject label">this</div>
@@ -41,7 +41,7 @@ end
 
   <h5 class="resourcename"><ul><li><%= book['fullName'] %></li></ul></h5>
   <br>
-  <div id="<%= book['fullName'] %>" class="resourcebar collapse" style="height: auto">
+  <div id="<%= book['fullName'] %>" class="resourcebar" style="height: auto">
     <% book['secondary'].each do |chapter| %>
     <span class="resourcebox nonbookresource" data-toggle="collapse resource" data-original-title="" title="">
       <a href="<%= chapter['full'] %>"><%= chapter['chapter'] %></a>

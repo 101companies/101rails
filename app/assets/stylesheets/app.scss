@@ -9,7 +9,11 @@ body .row-fluid {
 }
 
 #search-query {
-  width: 110px;
+  width: 150px;
+}
+
+.page-container {
+  margin-top: 50px;
 }
 
 .fragment-failed {
@@ -82,15 +86,15 @@ body, p, h1, h2, ul, a, span, strong, select, option, label {
   float: left;
 }
 
-ul.nav {
-  list-style: none;
-  margin: 0 0 2em;
-  padding: 0;
-  margin-top: 10px;
-  li {
-    display: inline;
-  }
-}
+// ul.nav {
+//   list-style: none;
+//   margin: 0 0 2em;
+//   padding: 0;
+//   margin-top: 10px;
+//   li {
+//     display: inline;
+//   }
+// }
 
 #editing-help {
   p {

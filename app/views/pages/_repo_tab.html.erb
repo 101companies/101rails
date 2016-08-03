@@ -1,9 +1,7 @@
 <% if @page.repo_link %>
-  <%= link_to(@page.repo_link.full_url, target: '_blank', class: 'btn btn-small') do %>
-    <i class='icon-github-alt'></i>
-    Go to Github
+  <%= link_to(@page.repo_link.full_url, target: '_blank', class: 'btn btn-sm btn-default') do %>
+    <i class='glyphicon glyphicon-star'></i>
+    <strong class='editbuttontext'>Show source on Github</strong>
   <% end %>
-  Has repo link
 <% else %>
-  <span>This page doesn't have link to GitHub repo now.</span>
 <% end %>

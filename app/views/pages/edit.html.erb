@@ -1,13 +1,31 @@
-<div id='page'>
+<ul class="nav nav-tabs">
+  <li class="active">
+    <a class="tab-link" data-toggle="tab" href="#page">Edit Page</a>
+  </li>
 
-  <%= react_component('PageEditor',
-  {
-    rawContent: @page.raw_content,
-    predicates: @predicates,
-    pages:      @pages,
-    full_title: @page.full_title
-  }) %>
+  <li>
+    <a class="tab-link" data-toggle="tab" href="#repo-form">Edit Repo Link</a>
+  </li>
+</ul>
 
-  <%= render "/pages/repo_form" %>
+<div class="tab-content">
+
+  <div id='page' class="tab-pane active page">
+
+    <div class="page-editor">
+      <%= react_component('PageEditor',
+      {
+        rawContent: @page.raw_content,
+        predicates: @predicates,
+        pages:      @pages,
+        full_title: @page.full_title
+      }) %>
+    </div>
+
+  </div>
+
+  <div id='repo-form' class="tab-pane">
+    <%= render "/pages/repo_form" %>
+  </div>
 
 </div>

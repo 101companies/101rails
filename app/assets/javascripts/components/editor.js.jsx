@@ -56,7 +56,7 @@ var Editor = React.createClass({
     }
   },
   componentDidMount: function() {
-    var self = this;
+    console.log(this.props.name);
     this.editor = ace.edit(this.props.name);
     this.editor.getSession().setMode('ace/mode/'+this.props.mode);
     this.editor.getSession().setUseWrapMode(true);
