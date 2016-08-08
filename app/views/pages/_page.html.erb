@@ -31,10 +31,6 @@
       <div class="btn-group">
         <%= render "/pages/repo_tab" %>
         <% if request && can?(:edit, @page) %>
-        <a href='<%= render_script_page_path(@page) %>' class="editbutton  btn btn-sm btn-default" id="pageEditButton">
-          <i class="glyphicon glyphicon-pencil"></i>
-          <strong class="editbuttontext"> render script</strong>
-        </a>
         <a href='<%= edit_page_path(@page.full_title) %>' class="editbutton  btn btn-sm btn-default" id="pageEditButton">
           <i class="glyphicon glyphicon-pencil"></i>
           <strong class="editbuttontext"> Edit</strong>
@@ -58,10 +54,14 @@
             <i class="glyphicon glyphicon-remove-circle"></i>
             <strong class="editbuttontext"> Unverify</strong>
           <% end %>
+          <a data-toggle='modal' href='#myModal' class="editbutton  btn btn-sm btn-default" id="pageEditButton">
+            <i class="glyphicon glyphicon-pencil"></i>
+            <strong class="editbuttontext"> Save As</strong>
+          </a>
         <% else %>
           <a href='<%= edit_page_path(@page.full_title) %>' class="editbutton  btn btn-sm btn-default" id="showSourceButton">
             <i class="glyphicon glyphicon-share-alt"></i>
-            <strong class="editbuttontext"> Edit</strong>
+            <strong class="editbuttontext"> Show Markup</strong>
           </a>
         <% end %>
       </div>
@@ -69,6 +69,25 @@
   </div>
   <% end %>
 
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="myModalLabel">Save Page As HTML</h4>
+        </div>
+        <div class="modal-body">
+          Do you really want to save the current page and all referenced pages?<br>
+          The result will be stored here:<br>
+          <a href='http://data.101companies.org/pages' target="_blank">http://data.101companies.org/pages</a>
+        </div>
+        <div class="modal-footer">
+          <a type="button" class="btn btn-default" href='<%= render_script_page_path(@page) %>'>Ok</a>
+          <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </div>
   <div id="<%= @page.id %>">
     <h1><%= @page.full_title %></h1>
   </div>
@@ -138,3 +157,7 @@
     </div>
   </div>
 <% end %>
+
+<div class='copyright-notice'>
+  (C) 2012--<%= Time.now.year %> <a href='http://101companies.org'>101companies.org</a> and <a href='http://softlang.org'>softlang.org</a>
+</div>

@@ -108,6 +108,16 @@ class PagesController < ApplicationController
         window.links = #{page_refs.to_json};
       </script>
 
+      <style type='text/css'>
+        .section-content-container {
+          padding-bottom: 20px;
+        }
+
+        hr {
+          border-color: black;
+        }
+      </style>
+
       <script>
         $(document).ready(function() {
             var internal_links = $('a').filter(function(index) {
@@ -150,7 +160,7 @@ class PagesController < ApplicationController
     </html>
     "
 
-    File.open("#{Dir.home}/101web/data/scripts/" + page.full_title + '.html', 'w') { |file| file.write(result) }
+    File.open("#{Dir.home}/101web/data/pages/" + page.full_title + '.html', 'w') { |file| file.write(result) }
 
     redirect_to request.referer, notice: 'Rendered successfuly'
   end
@@ -158,7 +168,7 @@ class PagesController < ApplicationController
   def render_page(page)
     rdf = GetTriplesForPage.run(page: page).value[:triples]
     rdf = rdf.select do |rdf|
-      rdf[:direction] == 'IN'
+      rdf[:direction] == 'OUT'
     end
 
     view = ActionView::Base.new(Rails.configuration.paths['app/views'], { script_render: true, rdf: rdf, page: page })
