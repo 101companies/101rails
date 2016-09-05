@@ -1,18 +1,22 @@
 
-<div id="renameModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-header">
-    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-    <h3>Rename Page</h3>
-  </div>
-  <div class="modal-body">
-    <div class="modal-body">
-      <p>New title:</p>
-      <input id="newTitle" name="newTitle" value="<%= @page.full_title %>" type="text">
+<div id="renameModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class='modal-dialog'>
+    <div class='modal-content'>
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h3>Rename Page</h3>
+      </div>
+      <div class="modal-body">
+        <div class="modal-body">
+          <p>New title:</p>
+          <input id="newTitle" name="newTitle" value="<%= @page.full_title %>" type="text">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+        <button class="btn btn-primary" id='renamePageButton'>Save changes</button>
+      </div>
     </div>
-  </div>
-  <div class="modal-footer">
-    <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
-    <button class="btn btn-primary" id='renamePageButton'>Save changes</button>
   </div>
 </div>
 
