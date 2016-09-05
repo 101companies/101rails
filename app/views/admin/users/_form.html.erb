@@ -1,0 +1,38 @@
+<%= form_for(@user, url: (if @user.persisted? then admin_user_path(@user) else admin_users_path end), html: { class: 'form-horizontal' }) do |f| %>
+  <% if @user.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@user.errors.count, "error") %> prohibited this user from being saved:</h2>
+
+      <ul>
+      <% @user.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="form-group">
+    <label for="page_namespace" class='col-md-2 control-label'>Name</label>
+    <div class='col-md-10'>
+      <%= f.text_field :name, class: 'form-control' %>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="page_title" class='col-md-2 control-label'>Email</label>
+    <div class='col-md-10'>
+      <%= f.text_field :email, class: 'form-control' %>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="page_title" class='col-md-2 control-label'>Role</label>
+    <div class='col-md-10'>
+      <%= f.select(:role, options_for_select(['admin', 'editor', 'guest'], @user.role), { selected: @user.role }, { value: @user.role, class: 'form-control' }) %>
+    </div>
+  </div>
+
+  <div class="actions">
+    <%= f.submit('Save', class: 'btn btn-success') %>
+  </div>
+<% end %>

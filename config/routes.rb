@@ -1,6 +1,11 @@
 Wiki::Application.routes.draw do
+  
+  namespace :admin do
+    resources :pages
+    resources :users
+  end
 
-  mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
+  # mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
   # homepage
   root to: "application#landing_page"
   # sitemap

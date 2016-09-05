@@ -422,6 +422,7 @@ DEPENDENCIES
   jquery-ui-rails
   json
   json_pure
+  kaminari
   mediawiki-gateway (= 0.6.0)
   momentjs-rails
   mongoid (~> 5.0.0.beta)
