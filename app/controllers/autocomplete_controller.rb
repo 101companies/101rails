@@ -6,7 +6,7 @@ class AutocompleteController < ApplicationController
 
     if @title
       @title = @title.gsub(/[^a-zA-Z0-9_]/, '')
-      render json: Page.where(namespace: @namespace, title: /^#{@title}/i).pluck(:title)
+      render json: Page.where(namespace: @namespace).search(@title).pluck(:title)
     else
       render json: Page.where(namespace: @namespace).pluck(:title)
     end

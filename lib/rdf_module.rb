@@ -112,7 +112,7 @@ module RdfModule
   def add_ingoing_triples(graph, page) #, context)
     get_used_predicates.each do |x|
       x = MediaWiki::send :upcase_first_char, x
-      Page.where(:used_links => x+'::'+page.full_title).each do |page|
+      Page.where('used_links @> ARRAY[?]::varchar[]', "#{x}::#{page.full_title}").each do |page|
         graph << ["IN", x.camelize(:lower), page.full_title]
       end
     end

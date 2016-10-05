@@ -1,49 +1,45 @@
 require 'media_wiki'
 
-class Page
-
-  include Mongoid::Document
-  include Mongoid::Timestamps
-  include Mongoid::Search
+class Page < ActiveRecord::Base
 
   validates_uniqueness_of :title, scope: :namespace
 
-  rails_admin do
-    list do
-      field :title do
-        sort_reverse false
-      end
+  # rails_admin do
+  #   list do
+  #     field :title do
+  #       sort_reverse false
+  #     end
+  #
+  #     field :namespace
+  #     field :verified
+  #   end
+  #
+  #   field :title
+  #   field :namespace
+  #   field :raw_content
+  #   field :verified
+  #   field :repo_link
+  # end
 
-      field :namespace
-      field :verified
-    end
+  # search_in :title, :namespace, :raw_content
 
-    field :title
-    field :namespace
-    field :raw_content
-    field :verified
-    field :repo_link
-  end
-
-  search_in :title, :namespace, :raw_content
-
-  field :title, type: String
-  # namespace for page, need to be set
-  field :namespace, type: String
-  field :raw_content, type: String, default: ''
-  field :html_content, type: String
-  field :used_links, type: Array
-  field :subresources, type: Array
-  field :headline, type: String, default: ''
-  field :verified, type: Boolean
-
-  field :worker_findings, type: String
+  # field :title, type: String
+  # # namespace for page, need to be set
+  # field :namespace, type: String
+  # field :raw_content, type: String, default: ''
+  # field :html_content, type: String
+  # field :used_links, type: Array
+  # field :subresources, type: Array
+  # field :headline, type: String, default: ''
+  # field :verified, type: Boolean
+  #
+  # field :worker_findings, type: String
 
   # relations here
   has_one :repo_link
   has_many :page_changes
   has_many :page_verifications
-  has_and_belongs_to_many :users, class_name: 'User', inverse_of: :pages
+  has_and_belongs_to_many :users #, class_name: 'User', inverse_of: :pages
 
   validates_presence_of :title
   validates_presence_of :namespace
@@ -73,6 +69,12 @@ class Page
     self.used_links = links.flatten.uniq
 
     self.headline = get_headline_html_content
+  end
+
+  def self.search(text)
+    like = sanitize_sql_like(text.downcase)
+    like = "%#{like}%"
+    where('LOWER(title) like ? or LOWER(raw_content) like ? or (namespace || \':\' || title) = ?', like, like, text)
   end
 
   def render
@@ -113,7 +115,7 @@ class Page
   end
 
   def get_last_change
-    last_change = self.page_changes.order_by(created_at: :asc).last
+    last_change = self.page_changes.order(created_at: :asc).last
     if last_change && last_change.user
       history_entry = {
           user_name: last_change.user.name,
@@ -267,7 +269,7 @@ class Page
   end
 
   def backlinking_pages
-    Page.where(used_links: /^(~)?(\w+::)?#{self.full_title}$/i)
+    Page.where('used_links @> ARRAY[?]::varchar[]', full_title)
   end
 
   def backlinks

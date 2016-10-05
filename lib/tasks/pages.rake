@@ -22,7 +22,7 @@ namespace :pages do
         ds << page
       end
     end
-    dups = dups.reject { |l| l.empty? }
+    dups = dups.reject { |l| l.count == 0 }
     dups.each do |duplicate|
       puts 'Duplicates:'
       ap duplicate.map { |page| page.full_title }

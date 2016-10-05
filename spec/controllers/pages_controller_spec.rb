@@ -154,11 +154,10 @@ RSpec.describe PagesController, type: :controller do
   describe 'search' do
     it 'returns the correct page' do
       expect {
-        get :search, q: @page.full_title
+        get :search, params: { q: @page.full_title }
       }.not_to change(Page, :count)
 
-
-      expect(assigns(:search_results).length).to eq(2)
+      expect(assigns(:search_results).length).to eq(1)
       expect(response).to render_template(:search)
     end
 

@@ -1,7 +1,7 @@
 require File.expand_path('../boot', __FILE__)
 
 # Pick the frameworks you want:
-# require "active_record/railtie"
+require "active_record/railtie"
 require "action_controller/railtie"
 require "action_mailer/railtie"
 require "sprockets/railtie"
@@ -78,8 +78,5 @@ module Wiki
     config.react.jsx_transform_options = {
       stage: 0
     }
-
-    Mongo::Logger.logger.level = ::Logger::FATAL
-
   end
 end

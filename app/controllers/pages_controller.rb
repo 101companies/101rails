@@ -7,9 +7,7 @@ class PagesController < ApplicationController
 
   respond_to :json, :html
 
-  # before_filter need to be before load_and_authorize_resource
-  # methods, that need to check permissions
-  before_filter :get_the_page, only: [:edit, :rename, :update, :update_repo, :destroy]
+  before_action :get_the_page, only: [:edit, :rename, :update, :update_repo, :destroy]
   authorize_resource only: [:delete, :rename, :update, :apply_findings, :update_repo]
 
   def get_the_page
@@ -306,12 +304,6 @@ class PagesController < ApplicationController
     result = @page.delete
     # generate flash_message if deleting was successful
     if result
-      page_change = PageChange.new title: @page.title,
-                     namespace: @page.namespace,
-                     raw_content: @page.raw_content,
-                     page: @page,
-                     user: current_user
-      page_change.save
       flash[:notice] = 'Page ' + @page.full_title + ' was deleted'
     end
     render json: { success: result }
@@ -360,7 +352,7 @@ class PagesController < ApplicationController
       flash[:notice] = 'Please write something, if you want to search something'
       go_to_homepage
     else
-      @search_results = PageModule.search @query_string
+      @search_results = PageModule.search(@query_string)
       respond_with @search_results
     end
   end
