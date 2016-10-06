@@ -13,6 +13,16 @@ namespace :pages do
     end
   end
 
+  desc "dump all pages as csv"
+  task :csv_dump => :environment do
+    CSV.open("pages.csv", "wb") do |csv|
+      csv << ['Title', 'Namespace', 'Delete?']
+      Page.each do |page|
+        csv << [page.title, page.namespace, '']
+      end
+    end
+  end
+
   desc "TODO"
   task :findDuplicates => :environment do
     dups = []

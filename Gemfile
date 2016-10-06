@@ -6,6 +6,7 @@ gem 'pg'
 gem 'database_cleaner'
 
 gem 'newrelic_rpm'
+gem 'kaminari'
 
 gem 'solid_use_case', '~> 2.1.1'
 
@@ -60,6 +61,7 @@ group :development, :test do
   gem 'capistrano-rails',   '~> 1.1', require: false
   gem 'capistrano-bundler', '~> 1.1', require: false
   gem 'capistrano3-puma', github: "seuros/capistrano-puma"
+  gem 'capistrano-rvm'
 end
 
 gem 'awesome_print'

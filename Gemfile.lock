@@ -112,6 +112,9 @@ GEM
     capistrano-rails (1.1.8)
       capistrano (~> 3.1)
       capistrano-bundler (~> 1.1)
+    capistrano-rvm (0.1.2)
+      capistrano (~> 3.0)
+      sshkit (~> 1.2)
     closure-compiler (1.1.10)
     coderay (1.1.1)
     coffee-rails (4.2.1)
@@ -399,6 +402,7 @@ DEPENDENCIES
   cancancan (~> 1.9)
   capistrano-bundler (~> 1.1)
   capistrano-rails (~> 1.1)
+  capistrano-rvm
   capistrano3-puma!
   closure-compiler (= 1.1.10)
   coffee-rails
@@ -418,6 +422,7 @@ DEPENDENCIES
   jquery-ui-rails
   json
   json_pure
+  kaminari
   mediawiki-gateway (= 0.6.0)
   momentjs-rails
   newrelic_rpm
