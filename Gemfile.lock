@@ -7,7 +7,7 @@ GIT
 
 GIT
   remote: git://github.com/101companies/wikicloth.git
-  revision: 2d792cf54c8a9bb283e6492298c8e043d46aac5c
+  revision: ed1905f5069a7983785aa136d90186441f6d4f65
   specs:
     wikicloth (0.8.0)
       activesupport
@@ -203,7 +203,7 @@ GEM
     method_source (0.8.2)
     mime-types (2.99)
     mini_portile2 (2.1.0)
-    minitest (5.9.0)
+    minitest (5.9.1)
     momentjs-rails (2.11.0)
       railties (>= 3.1)
     mongo (2.2.1)
@@ -229,9 +229,8 @@ GEM
     net-ssh (3.0.2)
     netrc (0.11.0)
     newrelic_rpm (3.15.1.316)
-    nokogiri (1.6.8)
+    nokogiri (1.6.8.1)
       mini_portile2 (~> 2.1.0)
-      pkg-config (~> 1.1.7)
     oauth2 (1.0.0)
       faraday (>= 0.8, < 0.10)
       jwt (~> 1.0)
@@ -250,7 +249,6 @@ GEM
       oauth2 (~> 1.0)
       omniauth (~> 1.2)
     origin (2.1.1)
-    pkg-config (1.1.7)
     posix-spawn (0.3.11)
     puma (2.15.3)
     pygments.rb (0.5.4)
