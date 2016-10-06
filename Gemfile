@@ -6,10 +6,9 @@ if RUBY_VERSION =~ /1.9/
   Encoding.default_internal = Encoding::UTF_8
 end
 
-# DO NOT ADD GEMS WITHOUT GEM NUMBER!
-
 gem 'rails', '4.2.3'
 gem 'newrelic_rpm'
+gem 'kaminari'
 
 gem 'solid_use_case', '~> 2.1.1'
 
