@@ -7,6 +7,7 @@ gem 'database_cleaner'
 
 gem 'newrelic_rpm'
 gem 'kaminari'
+gem 'bson'
 
 gem 'solid_use_case', '~> 2.1.1'
 

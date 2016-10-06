@@ -2,39 +2,6 @@ require 'media_wiki'
 
 class Page < ActiveRecord::Base
 
-  validates_uniqueness_of :title, scope: :namespace
-
-  # rails_admin do
-  #   list do
-  #     field :title do
-  #       sort_reverse false
-  #     end
-  #
-  #     field :namespace
-  #     field :verified
-  #   end
-  #
-  #   field :title
-  #   field :namespace
-  #   field :raw_content
-  #   field :verified
-  #   field :repo_link
-  # end
-
-  # search_in :title, :namespace, :raw_content
-
-  # field :title, type: String
-  # # namespace for page, need to be set
-  # field :namespace, type: String
-  # field :raw_content, type: String, default: ''
-  # field :html_content, type: String
-  # field :used_links, type: Array
-  # field :subresources, type: Array
-  # field :headline, type: String, default: ''
-  # field :verified, type: Boolean
-  #
-  # field :worker_findings, type: String
-
   # relations here
   has_one :repo_link
   has_many :page_changes
