@@ -7,8 +7,10 @@ class PagesController < ApplicationController
 
   respond_to :json, :html
 
+  # before_filter need to be before load_and_authorize_resource
+  # methods, that need to check permissions
   before_action :get_the_page, only: [:edit, :rename, :update, :update_repo, :destroy]
-  authorize_resource only: [:delete, :rename, :update, :apply_findings, :update_repo]
+  authorize_resource only: [:delete, :rename, :update, :apply_findings, :update_repo, :render_script]
 
   def get_the_page
     full_title = params[:id]
