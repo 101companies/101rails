@@ -11,6 +11,8 @@ class ApplicationController < ActionController::Base
   end
 
   def landing_page
+    @technologies = Page.popular_technologies
+
     render template: 'layouts/landing', layout: false
   end
 

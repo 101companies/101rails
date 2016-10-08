@@ -248,4 +248,23 @@ class Page < ActiveRecord::Base
     self.get_parser.sections.first.children.find { |s| s.full_title.downcase == section.downcase }
   end
 
+  def self.popular_technologies
+    Rails.cache.fetch("popular_technologies", expires_in: 12.hours) do
+      technologies = Page.connection.execute('
+        SELECT substring(link from 12) AS link, count(*)
+        FROM pages, unnest(used_links) AS link
+        WHERE substring(link from 0 for 11) = \'Technology\'
+        GROUP BY 1
+        order by 2 desc
+      ')
+
+      result = {}
+      technologies.each do |row|
+        result[row['link']] = row['count']
+      end
+
+      result
+    end
+  end
+
 end
