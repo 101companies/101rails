@@ -6,13 +6,17 @@ class Page < ActiveRecord::Base
   has_one :repo_link
   has_many :page_changes
   has_many :page_verifications
-  has_and_belongs_to_many :users #, class_name: 'User', inverse_of: :pages
+  has_and_belongs_to_many :users
 
   validates_presence_of :title
   validates_presence_of :namespace
 
   before_validation do
     preparing_the_page
+  end
+
+  def self.unverified
+    where(verified: false)
   end
 
   def preparing_the_page
@@ -264,6 +268,12 @@ class Page < ActiveRecord::Base
       end
 
       result
+    end
+  end
+
+  def self.cached_count
+    Rails.cache.fetch("page_count", expires_in: 12.hours) do
+      count
     end
   end
 

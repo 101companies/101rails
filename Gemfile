@@ -71,9 +71,12 @@ gem 'awesome_print'
 gem 'puma'
 
 gem 'colorize', '0.7.3'
+gem 'ahoy_matey'
+gem 'ionicons-rails'
+gem 'hightop'
+gem 'groupdate'
+gem 'chartkick'
 
-# admin interface
-gem 'rails_admin'
 
 # web-scraping
 gem 'json_pure'

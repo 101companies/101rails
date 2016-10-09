@@ -1,0 +1,173 @@
+<div class='row'>
+  <div class='col-md-3'>
+
+    <div class='info-box'>
+      <span class="info-box-icon bg-aqua">
+        <i class="ion ion-ios-gear-outline" style="margin-top: 20px;"></i>
+      </span>
+
+      <div class="info-box-content">
+        <span class="info-box-text">Pages</span>
+        <span class="info-box-number"><%= number_with_delimiter(@page_count) %></span>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="col-md-3">
+    <div class='info-box'>
+      <span class="info-box-icon bg-red">
+        <i class="ion ion-alert" style="margin-top: 20px;"></i>
+      </span>
+
+      <div class="info-box-content">
+        <span class="info-box-text">Unverified Pages</span>
+        <span class="info-box-number">
+          <% if @unverified_page_count > 0 %>
+            <%= link_to(@unverified_page_count, unverified_pages_path) %>
+          <% else %>
+            <%= number_with_delimiter(@unverified_page_count) %>
+          <% end %>
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-3">
+    <div class='info-box'>
+      <span class="info-box-icon bg-green">
+        <i class="ion ion-person" style="margin-top: 20px;"></i>
+      </span>
+
+      <div class="info-box-content">
+        <span class="info-box-text">Visits today</span>
+        <span class="info-box-number"><%= number_with_delimiter(@today_visits) %></span>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-3">
+    <div class='info-box'>
+      <span class="info-box-icon bg-yellow">
+        <i class="ion ion-eye" style="margin-top: 20px;"></i>
+      </span>
+
+      <div class="info-box-content">
+        <span class="info-box-text">Page Views</span>
+        <span class="info-box-number"><%= number_with_delimiter(@today_views) %></span>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class='row'>
+  <div class='col-md-8'>
+    <div class='box'>
+      <div class="box-header with-border">
+        <h3 class="box-title">Page Edits</h3>
+      </div>
+      <div class="box-body">
+        <%= area_chart PageChange.group_by_week(:created_at).where('created_at > ?', Date.today.beginning_of_year).count %>
+      </div>
+    </div>
+  </div>
+
+  <div class='col-md-4'>
+    <div class='box'>
+      <div class='box-header with-border'>
+        <h3 class="box-title">Popular Pages</h>
+      </div>
+      <div class="box-body">
+        <%= pie_chart(@popular_page_views) %>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-4">
+    <div class="box">
+      <div class="box-header with-border">
+        <h3 class="box-title">Latest Users</h3>
+      </div>
+      <div class="box-body">
+        <div class='table-responsive'>
+          <table class="table no-margin">
+            <thead>
+              <tr>
+                <th>
+                  Name
+                </th>
+                <th>
+                  Github Name
+                </th>
+                <th>
+                  Registered At
+                </th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <% @new_users.each do |user| %>
+                <tr>
+                  <td>
+                    <%= user.name %>
+                  </td>
+                  <td>
+                    <%= user.github_name %>
+                  </td>
+                  <td>
+                    <%= l user.created_at, format: :short %>
+                  </td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-8">
+    <div class="box box-info">
+      <div class="box-header with-border">
+        <h3 class="box-title">Latest Pages</h3>
+      </div>
+      <div class="box-body">
+        <div class="table-responsive">
+          <table class="table no-margin">
+            <thead>
+              <tr>
+                <th>
+                  Namespace
+                </th>
+                <th>
+                  Title
+                </th>
+                <th>
+                  Date
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <% @new_pages.each do |page| %>
+                <tr>
+                  <td>
+                    <%= page.namespace %>
+                  </td>
+                  <td>
+                    <%= page.title %>
+                  </td>
+                  <td>
+                    <%= l page.created_at, format: :short %>
+                  </td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
