@@ -112,7 +112,7 @@
               <% @new_users.each do |user| %>
                 <tr>
                   <td>
-                    <%= user.name %>
+                    <%= link_to(user.name, edit_admin_user_path(user)) %>
                   </td>
                   <td>
                     <%= user.github_name %>
@@ -157,7 +157,7 @@
                     <%= page.namespace %>
                   </td>
                   <td>
-                    <%= page.title %>
+                    <%= link_to(page.title, page_path(page.full_title)) %>
                   </td>
                   <td>
                     <%= l page.created_at, format: :short %>

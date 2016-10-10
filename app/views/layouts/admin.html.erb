@@ -17,7 +17,7 @@
     <% end %>
   </head>
 
-  <body>
+  <body class="skin-black">
     <%= content_for(:title, "101wiki") %>
     <%= raw humane_flash_messages %>
 
@@ -94,7 +94,28 @@
       </div>
     </div>
 
-    <div class='content-wrapper' style="padding-top: 75px;">
+    <aside class="main-sidebar">
+      <section class="sidebar" style="height: auto;">
+
+        <ul class="sidebar-menu" style="font-family: 'Source Sans Pro', sans-serif;">
+          <li class="header" style="text-align: center; font-size: 18px;">Wiki Admin</li>
+          <li>
+            <%= link_to(admin_path) do %>
+              <i class="fa fa-dashboard"></i>
+              <span>Dashboard</span>
+            <% end %>
+          </li>
+          <li>
+            <%= link_to(admin_users_path) do %>
+                <i class="fa fa-user"></i>
+                <span>Users</span>
+              <% end %>
+          </li>
+        </ul>
+      </section>
+    </aside>
+
+    <div class='content-wrapper' style="margin-top: 50px;">
       <section class="content">
         <%= yield %>
       </section>

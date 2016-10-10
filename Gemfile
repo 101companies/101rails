@@ -63,6 +63,7 @@ group :development, :test do
   gem 'capistrano-bundler', '~> 1.1', require: false
   gem 'capistrano3-puma', github: "seuros/capistrano-puma"
   gem 'capistrano-rvm'
+  gem "rails-erd"
 end
 
 gem 'awesome_print'
