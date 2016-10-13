@@ -67,7 +67,7 @@ You need some keys of 101companies before you can start to work.
 You can ask [@avaranovich](https://github.com/avaranovich), [@rlaemmel](https://github.com/rlaemmel) or
 [@tschmorleiz](https://github.com/tschmorleiz) for this password.
 
-For successful work with project in development mode you need to define next ENV variables in your .bashrc/.zshrc
+For successful work with project in development mode you need to define next ENV variables in your .bashrc/.zshrc, for deployment, place them inside /etc/environment.
 
     export SLIDESHARE_API_KEY=""
     export SLIDESHARE_API_SECRET=""
