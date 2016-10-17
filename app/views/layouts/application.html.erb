@@ -9,6 +9,12 @@
     <%= aced_tag %>
     <%= csrf_meta_tags %>
     <%= yield(:head) %>
+
+    <% if Rails.env.development? %>
+      <script>
+        ahoy.debug();
+      </script>
+    <% end %>
   </head>
 
   <body>
@@ -75,7 +81,7 @@
                   Local Login
                 </a>
                 <ul class='dropdown-menu'>
-                  <% User.each do |user| %>
+                  <% User.find_each do |user| %>
                     <li>
                       <%= link_to user.name, "/auth/local_login/#{user.id}" %>
                     </li>

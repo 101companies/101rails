@@ -1,0 +1,42 @@
+development:
+  adapter:  postgresql
+  encoding: utf8
+  reconnect: false
+  pool: 8
+  encoding: unicode
+  host: localhost
+  username: postgres
+  password: root110120
+  database: wiki_development
+
+test:
+  adapter:  postgresql
+  encoding: utf8
+  reconnect: false
+  pool: 2
+  encoding: unicode
+  host: localhost
+  username: postgres
+  password: root110120
+  database: wiki_test
+
+staging:
+  adapter:  postgresql
+  encoding: utf8
+  reconnect: true
+  pool: 2
+  username: postgres
+  password: root110120
+  host: localhost
+  database: tabolo_staging
+
+production:
+  adapter:  postgresql
+  encoding: utf8
+  reconnect: false
+  pool: 8
+  encoding: unicode
+  host: localhost
+  username: postgres
+  password: root110120
+  database: wiki_production

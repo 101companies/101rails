@@ -11,6 +11,8 @@ class ApplicationController < ActionController::Base
   end
 
   def landing_page
+    @technologies = Page.popular_technologies
+
     render template: 'layouts/landing', layout: false
   end
 
@@ -87,13 +89,6 @@ class ApplicationController < ActionController::Base
     render :json => entries
   end
 
-  before_filter :set_cache_buster
-  def set_cache_buster
-    response.headers["Cache-Control"] = "no-cache, no-store, max-age=0, must-revalidate"
-    response.headers["Pragma"] = "no-cache"
-    response.headers["Expires"] = "Fri, 01 Jan 1990 00:00:00 GMT"
-  end
-
   # handle non authorized 500 status from cancan
   rescue_from CanCan::AccessDenied do |exception|
     flash[:notice] = "Sorry, you aren't permitted to execute your last action =/"
@@ -103,9 +98,14 @@ class ApplicationController < ActionController::Base
   helper_method :current_user
   private
   def current_user
-    if session[:user_id]
-      @current_user = User.where(id: session[:user_id]).first
-    else
+    begin
+      if session[:user_id]
+        @current_user = User.where(id: session[:user_id]).first
+      else
+        nil
+      end
+    rescue NameError
+      reset_session
       nil
     end
   end

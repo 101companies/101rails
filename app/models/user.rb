@@ -1,45 +1,41 @@
-class User
-  include Mongoid::Document
-  include Mongoid::Timestamps
+class User < ActiveRecord::Base
 
-  rails_admin do
-    list do
-      field :name
-      field :github_name
-      field :role
-      field :email
-    end
-
-    field :name
-    field :github_name
-    field :role
-    field :email
-  end
+  # rails_admin do
+  #   list do
+  #     field :name
+  #     field :github_name
+  #     field :role
+  #     field :email
+  #   end
+  #
+  #   field :name
+  #   field :github_name
+  #   field :role
+  #   field :email
+  # end
 
   def self.role_options
     ['admin', 'editor', 'guest']
   end
 
-  field :email,          type: String
-  field :role,           type: String, default: "guest"
-  field :name,           type: String
-
-  # github data
-  field :github_name,    type: String
-  field :github_avatar,  type: String, default: "http://www.gravatar.com/avatar"
-  field :github_token,   type: String
-  field :github_uid,     type: String
+  # field :email,          type: String
+  # field :role,           type: String, default: "guest"
+  # field :name,           type: String
+  #
+  # # github data
+  # field :github_name,    type: String
+  # field :github_avatar,  type: String, default: "http://www.gravatar.com/avatar"
+  # field :github_token,   type: String
+  # field :github_uid,     type: String
 
   has_many :old_wiki_users
   has_many :page_changes
-  has_and_belongs_to_many :pages, class_name: 'Page', inverse_of: :users
+  has_and_belongs_to_many :pages #, class_name: 'Page', inverse_of: :users
 
   validates_uniqueness_of :email
   validates_uniqueness_of :github_uid
 
   validates_presence_of :name, :email, :github_uid, :github_token, :github_name
-
-  # attr_accessible :role, :email, :github_name, :page_ids, :old_wiki_user_ids, :contribution_page_ids, :name
 
   def get_repos
     # using oauth token to increase limit of request to github api to 5000

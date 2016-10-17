@@ -12,6 +12,7 @@
  GO AFTER THE REQUIRES BELOW.
 
  = require jquery
+ = require ahoy
 
  = require typo/typo
  = require spellcheck_ace/spellcheck_ace
@@ -43,7 +44,12 @@
 //= require react-input-autosize
 //= require react-select
 //= require components
+//= require app
+//= require Chart.bundle
+//= require chartkick
 
 String.prototype.endsWith = function (s) {
   return this.length >= s.length && this.substr(this.length - s.length) == s;
 }
+
+ahoy.trackAll();

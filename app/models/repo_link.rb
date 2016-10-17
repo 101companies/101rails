@@ -1,11 +1,4 @@
-class RepoLink
-  include Mongoid::Document
-  include Mongoid::Timestamps
-
-  field :repo, type: String
-  field :folder, type: String
-  field :user, type: String
-
+class RepoLink < ActiveRecord::Base
   belongs_to :page
 
   def namespace

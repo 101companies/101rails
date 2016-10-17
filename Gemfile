@@ -1,14 +1,13 @@
 source 'https://rubygems.org'
 
-# force using encoding
-if RUBY_VERSION =~ /1.9/
-  Encoding.default_external = Encoding::UTF_8
-  Encoding.default_internal = Encoding::UTF_8
-end
+gem 'rails', '~> 5.0', '>= 5.0.0.1'
+gem 'activerecord', '~> 5.0', '>= 5.0.0.1'
+gem 'pg'
+gem 'database_cleaner'
 
-gem 'rails', '4.2.3'
 gem 'newrelic_rpm'
 gem 'kaminari'
+gem 'bson'
 
 gem 'solid_use_case', '~> 2.1.1'
 
@@ -22,25 +21,19 @@ gem 'sass-rails'
 gem 'coffee-rails'
 gem 'uglifier'
 
-gem 'responders', '~> 2.0'
+gem 'responders'
 
 # frontend
 gem 'jquery-rails'
 gem 'jquery-ui-rails'
 gem 'haml-rails'
 
-# database
-gem 'mongoid', '~> 5.0.0.beta'
-
-# search engine
-gem 'mongoid_search'
-
 # security
 gem 'bcrypt'
 
 # github auth
-gem 'omniauth', '1.2.1'
-gem 'omniauth-github', '1.1.2'
+gem 'omniauth'
+gem 'omniauth-github'
 
 # github integration
 gem 'octokit', "~> 4.0"
@@ -49,20 +42,20 @@ gem 'octokit', "~> 4.0"
 gem 'font-awesome-rails'
 
 # roles and permissions
-gem 'cancan', '1.6.10'
+gem 'cancancan', '~> 1.9'
 
 group :development, :test do
   # remove assets-logs in console
-  gem 'quiet_assets', '1.0.2'
+  # gem 'quiet_assets', '1.0.2'
   # nice error output
   gem 'better_errors', '1.1.0'
+  gem 'rails-controller-testing'
   gem 'binding_of_caller', '0.7.2'
   # colorful console
   gem 'wirble', '0.1.3'
   gem 'zeus', '0.15.1'
   gem 'rack-mini-profiler'
-  gem 'rspec-rails', '~> 3.3.0'
-  gem 'mongoid-rspec', '3.0.0'
+  gem 'rspec-rails'
   gem 'simplecov', require: false
   gem 'factory_girl_rails'
 
@@ -70,6 +63,7 @@ group :development, :test do
   gem 'capistrano-bundler', '~> 1.1', require: false
   gem 'capistrano3-puma', github: "seuros/capistrano-puma"
   gem 'capistrano-rvm'
+  gem "rails-erd"
 end
 
 gem 'awesome_print'
@@ -78,9 +72,12 @@ gem 'awesome_print'
 gem 'puma'
 
 gem 'colorize', '0.7.3'
+gem 'ahoy_matey'
+gem 'ionicons-rails'
+gem 'hightop'
+gem 'groupdate'
+gem 'chartkick'
 
-# admin interface
-gem 'rails_admin'
 
 # web-scraping
 gem 'json_pure'
@@ -129,8 +126,6 @@ gem 'bootstrap-tour-rails', '0.4.0'
 gem 'eventmachine', '1.0.4'
 gem 'em-http-request', '1.1.2'
 
-# gem 'syck'
-
-gem 'react-rails', '~> 1.4.0'
+gem 'react-rails'
 
 gem 'jbuilder'
