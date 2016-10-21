@@ -23,7 +23,7 @@ namespace :pages do
       pages.each do |page|
         begin
           ActiveRecord::Base.connection.execute("SAVEPOINT page_savepoint")
-          page = Page.create!(
+          new_page = Page.create!(
             title: page['title'],
             namespace: page['namespace'],
             raw_content: page['raw_content'],
@@ -35,7 +35,7 @@ namespace :pages do
             created_at: page['created_at']['$date'],
             updated_at: page['updated_at']['$date']
           )
-          page_mapping[page['id']] = page
+          page_mapping[page['id']] = new_page
         rescue ActiveRecord::RecordNotUnique
           ActiveRecord::Base.connection.execute("ROLLBACK TO SAVEPOINT page_savepoint")
         end
