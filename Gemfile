@@ -134,3 +134,6 @@ gem 'em-http-request', '1.1.2'
 gem 'react-rails', '~> 1.4.0'
 
 gem 'jbuilder'
+
+#linked open data
+gem 'linkeddata'

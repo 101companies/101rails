@@ -1,5 +1,5 @@
 Wiki::Application.routes.draw do
-  
+
   namespace :admin do
     resources :pages
     resources :users
@@ -31,6 +31,11 @@ Wiki::Application.routes.draw do
     post '/new' => 'contributions#create'
     get '/repo_dirs/:repo' => 'contributions#get_repo_dirs', constraints: { repo: /.*/ }
   end
+
+  # linked open data
+  get 'resource/:resource_name' => 'resource#get'
+
+  get 'resource' => 'resource#get', resource_name: '101linkeddata'
 
   # tours
   scope 'tours' do
