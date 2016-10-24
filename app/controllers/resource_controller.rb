@@ -60,7 +60,7 @@ class ResourceController < ApplicationController
       @headline_url = request.url
       # - additional informationes -----------
 
-      render layout: false
+      #render layout: false
     else
       # - non-html requests (e.g. json, xml) -
       render request.format => repository.query([subject, :s, :o])
