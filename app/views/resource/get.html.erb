@@ -1,46 +1,47 @@
-<h1>About: <a href="<%= @headline_url %>"><%= @headline %></a></h1>
+<% cache @headline_url do %>
+  <h1>About: <a href="<%= @headline_url %>"><%= @headline %></a></h1>
+    <%=
+      if(@type != nil)
+          raw '<p>An Entity of Typ <a href="' + @type_url + '">' + @type + '</a>, from : <a href="http://101companies.org">101companies.org</a></p>'
+      else
+        raw '<p>An Entity from : <a href="http://101companies.org">101companies.org</a></p>'
+      end
+      %>
+  <hr>
+  <%= if(@abstract != nil)
+        raw '<h2>Abstract</h2><p>' + @abstract.to_s + '</p><hr>'
+      end
+  %>
+  <style>
+    table.res {
+      width: 100%;
+    }
+    tr.o td {
+      background-color: #f9f9f8;
+    }
+    tr.res td {
+      border-top: 1px solid #c3d9ff;
+      padding: 10px;
+    }
+  </style>
+  <h2>Properties</h2>
+  <table class="res">
+    <tr>
+      <th style="width: 30%;">Predicat</th>
+      <th>Object</th>
+    </tr>
 
-  <%=
-    if(@type != nil)
-        raw '<p>An Entity of Typ <a href="' + @type_url + '">' + @type + '</a>, from : <a href="http://101companies.org">101companies.org</a></p>'
-    else
-      raw '<p>An Entity from : <a href="http://101companies.org">101companies.org</a></p>'
-    end
-    %>
-<hr>
-<%= if(@abstract != nil)
-      raw '<h2>Abstract</h2><p>' + @abstract.to_s + '</p><hr>'
-    end
-%>
-<style>
-  table.res {
-    width: 100%;
-  }
-  tr.o td {
-    background-color: #f9f9f8;
-  }
-  tr.res td {
-    border-top: 1px solid #c3d9ff;
-    padding: 10px;
-  }
-</style>
-<h2>Properties</h2>
-<table class="res">
-  <tr>
-    <th style="width: 30%;">Predicat</th>
-    <th>Object</th>
-  </tr>
-
-  <% @result.each do |solution| %>
+    <% @result.each do |solution| %>
       <tr class="res <%= cycle('o', 'e') %>">
         <td><a href="<%= solution.p %>"><%= solution.p.to_s.split('/').last %></a></td>
         <td><a href="<%= solution.o %>"><%= solution.o.to_s.split('/').last %></a></td>
       </tr>
-  <% end %>
-  <% @result_inv.each do |solution| %>
+    <% end %>
+    <% @result_inv.each do |solution| %>
       <tr class="res <%= cycle('o', 'e') %>">
         <td>is <a href="<%= solution.p %>"><%= solution.p.to_s.split('/').last %></a> of</td>
         <td><a href="<%= solution.s %>"><%= solution.s.to_s.split('/').last %></a></td>
       </tr>
-  <% end %>
-</table>
+    <% end %>
+  </table>
+<% end %>
