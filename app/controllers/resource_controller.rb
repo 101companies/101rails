@@ -1,4 +1,7 @@
 class ResourceController < ApplicationController
+
+  @@linked_data_graph = nil
+
   def get
     host = request.host
     #host = '101companies.org'
@@ -7,10 +10,11 @@ class ResourceController < ApplicationController
 
     # + load graph --------------------------
     # check, if graph is already loaded
-    if($linked_data_graph == nil)
-      $linked_data_graph = RDF::Graph.load(Rails.root.join('../101web/data/onto/ontology.xml'), format: :xml)
+    if(@@linked_data_graph == nil)
+      # save graph global (available to this class)
+      @@linked_data_graph = RDF::Graph.load(Rails.root.join('../101web/data/onto/ontology.xml'), format: :xml)
     end
-    graph = $linked_data_graph
+    graph = @@linked_data_graph
     # - load graph ---------------------------
 
     # + prepare subject ----------------------
@@ -56,7 +60,7 @@ class ResourceController < ApplicationController
       @headline_url = request.url
       # - additional informationes -----------
 
-      #render layout: false
+      render layout: false
     else
       # - non-html requests (e.g. json, xml) -
       render request.format => repository.query([subject, :s, :o])
