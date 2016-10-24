@@ -4,6 +4,7 @@
       if(@type != nil)
           raw '<p>An Entity of Typ <a href="' + @type_url + '">' + @type + '</a>, from : <a href="http://101companies.org">101companies.org</a></p>'
       else
+        # entity has no rdf::type relation
         raw '<p>An Entity from : <a href="http://101companies.org">101companies.org</a></p>'
       end
       %>
