@@ -35,7 +35,7 @@ Wiki::Application.routes.draw do
   # linked open data
   get 'resource/:resource_name' => 'resource#get'
 
-  #get 'resource' => 'resource#get', resource_name: '101linkeddata'
+  get 'resource' => 'resource#get'#, resource_name: '101linkeddata'
 
   # tours
   scope 'tours' do
