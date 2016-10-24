@@ -1,7 +1,15 @@
-<h1><a href="<%= @headline_url %>"><%= @headline %></a></h1>
-<p>Ein Subjekt vom Typ <a href="<%= @type_url %>"><%= @type %></a>, aus dem Bestand von : http://101companies.org</p>
+<h1>About: <a href="<%= @headline_url %>"><%= @headline %></a></h1>
+
+  <%=
+    if(@type != nil)
+        raw '<p>An Entity of Typ <a href="' + @type_url + '">' + @type + '</a>, from : <a href="http://101companies.org">101companies.org</a></p>'
+    else
+      raw '<p>An Entity from : <a href="http://101companies.org">101companies.org</a></p>'
+    end
+    %>
+<hr>
 <%= if(@abstract != nil)
-      raw '<h2>Abstract</h2><p>' + @abstract.to_s + '</p>'
+      raw '<h2>Abstract</h2><p>' + @abstract.to_s + '</p><hr>'
     end
 %>
 <style>
@@ -16,11 +24,11 @@
     padding: 10px;
   }
 </style>
-<h2>Eigenschaften</h2>
+<h2>Properties</h2>
 <table class="res">
   <tr>
-    <th style="width: 30%;">Eigenschaft</th>
-    <th>Wert</th>
+    <th style="width: 30%;">Predicat</th>
+    <th>Object</th>
   </tr>
 
   <% @result.each do |solution| %>

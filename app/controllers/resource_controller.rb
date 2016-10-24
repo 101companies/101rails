@@ -12,7 +12,7 @@ class ResourceController < ApplicationController
                              path: request.path.dup)
 
       if(request.format == 'html')
-        @headline = request.path.dup
+        @headline = request.path.dup.to_s.split('/').last
         @headline_url = request.url
 
         query_abstract = RDF::Query.new do
@@ -33,7 +33,7 @@ class ResourceController < ApplicationController
         end
 
         query_type.execute(graph).each do |solution|
-          @type = solution.o
+          @type = solution.o.to_s.split('/').last
           @type_url = solution.o
         end
 
