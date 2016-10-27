@@ -1,6 +1,18 @@
 <%= stylesheet_link_tag 'resource' %>
 <% cache @headline_url do %>
+
   <h1>About: <a href="<%= @headline_url %>"><%= @headline %></a></h1>
+
+    <div class="btn-group" style="display: inline-block; float: right;">
+      <a href='<%= @headline %>.json' target="_blank" class="editbutton  btn btn-sm btn-default" id="showSourceButton">
+        <i class="glyphicon glyphicon-share-alt"></i>
+        <strong class="editbuttontext">.json</strong>
+      </a>
+      <a href='<%= @headline %>.xml' target="_blank" class="editbutton  btn btn-sm btn-default" id="showSourceButton">
+        <i class="glyphicon glyphicon-share-alt"></i>
+        <strong class="editbuttontext">.xml</strong>
+      </a>
+    </div>
     <%=
       if(@type != nil)
           raw '<p>An Entity of Typ <a href="' + @type_url + '">' + @type + '</a>, from : <a href="http://101companies.org">101companies.org</a></p>'
@@ -37,7 +49,7 @@
           is <%= render_resource p %> of
         </td>
         <td>
-          <%= render_resource o %>
+          <%= render_resource s %>
         </td>
       </tr>
     <% end %>

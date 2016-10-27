@@ -26,26 +26,22 @@ class ResourceController < ApplicationController
 
     # + prepare subject ----------------------
     @subject = RDF::URI.new(scheme: request.scheme.dup,
-                           authority: host+port,
+                           authority: host + port,
                            host: host,
                            port: request.port,
-                           path: 'resource/'+path)
+                           path: 'resource/' + path)
     # - prepare subject ----------------------
 
     # + execute rdf querys -----------------
+    sub_set = graph.query([@subject, :p, :o]).to_set
+    obj_set = graph.query([:s, :p, @subject]).to_set
     respond_to do |format|
-      format.json { render :json => graph.query([@subject, :p, :o]).to_rdf_json }
-      format.xml  { render :xml  => graph.query([@subject, :p, :o]).to_rdfxml }
+      format.json { render :json => sub_set.merge(obj_set).to_rdf_json }
+      format.xml  { render :xml  => sub_set.merge(obj_set).to_rdfxml }
       #format.rdf  { render :xml  => graph.query([@subject, :p, :o]).to_rdfxml }
       format.html {
 
-        # + prepare rdf querys -----------------
-        query_abstract = RDF::Query.new( [@subject, RDF::Vocab::DC.abstract, :object])
-        query_type = RDF::Query.new( [@subject, RDF::type, :object])
-        query_search1 = RDF::Query.new( [@subject, :p, :object])
-        query_search2 = RDF::Query.new( [:s, :p, @subject])
-        # - prepare rdf querys -----------------
-
+        # + queries on graph -------------------
         graph.query([@subject, RDF::Vocab::DC.abstract, :o]) do |s,p,o|
           @abstract = o.value
         end
@@ -55,8 +51,9 @@ class ResourceController < ApplicationController
           @type_url = o.value
         end
 
-        @result = graph.query([@subject, :p, :o]).sort_by { |s,p,o| o.value }
-        @result_inv = graph.query([:s, :p, @subject]).sort_by { |s,p,o| p.value }
+        @result = sub_set.sort_by { |s,p,o| o.value + p.value }
+        @result_inv = obj_set.sort_by { |s,p,o| p.value + s.value }
+        # - queries on graph -------------------
 
         # + additional informationes -----------
         @headline = request.path.dup.to_s.split('/').last

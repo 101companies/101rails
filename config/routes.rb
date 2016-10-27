@@ -34,7 +34,7 @@ Wiki::Application.routes.draw do
 
   # linked open data
   get 'resource/:resource_name' => 'resource#get'
-  
+
   # tours
   scope 'tours' do
     get '/' => 'tours#index'
