@@ -539,6 +539,10 @@ DEPENDENCIES
   rails (= 4.2.3)
   rails_admin
   rdf!
+  rdf-json
+  rdf-n3
+  rdf-rdfxml
+  rdf-turtle
   react-rails (~> 1.4.0)
   responders (~> 2.0)
   rspec-rails (~> 3.3.0)

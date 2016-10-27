@@ -1,3 +1,13 @@
-// Place all the styles related to the resource controller here.
-// They will automatically be included in application.css.
-// You can use Sass (SCSS) here: http://sass-lang.com/
+/***************************************************************************************
+* This file contains the additional style for the visualization of linked data resources
+***************************************************************************************/
+table.res {
+  width: 100%;
+}
+tr.o td {
+  background-color: #f9f9f8;
+}
+tr.res td {
+  border-top: 1px solid #c3d9ff;
+  padding: 10px;
+}

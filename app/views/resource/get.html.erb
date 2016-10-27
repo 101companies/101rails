@@ -1,3 +1,4 @@
+<%= stylesheet_link_tag 'resource' %>
 <% cache @headline_url do %>
   <h1>About: <a href="<%= @headline_url %>"><%= @headline %></a></h1>
     <%=
@@ -13,18 +14,6 @@
         raw '<h2>Abstract</h2><p>' + @abstract.to_s + '</p><hr>'
       end
   %>
-  <style>
-    table.res {
-      width: 100%;
-    }
-    tr.o td {
-      background-color: #f9f9f8;
-    }
-    tr.res td {
-      border-top: 1px solid #c3d9ff;
-      padding: 10px;
-    }
-  </style>
   <h2>Properties</h2>
   <table class="res">
     <tr>
@@ -32,16 +21,24 @@
       <th>Object</th>
     </tr>
 
-    <% @result.each do |solution| %>
+    <% @result.each do |s,p,o| %>
       <tr class="res <%= cycle('o', 'e') %>">
-        <td><a href="<%= solution.p %>"><%= solution.p.to_s.split('/').last %></a></td>
-        <td><a href="<%= solution.o %>"><%= solution.o.to_s.split('/').last %></a></td>
+        <td>
+          <%= render_resource p %>
+        </td>
+        <td>
+          <%= render_resource o %>
+        </td>
       </tr>
     <% end %>
-    <% @result_inv.each do |solution| %>
+    <% @result_inv.each do |s,p,o| %>
       <tr class="res <%= cycle('o', 'e') %>">
-        <td>is <a href="<%= solution.p %>"><%= solution.p.to_s.split('/').last %></a> of</td>
-        <td><a href="<%= solution.s %>"><%= solution.s.to_s.split('/').last %></a></td>
+        <td>
+          is <%= render_resource p %> of
+        </td>
+        <td>
+          <%= render_resource o %>
+        </td>
       </tr>
     <% end %>
   </table>

@@ -137,3 +137,7 @@ gem 'jbuilder'
 
 #linked open data
 gem 'linkeddata'
+gem 'rdf-json'
+gem 'rdf-rdfxml'
+gem 'rdf-turtle'
+gem 'rdf-n3'
