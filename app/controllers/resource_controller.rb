@@ -42,7 +42,7 @@ class ResourceController < ApplicationController
       format.html {
 
         # + queries on graph -------------------
-        graph.query([@subject, RDF::Vocab::DC.abstract, :o]) do |s,p,o|
+        graph.query([@subject, RDF::URI('http://purl.org/dc/terms/abstract'), :o]) do |s,p,o|
           @abstract = o.value
         end
 
@@ -51,8 +51,8 @@ class ResourceController < ApplicationController
           @type_url = o.value
         end
 
-        @result = sub_set.sort_by { |s,p,o| o.value + p.value }
-        @result_inv = obj_set.sort_by { |s,p,o| p.value + s.value }
+        @result = sub_set.sort_by { |s,p,o| p.pname + o.value }
+        @result_inv = obj_set.sort_by { |s,p,o| p.pname + s.value }
         # - queries on graph -------------------
 
         # + additional informationes -----------
