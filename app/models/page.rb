@@ -11,9 +11,9 @@ class Page < ActiveRecord::Base
   validates_presence_of :title
   validates_presence_of :namespace
 
-  before_validation do
-    preparing_the_page
-  end
+  # before_validation do
+  #   preparing_the_page
+  # end
 
   def self.unverified
     where(verified: false)
@@ -241,6 +241,10 @@ class Page < ActiveRecord::Base
 
   def backlinking_pages
     Page.where('used_links @> ARRAY[?]::varchar[]', full_title)
+  end
+
+  def self.by_author(user)
+    where('used_links @> ARRAY[?]::varchar[]', "developedBy::Contributor:#{user.github_name}/")
   end
 
   def backlinks
