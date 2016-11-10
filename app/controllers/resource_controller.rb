@@ -11,18 +11,18 @@ class ResourceController < ApplicationController
 
     # + load graph --------------------------
     # check, if graph is already loaded
-    if(@@linked_data_graph == nil)
+    #if(@@linked_data_graph == nil)
       require 'rdf/turtle'
       require 'rdf/json'
       require 'rdf/rdfxml'
 
       # save graph global (available to this class)
       @@linked_data_graph = RDF::Graph.load(Rails.root.join('../101web/data/onto/ontology.ttl'), format: :ttl)
-    end
+    #end
     graph = @@linked_data_graph
     # - load graph ---------------------------
 
-    path = File.basename(request.path.dup, File.extname(request.path.dup))
+    path = params[:resource_name]
 
     # + prepare subject ----------------------
     @subject = RDF::URI.new(scheme: request.scheme.dup,
@@ -71,7 +71,8 @@ class ResourceController < ApplicationController
         view_context.link_to res.value.split('/').last, res.value
       end
     else
-      if res.value =~ URI::regexp
+      require 'uri'
+      if (res.value =~ /\A#{URI::regexp}\z/)
         view_context.link_to res.value, res.value, :target => "_blank"
       else
         res.value

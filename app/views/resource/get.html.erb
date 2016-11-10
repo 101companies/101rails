@@ -1,7 +1,10 @@
-<%= stylesheet_link_tag 'resource' %>
-<% cache @headline_url do %>
+<title>101:<%= @headline %></title>
 
-  <h1>About: <a href="<%= @headline_url %>"><%= @headline %></a></h1>
+<% cache (@result + @result_inv) do %>
+
+    <%= stylesheet_link_tag 'resource' %>
+
+    <h1>About: <a href="<%= @headline_url %>"><%= @headline %></a></h1>
 
     <div class="btn-group" style="display: inline-block; float: right;">
       <a href='<%= @headline %>.json' target="_blank" class="editbutton  btn btn-sm btn-default" id="showSourceButton">
@@ -27,7 +30,7 @@
       end
   %>
   <h2>Properties</h2>
-  <table class="res">
+    <table class="res">
     <tr>
       <th style="width: 30%;">Predicat</th>
       <th>Object</th>
@@ -53,5 +56,6 @@
         </td>
       </tr>
     <% end %>
-  </table>
+    </table>
+    <hr>
 <% end %>
