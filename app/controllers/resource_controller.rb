@@ -1,9 +1,12 @@
 class ResourceController < ApplicationController
 
   helper_method :render_resource
-  @@linked_data_graph = nil
+
+  $linked_data_graph = nil
+  $linked_data_graph_mtime = nil
 
   def get
+    onto_path = Rails.root.join('../101web/data/onto/ontology.ttl')
     host = request.host
     #host = '101companies.org'
     port = ':'+request.port.to_s
@@ -11,15 +14,16 @@ class ResourceController < ApplicationController
 
     # + load graph --------------------------
     # check, if graph is already loaded
-    #if(@@linked_data_graph == nil)
-      require 'rdf/turtle'
-      require 'rdf/json'
-      require 'rdf/rdfxml'
+    if($linked_data_graph.nil? || $linked_data_graph_mtime != File.mtime(onto_path))
 
-      # save graph global (available to this class)
-      @@linked_data_graph = RDF::Graph.load(Rails.root.join('../101web/data/onto/ontology.ttl'), format: :ttl)
-    #end
-    graph = @@linked_data_graph
+      logger.info "    load new ontology from " + onto_path.to_s
+
+      # load new graph into global variable
+      $linked_data_graph_mtime = File.mtime(onto_path)
+      $linked_data_graph = RDF::Graph.load(onto_path, format: :ttl)
+
+    end
+    graph = $linked_data_graph
     # - load graph ---------------------------
 
     path = params[:resource_name]
@@ -59,10 +63,22 @@ class ResourceController < ApplicationController
         @headline = request.path.dup.to_s.split('/').last
         @headline_url = request.url
         # - additional informationes -----------
+
+        # html format without results tries a search
+        if(@result.length == 0 && @result_inv.length == 0)
+          search_str = params[:resource_name].downcase
+          if search_str.length > 2
+            @result = graph.query([:s, RDF::URI('http://localhost:3000/resource/ontoid', :o)]).to_set.select{ |s,p,o| s.to_s.downcase.include?(search_str) }.sort_by { |s,p,o| s.pname }
+          else
+            @result = nil
+          end
+          render file: 'resource/search.html.erb'
+        end
       }
       end
   end
 
+  # helper function for render resources
   def render_resource (res)
     if res.uri? # is an uri
       if res.value.split(request.host).count < 2 # is an external link
