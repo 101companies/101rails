@@ -62,6 +62,11 @@ class PagesController < ApplicationController
   end
 
   def render_script
+    if (cannot? :render_script, Page)
+      flash[:error] = "You don't have enough rights for that."
+      go_to_homepage and return
+    end
+
     RenderPageJob.perform_later(params[:id], current_user.id)
 
     render json: {
