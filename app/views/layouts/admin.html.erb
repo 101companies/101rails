@@ -1,13 +1,16 @@
 <html>
   <head>
-    <div class='title'>
+    <title>
       <%= yield(:title) %>
-    </div>
+    </title>
 
     <%= stylesheet_link_tag "application", :media => "all" %>
     <%= javascript_include_tag "application" %>
     <%= aced_tag %>
     <%= csrf_meta_tags %>
+    <% if current_user %>
+      <%= tag(:meta, name: 'last_message_id', content: current_user.last_message_id) %>
+    <% end %>
     <%= yield(:head) %>
 
     <% if Rails.env.development? %>
@@ -30,7 +33,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="/">101companies</a>
+          <a class="navbar-brand" href="/" data-turbolinks="false">101companies</a>
         </div>
 
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
