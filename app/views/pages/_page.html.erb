@@ -1,3 +1,4 @@
+<div style="display: none;" id='rename-path' data-value="<%= rename_page_path(@page) %>"></div>
 
 <div id="renameModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class='modal-dialog'>
@@ -86,7 +87,7 @@
           <a href='http://data.101companies.org/pages' target="_blank">http://data.101companies.org/pages</a>
         </div>
         <div class="modal-footer">
-          <a type="button" class="btn btn-default" href='<%= render_script_page_path(@page) %>'>Ok</a>
+          <a type="button" class="btn btn-default" href='#' id='render-page-button' data-page-id="<%= raw @page.id %>">Ok</a>
           <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
         </div>
       </div>

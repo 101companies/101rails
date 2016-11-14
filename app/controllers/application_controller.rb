@@ -95,6 +95,12 @@ class ApplicationController < ActionController::Base
     go_to_previous_page
   end
 
+  before_action do
+    if current_user && current_user.developer
+      Rack::MiniProfiler.authorize_request
+    end
+  end
+
   helper_method :current_user
   private
   def current_user

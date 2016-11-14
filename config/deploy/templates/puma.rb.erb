@@ -32,3 +32,7 @@ on_restart do
   puts 'Refreshing Gemfile'
   ENV["BUNDLE_GEMFILE"] = "<%= fetch(:bundle_gemfile, "#{current_path}/Gemfile") %>"
 end
+
+on_worker_boot do
+  MessageBus.after_fork
+end

@@ -11,9 +11,7 @@ class Page < ActiveRecord::Base
   validates_presence_of :title
   validates_presence_of :namespace
 
-  # before_validation do
-  #   preparing_the_page
-  # end
+  before_save :preparing_the_page
 
   def self.unverified
     where(verified: false)
@@ -215,7 +213,7 @@ class Page < ActiveRecord::Base
   end
 
   def internal_links
-    used_links!=nil ? self.used_links : []
+    used_links != nil ? self.used_links : []
   end
 
   def sections

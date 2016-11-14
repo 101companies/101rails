@@ -1,11 +1,6 @@
 require File.expand_path('../boot', __FILE__)
 
-# Pick the frameworks you want:
-require "active_record/railtie"
-require "action_controller/railtie"
-require "action_mailer/railtie"
-require "sprockets/railtie"
-# # require "rails/test_unit/railtie"
+require 'rails/all'
 
 if defined?(Bundler)
   # Require the gems listed in Gemfile, including any gems
@@ -78,5 +73,7 @@ module Wiki
     config.react.jsx_transform_options = {
       stage: 0
     }
+
+    config.active_job.queue_adapter = :sucker_punch
   end
 end

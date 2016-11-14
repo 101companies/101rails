@@ -28,6 +28,11 @@ server {
   listen 80;
 <% end %>
 
+  location /message-bus/ {
+    proxy_buffering off;
+    proxy_http_version 1.1;
+  }
+
   location =/wiki.json { root /home/ubuntu/101worker/releases/101web/data/dumps/;  }
 
   location = /wiki/ {

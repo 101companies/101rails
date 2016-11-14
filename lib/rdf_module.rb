@@ -101,7 +101,7 @@ module RdfModule
       subject = directions ? "OUT" : uri
       link_prefix = link.split('::')[1]
       object = directions ? link_prefix : page_to_resource(link_prefix)
-      semantic_property = PageModule.uncapitalize_first_char link.split('::')[0]
+      semantic_property = PageModule.uncapitalize_first_char(link.split('::')[0])
       if !object.nil?
         graph << [subject, semantic_property, object]
       end
