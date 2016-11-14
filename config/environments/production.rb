@@ -98,7 +98,7 @@ Wiki::Application.configure do
   Rails.application.config.middleware.use ExceptionNotification::Rack,
     :email => {
       email_prefix: "[EXCEPTION] ",
-      :sender_address => %{"notifier" <noreply@101companies.org>},
+      :sender_address => %{"notifier" <101companies@gmail.com>},
       :exception_recipients => %w{101companies@gmail.com}
     }
 end

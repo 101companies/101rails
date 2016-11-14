@@ -19,6 +19,8 @@ Wiki::Application.routes.draw do
   get '/contributors_without_github_name' => 'application#contributors_without_github_name'
   get '/pullRepo.json' => 'application#pull_repo'
 
+  post '/last_received' => 'messages#last_received'
+
   # urls for contribution process
   scope 'contribute' do
     # ui for creating contribution

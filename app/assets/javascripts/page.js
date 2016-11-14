@@ -6,8 +6,13 @@ $(document).ready(function() {
 
   var last_id = $('meta[name=last_message_id]')[0].content;
 
-  MessageBus.subscribe("/messages", function(data){
+  MessageBus.subscribe("/messages", function(data, _, message_id){
     alert(data);
+    $.post('/last_received', { last_message_id: message_id })
+      .done(function(result) {
+        console.log(result);
+      });
+      
   }, last_id);
 });
 

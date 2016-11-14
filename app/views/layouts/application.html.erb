@@ -6,7 +6,9 @@
     <%= javascript_include_tag "application" %>
     <%= aced_tag %>
     <%= csrf_meta_tags %>
-    <%= tag(:meta, name: 'last_message_id', content: current_user.last_message_id) %>
+    <% if current_user %>
+      <%= tag(:meta, name: 'last_message_id', content: current_user.last_message_id) %>
+    <% end %>
 
     <%= yield(:head) %>
 

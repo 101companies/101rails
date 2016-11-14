@@ -102,16 +102,12 @@ class ApplicationController < ActionController::Base
   end
 
   helper_method :current_user
+
   private
   def current_user
-    begin
-      if session[:user_id]
-        @current_user = User.where(id: session[:user_id]).first
-      else
-        nil
-      end
-    rescue NameError
-      reset_session
+    if session[:user_id]
+      @current_user ||= User.where(id: session[:user_id]).first
+    else
       nil
     end
   end
