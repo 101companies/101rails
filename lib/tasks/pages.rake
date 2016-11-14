@@ -138,24 +138,10 @@ namespace :pages do
 
   desc "TODO"
   task :findDuplicates => :environment do
-    dups = []
-    Page.each do |page|
-      ds = Page.where(title: page.title, namespace: page.namespace).ne(id: page.id).to_a
-      if ds.length > 0
-        ds << page
+    Page.where(namespace: 'Concept').find_each do |page|
+      if Page.where(title: page.title, namespace: 'Contribution').count > 0
+        page.destroy
       end
-    end
-    dups = dups.reject { |l| l.count == 0 }
-    dups.each do |duplicate|
-      puts 'Duplicates:'
-      ap duplicate.map { |page| page.full_title }
-      puts ''
-    end
-    ap dups
-    dups.shift.each do |page|
-      ap 'deleting:'
-      ap page.full_title
-      page.destroy!
     end
   end
 
