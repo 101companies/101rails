@@ -50,7 +50,7 @@ class ShowPage
       user = User.where(github_name: page.title).first
       if !user.nil?
         page_edits = user.page_changes
-        contributions = Page.where(used_links: /developedBy::Contributor:#{user.github_name}/i)
+        contributions = Page.by_author(user)
       end
     end
 

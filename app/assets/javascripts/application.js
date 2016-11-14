@@ -12,6 +12,7 @@
  GO AFTER THE REQUIRES BELOW.
 
  = require jquery
+ = require turbolinks
  = require ahoy
 
  = require typo/typo
@@ -47,6 +48,7 @@
 //= require app
 //= require Chart.bundle
 //= require chartkick
+//= require message-bus
 
 String.prototype.endsWith = function (s) {
   return this.length >= s.length && this.substr(this.length - s.length) == s;

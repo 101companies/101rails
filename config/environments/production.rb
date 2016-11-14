@@ -94,4 +94,11 @@ Wiki::Application.configure do
   config.eager_load = true
 
   config.books_adapter = BooksAdapters::WorkerAdapter.new
+
+  Rails.application.config.middleware.use ExceptionNotification::Rack,
+    :email => {
+      email_prefix: "[EXCEPTION] ",
+      :sender_address => %{"notifier" <noreply@101companies.org>},
+      :exception_recipients => %w{noreply@101companies.org}
+    }
 end

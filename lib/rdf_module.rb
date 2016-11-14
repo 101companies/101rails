@@ -17,7 +17,7 @@ module RdfModule
 
   def update_used_predicates(page)
     predicates = get_used_predicates
-    page.used_links.select{|l| l.include?("::")}.each do |link|
+    page.used_links.select{ |l| l.include?("::") }.each do |link|
       predicates << link.split("::")[0]
     end
     predicates.uniq!
@@ -53,11 +53,11 @@ module RdfModule
     @page = GetPage.run(full_title: PageModule.unescape_wiki_url(title)).value[:page]
     uri = self.page_to_resource(title)
     graph = []
-    graph = add_outgoing_semantic_triples graph, @page, uri, directions
+    graph = add_outgoing_semantic_triples(graph, @page, uri, directions)
     unless directions
-      graph = add_outgoing_non_semantic_triples graph, uri, directions
+      graph = add_outgoing_non_semantic_triples(graph, uri, directions)
     end
-    add_ingoing_triples graph, @page
+    add_ingoing_triples(graph, @page)
   end
 
   def semantic_properties(name)
@@ -101,7 +101,7 @@ module RdfModule
       subject = directions ? "OUT" : uri
       link_prefix = link.split('::')[1]
       object = directions ? link_prefix : page_to_resource(link_prefix)
-      semantic_property = PageModule.uncapitalize_first_char link.split('::')[0]
+      semantic_property = PageModule.uncapitalize_first_char(link.split('::')[0])
       if !object.nil?
         graph << [subject, semantic_property, object]
       end
@@ -109,12 +109,13 @@ module RdfModule
     graph.uniq
   end
 
-  def add_ingoing_triples(graph, page) #, context)
-    get_used_predicates.each do |x|
+  def add_ingoing_triples(graph, page)
+    predicates = get_used_predicates.map do |x|
       x = MediaWiki::send :upcase_first_char, x
-      Page.where('used_links @> ARRAY[?]::varchar[]', "#{x}::#{page.full_title}").each do |page|
-        graph << ["IN", x.camelize(:lower), page.full_title]
-      end
+      "#{x}::#{page.full_title}"
+    end
+    Page.where('used_links @> ARRAY[?]::varchar[]', predicates).each do |page|
+      graph << ["IN", x.camelize(:lower), page.full_title]
     end
     graph
   end
