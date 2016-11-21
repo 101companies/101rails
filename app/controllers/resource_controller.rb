@@ -5,8 +5,44 @@ class ResourceController < ApplicationController
   $linked_data_graph = nil
   $linked_data_graph_mtime = nil
 
+  def landing
+    onto_path = Rails.root.join('../101web/data/dumps/ontology.ttl')
+    host = request.host
+    #host = '101companies.org'
+    port = ':'+request.port.to_s
+    #port = ''
+
+    # + load graph --------------------------
+    # check, if graph is already loaded
+    if($linked_data_graph.nil? || $linked_data_graph_mtime != File.mtime(onto_path))
+
+      logger.info "    load new ontology from " + onto_path.to_s
+
+      # load new graph into global variable
+      $linked_data_graph_mtime = File.mtime(onto_path)
+      $linked_data_graph = RDF::Graph.load(onto_path, format: :ttl)
+
+    end
+    graph = $linked_data_graph
+    # - load graph ---------------------------
+
+    # + execute rdf querys -----------------
+    respond_to do |format|
+      format.json { render :json => [] }
+      format.xml  { render :xml  => [].to_rdfxml }
+      #format.rdf  { render :xml  => graph.query([@subject, :p, :o]).to_rdfxml }
+      format.html {
+
+        # + queries on graph -------------------
+        #.select{ |s,p,o| o.to_s.downcase.include?('namespace') }
+        @result = graph.query([:s, RDF::type, :o]).to_a.uniq{|s,p,o| o.pname}.sort_by { |s,p,o| o.pname }
+        render file: 'resource/landing.html.erb'
+      }
+    end
+  end
+
   def get
-    onto_path = Rails.root.join('../101web/data/onto/ontology.ttl')
+    onto_path = Rails.root.join('../101web/data/dumps/ontology.ttl')
     host = request.host
     #host = '101companies.org'
     port = ':'+request.port.to_s
@@ -68,7 +104,7 @@ class ResourceController < ApplicationController
         if(@result.length == 0 && @result_inv.length == 0)
           search_str = params[:resource_name].downcase
           if search_str.length > 2
-            @result = graph.query([:s, RDF::URI('http://localhost:3000/resource/ontoid', :o)]).to_set.select{ |s,p,o| s.to_s.downcase.include?(search_str) }.sort_by { |s,p,o| s.pname }
+            @result = graph.query([:s, :p, :o]).to_a.uniq{|s,p,o| s.pname}.select{ |s,p,o| s.to_s.downcase.include?(search_str) }.sort_by { |s,p,o| s.pname }
           else
             @result = nil
           end

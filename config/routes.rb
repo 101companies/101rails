@@ -33,6 +33,7 @@ Wiki::Application.routes.draw do
   end
 
   # linked open data (regex for accept resource_names with dots in it)
+  get 'resource' => 'resource#landing'
   get 'resource/:resource_name' => 'resource#get', :resource_name => /([^\/]+?)(?=\.json|\.xml|\.html|$|\/)/
 
   # tours
