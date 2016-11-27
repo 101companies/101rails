@@ -78,7 +78,8 @@ class ResourceController < ApplicationController
     respond_to do |format|
       format.json { render :json => sub_set.merge(obj_set).to_rdf_json }
       format.xml  { render :xml  => sub_set.merge(obj_set).to_rdfxml }
-      #format.rdf  { render :xml  => graph.query([@subject, :p, :o]).to_rdfxml }
+      format.ttl { render :text  => graph.query([@subject, :p, :o]).to_ttl }
+      format.n3 { render :text  => graph.query([@subject, :p, :o]).to_ntriples }
       format.html {
 
         # + queries on graph -------------------

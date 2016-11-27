@@ -15,6 +15,14 @@
         <i class="glyphicon glyphicon-share-alt"></i>
         <strong class="editbuttontext">.xml</strong>
       </a>
+      <a href='<%= @headline %>.n3' target="_blank" class="editbutton  btn btn-sm btn-default" id="showSourceButton">
+        <i class="glyphicon glyphicon-share-alt"></i>
+        <strong class="editbuttontext">.n3</strong>
+      </a>
+      <a href='<%= @headline %>.ttl' target="_blank" class="editbutton  btn btn-sm btn-default" id="showSourceButton">
+        <i class="glyphicon glyphicon-share-alt"></i>
+        <strong class="editbuttontext">.ttl</strong>
+      </a>
     </div>
     <%=
       if(@type != nil)
