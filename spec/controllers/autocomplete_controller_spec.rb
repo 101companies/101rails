@@ -3,14 +3,14 @@ require 'rails_helper'
 RSpec.describe AutocompleteController, type: :controller do
 
   before(:each) do
-    @abstraction_page = create :abstraction_page
-    @page = create :page
+    @abstraction_page = create(:abstraction_page)
+    @page = create(:page)
   end
 
   describe 'GET index' do
 
     it 'autocompletes all pages from namespace' do
-      get :index, prefix: "#{@page.namespace}::"
+      get :index, params: { prefix: "#{@page.namespace}::" }
 
       data = JSON.parse(@response.body)
 
@@ -18,7 +18,7 @@ RSpec.describe AutocompleteController, type: :controller do
     end
 
     it 'autocompletes all pages from namespace and prefix' do
-      get :index, prefix: "#{@page.namespace}::#{@page.title[0]}"
+      get :index, params: { prefix: "#{@page.namespace}::#{@page.title[0]}" }
 
       data = JSON.parse(@response.body)
 
@@ -26,7 +26,7 @@ RSpec.describe AutocompleteController, type: :controller do
     end
 
     it 'works for namespace without pages' do
-      get :index, prefix: "Script::"
+      get :index, params: { prefix: "Script::" }
 
       data = JSON.parse(@response.body)
 
@@ -34,7 +34,7 @@ RSpec.describe AutocompleteController, type: :controller do
     end
 
     it 'works for unkown namespaces' do
-      get :index, prefix: "SomeUnkownNamespace::"
+      get :index, params: { prefix: "SomeUnkownNamespace::" }
 
       data = JSON.parse(@response.body)
 
@@ -42,7 +42,7 @@ RSpec.describe AutocompleteController, type: :controller do
     end
 
     it 'filters regex characters' do
-      get :index, prefix: "#{@page.namespace}::Z*"
+      get :index, params: { prefix: "#{@page.namespace}::Z*" }
 
       data = JSON.parse(@response.body)
 

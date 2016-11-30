@@ -1,11 +1,11 @@
 Wiki::Application.routes.draw do
 
   namespace :admin do
+    get '/', to: 'admin#index'
     resources :pages
     resources :users
   end
 
-  # mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
   # homepage
   root to: "application#landing_page"
   # sitemap
@@ -18,6 +18,8 @@ Wiki::Application.routes.draw do
   get '/search' => 'pages#search'
   get '/contributors_without_github_name' => 'application#contributors_without_github_name'
   get '/pullRepo.json' => 'application#pull_repo'
+
+  post '/last_received' => 'messages#last_received'
 
   # urls for contribution process
   scope 'contribute' do

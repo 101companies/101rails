@@ -1,55 +1,20 @@
 require 'media_wiki'
 
-class Page
-
-  include Mongoid::Document
-  include Mongoid::Timestamps
-  include Mongoid::Search
-
-  validates_uniqueness_of :title, scope: :namespace
-
-  rails_admin do
-    list do
-      field :title do
-        sort_reverse false
-      end
-
-      field :namespace
-      field :verified
-    end
-
-    field :title
-    field :namespace
-    field :raw_content
-    field :verified
-    field :repo_link
-  end
-
-  search_in :title, :namespace, :raw_content
-
-  field :title, type: String
-  # namespace for page, need to be set
-  field :namespace, type: String
-  field :raw_content, type: String, default: ''
-  field :html_content, type: String
-  field :used_links, type: Array
-  field :subresources, type: Array
-  field :headline, type: String, default: ''
-  field :verified, type: Boolean
-
-  field :worker_findings, type: String
+class Page < ActiveRecord::Base
 
   # relations here
   has_one :repo_link
   has_many :page_changes
   has_many :page_verifications
-  has_and_belongs_to_many :users, class_name: 'User', inverse_of: :pages
+  has_and_belongs_to_many :users
 
   validates_presence_of :title
   validates_presence_of :namespace
 
-  before_validation do
-    preparing_the_page
+  before_save :preparing_the_page
+
+  def self.unverified
+    where(verified: false)
   end
 
   def preparing_the_page
@@ -73,6 +38,12 @@ class Page
     self.used_links = links.flatten.uniq
 
     self.headline = get_headline_html_content
+  end
+
+  def self.search(text)
+    like = sanitize_sql_like(text.downcase)
+    like = "%#{like}%"
+    where('LOWER(title) like ? or LOWER(raw_content) like ? or (namespace || \':\' || title) = ?', like, like, text)
   end
 
   def render
@@ -113,7 +84,7 @@ class Page
   end
 
   def get_last_change
-    last_change = self.page_changes.order_by(created_at: :asc).last
+    last_change = self.page_changes.order(created_at: :asc).last
     if last_change && last_change.user
       history_entry = {
           user_name: last_change.user.name,
@@ -242,7 +213,7 @@ class Page
   end
 
   def internal_links
-    used_links!=nil ? self.used_links : []
+    used_links != nil ? self.used_links : []
   end
 
   def sections
@@ -267,7 +238,11 @@ class Page
   end
 
   def backlinking_pages
-    Page.where(used_links: /^(~)?(\w+::)?#{self.full_title}$/i)
+    Page.where('used_links @> ARRAY[?]::varchar[]', full_title)
+  end
+
+  def self.by_author(user)
+    where('used_links @> ARRAY[?]::varchar[]', "developedBy::Contributor:#{user.github_name}/")
   end
 
   def backlinks
@@ -277,6 +252,31 @@ class Page
 
   def section(section)
     self.get_parser.sections.first.children.find { |s| s.full_title.downcase == section.downcase }
+  end
+
+  def self.popular_technologies
+    Rails.cache.fetch("popular_technologies", expires_in: 12.hours) do
+      technologies = Page.connection.execute('
+        SELECT substring(link from 12) AS link, count(*)
+        FROM pages, unnest(used_links) AS link
+        WHERE substring(link from 0 for 11) = \'Technology\'
+        GROUP BY 1
+        order by 2 desc
+      ')
+
+      result = {}
+      technologies.each do |row|
+        result[row['link']] = row['count']
+      end
+
+      result
+    end
+  end
+
+  def self.cached_count
+    Rails.cache.fetch("page_count", expires_in: 12.hours) do
+      count
+    end
   end
 
 end

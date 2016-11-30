@@ -1,4 +1,34 @@
 $(document).ready(function() {
+  MessageBus.alwaysLongPoll = true;
+  MessageBus.callbackInterval = 5000;
+
+  MessageBus.start();
+
+  var last_id = $('meta[name=last_message_id]')[0].content;
+
+  MessageBus.subscribe("/messages", function(data, _, message_id){
+    alert(data);
+    $.post('/last_received', { last_message_id: message_id })
+      .done(function(result) {
+        console.log(result);
+      });
+      
+  }, last_id);
+});
+
+$(document).on('turbolinks:load', function() {
+  var btn = $('#render-page-button');
+
+  btn.click(function() {
+    var btn = $(this);
+
+    $.getJSON('/wiki/' + btn.data('page-id') + '/render_script', function(result) {
+      console.log(result);
+      $('#myModal').modal('hide');
+    });
+  });
+
+
   // hide metadata
   var metadata = $('[class="mw-headline"][id="Metadata"]');
 
@@ -26,8 +56,9 @@ $(document).ready(function() {
   });
 
   $('#renamePageButton').click(function() {
+    var url = $('#rename-path').data('value');
     $.ajax({
-      url: window.renamePath,
+      url: url,
       type: 'PUT',
       data: {
         newTitle: $('#newTitle').val()

@@ -55,11 +55,7 @@ class PageModule
   end
 
   def self.search(query_string)
-    begin
-      found_pages = Page.full_text_search query_string
-    rescue
-      found_pages = nil
-    end
+    found_pages = Page.search(query_string)
     # nothing found -> go out
     if found_pages.nil?
       return []
@@ -70,7 +66,7 @@ class PageModule
       if found_page.raw_content.nil?
         next
       end
-      score = PageModule.match_page_score found_page, query_string
+      score = PageModule.match_page_score(found_page, query_string)
       # prepare array wit results
       results << {
           title: found_page.full_title,

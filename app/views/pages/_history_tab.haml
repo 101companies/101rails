@@ -13,7 +13,7 @@
       Actual version of page
       %b= @page.full_title.gsub('@', '101')
 
-    - @page.page_changes.order_by("created_at DESC").limit(10).each do |page_change|
+    - @page.page_changes.order("created_at DESC").limit(10).each do |page_change|
       %label.one-page-change
         %input{:type => "radio", "data-page-change" => page_change.id}
         - if page_change.user

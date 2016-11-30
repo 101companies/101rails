@@ -1,0 +1,32 @@
+development:
+  adapter:  postgresql
+  encoding: utf8
+  reconnect: false
+  pool: 8
+  encoding: unicode
+  host: localhost
+  username: postgres
+  password: postgres
+  database: wiki_development
+
+test:
+  adapter:  postgresql
+  encoding: utf8
+  reconnect: false
+  pool: 2
+  encoding: unicode
+  host: localhost
+  username: postgres
+  password: postgres
+  database: wiki_test
+
+production:
+  adapter:  postgresql
+  encoding: utf8
+  reconnect: false
+  pool: 8
+  encoding: unicode
+  host: localhost
+  username: <%= ENV['DATABASE_USER'] %>
+  password: <%= ENV['DATABASE_PASSWORD'] %>
+  database: wiki_production

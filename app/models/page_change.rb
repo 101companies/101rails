@@ -1,24 +1,24 @@
-class PageChange
+class PageChange  < ActiveRecord::Base
 
   require 'differ/string'
 
-  include Mongoid::Document
-  include Mongoid::Timestamps::Created
+  # include Mongoid::Document
+  # include Mongoid::Timestamps::Created
 
-  rails_admin do
-    list do
-      field :title
-      field :namespace
-      field :created_at
-    end
-  end
+  # rails_admin do
+  #   list do
+  #     field :title
+  #     field :namespace
+  #     field :created_at
+  #   end
+  # end
 
   belongs_to :page
   belongs_to :user
 
-  field :title, type: String
-  field :namespace, type: String
-  field :raw_content, type: String
+  # field :title, type: String
+  # field :namespace, type: String
+  # field :raw_content, type: String
 
   def self.get_by_id(id)
     if id.nil?

@@ -9,7 +9,7 @@ class PagesController < ApplicationController
 
   # before_filter need to be before load_and_authorize_resource
   # methods, that need to check permissions
-  before_filter :get_the_page, only: [:edit, :rename, :update, :update_repo, :destroy]
+  before_action :get_the_page, only: [:edit, :rename, :update, :update_repo, :destroy]
   authorize_resource only: [:delete, :rename, :update, :apply_findings, :update_repo, :render_script]
 
   def get_the_page
@@ -62,129 +62,17 @@ class PagesController < ApplicationController
   end
 
   def render_script
-    path = Dir.entries(Rails.root.join('public/assets')).select do |entry|
-      entry.starts_with?('application') && entry.ends_with?('.css')
-    end.first
-
-    path = Rails.root.join('public/assets', path)
-
-    js_path = Dir.entries(Rails.root.join('public/assets')).select do |entry|
-      entry.starts_with?('application') && entry.ends_with?('.js')
-    end.first
-
-    js_path = Rails.root.join('public/assets', js_path)
-
-    page = Page.find(params[:id])
-    links = page.raw_content.scan(/\[\[([^\]]+)\]\]/).select do |link|
-      !link[0].include?('::')
+    if (cannot? :render_script, Page)
+      flash[:error] = "You don't have enough rights for that."
+      go_to_homepage and return
     end
 
-    pages = [page] + links.map do |link|
-      GetPage.run(full_title: link[0]).value[:page]
-    end.select do |page|
-      !page.nil?
-    end
+    RenderPageJob.perform_later(params[:id], current_user.id)
 
-    outputs = pages.map do |page|
-      render_page(page)
-    end
-
-    page_refs = pages.map do |page|
-      {
-        id: page.id.to_s,
-        full_title: page.full_title
-      }
-    end
-
-    result = outputs.join("\n")
-    result = "<html>
-    <head>
-      <meta charset=\"UTF-8\">
-      <style>
-        #{contents = File.read(path)}
-      </style>
-      <script type='text/javascript'>
-        #{contents = File.read(js_path)}
-        window.links = #{page_refs.to_json};
-      </script>
-
-      <style type='text/css'>
-        .section-content-container {
-          padding-bottom: 20px;
-        }
-
-        hr {
-          border-color: black;
-        }
-      </style>
-
-      <script>
-        $(document).ready(function() {
-            var internal_links = $('a').filter(function(index) {
-              var href = $(this).attr('href');
-              if(!href) {
-                return false;
-              }
-              return href.indexOf('/wiki/') === 0 || href.indexOf('wiki/../') === 0;
-            });
-
-          internal_links.each(function(index, value) {
-            var $value = $(value);
-            var href = $value.attr('href');
-            if(href[0] != '/') {
-              href = '/'+ href;
-            }
-            $value.attr('href', 'http://101companies.org' + href);
-          });
-
-          $.each(window.links, function(index, link) {
-            $('a[href=\"' + 'http://101companies.org/wiki/' + link.full_title.replace('_', ' ') + '\"]').each(function(index, value) {
-              var $value = $(value);
-              $value.attr('href', '#' + link.id);
-            });
-
-            $('a[href=\"' + 'http://101companies.org/wiki/' + link.full_title + '\"]').each(function(index, value) {
-              var $value = $(value);
-              $value.attr('href', '#' + link.id);
-            });
-          });
-        });
-      </script>
-
-    </head>
-    <body>
-      <div class='container'>
-        #{result}
-      </div>
-    </body>
-    </html>
-    "
-
-    File.open("#{Dir.home}/101web/data/pages/" + page.full_title + '.html', 'w') { |file| file.write(result) }
-
-    redirect_to request.referer, notice: 'Rendered successfuly'
-  end
-
-  def render_page(page)
-    rdf = GetTriplesForPage.run(page: page).value[:triples]
-    rdf = rdf.select do |rdf|
-      rdf[:direction] == 'OUT'
-    end
-
-    view = ActionView::Base.new(Rails.configuration.paths['app/views'], { script_render: true, rdf: rdf, page: page })
-    view.extend ApplicationHelper
-    view.class_eval do
-      include Rails.application.routes.url_helpers
-      include ApplicationHelper
-      def protect_against_forgery?
-        false
-      end
-    end
-
-
-    "<div class='page' style='margin-top: 40px;'>
-     #{view.render(file: 'pages/_page.html.erb')}
-     </div>"
+    render json: {
+      error: nil,
+      errorcode: 0
+    }
   end
 
   def unverify
@@ -306,12 +194,6 @@ class PagesController < ApplicationController
     result = @page.delete
     # generate flash_message if deleting was successful
     if result
-      page_change = PageChange.new title: @page.title,
-                     namespace: @page.namespace,
-                     raw_content: @page.raw_content,
-                     page: @page,
-                     user: current_user
-      page_change.save
       flash[:notice] = 'Page ' + @page.full_title + ' was deleted'
     end
     render json: { success: result }
@@ -360,7 +242,7 @@ class PagesController < ApplicationController
       flash[:notice] = 'Please write something, if you want to search something'
       go_to_homepage
     else
-      @search_results = PageModule.search @query_string
+      @search_results = PageModule.search(@query_string)
       respond_with @search_results
     end
   end

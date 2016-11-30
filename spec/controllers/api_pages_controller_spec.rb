@@ -7,7 +7,7 @@ RSpec.describe ApiPagesController, type: :controller do
   describe 'GET show' do
 
     it 'returns the normal page' do
-      get :show, id: page.url, format: :json
+      get :show, params: { id: page.url, format: :json }
 
       json_reponse = JSON.parse(response.body)
 

@@ -1,6 +1,7 @@
 class Admin::UsersController < ApplicationController
   authorize_resource
   before_action :set_admin_user, only: [:show, :edit, :update, :destroy]
+  layout :admin_layout
 
   # GET /admin/users
   # GET /admin/users.json
@@ -57,13 +58,18 @@ class Admin::UsersController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_admin_user
-      @user = User.find(params[:id])
-    end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def admin_user_params
-      params.require(:user).permit(:name, :email, :role)
-    end
+  def admin_layout
+    'admin'
+  end
+
+  # Use callbacks to share common setup or constraints between actions.
+  def set_admin_user
+    @user = User.find(params[:id])
+  end
+
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def admin_user_params
+    params.require(:user).permit(:name, :email, :role, :developer)
+  end
 end

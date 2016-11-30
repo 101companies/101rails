@@ -22,7 +22,7 @@ Wiki::Application.configure do
   # config.action_mailer.raise_delivery_errors = true
   # config.action_mailer.default :charset => "utf-8"
 
-  config.cache_store = :memory_store
+  config.cache_store = :null_store
 
   # Print deprecation notices to the Rails logger
   config.active_support.deprecation = :log
@@ -39,4 +39,6 @@ Wiki::Application.configure do
   config.eager_load = false
 
   config.books_adapter = BooksAdapters::LocalWorkerAdapter.new
+
+  config.action_cable.disable_request_forgery_protection = true
 end
