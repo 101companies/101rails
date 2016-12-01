@@ -26,7 +26,6 @@ class ResourceController < ApplicationController
       $linked_data_graph = RDF::Graph.load(onto_path, format: :ttl)
 
     end
-    graph = $linked_data_graph
 
     return true
     # - load graph ---------------------------
@@ -35,6 +34,7 @@ class ResourceController < ApplicationController
   def landing
 
     if(check_graph)
+      graph = $linked_data_graph
       host = request.host
       #host = '101companies.org'
       port = ':'+request.port.to_s
@@ -58,6 +58,7 @@ class ResourceController < ApplicationController
 
   def get
     if(check_graph)
+      graph = $linked_data_graph
       host = request.host
       #host = '101companies.org'
       port = ':'+request.port.to_s
