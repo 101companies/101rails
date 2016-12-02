@@ -14,7 +14,7 @@
         <% @result.each do |s, p, o| %>
             <tr class="res <%= cycle('o', 'e') %>">
               <td>
-                <%= render_resource o %>
+                <%= render_resource s %>
               </td>
             </tr>
         <% end %>
