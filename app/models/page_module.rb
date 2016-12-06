@@ -55,28 +55,12 @@ class PageModule
   end
 
   def self.search(query_string)
-    found_pages = Page.search(query_string)
+    found_pages = Page.search(query_string).order(:title)
     # nothing found -> go out
     if found_pages.nil?
       return []
     end
-    results = []
-    found_pages.each do |found_page|
-      # do not show pages without content
-      if found_page.raw_content.nil?
-        next
-      end
-      score = PageModule.match_page_score(found_page, query_string)
-      # prepare array wit results
-      results << {
-          title: found_page.full_title,
-          link:  found_page.url,
-          # more score -> worst result
-          score: score
-      }
-    end
-    # sort by score and return
-    results.sort_by { |a| a[:score] }
+    found_pages
   end
 
   # link for using in html rendering
