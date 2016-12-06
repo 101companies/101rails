@@ -26,9 +26,12 @@ var EditorBar = React.createClass({
           <u style={{color: 'rgb(62, 133, 201)'}}>Link</u>
         </button>
         <button className="btn btn-small" onClick={this.onInsert.bind(this, {start: "<syntaxhighlight lang=\"???\">\n", end: "\n</syntaxhighlight>"})}>
-          <span className="code-button">Code</span>
+          <span className="code-button">Source Code</span>
         </button>
-        <button className="btn btn-small" onClick={this.onInsert.bind(this, {start: "[[media:FULL_LINK_TO_PICTURE]]", end: ""})}>
+        <button className="btn btn-small" onClick={this.onInsert.bind(this, {start: '<code>', end: '</code>'})}>
+        <span className='code-button'>Code</span>
+      </button>
+      <button className="btn btn-small" onClick={this.onInsert.bind(this, {start: "[[media:FULL_LINK_TO_PICTURE]]", end: ""})}>
           <i className="icon-picture" /> Image
         </button>
         <button className="btn btn-small" onClick={this.onInsert.bind(this, {start: "\n#", end: "\n#\n#\n"})}>
