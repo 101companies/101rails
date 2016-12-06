@@ -54,8 +54,14 @@ class PageModule
         "Source code for this contribution you can find [#{url} here]."
   end
 
-  def self.search(query_string)
-    found_pages = Page.search(query_string).order(:title)
+  def self.search(query_string, namespace=nil)
+    if namespace.empty?
+      pages = Page.all
+    else
+      pages = Page.where(namespace: namespace)
+    end
+      
+    found_pages = pages.search(query_string).order(:title)
     # nothing found -> go out
     if found_pages.nil?
       return []

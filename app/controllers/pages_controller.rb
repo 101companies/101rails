@@ -242,7 +242,7 @@ class PagesController < ApplicationController
       flash[:notice] = 'Please write something, if you want to search something'
       go_to_homepage
     else
-      @search_results = PageModule.search(@query_string)
+      @search_results = PageModule.search(@query_string, params.dig(:namespace, :name))
       respond_with @search_results
     end
   end
