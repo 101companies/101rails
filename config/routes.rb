@@ -57,7 +57,7 @@ Wiki::Application.routes.draw do
   end
 
   # pages routes
-  resources :pages, path: 'wiki' do
+  resources :pages, path: 'wiki', id: /.*/ do
     get :unverified, on: :collection
     post :verify, on: :member
     get :unverify, on: :member
