@@ -1,4 +1,7 @@
 $(document).ready(function() {
+  if($('meta[name=last_message_id]').length == 0) {
+    return;
+  }
   MessageBus.alwaysLongPoll = true;
   MessageBus.callbackInterval = 5000;
 
