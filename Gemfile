@@ -58,7 +58,7 @@ group :development, :test do
   # remove assets-logs in console
   # gem 'quiet_assets', '1.0.2'
   # nice error output
-  gem 'better_errors', '1.1.0'
+  gem 'better_errors'
   gem 'rails-controller-testing'
   gem 'binding_of_caller', '0.7.2'
   gem 'rspec-rails'

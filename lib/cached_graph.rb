@@ -1,25 +1,34 @@
 class CachedGraph
 
   def initialize
-    @data = Concurrent::Atom.new({
-      graph: RDF::Graph.load(onto_path, format: :ttl),
-      mtime: File.mtime(onto_path)
-    })
+    @graph = RDF::Graph.load(onto_path, format: :ttl)
+    @mtime = File.mtime(onto_path)
+    @lock = Concurrent::ReadWriteLock.new
+
+    @update_task = Concurrent::TimerTask.new(timeout_interval: 60, run_now: true) do
+      if @mtime != File.mtime(onto_path)
+        @lock.with_write_lock do
+          @graph = RDF::Graph.load(onto_path, format: :ttl),
+          @mtime = File.mtime(onto_path)
+        end
+      end
+    end
+    @update_task.execute
+  end
+
+  def with_lock(&block)
+    @lock.with_read_lock do
+      yield
+    end
   end
 
   private
 
   def method_missing(method_name, *arguments, &blck)
-    if @data.value[:graph].respond_to?(method_name)
-      if @data.value[:mtime] != File.mtime(onto_path)
-        @data.swap do |_|
-          {
-            graph: RDF::Graph.load(onto_path, format: :ttl),
-            mtime: File.mtime(onto_path)
-          }
-        end
+    if @graph.respond_to?(method_name)
+      @lock.with_read_lock do
+        @graph.send(method_name, *arguments, &block)
       end
-      @data.value[:graph].send(method_name, *arguments, &block)
     end
   end
 

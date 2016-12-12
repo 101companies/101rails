@@ -54,8 +54,12 @@ class ResourceController < ApplicationController
                              path: 'resource/' + params[:resource_name])
       # - prepare subject ----------------------
 
-      sub_set = $graph.query([@subject, :p, :o]).to_set
-      obj_set = $graph.query([:s, :p, @subject]).to_set
+      sub_set = nil
+      obj_set = nil
+      $graph.with_lock do
+        sub_set = $graph.query([@subject, :p, :o]).to_set
+        obj_set = $graph.query([:s, :p, @subject]).to_set
+      end
 
       # + execute rdf querys -----------------
       respond_to do |format|
