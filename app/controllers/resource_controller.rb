@@ -2,45 +2,23 @@ class ResourceController < ApplicationController
 
   helper_method :render_resource
 
-  @@linked_data_graph = nil
-  @@linked_data_graph_mtime = nil
-
   def check_graph
     onto_path = Rails.root.join('../101web/data/dumps/ontology.ttl')
 
     if (!File.exists?(onto_path))
-
       @result = nil
       render file: 'resource/search.html.erb'
-      return false
+      false
+    else
+      true
     end
-
-    # + load graph --------------------------
-    # check, if graph is already loaded
-    if(@@linked_data_graph.nil? || @@linked_data_graph_mtime != File.mtime(onto_path))
-
-      logger.info "    load new ontology from " + onto_path.to_s
-
-      # load new graph into global variable
-      @@linked_data_graph_mtime = File.mtime(onto_path)
-      @@linked_data_graph = RDF::Graph.load(onto_path, format: :ttl)
-
-      logger.info "    new ontology loaded"
-
-    end
-
-    return true
-    # - load graph ---------------------------
   end
 
   def landing
 
     if(check_graph)
-      graph = @@linked_data_graph
       host = request.host
-      #host = '101companies.org'
       port = ':'+request.port.to_s
-      #port = ''
 
       # + prepare subject ----------------------
       @subject = RDF::URI.new(scheme: request.scheme.dup,
@@ -54,10 +32,9 @@ class ResourceController < ApplicationController
       respond_to do |format|
         format.json { render :json => [] }
         format.xml  { render :xml  => [].to_rdfxml }
-        #format.rdf  { render :xml  => graph.query([@subject, :p, :o]).to_rdfxml }
         format.html {
           # + queries on graph -------------------
-          @result = graph.query([:s, :p, @subject]).to_a.uniq{|s,p,o| s.pname}.sort_by { |s,p,o| s.pname }
+          @result = $graph.query([:s, :p, @subject]).to_a.uniq{|s,p,o| s.pname}.sort_by { |s,p,o| s.pname }
           render file: 'resource/landing.html.erb'
         }
       end
@@ -66,11 +43,8 @@ class ResourceController < ApplicationController
 
   def get
     if(check_graph)
-      graph = @@linked_data_graph
       host = request.host
-      #host = '101companies.org'
       port = ':'+request.port.to_s
-      #port = ''
 
       # + prepare subject ----------------------
       @subject = RDF::URI.new(scheme: request.scheme.dup,
@@ -80,8 +54,8 @@ class ResourceController < ApplicationController
                              path: 'resource/' + params[:resource_name])
       # - prepare subject ----------------------
 
-      sub_set = graph.query([@subject, :p, :o]).to_set
-      obj_set = graph.query([:s, :p, @subject]).to_set
+      sub_set = $graph.query([@subject, :p, :o]).to_set
+      obj_set = $graph.query([:s, :p, @subject]).to_set
 
       # + execute rdf querys -----------------
       respond_to do |format|
@@ -100,8 +74,6 @@ class ResourceController < ApplicationController
         format.html {
 
           # + queries on graph -------------------
-
-          #sub_set.select{ |s,p,o| s.pname.split('/').last.downcase.include?(search_str) }
           @q_abstract = sub_set.select{ |s,p,o| p == RDF::URI('http://purl.org/dc/terms/abstract') }
           if(@q_abstract.length > 0)
             @abstract = @q_abstract[0][2].value
@@ -127,11 +99,11 @@ class ResourceController < ApplicationController
             search_str = params[:resource_name].downcase
 
             if search_str.length > 2
-              @result = graph.to_a.uniq{|s,p,o| s.pname }.select{ |s,p,o| s.pname.split('/').last.downcase.include?(search_str) }.sort_by { |s,p,o| s.pname }
+              @result = $graph.to_a.uniq{|s,p,o| s.pname }.select{ |s,p,o| s.pname.split('/').last.downcase.include?(search_str) }.sort_by { |s,p,o| s.pname }
             else
               @result = nil
             end
-            @graphsize = @@linked_data_graph.count
+            @graphsize = $graph.count
             render file: 'resource/search.html.erb'
           end
         }

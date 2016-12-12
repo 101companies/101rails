@@ -6,6 +6,7 @@ gem 'pg'
 gem 'database_cleaner'
 gem 'message_bus'
 gem 'redis'
+gem 'concurrent-ruby'
 
 # gem 'newrelic_rpm'
 gem 'kaminari'

@@ -1,0 +1,1 @@
+$graph = CachedGraph.new
