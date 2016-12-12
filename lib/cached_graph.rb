@@ -8,7 +8,7 @@ class CachedGraph
     @update_task = Concurrent::TimerTask.new(timeout_interval: 60, run_now: true) do
       if @mtime != File.mtime(onto_path)
         @lock.with_write_lock do
-          @graph = RDF::Graph.load(onto_path, format: :ttl),
+          @graph = RDF::Graph.load(onto_path, format: :ttl)
           @mtime = File.mtime(onto_path)
         end
       end
