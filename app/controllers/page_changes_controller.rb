@@ -6,7 +6,7 @@ class PageChangesController < ApplicationController
     page_change = PageChange.get_by_id params[:page_change_id]
     another_page_change = PageChange.get_by_id params[:another_page_change_id]
 
-    if page_change.nil? and another_page_change.nil?
+    if page_change.blank? && another_page_change.blank?
       flash[:warning] = 'Unfortunately diff cannot be displayed =/'
       go_to_previous_page and return
     end

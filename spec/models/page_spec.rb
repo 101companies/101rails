@@ -147,7 +147,7 @@ describe Page do
 
       url = page.url
 
-      expect(url).to eq('Contribution:Some_Contribution')
+      expect(url).not_to include(' ')
     end
 
   end
@@ -181,7 +181,7 @@ describe Page do
       abstraction_page = create :abstraction_page
 
       links = abstraction_page.backlinks
-      expect(links).to include('Contribution:Some Contribution')
+      expect(links).to include(page.full_title)
     end
 
   end

@@ -273,6 +273,14 @@ class Page < ActiveRecord::Base
     end
   end
 
+  def self.used_predicates
+    Page.connection.execute('
+      SELECT DISTINCT substr(link, 0, pos)
+      FROM pages, unnest(used_links) AS link, strpos(link, \'::\') AS pos
+      WHERE pos > 0
+    ').values.map { |row| row[0] }
+  end
+
   def self.cached_count
     Rails.cache.fetch("page_count", expires_in: 12.hours) do
       count

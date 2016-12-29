@@ -55,12 +55,12 @@ class PageModule
   end
 
   def self.search(query_string, namespace=nil)
-    if namespace.empty?
+    if namespace.blank?
       pages = Page.all
     else
       pages = Page.where(namespace: namespace)
     end
-      
+
     found_pages = pages.search(query_string).order(:title)
     # nothing found -> go out
     if found_pages.nil?
@@ -71,7 +71,7 @@ class PageModule
 
   # link for using in html rendering
   # replace ' ' with '_', remove trailing spaces
-  def self.url title
+  def self.url(title)
     self.unescape_wiki_url(title).strip.gsub(' ', '_')
   end
 
