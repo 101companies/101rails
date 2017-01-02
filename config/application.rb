@@ -68,11 +68,11 @@ module Wiki
     # Version of your assets, change this if you want to expire all your assets
     config.assets.version = '1.0'
 
-    config.react.addons = true
+    # config.react.addons = true
 
-    config.react.jsx_transform_options = {
-      stage: 0
-    }
+    # config.react.jsx_transform_options = {
+    #   stage: 0
+    # }
 
     config.active_job.queue_adapter = :sucker_punch
   end

@@ -17,6 +17,254 @@ class Page < ActiveRecord::Base
     where(verified: false)
   end
 
+  def test(a)
+    # a = [10]
+    # d = 6
+    # c = 7
+    # f = "a"
+    # a.each do |i|
+    #   puts i
+    # end
+
+    a == 5
+    # a
+    #   d
+    # else
+    #   a + 1
+    # end
+  end
+
+  # jit(:unverified)
+
+  def self.jit(method_name)
+    require 'llvm/core'
+    require 'llvm/transforms/builder'
+    require 'llvm/transforms/ipo'
+
+    instructions = RubyVM::InstructionSequence.of(instance_method(method_name))
+
+    data = instructions.to_a
+
+    magic           = data[0]
+    major_version   = data[1]
+    minor_version   = data[2]
+    format_type     = data[3]
+    misc            = data[4]
+    label           = data[5]
+    path            = data[6]
+    absolute_path   = data[7]
+    first_lineno    = data[8]
+    type            = data[9]
+
+    # vars are resolved backwards and -1
+    locals            = data[10]
+    local_stack_vars  = locals.last(misc[:arg_size])
+
+    # contains jump labels which are jumped to if optional vars exist
+    params          = data[11]
+    catch_table     = data[12]
+    bytecode        = data[13]
+    param_names     = locals.first(misc[:arg_size])
+
+    bytecode = bytecode.select do |code|
+      if code.instance_of?(Fixnum)
+        false
+      else
+        code[0] != :trace
+      end
+    end
+
+    new_bytecode = []
+    buffer = []
+    bytecode.each do |code|
+      if [:]
+    end
+
+    # ap param_names
+    #
+    # ap bytecode.to_s
+
+    # remove optional param resolution, we just wrap funcs at the moment
+    start_label = params[:opt].try(:last)
+    if bytecode.include?(start_label)
+      # also remove the default jump mark
+      bytecode = bytecode.drop(bytecode.index(start_label) + 1)
+    end
+
+    ap bytecode
+    ap local_stack_vars
+
+    mod = LLVM::Module.new(method_name.to_s)
+    value = LLVM::Int64
+
+    # converts an int64 to a ruby value
+    rb_int2inum = mod.functions.add('rb_int2inum', [LLVM::Int64], value)
+    # probably 0 if unequal, else 1
+    # the return value MIGHT BE Int32!?
+    rb_equal = mod.functions.add('rb_equal', [value, value], LLVM::Int64)
+    api = {
+      rb_int2inum: rb_int2inum,
+      rb_equal: rb_equal
+    }
+
+    local_llvm_vars = {}
+    mod.functions.add(method_name.to_s, [value]*misc[:arg_size], LLVM::Int64) do |function, *args|
+      entry = function.basic_blocks.append("entry")
+
+      stack = nil
+      sp    = nil
+
+      entry.build do |builder|
+        locals.each do |local|
+          local_llvm_vars[local] = builder.alloca(value, name=local.to_s)
+        end
+
+        param_names.each_with_index do |param, index|
+          args[index].name = param.to_s
+          builder.store(args[index], local_llvm_vars[param])
+        end
+
+        stack = builder.alloca(LLVM::Array(value, misc[:stack_max]), name='__stack')
+        sp = builder.alloca(LLVM::Int64, name='__SP__')
+        builder.store(LLVM::Int64.from_i(0), sp)
+      end
+
+      last_block = entry
+      builder = LLVM::Builder.new
+      builder.position_at_end(last_block)
+      bytecode.each do |code|
+        result = compile_code(code, builder, function, sp, stack, local_llvm_vars, locals, api)
+        if result
+          last_block = result
+        end
+      end
+      builder.dispose
+
+    end
+    # mod.dump
+    mod.verify!
+
+    LLVM.init_jit
+    engine = LLVM::JITCompiler.new(mod)
+
+    # builder = LLVM::PassManagerBuilder.new
+    # builder.opt_level = 1
+    #
+    # passm  = LLVM::PassManager.new(engine)
+    # builder.build(passm)
+    # passm.run(mod)
+    #
+    # mod.dump
+
+    # raise
+
+    p = 5
+    # result = engine.run_function(mod.functions[method_name], p.object_id)
+
+    puts 'normal'
+    puts Benchmark.realtime {
+      1000.times { engine.run_function(mod.functions[method_name], p.object_id) }
+    }
+
+    passm  = LLVM::PassManager.new(engine)
+
+    passm.gdce!
+    passm.arg_promote!
+    passm.const_merge!
+    passm.fun_attrs!
+    passm.ipcp!
+    passm.prune_eh!
+    passm.ipsccp!
+    passm.run(mod)
+
+    # mod.dump
+
+    puts 'optimized'
+    puts Benchmark.realtime {
+      1000.times { engine.run_function(mod.functions[method_name], p.object_id) }
+    }
+
+    puts 'ruby'
+    page = Page.new
+    puts Benchmark.realtime {
+      1000.times { page.test(p) }
+    }
+
+    engine.dispose
+
+    # int_result = result.to_i
+    # if int_result == 0x14
+    #   true
+    # elsif int_result == 0
+    #   false
+    # else
+    #   ObjectSpace._id2ref(int_result)
+    # end
+  end
+
+  def self.compile_code(code, builder, function, sp, stack, local_llvm_vars, locals, api)
+    if code.instance_of?(Array)
+      if code.first == :putobject
+        if code[1].instance_of?(Fixnum)
+          ruby_data = builder.call(api[:rb_int2inum], LLVM::Int64.from_i(code[1]))
+          pointer = builder.gep(stack, [LLVM::Int(0), builder.load(sp)])
+          builder.store(ruby_data, pointer)
+          inc_stack(builder, sp)
+        else
+          ap code
+          raise
+        end
+      elsif code.first == :setlocal_OP__WC__0
+        # takes top stack value and stores it
+        name = resolve_local_var(code[1], locals)
+        local_var = local_llvm_vars[name]
+        pointer = builder.gep(stack, [LLVM::Int(0), builder.load(sp)])
+        builder.store(builder.load(pointer), local_var)
+        dec_stack(builder, sp)
+      elsif code.first == :getlocal_OP__WC__0
+        # gets a local var and puts it onto the stack
+        name = resolve_local_var(code[1], locals)
+        local_var = local_llvm_vars[name]
+        inc_stack(builder, sp)
+        pointer = builder.gep(stack, [LLVM::Int(0), builder.load(sp)])
+        builder.store(builder.load(local_var), pointer)
+      elsif code.first == :opt_eq
+        op1_pointer = builder.gep(stack, [LLVM::Int(0), builder.load(sp)])
+        dec_stack(builder, sp)
+
+        op2_pointer = builder.gep(stack, [LLVM::Int(0), builder.load(sp)])
+        dec_stack(builder, sp)
+
+        eql_result = builder.call(api[:rb_equal], builder.load(op1_pointer), builder.load(op2_pointer))
+
+        inc_stack(builder, sp)
+        pointer = builder.gep(stack, [LLVM::Int(0), builder.load(sp)])
+        builder.store(eql_result, pointer)
+      elsif code.first == :leave
+        stack_pointer = builder.gep(stack, [LLVM::Int(0), builder.load(sp)])
+        builder.ret(builder.load(stack_pointer))
+      else
+        ap code
+        raise
+      end
+      nil
+    else
+      # function.basic_blocks.append(code.to_s)
+    end
+  end
+
+  def self.inc_stack(builder, sp)
+    builder.store(builder.add(builder.load(sp), LLVM::Int64.from_i(1), name='increase stack'), sp)
+  end
+
+  def self.dec_stack(builder, sp)
+    builder.store(builder.sub(builder.load(sp), LLVM::Int64.from_i(1), name='decrease stack'), sp)
+  end
+
+  def self.resolve_local_var(index, locals)
+    locals[-(index-1)]
+  end
+
   def preparing_the_page
     self.html_content = self.parse
 

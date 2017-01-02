@@ -14,6 +14,7 @@ gem 'sucker_punch'
 gem 'coffee-rails'
 gem 'turbolinks', '~> 5.0.0'
 gem 'therubyracer'
+gem 'ruby-llvm', '~> 3.5.0'
 
 gem 'solid_use_case', '~> 2.1.1'
 
