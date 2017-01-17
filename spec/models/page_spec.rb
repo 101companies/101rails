@@ -93,7 +93,7 @@ describe Page do
 
       result = page.get_headline
 
-      expect(result).to eq('The argument of an abstraction')
+      expect(result).to eq('The argument of an Abstraction')
     end
 
     it 'gets no headline' do
@@ -135,7 +135,7 @@ describe Page do
 
       result = abstraction_page.update_or_rename 'Other abstraction', abstraction_page.raw_content, abstraction_page.sections, user
 
-      expect(page.reload.raw_content).to include('other abstraction')
+      expect(page.reload.raw_content).to include('Other abstraction')
     end
 
   end

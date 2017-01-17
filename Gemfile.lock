@@ -98,12 +98,9 @@ GEM
     babel-transpiler (0.7.0)
       babel-source (>= 4.0, < 6)
       execjs (~> 2.0)
-    bcrypt (3.1.11)
     better_errors (1.1.0)
       coderay (>= 1.0.0)
       erubis (>= 2.6.6)
-    binding_of_caller (0.7.2)
-      debug_inspector (>= 0.0.1)
     bootstrap-sass (3.3.7)
       autoprefixer-rails (>= 5.2.1)
       sass (>= 3.3.4)
@@ -143,7 +140,6 @@ GEM
     concurrent-ruby (1.0.2)
     connection_pool (2.2.0)
     database_cleaner (1.5.3)
-    debug_inspector (0.0.2)
     deterministic (0.6.0)
     diff-lcs (1.2.5)
     differ (0.1.2)
@@ -413,9 +409,7 @@ DEPENDENCIES
   activerecord (~> 5.0, >= 5.0.0.1)
   ahoy_matey
   awesome_print
-  bcrypt
   better_errors (= 1.1.0)
-  binding_of_caller (= 0.7.2)
   bootstrap-sass
   bootstrap-tour-rails (= 0.4.0)
   bson
@@ -477,4 +471,4 @@ DEPENDENCIES
   wikicloth!
 
 BUNDLED WITH
-   1.13.6
+   1.13.7

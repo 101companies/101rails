@@ -33,9 +33,6 @@ gem 'jquery-rails'
 gem 'jquery-ui-rails'
 gem 'haml-rails'
 
-# security
-gem 'bcrypt'
-
 # github auth
 gem 'omniauth'
 gem 'omniauth-github'
@@ -59,7 +56,7 @@ group :development, :test do
   # nice error output
   gem 'better_errors', '1.1.0'
   gem 'rails-controller-testing'
-  gem 'binding_of_caller', '0.7.2'
+  # gem 'binding_of_caller', '0.7.2'
   gem 'rspec-rails'
   gem 'simplecov', require: false
   gem 'factory_girl_rails'

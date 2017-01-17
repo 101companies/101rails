@@ -61,20 +61,6 @@ class PagesController < ApplicationController
     @books = []
   end
 
-  def render_script
-    if (cannot? :render_script, Page)
-      flash[:error] = "You don't have enough rights for that."
-      go_to_homepage and return
-    end
-
-    RenderPageJob.perform_later(params[:id], current_user.id)
-
-    render json: {
-      error: nil,
-      errorcode: 0
-    }
-  end
-
   def unverify
     if (cannot? :unverify, Page)
       flash[:error] = "You don't have enough rights for that."

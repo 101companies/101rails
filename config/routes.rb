@@ -6,6 +6,8 @@ Wiki::Application.routes.draw do
     resources :users
   end
 
+  resources :scripts, only: [:show]
+
   # homepage
   root to: "application#landing_page"
   # sitemap
@@ -64,7 +66,6 @@ Wiki::Application.routes.draw do
     get :create_new_page, on: :member
     get :create_new_page_confirmation, on: :member
     put :rename, on: :member
-    get :render_script, on: :member
   end
 
   scope '/api/wiki/' do

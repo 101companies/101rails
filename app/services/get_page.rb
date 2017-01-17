@@ -8,7 +8,7 @@ class GetPage
     full_title = params[:full_title]
 
     full_title = (PageModule.unescape_wiki_url(full_title)).strip
-    nt = PageModule.retrieve_namespace_and_title full_title
+    nt = PageModule.retrieve_namespace_and_title(full_title)
 
     params[:nt] = nt
     continue(params)

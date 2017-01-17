@@ -17,6 +17,14 @@ class Page < ActiveRecord::Base
     where(verified: false)
   end
 
+  def self.by_title
+    order(:title)
+  end
+
+  def self.scripts
+    where(namespace: 'Script')
+  end
+
   def preparing_the_page
     self.html_content = self.parse
 
@@ -130,6 +138,10 @@ class Page < ActiveRecord::Base
       # else use normal building of full url
       self.namespace + ':' + self.title
     end
+  end
+
+  def full_underscore_title
+    full_title.gsub(' ', '_')
   end
 
   def rewrite_backlink(related_page, old_title)
