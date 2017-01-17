@@ -21,7 +21,6 @@
 
   <body>
     <%= content_for(:title, "101wiki") %>
-    <%= raw humane_flash_messages %>
 
     <div class='page-nav navbar-default navbar navbar-fixed-top'>
       <div class="container-fluid">
@@ -40,7 +39,7 @@
             <li>
               <form class='form navbar-form navbar-search pull-left' action='/search'>
                 <div class='form-group'>
-                  <%= select("namespace", "name", Page.pluck('distinct namespace'), { include_blank: true, selected: params.dig(:namespace, :name) }, { class: 'form-control' }) %>
+                  <%= select("namespace", "name", Page.order(:namespace).pluck('distinct namespace'), { include_blank: true, selected: params.dig(:namespace, :name) }, { class: 'form-control' }) %>
                 </div>
                 <div class='form-group'>
                   <input class='search-query' name='q' value='<%= (defined? @query_string) ? @query_string : "" %>' id='search-query' placeholder="Search" type='text'>
@@ -105,6 +104,12 @@
         </div>
 
         <div class='col-md-8' id='main101'>
+          <% flash.each do |type, message| %>
+            <div class="alert <%= bootstrap_class_for(type) %> fade in">
+              <button class="close" data-dismiss="alert">×</button>
+              <%= message %>
+            </div>
+          <% end %>
           <%= yield %>
         </div>
 

@@ -224,13 +224,8 @@ class PagesController < ApplicationController
 
   def search
     @query_string = params[:q] || ''
-    if @query_string == ''
-      flash[:notice] = 'Please write something, if you want to search something'
-      go_to_homepage
-    else
-      @search_results = PageModule.search(@query_string, params.dig(:namespace, :name))
-      respond_with @search_results
-    end
+    @search_results = PageModule.search(@query_string, params.dig(:namespace, :name))
+    respond_with @search_results
   end
 
   def rename
