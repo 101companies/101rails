@@ -51,7 +51,7 @@ class Page < ActiveRecord::Base
   def self.search(text)
     like = sanitize_sql_like(text.downcase)
     like = "%#{like}%"
-    where('LOWER(title) like ? or LOWER(raw_content) like ? or (namespace || \':\' || title) = ?', like, like, text)
+    where('LOWER(title) like :like or LOWER(raw_content) like :like or (namespace || \':\' || title) = :text', { like: like, text: text })
   end
 
   def render

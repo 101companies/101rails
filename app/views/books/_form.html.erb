@@ -1,0 +1,30 @@
+<%= bootstrap_form_for(book, layout: :horizontal) do |f| %>
+  <% if book.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(book.errors.count, "error") %> prohibited this book from being saved:</h2>
+
+      <ul>
+      <% book.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.text_field :name %>
+  </div>
+
+  <div class="field">
+    <%= f.text_field :url %>
+  </div>
+
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>
+
+<% if book.persisted? %>
+  <%= render('mappings/index', mappings: book.mappings, book: book) %>
+  <%= render('chapters/index', chapters: book.chapters, book: book) %>
+<% end %>

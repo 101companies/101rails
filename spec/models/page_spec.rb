@@ -186,6 +186,18 @@ describe Page do
 
   end
 
+  describe 'popular_technologies' do
+    let!(:technology_page) { create(:technology_page) }
+
+    it 'gets technologies' do
+      expect(Page.popular_technologies).to eq({
+        "Java" => 1,
+        "SQL"  => 1
+      })
+    end
+
+  end
+
   describe 'last_change' do
 
     it 'gives last change' do

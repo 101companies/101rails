@@ -165,8 +165,6 @@ RSpec.describe PagesController, type: :controller do
       expect {
         get(:search)
       }.not_to change(Page, :count)
-
-      expect(response).to redirect_to('/wiki/101project')
     end
   end
 

@@ -1,5 +1,9 @@
 Wiki::Application.routes.draw do
 
+  resources :books do
+    resources :chapters
+    resources :mappings
+  end
   namespace :admin do
     get '/', to: 'admin#index'
     resources :pages

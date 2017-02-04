@@ -1,0 +1,42 @@
+<%= form_for(mapping) do |f| %>
+  <% if mapping.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(mapping.errors.count, "error") %> prohibited this mapping from being saved:</h2>
+
+      <ul>
+      <% mapping.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :kind %>
+    <%= f.number_field :kind %>
+  </div>
+
+  <div class="field">
+    <%= f.label :index_term %>
+    <%= f.text_field :index_term %>
+  </div>
+
+  <div class="field">
+    <%= f.label :wiki_term %>
+    <%= f.text_field :wiki_term %>
+  </div>
+
+  <div class="field">
+    <%= f.label :comment %>
+    <%= f.text_field :comment %>
+  </div>
+
+  <div class="field">
+    <%= f.label :book %>
+    <%= f.text_field :book %>
+  </div>
+
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

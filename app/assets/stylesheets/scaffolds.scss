@@ -4,12 +4,14 @@ body {
   font-family: verdana, arial, helvetica, sans-serif;
   font-size: 13px;
   line-height: 18px;
+  margin: 33px;
 }
 
 p, ol, ul, td {
   font-family: verdana, arial, helvetica, sans-serif;
   font-size: 13px;
   line-height: 18px;
+  margin: 33px;
 }
 
 pre {
@@ -29,6 +31,16 @@ a {
     color: #fff;
     background-color: #000;
   }
+}
+
+th {
+  padding-bottom: 5px;
+}
+
+td {
+  padding-bottom: 7px;
+  padding-left: 5px;
+  padding-right: 5px;
 }
 
 div {
@@ -61,7 +73,7 @@ div {
     padding: 5px 5px 5px 15px;
     font-size: 12px;
     margin: -7px;
-    margin-bottom: 0px;
+    margin-bottom: 0;
     background-color: #c00;
     color: #fff;
   }
@@ -70,4 +82,8 @@ div {
     font-size: 12px;
     list-style: square;
   }
+}
+
+label {
+  display: block;
 }

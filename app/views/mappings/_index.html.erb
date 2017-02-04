@@ -1,0 +1,31 @@
+<table class='table'>
+  <thead>
+    <tr>
+      <th>Kind</th>
+      <th>Index term</th>
+      <th>Wiki term</th>
+      <th>Comment</th>
+      <th>Book</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% mappings.each do |mapping| %>
+      <tr>
+        <td><%= mapping.kind %></td>
+        <td><%= mapping.index_term %></td>
+        <td><%= mapping.wiki_term %></td>
+        <td><%= mapping.comment %></td>
+        <td><%= mapping.book %></td>
+        <td><%= link_to 'Show', mapping %></td>
+        <td><%= link_to 'Edit', edit_mapping_path(mapping) %></td>
+        <td><%= link_to 'Destroy', mapping, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Mapping', new_book_mapping_path(book) %>

@@ -12,6 +12,10 @@ FactoryGirl.define do
     verified true
   end
 
+  factory :technology_page, parent: :page do
+    raw_content '[[Technology:Java]] [[Technology:SQL]]'
+  end
+
   factory :abstraction_page, parent: :page do
     title 'Abstraction'
     namespace 'Concept'

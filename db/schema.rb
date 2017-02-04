@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161114034503) do
+ActiveRecord::Schema.define(version: 20170123135326) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -24,6 +24,35 @@ ActiveRecord::Schema.define(version: 20161114034503) do
     t.index ["name", "time"], name: "index_ahoy_events_on_name_and_time", using: :btree
     t.index ["user_id", "name"], name: "index_ahoy_events_on_user_id_and_name", using: :btree
     t.index ["visit_id", "name"], name: "index_ahoy_events_on_visit_id_and_name", using: :btree
+  end
+
+  create_table "books", force: :cascade do |t|
+    t.string   "name"
+    t.string   "url"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "chapters", force: :cascade do |t|
+    t.string   "url"
+    t.string   "title"
+    t.string   "content"
+    t.string   "check_sum"
+    t.integer  "book_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["book_id"], name: "index_chapters_on_book_id", using: :btree
+  end
+
+  create_table "mappings", force: :cascade do |t|
+    t.integer  "kind"
+    t.string   "index_term"
+    t.string   "wiki_term"
+    t.string   "comment"
+    t.integer  "book_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["book_id"], name: "index_mappings_on_book_id", using: :btree
   end
 
   create_table "page_changes", force: :cascade do |t|

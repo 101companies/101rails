@@ -6,6 +6,7 @@ gem 'pg'
 gem 'database_cleaner'
 gem 'message_bus'
 gem 'redis'
+gem 'rake-compiler'
 
 # gem 'newrelic_rpm'
 gem 'kaminari'
@@ -14,6 +15,7 @@ gem 'sucker_punch'
 gem 'coffee-rails'
 gem 'turbolinks', '~> 5.0.0'
 gem 'therubyracer'
+gem 'bootstrap_form'
 
 gem 'solid_use_case', '~> 2.1.1'
 
@@ -51,9 +53,6 @@ gem 'stackprof'
 gem 'rack-mini-profiler'
 
 group :development, :test do
-  # remove assets-logs in console
-  # gem 'quiet_assets', '1.0.2'
-  # nice error output
   gem 'better_errors', '1.1.0'
   gem 'rails-controller-testing'
   # gem 'binding_of_caller', '0.7.2'
