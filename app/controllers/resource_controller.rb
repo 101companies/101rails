@@ -108,7 +108,7 @@ class ResourceController < ApplicationController
               @result = nil
             end
             @graphsize = $graph.count
-            render file: 'resource/search.html.erb'
+            render file: 'resource/search.html.erb', success: true
           end
         }
         end

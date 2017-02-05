@@ -7,9 +7,9 @@
   <% if !@result.nil? && @result.length > 0 %>
   <h2>.. but maybe you mean:</h2>
   <table class="res">
-    <tr>
+<!--    <tr>
       <th>Search results from a set of <%=@graphsize %> entries</th>
-    </tr>
+    </tr> -->
 
     <% @result.each do |s, p, o| %>
         <tr class="res <%= cycle('o', 'e') %>">
@@ -21,11 +21,13 @@
   </table>
   <% else %>
       <h2>.. but here are some cats:</h2>
+        <center>
       <img src="http://placekitten.com/400/430" height='430' width='400' />
       <br>
       <a class='btn btn-centered' href='/resource' title='<%= t('landing.linkeddata_go') %>'>
         <%= t('landing.linkeddata_go') %>
       </a>
+        </center>
   <% end %>
   <hr>
 <% end %>
