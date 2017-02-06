@@ -2,10 +2,9 @@ require 'rspec'
 
 describe 'resource routing' do
 
-  it "routes resource/ to #landing" do
+  it "routes resource/ to resource#landing" do
     expect(:get => 'resource/').to route_to('resource#landing')
   end
-
 
   it "routes to specified format" do
     expect(:get => 'resource/rspec.rb.json').
@@ -33,7 +32,7 @@ describe 'resource routing' do
                     :format => "n3")
   end
 
-  it "routes to html (default) format" do
+  it "routes to html (default)" do
     expect(:get => 'resource/rspec.rb.html').
         to route_to(:controller => "resource",
                     :action => "get",
