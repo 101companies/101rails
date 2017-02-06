@@ -1,7 +1,7 @@
 class Book < ApplicationRecord
-  has_many :mappings
   has_many :chapters
 
-  validates_presence_of :name
+  validates :name, presence: true, unique: true
   validates_presence_of :url
+
 end
