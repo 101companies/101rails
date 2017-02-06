@@ -168,7 +168,7 @@ class PagesController < ApplicationController
       request = Net::HTTP::Get.new url
       response = Net::HTTP.start(url.host, url.port, read_timeout: 0.5, connect_timeout: 1) {|http| http.request(request)}
       @predicates = JSON::parse(response.message)
-    rescue JSON::ParserError, Timeout::Error, Errno::EINVAL, Errno::ECONNRESET, EOFError, Net::HTTPBadResponse, Net::HTTPHeaderSyntaxError, Net::ProtocolError => e
+    rescue JSON::ParserError, SocketError, Timeout::Error, Errno::EINVAL, Errno::ECONNRESET, EOFError, Net::HTTPBadResponse, Net::HTTPHeaderSyntaxError, Net::ProtocolError => e
       @predicates = {}
       Rails.logger.warn("Predicates retrieval failed")
     end
