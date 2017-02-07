@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe ResourceController, type: :controller do
 
-  describe 'Ontology Graph' do
+  describe 'GET get' do
     it 'should exist and not empty' do
       expect($graph).not_to be_nil
 
@@ -11,62 +11,28 @@ RSpec.describe ResourceController, type: :controller do
 
     describe 'GET resource' do
 
-      xit 'returns resource' do
+      it 'returns existing resource' do
 
-        # get should return a simple json response of an existing resource. It should do it but it does not.
-        get(:get, params: { resource_name: '101companies' })
+        request.host = 'localhost:3000'
 
-        # it expects a knows attribute of a simple json response of an existing resource
-        expect(true).to eq(response.body)
+        # controller returns a json response of an existing resource
+        get(:get, params: { resource_name: '101worker', format: 'json'})
 
+        # expects a not empty json
+        expect(JSON.parse(response.body)).not_to eq({})
+      end
+
+      it 'returns non-existing resource' do
+
+        request.host = 'localhost:3000'
+
+        # controller returns a json response of an non-existing resource
+        get(:get, params: { resource_name: 'resource_that_does_not_exist_123456789987654321', format: 'json'})
+
+        # expects a not empty json
+        expect(JSON.parse(response.body)).to eq({})
       end
 
     end
   end
 end
-
-=begin
-  describe 'GET get' do
-
-    it 'checks non html results ' do
-      expect(check_graph).to eq(true)
-      expect($graph.count).not_to eq(0)
-
-      if(check_graph)
-        $graph.to_set.each do |s,p,o|
-
-          str_s = s.relativize(s.parent).to_str
-          str_p = p.relativize(p.parent).to_str
-
-          if(o.literal?)
-            str_o = o.value
-          else
-            str_o = o.relativize(o.parent).to_str
-          end
-
-          get :get, params: { resource_name: str_s, format: :xml }
-
-          #expect(str_s).to eq('chicken')
-          expect(response.body).to eq('chicken')
-
-
-          #get :get, params: { resource_name: s.pname, format: :xml }
-          #get :get, params: { resource_name: s.pname, format: :n3 }
-          #get :get, params: { resource_name: s.pname, format: :ttl }
-
-          json_reponse = JSON.parse(response.body)
-
-          expect(json_reponse).to eq('chicken')#o.value)
-
-          expect(json_reponse[str_p]).to eq(str_o)
-
-          expect(json_reponse).to eq('chicken')#o.value)
-
-        end
-      end
-      #expect(response).to render_template(:show, locals: { page: page })
-    end
-
-  end
-=end
-
