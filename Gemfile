@@ -13,7 +13,7 @@ gem 'bson'
 gem 'sucker_punch'
 gem 'coffee-rails'
 gem 'turbolinks', '~> 5.0.0'
-gem 'therubyracer'
+gem 'execjs'
 
 gem 'solid_use_case', '~> 2.1.1'
 
@@ -23,7 +23,7 @@ gem 'exception_notification', '4.0.1'
 # twitter bootstrap as sass
 gem 'bootstrap-sass'
 
-gem 'sass-rails'
+gem 'sassc-rails'
 gem 'uglifier'
 
 gem 'responders'
