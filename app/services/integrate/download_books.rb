@@ -1,7 +1,7 @@
 module Integrate
 
   class DownloadBooks
-    include Interactor
+    # include Interactor
 
     def call
       chapter_data = Parallel.map(context.book.chapters) do

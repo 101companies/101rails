@@ -4,7 +4,11 @@
 
 require File.expand_path('../config/application', __FILE__)
 
-require 'rake/extensiontask'
-Rake::ExtensionTask.new('integrate')
+begin
+  require 'sequent/rake/tasks'
+  Sequent::Rake::Tasks.new({db_config_supplier: YAML.load_file('config/database.yml'), environment: ENV['RAILS_ENV'] || 'development'}).register!
+rescue LoadError
+  puts 'Sequent tasks are not available'
+end
 
 Wiki::Application.load_tasks

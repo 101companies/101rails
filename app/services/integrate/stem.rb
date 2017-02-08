@@ -1,7 +1,7 @@
 module Integrate
 
   class Stem
-    include Interactor
+    # include Interactor
 
     def call
       context.chapter_data.each do |data|

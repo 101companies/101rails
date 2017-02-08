@@ -103,6 +103,19 @@ class ApplicationController < ActionController::Base
 
   helper_method :current_user
 
+  protected
+
+  def command_service
+    @command_service ||= Sequent.command_service
+  end
+
+  def execute_command(command)
+    command_service.execute_commands(command)
+    yield if block_given?
+  rescue Sequent::Core::CommandNotValid => e
+    yield e.errors_with_command_prefix if block_given?
+  end
+
   private
   def current_user
     if session[:user_id]

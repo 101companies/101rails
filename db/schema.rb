@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170123135326) do
+ActiveRecord::Schema.define(version: 20170207122751) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -43,6 +43,18 @@ ActiveRecord::Schema.define(version: 20170123135326) do
     t.datetime "updated_at", null: false
     t.index ["book_id"], name: "index_chapters_on_book_id", using: :btree
   end
+
+  create_table "command_records", force: :cascade do |t|
+    t.string   "user_id"
+    t.string   "aggregate_id"
+    t.string   "command_type", null: false
+    t.text     "command_json", null: false
+    t.datetime "created_at",   null: false
+  end
+
+# Could not dump table "event_records" because of following NoMethodError
+#   undefined method `to_sym' for nil:NilClass
+Did you mean?  to_s
 
   create_table "mappings", force: :cascade do |t|
     t.integer  "kind"
@@ -112,6 +124,14 @@ ActiveRecord::Schema.define(version: 20170123135326) do
     t.index ["page_id"], name: "index_repo_links_on_page_id", using: :btree
   end
 
+  create_table "stream_records", force: :cascade do |t|
+    t.datetime "created_at",         null: false
+    t.string   "aggregate_type",     null: false
+    t.string   "aggregate_id",       null: false
+    t.integer  "snapshot_threshold"
+    t.index ["aggregate_id"], name: "index_stream_records_on_aggregate_id", unique: true, using: :btree
+  end
+
   create_table "users", force: :cascade do |t|
     t.string   "email"
     t.string   "role",            default: "guest"
@@ -160,6 +180,8 @@ ActiveRecord::Schema.define(version: 20170123135326) do
     t.index ["visit_token"], name: "index_visits_on_visit_token", unique: true, using: :btree
   end
 
+  add_foreign_key "event_records", "command_records", name: "command_fkey"
+  add_foreign_key "event_records", "stream_records", name: "stream_fkey"
   add_foreign_key "page_changes", "pages"
   add_foreign_key "page_changes", "users"
   add_foreign_key "repo_links", "pages"

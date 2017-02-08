@@ -149,8 +149,6 @@ class PagesController < ApplicationController
     @page.repo_link.folder = repo_link[:folder]
     @page.repo_link.user = repo_link[:user_repo].split('/').first
     @page.repo_link.repo = repo_link[:user_repo].split('/').last
-    # assign page
-    @page.repo_link.page = @page
     # save page and link
     (@page.save and @page.repo_link.save) ?
       flash[:success]="Updated linked repo" : flash[:error] = "Failed to update linked repo"
