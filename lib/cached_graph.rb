@@ -24,9 +24,13 @@ class CachedGraph
     end
   end
 
+  def has_graph?
+    !@graph.nil?
+  end
+
   private
 
-  def method_missing(method_name, *arguments, &blck)
+  def method_missing(method_name, *arguments, &block)
     if @graph.respond_to?(method_name)
       @lock.with_read_lock do
         @graph.send(method_name, *arguments, &block)
