@@ -7,6 +7,10 @@ RSpec.describe ResourceController, type: :controller do
       expect($graph).not_to be_nil
 
       expect($graph.count).to be > 0
+
+      allow($graph).to receive(:magic_call_method_or_so) {
+        {key: 'some-data'}
+      }
     end
 
     describe 'GET resource' do
@@ -69,4 +73,3 @@ end
 
   end
 =end
-

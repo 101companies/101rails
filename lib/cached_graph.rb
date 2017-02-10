@@ -1,8 +1,10 @@
 class CachedGraph
 
   def initialize
-    @graph = RDF::Graph.load(onto_path, format: :ttl)
-    @mtime = File.mtime(onto_path)
+    if File.exists?(onto_path)
+      @graph = RDF::Graph.load(onto_path, format: :ttl)
+      @mtime = File.mtime(onto_path)
+    end
     @lock = Concurrent::ReadWriteLock.new
 
     @update_task = Concurrent::TimerTask.new(timeout_interval: 60, run_now: true) do
@@ -33,7 +35,11 @@ class CachedGraph
   end
 
   def onto_path
-    @_onto_path ||= Rails.root.join('../101web/data/dumps/ontology.ttl')
+    if Rails.env.test?
+      @_onto_path ||= Rails.root.join('spec/support/ontology.ttl')
+    else
+      @_onto_path ||= Rails.root.join('../101web/data/dumps/ontology.ttl')
+    end
   end
 
 end
