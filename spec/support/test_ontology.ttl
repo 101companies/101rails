@@ -1,0 +1,5 @@
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+
+<http://test.host/resource/resource_controller_spec.rb> a <http://test.host/resource/specification> ;
+    dc:isPartOf <http://test.host/resource/101rails> .
+
