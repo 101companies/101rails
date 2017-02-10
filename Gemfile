@@ -88,7 +88,9 @@ gem 'httparty', '0.13.1'
 gem 'mediawiki-gateway', '0.6.0'
 
 # work with wiki markdown
-gem 'wikicloth', git: 'https://github.com/101companies/wikicloth'
+gem 'wikicloth', path: '../wikicloth' # git: 'https://github.com/101companies/wikicloth'
+gem 'html2text'
+gem 'ruby-stemmer', require: 'lingua/stemmer'
 
 gem 'rdf', git: 'https://github.com/ruby-rdf/rdf'
 

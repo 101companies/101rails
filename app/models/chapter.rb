@@ -9,7 +9,7 @@ class Chapter < ApplicationRecord
   end
 
   def clean_html_content
-    content = html2text(content)
+    content = text = Html2Text.convert(content)
   end
 
   def stem
@@ -31,6 +31,6 @@ class Chapter < ApplicationRecord
 
   end
 
-  
+
 
 end

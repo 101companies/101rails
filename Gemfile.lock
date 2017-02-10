@@ -6,20 +6,6 @@ GIT
       rails (>= 3.2)
 
 GIT
-  remote: https://github.com/101companies/wikicloth
-  revision: ed1905f5069a7983785aa136d90186441f6d4f65
-  specs:
-    wikicloth (0.8.0)
-      activesupport
-      builder
-      expression_parser
-      httparty
-      json
-      nokogiri
-      pygments.rb
-      rinku
-
-GIT
   remote: https://github.com/kevin-klein/sequent.git
   revision: ebfe94146516a11096615b8a10406d51ecfee7cc
   specs:
@@ -47,6 +33,19 @@ GIT
       capistrano (~> 3.5)
       capistrano-bundler
       puma (~> 3.4)
+
+PATH
+  remote: ../wikicloth
+  specs:
+    wikicloth (0.8.0)
+      activesupport
+      builder
+      expression_parser
+      httparty
+      json
+      nokogiri
+      pygments.rb
+      rinku
 
 GEM
   remote: https://rubygems.org/
@@ -120,7 +119,7 @@ GEM
     bootstrap_form (2.5.3)
     browser (2.3.0)
     bson (4.1.1)
-    builder (3.2.2)
+    builder (3.2.3)
     cancancan (1.15.0)
     capistrano (3.6.1)
       airbrussh (>= 1.0.0)
@@ -150,7 +149,7 @@ GEM
       execjs
     coffee-script-source (1.10.0)
     colorize (0.7.3)
-    concurrent-ruby (1.0.2)
+    concurrent-ruby (1.0.4)
     connection_pool (2.2.0)
     database_cleaner (1.5.3)
     deterministic (0.6.0)
@@ -199,6 +198,8 @@ GEM
       haml (~> 4.0.0)
       nokogiri (~> 1.6.0)
       ruby_parser (~> 3.5)
+    html2text (0.2.0)
+      nokogiri (~> 1.6)
     http-cookie (1.0.3)
       domain_name (~> 0.5)
     httparty (0.13.1)
@@ -206,7 +207,7 @@ GEM
       multi_xml (>= 0.5.2)
     humane-rails (5.1.0)
       rails (>= 3.2.0)
-    i18n (0.7.0)
+    i18n (0.8.0)
     ionicons-rails (2.0.0)
     jbuilder (2.6.0)
       activesupport (>= 3.0.0, < 5.1)
@@ -217,7 +218,7 @@ GEM
       thor (>= 0.14, < 2.0)
     jquery-ui-rails (5.0.5)
       railties (>= 3.2.16)
-    json (1.8.3)
+    json (1.8.6)
     json_pure (2.0.2)
     jwt (1.5.6)
     kaminari (0.17.0)
@@ -239,11 +240,11 @@ GEM
       mime-types-data (~> 3.2015)
     mime-types-data (3.2016.0521)
     mini_portile2 (2.1.0)
-    minitest (5.9.1)
+    minitest (5.10.1)
     momentjs-rails (2.15.1)
       railties (>= 3.1)
     multi_json (1.12.1)
-    multi_xml (0.5.5)
+    multi_xml (0.6.0)
     multipart-post (2.0.0)
     net-scp (1.2.1)
       net-ssh (>= 2.6.5)
@@ -271,7 +272,7 @@ GEM
       oauth2 (~> 1.0)
       omniauth (~> 1.2)
     pg (0.19.0)
-    posix-spawn (0.3.12)
+    posix-spawn (0.3.13)
     postgresql_cursor (0.6.1)
       activerecord (>= 3.1.0)
     puma (3.6.0)
@@ -354,6 +355,7 @@ GEM
       rspec-support (~> 3.5.0)
     rspec-support (3.5.0)
     ruby-graphviz (1.2.2)
+    ruby-stemmer (0.9.6)
     ruby_parser (3.8.3)
       sexp_processor (~> 4.1)
     safely_block (0.1.1)
@@ -448,6 +450,7 @@ DEPENDENCIES
   groupdate
   haml-rails
   hightop
+  html2text
   httparty (= 0.13.1)
   humane-rails
   ionicons-rails
@@ -475,6 +478,7 @@ DEPENDENCIES
   redis
   responders
   rspec-rails
+  ruby-stemmer
   sass-rails
   select2-rails (= 3.5.7)
   sequent!

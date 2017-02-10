@@ -1,4 +1,6 @@
-Sequent::Support::ViewSchema.define(view_projection: Sequent::Support::ViewProjection.new(..)) do
+require 'sequent/support'
+
+Sequent::Support::ViewSchema.define(view_projection: Sequent::Support::ViewProjection.new(name: 'view_schema', version: 1, event_handlers: [PageProjector.new], definition: 'db/view_schema.rb')) do
 
   enable_extension 'plpgsql'
 
@@ -27,7 +29,6 @@ Sequent::Support::ViewSchema.define(view_projection: Sequent::Support::ViewProje
     t.string   'comment'
     t.datetime 'created_at', null: false
     t.datetime 'updated_at', null: false
-    t.index ['book_id'], name: 'index_mappings_on_book_id', using: :btree
   end
 
   create_table 'page_changes', force: :cascade do |t|
@@ -56,6 +57,7 @@ Sequent::Support::ViewSchema.define(view_projection: Sequent::Support::ViewProje
   end
 
   create_table 'pages', force: :cascade do |t|
+    t.string   'aggregate_id',  null: false
     t.string   'title',        null: false
     t.string   'namespace',    null: false
     t.text     'raw_content',  default: '', null: false
@@ -71,6 +73,7 @@ Sequent::Support::ViewSchema.define(view_projection: Sequent::Support::ViewProje
     t.index ['title'], name: 'index_pages_on_title', using: :btree
     t.index ['verified'], name: 'index_pages_on_verified', using: :btree
   end
+  add_index :pages, ["aggregate_id"], unique: true
 
   create_table 'pages_users', id: false, force: :cascade do |t|
     t.string 'page_id', null: false
@@ -83,11 +86,12 @@ Sequent::Support::ViewSchema.define(view_projection: Sequent::Support::ViewProje
     t.string   'user'
     t.datetime 'created_at',  null: false
     t.datetime 'updated_at',  null: false
-    t.string  'page_id',      null: false
-    t.index ['page_id'], name: 'index_repo_links_on_page_id', using: :btree
+    t.integer  'page_record_id',      null: false
+    t.index ['page_record_id'], name: 'index_repo_links_on_page_id', using: :btree
   end
 
   create_table 'users', force: :cascade do |t|
+    t.string 'aggregate_id', null: false
     t.string   'email'
     t.string   'role',            default: 'guest', null: false
     t.string   'name'
@@ -104,8 +108,9 @@ Sequent::Support::ViewSchema.define(view_projection: Sequent::Support::ViewProje
     t.index ['name'], name: 'index_users_on_name', using: :btree
   end
 
-  add_foreign_key 'page_changes', 'pages'
-  add_foreign_key 'page_changes', 'users'
-  add_foreign_key 'repo_links', 'pages'
+  add_index :users, ["aggregate_id"], unique: true
+
+  # add_foreign_key 'page_changes', 'pages'
+  # add_foreign_key 'page_changes', 'users'
 
 end

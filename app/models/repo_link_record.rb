@@ -1,5 +1,6 @@
-class RepoLink < ActiveRecord::Base
-  belongs_to :page
+class RepoLinkRecord < ApplicationRecord
+  self.table_name = 'view_schema_1.repo_links'
+  belongs_to :page_record
 
   def namespace
     if self.page

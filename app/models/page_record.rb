@@ -1,15 +1,16 @@
 require 'media_wiki'
 
 class PageRecord < ApplicationRecord
+  self.table_name = 'view_schema_1.pages'
 
   # relations here
-  has_one :repo_link
+  has_one :repo_link_record
   has_many :page_changes
   has_many :page_verifications
   has_and_belongs_to_many :users
 
-  validates_presence_of :title
-  validates_presence_of :namespace
+  # validates_presence_of :title
+  # validates_presence_of :namespace
 
   before_save :preparing_the_page
 
