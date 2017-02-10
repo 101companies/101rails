@@ -7,20 +7,24 @@ RSpec.describe ResourceController, type: :controller do
       expect($graph).not_to be_nil
 
       expect($graph.count).to be > 0
+
+      #allow($graph).to receive(:magic_call_method_or_so) {
+      #  {key: 'some-data'}
+      #}
     end
 
     describe 'GET resource' do
 
       it 'returns existing resource' do
-
-        request.host = 'localhost:3000'
-
         # controller returns a json response of an existing resource
-        get(:get, params: { resource_name: '101worker', format: 'json'})
+        get(:get, params: { resource_name: 'resource_controller_spec.rb', format: 'json'})
 
         # expects a not empty json
         expect(JSON.parse(response.body)).not_to eq({})
       end
+
+      ## test the graph doent exists
+        ## allow($graph).to receive(:has_graph?) { nil }
 
       it 'returns non-existing resource' do
 

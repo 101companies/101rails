@@ -2,21 +2,9 @@ class ResourceController < ApplicationController
 
   helper_method :render_resource
 
-  def check_graph
-    onto_path = Rails.root.join('../101web/data/dumps/ontology.ttl')
-
-    if (!File.exists?(onto_path))
-      @result = nil
-      render file: 'resource/search.html.erb'
-      false
-    else
-      true
-    end
-  end
-
   def landing
 
-    if(check_graph)
+    if($graph.has_graph?)
       host = request.host
       port = ':'+request.port.to_s
 
@@ -30,8 +18,6 @@ class ResourceController < ApplicationController
 
       # + execute rdf querys -----------------
       respond_to do |format|
-        format.json { render :json => [] }
-        format.xml  { render :xml  => [].to_rdfxml }
         format.html {
           # + queries on graph -------------------
           @result = $graph.query([:s, :p, @subject]).to_a.uniq{|s,p,o| s.pname}.sort_by { |s,p,o| s.pname }
@@ -42,7 +28,7 @@ class ResourceController < ApplicationController
   end
 
   def get
-    if(check_graph)
+    if($graph.has_graph?)
       host = request.host
       port = ':'+request.port.to_s
 
@@ -112,8 +98,12 @@ class ResourceController < ApplicationController
           end
         }
         end
-      end
+    else
+      ######## empty? error? ##########
+    end
   end
+
+  private
 
   # helper function for render resources
   def render_resource (res)
