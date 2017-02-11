@@ -1,5 +1,8 @@
-@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix dc: <http://purl.org/dc/terms/> .
+@prefix dc1_1: <http://purl.org/dc/elements/1.1/> .
+@prefix ns101: <http://101companies.org/resource/> .
 
-<http://test.host/resource/resource_controller_spec.rb> a <http://test.host/resource/specification> ;
-    dc:isPartOf <http://test.host/resource/101rails> .
-
+<http://test.host:80/resource/resource_controller_spec.rb> a <http://test.host:80/resource/specification> ;
+    dc1_1:isPartOf <http://test.host:80/resource/101rails>;
+    dc:abstract "The exploration service of the 101 project in a linked open data manner."@en;
+    ns101:external_url "http://101companies.org" .
