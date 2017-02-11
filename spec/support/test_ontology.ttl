@@ -6,3 +6,5 @@
     dc1_1:isPartOf <http://test.host:80/resource/101rails>;
     dc:abstract "The exploration service of the 101 project in a linked open data manner."@en;
     ns101:external_url "http://101companies.org" .
+
+<http://test.host:80/resource/test_ontology> dc1_1:isPartOf <http://test.host:80/resource/101rails> .

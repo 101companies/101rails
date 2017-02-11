@@ -59,11 +59,10 @@ RSpec.describe ResourceController, type: :controller do
 
     end
 
+    it 'resource without type and abstract' do
 
-    it 'search with search_str.length > 2 (no results)' do
-
-      get(:get, params: { resource_name: 'resource_that_does_not_exist', format: 'html' })
-      expect(response.body).to include('<h1>Nothing found...</h1>', 'some cats')
+      get(:get, params: { resource_name: 'test_ontology', format: 'html' })
+      expect(response).to have_http_status(:success)
 
     end
 
@@ -71,6 +70,14 @@ RSpec.describe ResourceController, type: :controller do
 
       get(:get, params: { resource_name: 'resource', format: 'html' })
       expect(response.body).to include('<h1>Nothing found...</h1>', 'maybe you mean')
+
+    end
+
+
+    it 'search with search_str.length > 2 (without results)' do
+
+      get(:get, params: { resource_name: 'resource_that_does_not_exist', format: 'html' })
+      expect(response.body).to include('<h1>Nothing found...</h1>', 'some cats')
 
     end
 
