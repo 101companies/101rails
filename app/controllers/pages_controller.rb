@@ -61,20 +61,6 @@ class PagesController < ApplicationController
     @books = []
   end
 
-  def render_script
-    if (cannot? :render_script, Page)
-      flash[:error] = "You don't have enough rights for that."
-      go_to_homepage and return
-    end
-
-    RenderPageJob.perform_later(params[:id], current_user.id)
-
-    render json: {
-      error: nil,
-      errorcode: 0
-    }
-  end
-
   def unverify
     if (cannot? :unverify, Page)
       flash[:error] = "You don't have enough rights for that."
@@ -182,7 +168,7 @@ class PagesController < ApplicationController
       request = Net::HTTP::Get.new url
       response = Net::HTTP.start(url.host, url.port, read_timeout: 0.5, connect_timeout: 1) {|http| http.request(request)}
       @predicates = JSON::parse(response.message)
-    rescue JSON::ParserError, rrno::EHOSTUNREACH, Timeout::Error, Errno::EINVAL, Errno::ECONNRESET, EOFError, Net::HTTPBadResponse, Net::HTTPHeaderSyntaxError, Net::ProtocolError => e
+    rescue JSON::ParserError, SocketError, Timeout::Error, Errno::EINVAL, Errno::ECONNRESET, EOFError, Net::HTTPBadResponse, Net::HTTPHeaderSyntaxError, Net::ProtocolError => e
       @predicates = {}
       Rails.logger.warn("Predicates retrieval failed")
     end
@@ -238,13 +224,8 @@ class PagesController < ApplicationController
 
   def search
     @query_string = params[:q] || ''
-    if @query_string == ''
-      flash[:notice] = 'Please write something, if you want to search something'
-      go_to_homepage
-    else
-      @search_results = PageModule.search(@query_string)
-      respond_with @search_results
-    end
+    @search_results = PageModule.search(@query_string, params.dig(:namespace, :name))
+    respond_with @search_results
   end
 
   def rename

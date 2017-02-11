@@ -107,6 +107,7 @@ var Editor = React.createClass({
     if (nextProps.onLoad) {
       nextProps.onLoad(this.editor);
     }
+    this.editor.$blockScrolling = Infinity;
   },
 
   onInsert: function(help) {

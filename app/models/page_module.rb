@@ -54,34 +54,24 @@ class PageModule
         "Source code for this contribution you can find [#{url} here]."
   end
 
-  def self.search(query_string)
-    found_pages = Page.search(query_string)
+  def self.search(query_string, namespace=nil)
+    if namespace.blank?
+      pages = Page.all
+    else
+      pages = Page.where(namespace: namespace)
+    end
+
+    found_pages = pages.search(query_string).order(:title)
     # nothing found -> go out
     if found_pages.nil?
       return []
     end
-    results = []
-    found_pages.each do |found_page|
-      # do not show pages without content
-      if found_page.raw_content.nil?
-        next
-      end
-      score = PageModule.match_page_score(found_page, query_string)
-      # prepare array wit results
-      results << {
-          title: found_page.full_title,
-          link:  found_page.url,
-          # more score -> worst result
-          score: score
-      }
-    end
-    # sort by score and return
-    results.sort_by { |a| a[:score] }
+    found_pages
   end
 
   # link for using in html rendering
   # replace ' ' with '_', remove trailing spaces
-  def self.url title
+  def self.url(title)
     self.unescape_wiki_url(title).strip.gsub(' ', '_')
   end
 

@@ -1,27 +1,14 @@
-<!-- :javascript
-  Wiki.searchResults = #{j @search_results.to_json.html_safe}
-  Wiki.queryString = #{j @query_string.to_json.html_safe}
-
-  jQuery(document).ready(function ($){
-    window.router = new Wiki.Routers.PagesRouter(Wiki.Views.Search);
-    Backbone.history.start();
-  })
-
-#page
-  %h1#query-string
-  #search-results
-    %ul -->
-
-<h1>Search results for "<%= @query_string.html_safe %>"</h1>
-
 <div id='search-results'>
 
-  <ul>
-    <% @search_results.each do |result| %>
-      <li class='search-result'>
-        <a href='<%= '/wiki/' + result[:link] %>'><%= result[:title] %></a>
-      </li>
-    <% end %>
-  </ul>
+  <% @search_results.group_by(&:namespace).each do |name, pages| %>
+    <h3><%= name %></h3>
+    <ul>
+      <% pages.each do |page| %>
+        <li class='search-result'>
+          <a href='<%= '/wiki/' + page.url %>'><%= page.title %></a>
+        </li>
+      <% end %>
+    </ul>
+  <% end %>
 
 </div>

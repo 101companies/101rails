@@ -1,0 +1,49 @@
+<div class='alert alert-info'>
+  To save this page, use the browser builtin save function <kbd><kbd>ctrl</kbd> + <kbd>s</kbd></kbd>.
+</div>
+
+<script type="text/javascript">
+  <%
+    page_refs = @pages.map do |page|
+      {
+        id: page_path(page.full_underscore_title),
+        full_title: page.full_underscore_title
+      }
+    end
+   %>
+
+  var links = <%= raw page_refs.to_json %>;
+
+  $(document).ready(function() {
+    var internal_links = $('a').filter(function(index) {
+      var href = $(this).attr('href');
+      if(!href) {
+        return false;
+      }
+      return href.indexOf('/wiki/') === 0 || href.indexOf('wiki/../') === 0;
+    });
+
+    internal_links.each(function(index, value) {
+      var $value = $(value);
+      var href = $value.attr('href');
+      if(href[0] != '/') {
+        href = '/'+ href;
+      }
+      $value.attr('href', 'http://101companies.org' + href);
+    });
+
+    $.each(window.links, function(index, link) {
+      $('a[href=\"' + 'http://101companies.org/wiki/' + link.full_title + '\"]').each(function(index, value) {
+        var $value = $(value);
+        $value.attr('href', '#' + link.id);
+      });
+
+      $('a[href=\"' + 'http://101companies.org/wiki/' + link.full_title + '\"]').each(function(index, value) {
+        var $value = $(value);
+        $value.attr('href', '#' + link.id);
+      });
+    });
+  });
+</script>
+
+<%= render(partial: 'pages/page', locals: {:@script_render => true}, collection: @pages, as: :page, cached: true) %>

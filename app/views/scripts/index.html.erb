@@ -1,0 +1,7 @@
+<ul>
+  <% @pages.each do |script| %>
+    <li>
+      <%= link_to(script.full_title, script_path(script.full_underscore_title)) %>
+    </li>
+  <% end %>
+</ul>

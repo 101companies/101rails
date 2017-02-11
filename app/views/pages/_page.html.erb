@@ -1,4 +1,4 @@
-<div style="display: none;" id='rename-path' data-value="<%= rename_page_path(@page) %>"></div>
+<div style="display: none;" id='rename-path' data-value="<%= rename_page_path(page) %>"></div>
 
 <div id="renameModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class='modal-dialog'>
@@ -10,7 +10,7 @@
       <div class="modal-body">
         <div class="modal-body">
           <p>New title:</p>
-          <input id="newTitle" name="newTitle" value="<%= @page.full_title %>" type="text">
+          <input id="newTitle" name="newTitle" value="<%= page.full_title %>" type="text">
         </div>
       </div>
       <div class="modal-footer">
@@ -21,7 +21,7 @@
   </div>
 </div>
 
-<% if !@page.nil? && @page.verified == false %>
+<% if !page.nil? && page.verified == false %>
 <div class=alert alert-warning>
   <strong>The page hasn't been verified by an Adminstrator yet!</strong>
 </div>
@@ -35,14 +35,14 @@
 
       <div class="btn-group">
         <%= render "/pages/repo_tab" %>
-        <% if request && can?(:edit, @page) %>
-        <a href='<%= edit_page_path(@page.full_title) %>' class="editbutton  btn btn-sm btn-default" id="pageEditButton">
+        <% if request && can?(:edit, page) %>
+        <a href='<%= edit_page_path(page.full_title) %>' class="editbutton  btn btn-sm btn-default" id="pageEditButton">
           <i class="glyphicon glyphicon-pencil"></i>
           <strong class="editbuttontext"> Edit</strong>
         </a>
         <% if current_user.role == ('admin' || 'editor') %>
-          <% if !@page.nil? && @page.verified == false %>
-          	<a href='<%= verify_page_path(@page.full_title) %>' data-method="put" class="editbutton  btn btn-sm btn-default" id="pageVerifyButton">
+          <% if !page.nil? && page.verified == false %>
+          	<a href='<%= verify_page_path(page.full_title) %>' data-method="put" class="editbutton  btn btn-sm btn-default" id="pageVerifyButton">
               <i class=""></i>
               <strong class="editbuttontext"> Verify</strong>
             </a>
@@ -55,19 +55,20 @@
             <i class="glyphicon glyphicon-share-alt"></i>
             <strong class="editbuttontext"> Rename</strong>
           </a>
-          <%= link_to(unverify_page_path(@page.full_title), class: 'editbutton  btn btn-sm btn-default') do %>
+          <%= link_to(unverify_page_path(page.full_title), class: 'editbutton  btn btn-sm btn-default') do %>
             <i class="glyphicon glyphicon-remove-circle"></i>
             <strong class="editbuttontext"> Unverify</strong>
           <% end %>
-          <a data-toggle='modal' href='#myModal' class="editbutton  btn btn-sm btn-default" id="pageEditButton">
-            <i class="glyphicon glyphicon-pencil"></i>
-            <strong class="editbuttontext"> Save As</strong>
-          </a>
         <% else %>
-          <a href='<%= edit_page_path(@page.full_title) %>' class="editbutton  btn btn-sm btn-default" id="showSourceButton">
+          <a href='<%= edit_page_path(page.full_title) %>' class="editbutton  btn btn-sm btn-default" id="showSourceButton">
             <i class="glyphicon glyphicon-share-alt"></i>
             <strong class="editbuttontext"> Show Markup</strong>
           </a>
+        <% end %>
+
+        <%= link_to(script_path(page.full_underscore_title), class: 'btn btn-sm btn-default') do %>
+          <i class="glyphicon glyphicon-pencil"></i>
+          <strong class="editbuttontext"> Script</strong>
         <% end %>
       </div>
      </div>
@@ -87,22 +88,22 @@
           <a href='http://data.101companies.org/pages' target="_blank">http://data.101companies.org/pages</a>
         </div>
         <div class="modal-footer">
-          <a type="button" class="btn btn-default" href='#' id='render-page-button' data-page-id="<%= raw @page.id %>">Ok</a>
+          <a type="button" class="btn btn-default" href='#' id='render-page-button' data-page-id="<%= raw page.id %>">Ok</a>
           <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
         </div>
       </div>
     </div>
   </div>
-  <div id="<%= @page.id %>">
-    <h1><%= @page.full_title %></h1>
+  <div id="<%= page_path(page.full_underscore_title) %>">
+    <h1><%= page.full_title %></h1>
   </div>
 
 </div>
 
 <div id='sections'>
-  <%= @page.render.html_safe %>
+  <%= page.render.html_safe %>
 
-  <% if @rdf.count > 0 %>
+  <% if @rdf && @rdf.count > 0 %>
   <div class='section' id='metasection'>
     <div class='headlinecontainer'>
       <h2 class='headline'>Metadata</h2>
@@ -115,13 +116,13 @@
 
 </div>
 
-<% if !@script_render && @page.backlinks.count > 0 %>
+<% if !@script_render && page.backlinks.count > 0 %>
 <div class='additional-sections'>
   <div class="section" id="backlinks" style="display: block;">
      <h2>Backlinks</h2>
 
      <div class='backlinks-body'>
-       <% @page.backlinks.each do |link| %>
+       <% page.backlinks.each do |link| %>
          <a href="<%= '/wiki/' + link.sub(' ', '_') %>">
            <span class="backlink">
              <%= link %>
@@ -150,7 +151,7 @@
 <% if !@script_render %>
   <div id="infofooter">
     <div class='history'>
-      <% @change = @page.get_last_change %>
+      <% @change = page.get_last_change %>
       <% if @change[:created_at] %>
       <img class="small_avatar" height="24" src="<%= @change[:user_pic] %>" width="24">
       <a href="mailto:<%= @change[:user_email] %>"><%= @change[:user_name] %></a>
@@ -163,6 +164,8 @@
   </div>
 <% end %>
 
-<div class='copyright-notice'>
-  (C) 2012--<%= Time.now.year %> <a href='http://101companies.org'>101companies.org</a> and <a href='http://softlang.org'>softlang.org</a>
-</div>
+<% unless @script_render %>
+  <div class='copyright-notice'>
+    (C) 2012--<%= Time.now.year %> <a href='http://101companies.org'>101companies.org</a> and <a href='http://softlang.org'>softlang.org</a>
+  </div>
+<% end %>
