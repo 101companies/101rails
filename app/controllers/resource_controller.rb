@@ -6,7 +6,7 @@ class ResourceController < ApplicationController
 
     if($graph.has_graph?)
       host = request.host
-      port = ':'+request.port.to_s
+      port = ':' + request.port.to_s
 
       # + prepare subject ----------------------
       @subject = RDF::URI.new(scheme: request.scheme.dup,
@@ -24,13 +24,16 @@ class ResourceController < ApplicationController
           render file: 'resource/landing.html.erb'
         }
       end
+    else
+      flash[:error] = "Ontology file seems to be missing."
+      render file: 'resource/search.html.erb', success: false, status: 500
     end
   end
 
   def get
     if($graph.has_graph?)
       host = request.host
-      port = ':'+request.port.to_s
+      port = ':' + request.port.to_s
 
       # + prepare subject ----------------------
       @subject = RDF::URI.new(scheme: request.scheme.dup,
@@ -56,10 +59,10 @@ class ResourceController < ApplicationController
           render :xml  => sub_set.merge(obj_set).to_rdfxml
         }
         format.ttl {
-          render :text  => sub_set.merge(obj_set).to_ttl
+          render :plain  => sub_set.merge(obj_set).to_ttl
         }
         format.n3 {
-          render :text  => sub_set.merge(obj_set).to_ntriples
+          render :plain  => sub_set.merge(obj_set).to_ntriples
         }
         format.html {
 
@@ -80,7 +83,7 @@ class ResourceController < ApplicationController
           # - queries on graph -------------------
 
           # + additional informationes -----------
-          @headline = request.path.dup.to_s.split('/').last
+          @headline = params[:resource_name] #request.path.dup.to_s.split('/').last
           @headline_url = request.url
 
           # - additional informationes -----------
@@ -99,7 +102,8 @@ class ResourceController < ApplicationController
         }
         end
     else
-      ######## empty? error? ##########
+      flash[:error] = "Ontology file seems to be missing."
+      render file: 'resource/search.html.erb', success: false, status: 500
     end
   end
 
