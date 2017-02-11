@@ -36,6 +36,12 @@ Wiki::Application.routes.draw do
     get '/repo_dirs/:repo' => 'contributions#get_repo_dirs', constraints: { repo: /.*/ }
   end
 
+  # linked open data (regex for accept resource_names with dots in it)
+  scope 'resource' do
+    get '/' => 'resource#landing'
+    get ':resource_name' => 'resource#get', :resource_name => /([^\/]+?)(?=\.json|\.ttl|\.n3|\.xml|\.html|$|\/)/
+  end
+
   # tours
   scope 'tours' do
     get '/' => 'tours#index'

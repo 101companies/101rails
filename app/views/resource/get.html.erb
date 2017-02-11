@@ -1,0 +1,69 @@
+<title>101:<%= @headline %></title>
+
+<% cache (@result + @result_inv) do %>
+
+    <%= stylesheet_link_tag 'resource' %>
+
+    <h1>About: <a href="<%= @headline_url %>"><%= @headline %></a></h1>
+
+    <div class="btn-group" style="display: inline-block; float: right;">
+      <a href='<%= @headline %>.json' target="_blank" class="editbutton  btn btn-sm btn-default" id="showSourceButton">
+        <i class="glyphicon glyphicon-share-alt"></i>
+        <strong class="editbuttontext">.json</strong>
+      </a>
+      <a href='<%= @headline %>.xml' target="_blank" class="editbutton  btn btn-sm btn-default" id="showSourceButton">
+        <i class="glyphicon glyphicon-share-alt"></i>
+        <strong class="editbuttontext">.xml</strong>
+      </a>
+      <a href='<%= @headline %>.n3' target="_blank" class="editbutton  btn btn-sm btn-default" id="showSourceButton">
+        <i class="glyphicon glyphicon-share-alt"></i>
+        <strong class="editbuttontext">.n3</strong>
+      </a>
+      <a href='<%= @headline %>.ttl' target="_blank" class="editbutton  btn btn-sm btn-default" id="showSourceButton">
+        <i class="glyphicon glyphicon-share-alt"></i>
+        <strong class="editbuttontext">.ttl</strong>
+      </a>
+    </div>
+    <%=
+      if(@type != nil)
+          raw '<p>An Entity of Typ <a href="' + @type_url + '">' + @type + '</a>, from : <a target="_blank" href="http://101companies.org">101companies.org</a></p>'
+      else
+        # entity has no rdf::type relation
+        raw '<p>An Entity from : <a href="http://101companies.org">101companies.org</a></p>'
+      end
+      %>
+  <hr>
+  <%= if(@abstract != nil)
+        raw '<h2>Abstract</h2><p>' + @abstract.to_s + '</p><hr>'
+      end
+  %>
+  <h2>Properties (<%=@result.count + @result_inv.count  %>)</h2>
+    <table class="res">
+    <tr>
+      <th style="width: 30%;">Predicat</th>
+      <th>Object</th>
+    </tr>
+
+    <% @result.each do |s,p,o| %>
+      <tr class="res <%= cycle('o', 'e') %>">
+        <td>
+          <%= render_resource p %>
+        </td>
+        <td>
+          <%= render_resource o %>
+        </td>
+      </tr>
+    <% end %>
+    <% @result_inv.each do |s,p,o| %>
+      <tr class="res <%= cycle('o', 'e') %>">
+        <td>
+          is <%= render_resource p %> of
+        </td>
+        <td>
+          <%= render_resource s %>
+        </td>
+      </tr>
+    <% end %>
+    </table>
+    <hr>
+<% end %>

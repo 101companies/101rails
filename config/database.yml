@@ -4,6 +4,7 @@ development:
   reconnect: false
   pool: 8
   encoding: unicode
+  port: 5433
   host: localhost
   username: postgres
   password: postgres
@@ -13,12 +14,13 @@ test:
   adapter:  postgresql
   encoding: utf8
   reconnect: false
-  pool: 2
+  pool: 8
   encoding: unicode
+  port: 5433
   host: localhost
   username: postgres
   password: postgres
-  database: wiki_test
+  database: wiki_development
 
 production:
   adapter:  postgresql

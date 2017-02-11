@@ -1,0 +1,25 @@
+<title>101linkeddata</title>
+
+<% cache (@result) do %>
+
+  <%= stylesheet_link_tag 'resource' %>
+  <h1>Welcome to 101linkeddata</h1>
+  <% if !@result.nil? && @result.length > 0 %>
+      <h2>Let's explore <a target="_blank" href="http://101companies.org">101companies.org</a></h2>
+      <table class="res">
+        <tr>
+          <th>Types</th>
+        </tr>
+
+        <% @result.each do |s, p, o| %>
+            <tr class="res <%= cycle('o', 'e') %>">
+              <td>
+                <%= render_resource s %>
+              </td>
+            </tr>
+        <% end %>
+      </table>
+  <% end %>
+  <hr>
+
+<% end %>
