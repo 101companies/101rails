@@ -190,7 +190,7 @@ describe Page do
 
     it 'gives last change' do
       page = create :page_with_changes
-      change = page.page_changes[1]
+      change = page.page_changes[0]
 
       result = page.get_last_change
 

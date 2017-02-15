@@ -4,7 +4,6 @@ development:
   reconnect: false
   pool: 8
   encoding: unicode
-  port: 5433
   host: localhost
   username: postgres
   password: postgres
@@ -16,7 +15,6 @@ test:
   reconnect: false
   pool: 8
   encoding: unicode
-  port: 5433
   host: localhost
   username: postgres
   password: postgres

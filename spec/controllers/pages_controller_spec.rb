@@ -161,12 +161,12 @@ RSpec.describe PagesController, type: :controller do
       expect(response).to render_template(:search)
     end
 
-    it 'flashes warning if no q is given' do
+    it 'can search without text' do
       expect {
         get(:search)
       }.not_to change(Page, :count)
 
-      expect(response).to redirect_to('/wiki/101project')
+      expect(response).to render_template(:search)
     end
   end
 
