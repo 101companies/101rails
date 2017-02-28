@@ -16,7 +16,7 @@ class ResourceController < ApplicationController
                               path: 'resource/101companies')
       # - prepare subject ----------------------
       
-      flash[:debug] = @subject
+    
       
       # + execute rdf querys -----------------
       respond_to do |format|
