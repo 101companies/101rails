@@ -10,11 +10,13 @@ class ResourceController < ApplicationController
 
       # + prepare subject ----------------------
       @subject = RDF::URI.new(scheme: request.scheme.dup,
-                              authority: host + port,
+                              authority: host,
                               host: host,
                               port: request.port,
                               path: 'resource/101companies')
       # - prepare subject ----------------------
+
+      flash[:debug] = @subject
 
       # + execute rdf querys -----------------
       respond_to do |format|
@@ -37,7 +39,7 @@ class ResourceController < ApplicationController
 
       # + prepare subject ----------------------
       @subject = RDF::URI.new(scheme: request.scheme.dup,
-                             authority: host + port,
+                             authority: host,
                              host: host,
                              port: request.port,
                              path: 'resource/' + params[:resource_name])
