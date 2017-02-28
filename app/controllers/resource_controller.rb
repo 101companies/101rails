@@ -15,7 +15,9 @@ class ResourceController < ApplicationController
                               port: request.port,
                               path: 'resource/101companies')
       # - prepare subject ----------------------
-
+      
+      debug= @subject
+      
       # + execute rdf querys -----------------
       respond_to do |format|
         format.html {
