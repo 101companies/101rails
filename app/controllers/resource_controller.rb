@@ -6,7 +6,6 @@ class ResourceController < ApplicationController
 
     if($graph.has_graph?)
       host = '101companies.org:80'
-      port = ':' + request.port.to_s
 
       # + prepare subject ----------------------
       @subject = RDF::URI.new(scheme: request.scheme.dup,
@@ -32,14 +31,13 @@ class ResourceController < ApplicationController
 
   def get
     if($graph.has_graph?)
-      host = request.host
-      port = ':' + request.port.to_s
+      host = '101companies.org:80'
 
       # + prepare subject ----------------------
       @subject = RDF::URI.new(scheme: request.scheme.dup,
                              authority: host,
                              host: host,
-                             port: request.port,
+                             port: 80,
                              path: 'resource/' + params[:resource_name])
       # - prepare subject ----------------------
 
