@@ -3,29 +3,34 @@ class ResourceController < ApplicationController
   helper_method :render_resource
 
   def landing
-
-    if($graph.has_graph?)
-      host = '101companies.org:80'
-
-      # + prepare subject ----------------------
-      @subject = RDF::URI.new(scheme: request.scheme.dup,
-                              authority: host,
-                              host: host,
-                              port: 80,
-                              path: 'resource/101companies')
-      # - prepare subject ----------------------
-
-      # + execute rdf querys -----------------
-      respond_to do |format|
-        format.html {
-          # + queries on graph -------------------
-          @result = $graph.query([:s, :p, @subject]).to_a.uniq{|s,p,o| s.pname}.sort_by { |s,p,o| s.pname }
-          render file: 'resource/landing.html.erb'
-        }
-      end
+    if(params[:q])
+      params[:resource_name] = params[:q]
+      get
     else
-      flash[:error] = "Ontology file seems to be missing."
-      render file: 'resource/search.html.erb', success: false, status: 500
+      if($graph.has_graph?)
+        host = request.host
+        port = ':' + request.port.to_s
+
+        # + prepare subject ----------------------
+        @subject = RDF::URI.new(scheme: request.scheme.dup,
+                                authority: host + port,
+                                host: host,
+                                port: request.port,
+                                path: 'resource/namespace')
+        # - prepare subject ----------------------
+
+        # + execute rdf querys -----------------
+        respond_to do |format|
+          format.html {
+            # + queries on graph -------------------
+            @result = $graph.query([:s, :p, @subject]).to_a.uniq{|s,p,o| s.pname}.sort_by { |s,p,o| s.pname }
+            render file: 'resource/landing.html.erb'
+          }
+        end
+      else
+        flash[:error] = "Ontology file seems to be missing."
+        render file: 'resource/search.html.erb', success: false, status: 500
+      end
     end
   end
 
@@ -35,7 +40,7 @@ class ResourceController < ApplicationController
 
       # + prepare subject ----------------------
       @subject = RDF::URI.new(scheme: request.scheme.dup,
-                             authority: host,
+                             authority: host + port,
                              host: host,
                              port: 80,
                              path: 'resource/' + params[:resource_name])
