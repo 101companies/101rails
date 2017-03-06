@@ -4,16 +4,17 @@
   <head>
     <meta charset='utf-8'>
     <title>Wiki of 101companies</title>
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
     <meta content='width=device-width, initial-scale=1.0' name='viewport'>
     <%= stylesheet_link_tag "landing", media: "all" %>
     <%= javascript_include_tag "landing" %>
-    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,600' rel='stylesheet' type='text/css'>
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
     <!--[if lt IE 9]>
     <script src="http://html5shim.googlecode.com/svn/trunk/html5.js">
     </script>
     <![endif]-->
     <!-- Le fav -->
-    <script>
+    <!-- <script>
       // History, and back button
       $(function() {
 
@@ -31,228 +32,51 @@
         });
 
       });
-    </script>
+    </script> -->
   </head>
   <!-- activate scrollspy -->
   <body data-offset='50' data-spy='scroll' data-target='.navbar' id='top'>
     <!-- Nav button -->
-    <a class='closed' id='toggle'>
+    <!-- <a class='closed' id='toggle'>
       <i class='icon-reorder'></i>
-    </a>
+    </a> -->
     <!-- Navigation -->
-    <header class='navbar navbar-fixed-top'>
-      <div class='inner-page'>
-        <div id='nav'>
-          <ul class='nav'>
-            <li class='active'>
-              <a class='scroll brand-4' href='#project'><%= t('landing.project_title') %></a>
-            </li>
-            <li>
-              <a class='scroll brand-1' href='#linkeddata'><%= t('landing.linkeddata_title') %></a>
-            </li>
-            <li>
-              <a class='scroll brand-4' href='#contributions'><%= t('landing.contribution_title') %></a>
-            </li>
-          </ul>
+    <nav class="navbar navbar-inverse navbar-fixed-top" style="height: 80px">
+      <div class='container'>
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">101companies</a>
         </div>
+
+        <ul class='nav navbar-nav navbar-right'>
+          <li>
+            <a class='scroll brand-4 header-nav-link' href='#contributions'>What is 101?</a>
+          </li>
+          <li>
+            <a class='scroll brand-1 header-nav-link' href='#linkeddata'>Contributions</a>
+          </li>
+          <li class='active'>
+            <a class='scroll brand-4 header-nav-link' href='#project'>Technologies</a>
+          </li>
+          <li>
+            <a class='scroll brand-4 header-nav-link' href='#contributions'>Eductional Content</a>
+          </li>
+          <li>
+            <form class='form navbar-form navbar-search pull-left' action='/search'>
+              <div class='form-group'>
+                <input class='search-query category-title' name='q' value='<%= (defined? @query_string) ? @query_string : "" %>' id='search-query' placeholder="Search" type='text'>
+              </div>
+            </form>
+          </li>
+        </ul>
       </div>
-    </header>
-    <div class='page color-4' id='project'>
-      <br>
-      <div class='inner-page'>
-        <h2 class='page-headline large'><%= t('landing.project_title') %></h2>
-      </div>
-      <div class='row-fluid inner-page'>
-        <div class='span6 pull-right'>
-          <div class='tag-cloud'></div>
-        </div>
-        <div class='span6 pull-right'>
-          <%= t('landing.project_text') %>
-          <br>
-          <br>
-          <a class='btn btn-centered' href='/wiki/101project' title='Read the wiki'>
-             <%= t('landing.project_go') %>
-          </a>
-        </div>
-      </div>
-      <br>
-      <br>
-      <br>
-      <br>
-      <br>
-    </div>
-    <!-- Linked Data -->
-    <div class='page color-1' id='linkeddata'>
-      <br>
-      <div class='inner-page'>
-        <h2 class='page-headline large'><%= t('landing.linkeddata_title') %></h2>
-      </div>
-      <div class='row-fluid inner-page'>
-        <div class='span6 pull-right'>
-          <%= image_tag("101linkeddata.png", class: 'pull-right') %>
-        </div>
-        <div class='span6 pull-right'>
-          <%= t('landing.linkeddata_text') %>
-          <br>
-          <br>
-          <a class='btn btn-centered' href='resource' title='<%= t('landing.linkeddata_go') %>'>
-            <%= t('landing.linkeddata_go') %>
-          </a>
-        </div>
-      </div>
-      <br>
-      <br>
-      <br>
-    </div>
-    <div class='page color-4' id='contributions'>
-      <br>
-      <div class='inner-page'>
-        <h2 class='page-headline large'><%= t('landing.contribution_title') %></h2>
-      </div>
-      <div class='row-fluid inner-page'>
-        <div class='span6 pull-right'>
-          <center>
-            <%= image_tag("codercat.png") %>
-          </center>
-        </div>
-        <div class='span6 pull-right'>
-            <%= t('landing.contribution_text') %>
-          <br>
-          <br>
-          <a class='btn btn-centered' href='/contribute/new' title='<%= t('landing.contribution_go') %>'>
-            <%= t('landing.contribution_go') %>
-          </a>
-          <br>
-          <br>
-          <br>
-          <br>
-          <br>
-          <br>
-          <br>
-          <br>
-          <br>
-        </div>
-      </div>
-    </div>
-    <!-- Social icons -->
-    <footer class='page color-1' id='contact'>
-    <div class='inner-page'>
-    <h2 class='page-headline large'>Contact</h2>
-    </div>
-    <div class='inner-page row-fluid'>
-    <div class='span4 social'>
-    <ul class='big-list'>
-    <li>
-    <a href='https://twitter.com/101companies' target='blank'>
-    <i class='icon-twitter'></i>
-    Twitter
-    </a>
-    </li>
-    <li>
-    <a href='https://github.com/101companies' target='blank'>
-    <i class='icon-github-sign'></i>
-    Github
-    </a>
-    </li>
-    </ul>
-    </div>
-    <div class='span4 social'>
-    <ul class='big-list'>
-    <li>
-    <a href='https://www.youtube.com/channel/UCzecm5qz_9KDcxuhgbRDy-w' target='blank'>
-    <i class='icon-youtube-play'></i>
-    Youtube
-    </a>
-    </li>
-    <li>
-    <a href='http://101companies.tumblr.com' target='blank'>
-    <i class='icon-tumblr'></i>
-    Blog
-    </a>
-    </li>
-    </ul>
-    </div>
-    <div class='span4 social'>
-    <ul class='big-list'>
-    <li>
-    <a href='http://softlang.wikidot.com/' target='blank'>
-    <i class='icon-globe'></i>
-    Info
-    </a>
-    </li>
-    <li>
-    <a href='mailto:101companies@gmail.com' target='blank'>
-    <i class='icon-inbox'></i>
-    Email
-    </a>
-    </li>
-    </ul>
-    </div>
-    </div>
-    </footer>
+    </nav>
 
-    <script>
-      var data = <%= raw @technologies.to_json %>
-      var width = 500;
-      var height = 300;
-
-      $(document).ready(function() {
-        var word_numbers = $.map(data, function(x) {
-          return x;
-        });
-
-        var word_number = word_numbers.reduce(function(x, y) {
-          return x + y;
-        });
-
-        var words = $.map(data, function(_, x) {
-          return x;
-        });
-
-        var step = Math.max.apply(null, word_numbers) / 6
-
-        var fill = d3.scale.category20();
-
-        d3.layout.cloud().size([width, height])
-        .words(words.map(function(d) {
-          var factor = 10;
-          var count = data[d];
-          var css = count / step;
-          factor += css*50;
-
-          return {text: d, size: factor};
-        }))
-        .rotate(function() { return ~~(Math.random() * 2) * 90; })
-        .font("Impact")
-        .fontSize(function(d) { return d.size; })
-        .on("end", draw)
-        .start();
-
-        function draw(words) {
-          d3.select(".tag-cloud").append("svg")
-          .attr("width", width)
-          .attr("height", height)
-          .append("g")
-          .attr("transform", "translate(" + width/2 + "," + height/2 + ")")
-          .selectAll("text")
-          .data(words)
-          .enter().append("text")
-          .attr("text-anchor", "middle")
-          .style("font-size", function(d) { return d.size + "px"; })
-          .style("font-family", "Impact")
-          .style("fill", function(d, i) { return fill(i); })
-          .attr("text-anchor", "middle")
-          .on("click", function(d) {
-            window.location.href = '/wiki/Technology:' + d.text;
-          })
-          .attr("transform", function(d) {
-            return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
-          })
-          .text(function(d) { return d.text; });
-        }
-
-      });
-
-    </script>
+    <%= yield %>
   </body>
 </html>

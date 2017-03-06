@@ -6,7 +6,7 @@ development:
   encoding: unicode
   host: localhost
   username: postgres
-  password: postgres
+  password: root110120
   database: wiki_development
 
 test:

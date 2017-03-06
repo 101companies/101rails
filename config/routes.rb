@@ -1,5 +1,7 @@
 Wiki::Application.routes.draw do
 
+  resources :chapters
+  resources :books
   namespace :admin do
     get '/', to: 'admin#index'
     resources :pages
@@ -9,7 +11,7 @@ Wiki::Application.routes.draw do
   resources :scripts, only: [:show]
 
   # homepage
-  root to: "application#landing_page"
+  root to: "landing#index"
   # sitemap
   get '/sitemap.xml' => 'application#sitemap'
   # link for downloading slides from slideshare

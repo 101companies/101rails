@@ -25,6 +25,10 @@ class Page < ActiveRecord::Base
     where(namespace: 'Script')
   end
 
+  def self.technologies
+    where(namespace: 'Technology')
+  end
+
   def preparing_the_page
     self.html_content = self.parse
 
@@ -264,6 +268,33 @@ class Page < ActiveRecord::Base
 
   def section(section)
     self.get_parser.sections.first.children.find { |s| s.full_title.downcase == section.downcase }
+  end
+
+  def self.popular_technology_pages
+    Page.find_by_sql('
+    SELECT * FROM pages
+    inner join
+      (SELECT  properties ->> \'title\' as properties_title,
+        COUNT(*) AS count_all
+        FROM "ahoy_events"
+        WHERE "ahoy_events"."name" = \'$view\' AND
+        (position(\'Technology:\' in properties ->> \'title\') <> 0)
+        GROUP BY properties ->> \'title\' ORDER BY count_all desc LIMIT 5) as popular_pages
+    on (pages.namespace || \':\' || pages.title) = properties_title
+    order by count_all desc')
+  end
+
+  def self.recently_updated
+    order(updated_at: :desc).limit(5)
+  end
+
+  def preview
+    content = sections[0]['content']
+    content = content.sub(/==.*==/, '')
+    content = content[0..100]
+
+    parser = WikiCloth::Parser.new(data: content, noedit: true)
+    parser.to_html.gsub('<pre></pre>', '')
   end
 
   def self.popular_technologies
