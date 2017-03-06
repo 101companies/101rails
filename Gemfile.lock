@@ -7,7 +7,7 @@ GIT
 
 GIT
   remote: https://github.com/101companies/wikicloth
-  revision: 59b9bd9e0305cf76f93977ac1a74fc5ff3bbdb6c
+  revision: 65109157f48b4f6e4d117a96a47af6e055914c24
   specs:
     wikicloth (0.8.0)
       activesupport
@@ -26,15 +26,6 @@ GIT
     rdf (2.1.0)
       hamster (~> 3.0)
       link_header (~> 0.0, >= 0.0.8)
-
-GIT
-  remote: https://github.com/seuros/capistrano-puma
-  revision: e18b30c18aceceed003e8007c268125317a17a9d
-  specs:
-    capistrano3-puma (2.0.0)
-      capistrano (~> 3.5)
-      capistrano-bundler
-      puma (~> 3.4)
 
 GEM
   remote: https://rubygems.org/
@@ -88,8 +79,6 @@ GEM
       safely_block (>= 0.1.1)
       user_agent_parser
       uuidtools
-    airbrussh (1.1.1)
-      sshkit (>= 1.6.1, != 1.7.0)
     arel (7.1.4)
     autoprefixer-rails (6.5.2)
       execjs
@@ -103,6 +92,8 @@ GEM
     better_errors (1.1.0)
       coderay (>= 1.0.0)
       erubis (>= 2.6.6)
+    binding_of_caller (0.7.2)
+      debug_inspector (>= 0.0.1)
     bootstrap-sass (3.3.7)
       autoprefixer-rails (>= 5.2.1)
       sass (>= 3.3.4)
@@ -111,22 +102,6 @@ GEM
     bson (4.1.1)
     builder (3.2.3)
     cancancan (1.15.0)
-    capistrano (3.6.1)
-      airbrussh (>= 1.0.0)
-      capistrano-harrow
-      i18n
-      rake (>= 10.0.0)
-      sshkit (>= 1.9.0)
-    capistrano-bundler (1.2.0)
-      capistrano (~> 3.1)
-      sshkit (~> 1.2)
-    capistrano-harrow (0.5.3)
-    capistrano-rails (1.2.0)
-      capistrano (~> 3.1)
-      capistrano-bundler (~> 1.1)
-    capistrano-rvm (0.1.2)
-      capistrano (~> 3.0)
-      sshkit (~> 1.2)
     chartkick (2.1.1)
     choice (0.2.0)
     closure-compiler (1.1.10)
@@ -139,11 +114,12 @@ GEM
       execjs
     coffee-script-source (1.10.0)
     colorize (0.7.3)
-    concurrent-ruby (1.0.4)
+    concurrent-ruby (1.0.5)
     connection_pool (2.2.0)
     crack (0.4.3)
       safe_yaml (~> 1.0.0)
     database_cleaner (1.5.3)
+    debug_inspector (0.0.2)
     deterministic (0.6.0)
     diff-lcs (1.2.5)
     differ (0.1.2)
@@ -205,7 +181,7 @@ GEM
       multi_xml (>= 0.5.2)
     humane-rails (5.1.0)
       rails (>= 3.2.0)
-    i18n (0.8.0)
+    i18n (0.8.1)
     ionicons-rails (2.0.0)
     jbuilder (2.6.0)
       activesupport (>= 3.0.0, < 5.1)
@@ -267,6 +243,9 @@ GEM
     mime-types (3.1)
       mime-types-data (~> 3.2015)
     mime-types-data (3.2016.0521)
+    mina (1.0.6)
+      open4 (~> 1.3.4)
+      rake
     mini_portile2 (2.1.0)
     minitest (5.10.1)
     momentjs-rails (2.15.1)
@@ -275,9 +254,6 @@ GEM
     multi_xml (0.6.0)
     multipart-post (2.0.0)
     net-http-persistent (2.9.4)
-    net-scp (1.2.1)
-      net-ssh (>= 2.6.5)
-    net-ssh (3.2.0)
     netrc (0.11.0)
     nio4r (1.2.1)
     nokogiri (1.6.8.1)
@@ -299,6 +275,7 @@ GEM
     omniauth-oauth2 (1.4.0)
       oauth2 (~> 1.0)
       omniauth (~> 1.2)
+    open4 (1.3.4)
     pg (0.19.0)
     posix-spawn (0.3.13)
     puma (3.6.0)
@@ -493,16 +470,13 @@ GEM
       actionpack (>= 4.0)
       activesupport (>= 4.0)
       sprockets (>= 3.0.0)
-    sshkit (1.11.4)
-      net-scp (>= 1.1.2)
-      net-ssh (>= 2.8.0)
     stackprof (0.2.10)
     sucker_punch (2.0.2)
       concurrent-ruby (~> 1.0.0)
     sxp (1.0.0)
       rdf (~> 2.0)
     thor (0.19.1)
-    thread_safe (0.3.5)
+    thread_safe (0.3.6)
     tilt (2.0.5)
     turbolinks (5.0.0)
       turbolinks-source (~> 5)
@@ -534,14 +508,11 @@ DEPENDENCIES
   ahoy_matey
   awesome_print
   better_errors
+  binding_of_caller
   bootstrap-sass
   bootstrap-tour-rails (= 0.4.0)
   bson
   cancancan (~> 1.9)
-  capistrano-bundler (~> 1.1)
-  capistrano-rails (~> 1.1)
-  capistrano-rvm
-  capistrano3-puma!
   chartkick
   closure-compiler (= 1.1.10)
   coffee-rails
@@ -569,6 +540,7 @@ DEPENDENCIES
   linkeddata
   mediawiki-gateway (= 0.6.0)
   message_bus
+  mina
   momentjs-rails
   octokit (~> 4.0)
   omniauth
@@ -601,4 +573,4 @@ DEPENDENCIES
   wikicloth!
 
 BUNDLED WITH
-   1.14.2
+   1.14.5

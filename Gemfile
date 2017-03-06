@@ -57,15 +57,16 @@ group :development, :test do
   # nice error output
   gem 'better_errors'
   gem 'rails-controller-testing'
-  # gem 'binding_of_caller', '0.7.2'
+  gem 'binding_of_caller'
   gem 'rspec-rails'
   gem 'simplecov', require: false
   gem 'factory_girl_rails'
 
-  gem 'capistrano-rails',   '~> 1.1', require: false
-  gem 'capistrano-bundler', '~> 1.1', require: false
-  gem 'capistrano3-puma', git: "https://github.com/seuros/capistrano-puma"
-  gem 'capistrano-rvm'
+  # gem 'capistrano-rails',   '~> 1.1', require: false
+  # gem 'capistrano-bundler', '~> 1.1', require: false
+  # gem 'capistrano3-puma', git: "https://github.com/seuros/capistrano-puma"
+  # gem 'capistrano-rvm'
+  gem 'mina'
   gem "rails-erd"
 end
 
