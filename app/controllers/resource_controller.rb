@@ -5,14 +5,14 @@ class ResourceController < ApplicationController
   def landing
 
     if($graph.has_graph?)
-      host = request.host
+      host = '101companies.org:80'
       port = ':' + request.port.to_s
 
       # + prepare subject ----------------------
       @subject = RDF::URI.new(scheme: request.scheme.dup,
                               authority: host,
                               host: host,
-                              port: request.port,
+                              port: 80,
                               path: 'resource/101companies')
       # - prepare subject ----------------------
 
