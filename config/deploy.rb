@@ -61,8 +61,8 @@ task :deploy do
     invoke :'deploy:cleanup'
 
     on :launch do
-      in_path(fetch(:current_path)) do
-        command %{mkdir -p tmp/}
+      in_path(fetch(:shared_path)) do
+        command %{mkdir -p tmp/pids}
         invoke :restart_puma
       end
     end

@@ -61,11 +61,6 @@ group :development, :test do
   gem 'rspec-rails'
   gem 'simplecov', require: false
   gem 'factory_girl_rails'
-
-  # gem 'capistrano-rails',   '~> 1.1', require: false
-  # gem 'capistrano-bundler', '~> 1.1', require: false
-  # gem 'capistrano3-puma', git: "https://github.com/seuros/capistrano-puma"
-  # gem 'capistrano-rvm'
   gem 'mina'
   gem "rails-erd"
 end
