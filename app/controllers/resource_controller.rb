@@ -8,14 +8,10 @@ class ResourceController < ApplicationController
       get
     else
       if($graph.has_graph?)
-        host = request.host
-        port = ':' + request.port.to_s
 
         # + prepare subject ----------------------
         @subject = RDF::URI.new(scheme: request.scheme.dup,
-                                authority: host + port,
-                                host: host,
-                                port: request.port,
+                                host: request.host,
                                 path: 'resource/namespace')
         # - prepare subject ----------------------
 
@@ -36,13 +32,10 @@ class ResourceController < ApplicationController
 
   def get
     if($graph.has_graph?)
-      host = '101companies.org:80'
 
       # + prepare subject ----------------------
       @subject = RDF::URI.new(scheme: request.scheme.dup,
-                             authority: host + port,
-                             host: host,
-                             port: 80,
+                             host: request.host,
                              path: 'resource/' + params[:resource_name])
       # - prepare subject ----------------------
 
@@ -113,6 +106,10 @@ class ResourceController < ApplicationController
   private
 
   # helper function for render resources
+  def render_resource_url (res_uri)
+    return request.protocol + request.host_with_port + '/resource/' + res_uri.split('/').last
+  end
+
   def render_resource (res)
     if res.literal?
       # literal
@@ -131,7 +128,7 @@ class ResourceController < ApplicationController
         view_context.link_to res.value.split('/').last, res.value, :target => "_blank"
       else
         # internal uri
-        view_context.link_to  res.value.split('/').last, res.value
+        view_context.link_to  res.value.split('/').last, render_resource_url(res.value)
       end
     end
   end
