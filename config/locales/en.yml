@@ -19,7 +19,9 @@ en:
     explorer_go: 'Explore now'
 
     linkeddata_title: '101linkeddata'
-    linkeddata_text: '101linkeddata is an integral part of the infrastructure and foundation of the 101project. 101linkeddata supports systematic exploration of all pages on the 101wiki, all artifacts in the 101repo, and all synthesized data available as 101data. To this end, 101linkeddata provides access to the various links between all the involved resources. In other words, 101linkeddata is the Linked Data portal for the 101project. 101linkeddata is organized as web service (using HTTP GET) with the URI referring to the resource and the response containing information about the resource. Different response formats are supported: HTML, JSON, and XML.'
+    linkeddata_text: '101linkeddata is an integral part of the infrastructure and foundation of the 101project. 101linkeddata supports systematic exploration of all pages on the 101wiki, all artifacts in the 101repo, and all synthesized data available as 101data. To this end, 101linkeddata provides access to the various links between all the involved resources. In other words, 101linkeddata is the Linked Data portal for the 101project. 101linkeddata is organized as web service (using HTTP GET) with the URI referring to the resource and the response containing information about the resource. Different response formats are supported: HTML, XML, JSON, Notation3 and Turtle.'
     linkeddata_go: 'Explore now'
+    linkeddata_search: 'Search in 101linkeddata'
+    linkeddata_backto: 'back to 101linkeddata'
 
     contact: 'Contact'

@@ -3,43 +3,39 @@ class ResourceController < ApplicationController
   helper_method :render_resource
 
   def landing
-
-    if($graph.has_graph?)
-      host = request.host
-      port = ':' + request.port.to_s
-
-      # + prepare subject ----------------------
-      @subject = RDF::URI.new(scheme: request.scheme.dup,
-                              authority: host + port,
-                              host: host,
-                              port: request.port,
-                              path: 'resource/101companies')
-      # - prepare subject ----------------------
-
-      # + execute rdf querys -----------------
-      respond_to do |format|
-        format.html {
-          # + queries on graph -------------------
-          @result = $graph.query([:s, :p, @subject]).to_a.uniq{|s,p,o| s.pname}.sort_by { |s,p,o| s.pname }
-          render file: 'resource/landing.html.erb'
-        }
-      end
+    if(params[:q])
+      params[:resource_name] = params[:q]
+      get
     else
-      flash[:error] = "Ontology file seems to be missing."
-      render file: 'resource/search.html.erb', success: false, status: 500
+      if($graph.has_graph?)
+
+        # + prepare subject ----------------------
+        @subject = RDF::URI.new(scheme: request.scheme.dup,
+                                host: request.host,
+                                path: 'resource/namespace')
+        # - prepare subject ----------------------
+
+        # + execute rdf querys -----------------
+        respond_to do |format|
+          format.html {
+            # + queries on graph -------------------
+            @result = $graph.query([:s, :p, @subject]).to_a.uniq{|s,p,o| s.pname}.sort_by { |s,p,o| s.pname }
+            render file: 'resource/landing.html.erb'
+          }
+        end
+      else
+        flash[:error] = "Ontology file seems to be missing."
+        render file: 'resource/search.html.erb', success: false, status: 500
+      end
     end
   end
 
   def get
     if($graph.has_graph?)
-      host = request.host
-      port = ':' + request.port.to_s
 
       # + prepare subject ----------------------
       @subject = RDF::URI.new(scheme: request.scheme.dup,
-                             authority: host + port,
-                             host: host,
-                             port: request.port,
+                             host: request.host,
                              path: 'resource/' + params[:resource_name])
       # - prepare subject ----------------------
 
@@ -110,6 +106,10 @@ class ResourceController < ApplicationController
   private
 
   # helper function for render resources
+  def render_resource_url (res_uri)
+    return request.protocol + request.host_with_port + '/resource/' + res_uri.split('/').last
+  end
+
   def render_resource (res)
     if res.literal?
       # literal
@@ -128,7 +128,7 @@ class ResourceController < ApplicationController
         view_context.link_to res.value.split('/').last, res.value, :target => "_blank"
       else
         # internal uri
-        view_context.link_to  res.value.split('/').last, res.value
+        view_context.link_to  res.value.split('/').last, render_resource_url(res.value)
       end
     end
   end

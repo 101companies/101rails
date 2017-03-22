@@ -41,6 +41,8 @@ class CachedGraph
   def onto_path
     if Rails.env.test?
       @_onto_path ||= Rails.root.join('spec/support/test_ontology.ttl')
+    elsif Rails.env.production?
+      @_onto_path ||= '/home/ubuntu/101web/data/dumps/ontology.ttl'
     else
       @_onto_path ||= Rails.root.join('../101web/data/dumps/ontology.ttl')
     end
