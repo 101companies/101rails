@@ -15,22 +15,12 @@ $(document).ready(function() {
       .done(function(result) {
         console.log(result);
       });
-      
+
   }, last_id);
 });
 
 $(document).on('turbolinks:load', function() {
-  var btn = $('#render-page-button');
-
-  btn.click(function() {
-    var btn = $(this);
-
-    $.getJSON('/wiki/' + btn.data('page-id') + '/render_script', function(result) {
-      console.log(result);
-      $('#myModal').modal('hide');
-    });
-  });
-
+  $('[data-toggle="popover"]').popover();
 
   // hide metadata
   var metadata = $('[class="mw-headline"][id="Metadata"]');

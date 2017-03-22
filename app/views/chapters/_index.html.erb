@@ -1,0 +1,22 @@
+<table class='table'>
+  <thead>
+    <tr>
+      <th>Title</th>
+      <th>Url</th>
+      <th colspan="2"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% chapters.each do |chapter| %>
+      <tr>
+        <td><%= chapter.title %></td>
+        <td><%= link_to(chapter.url, chapter.url) %></td>
+        <td><%= link_to 'Edit', edit_book_chapter_path(book, chapter) %></td>
+        <td><%= link_to 'Destroy', [book, chapter], method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%= link_to 'New Chapter', new_book_chapter_path(book), class: 'btn btn-success' %>

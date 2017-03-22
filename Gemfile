@@ -7,6 +7,10 @@ gem 'database_cleaner'
 gem 'message_bus'
 gem 'redis'
 gem 'concurrent-ruby'
+gem 'html2text'
+gem 'ruby-stemmer', '>=0.8.3', :require => 'lingua/stemmer'
+gem 'pmap'
+gem 'fast-stemmer'
 
 # gem 'newrelic_rpm'
 gem 'kaminari'
@@ -47,6 +51,8 @@ gem 'font-awesome-rails'
 # roles and permissions
 gem 'cancancan', '~> 1.9'
 
+gem 'validate_url'
+
 gem 'flamegraph'
 gem 'stackprof'
 gem 'rack-mini-profiler'
@@ -57,16 +63,18 @@ group :development, :test do
   # nice error output
   gem 'better_errors'
   gem 'rails-controller-testing'
-  # gem 'binding_of_caller', '0.7.2'
+  gem 'binding_of_caller'
   gem 'rspec-rails'
   gem 'simplecov', require: false
   gem 'factory_girl_rails'
 
-  gem 'capistrano-rails',   '~> 1.1', require: false
-  gem 'capistrano-bundler', '~> 1.1', require: false
-  gem 'capistrano3-puma', git: "https://github.com/seuros/capistrano-puma"
-  gem 'capistrano-rvm'
-  gem "rails-erd"
+  # gem 'capistrano-rails',   '~> 1.1', require: false
+  # gem 'capistrano-bundler', '~> 1.1', require: false
+  # gem 'capistrano3-puma', git: "https://github.com/seuros/capistrano-puma"
+  # gem 'capistrano-rvm'
+  gem 'mina'
+  gem 'mina-puma', require: false
+  gem 'rails-erd'
 end
 
 gem 'awesome_print'

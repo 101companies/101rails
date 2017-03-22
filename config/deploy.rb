@@ -1,42 +1,72 @@
-# config valid only for current version of Capistrano
-lock '3.6.1'
+require 'mina/rails'
+require 'mina/git'
+require 'mina/puma'
+# require 'mina/rbenv'  # for rbenv support. (https://rbenv.org)
+# require 'mina/rvm'    # for rvm support. (https://rvm.io)
 
-set :application, "101wiki"
-set :repo_url, "git://github.com/101companies/101rails.git"
-set :user, 'ubuntu'
+# Basic settings:
+#   domain       - The hostname to SSH to.
+#   deploy_to    - Path to deploy into.
+#   repository   - Git repo to clone from. (needed by mina/git)
+#   branch       - Branch name to deploy. (needed by mina/git)
 
-set :keep_releases, 5
+set :application_name, '101wiki'
+set :domain, '101companies.org'
+set :deploy_to, '/var/www/101wiki'
+set :repository, 'https://github.com/101companies/101rails.git'
+set :branch, 'master'
 
-# Default branch is :master
-# ask :branch, `git rev-parse --abbrev-ref HEAD`.chomp
+# Optional settings:
+#   set :user, 'foobar'          # Username in the server to SSH to.
+#   set :port, '30000'           # SSH port number.
+#   set :forward_agent, true     # SSH forward_agent.
 
-# Default deploy_to directory is /var/www/my_application
-set :deploy_to, "/home/ubuntu/101rails"
+# shared dirs and files will be symlinked into the app-folder by the 'deploy:link_shared_paths' step.
+set :shared_dirs, fetch(:shared_dirs, []).push('log', 'tmp/pids', 'tmp/sockets')
+# set :shared_files, fetch(:shared_files, []).push('config/database.yml', 'config/secrets.yml')
 
-# Default value for :scm is :git
-# set :scm, :git
+# This task is the environment that is loaded for all remote run commands, such as
+# `mina deploy` or `mina rake`.
+task :environment do
+  # If you're using rbenv, use this to load the rbenv environment.
+  # Be sure to commit your .ruby-version or .rbenv-version to your repository.
+  # invoke :'rbenv:load'
 
-# Default value for :format is :pretty
-# set :format, :pretty
+  # For those using RVM, use this to load an RVM version@gemset.
+  # invoke :'rvm:use', 'ruby-1.9.3-p125@default'
+end
 
-# Default value for :log_level is :debug
-# set :log_level, :debug
+# Put any custom commands you need to run at setup
+# All paths in `shared_dirs` and `shared_paths` will be created on their own.
+task :setup do
+  # command %{rbenv install 2.3.0}
+end
 
-# Default value for :pty is false
-# set :pty, true
+desc "Deploys the current version to the server."
+task :deploy do
+  # uncomment this line to make sure you pushed your local branch to the remote origin
+  # invoke :'git:ensure_pushed'
+  deploy do
+    # Put things that will set up an empty directory into a fully set-up
+    # instance of your project.
+    invoke :'git:clone'
+    invoke :'deploy:link_shared_paths'
+    invoke :'bundle:install'
+    invoke :'rails:db_migrate'
+    invoke :'rails:assets_precompile'
+    invoke :'deploy:cleanup'
 
-# Default value for :linked_files is []
-# set :linked_files, fetch(:linked_files, []).push('config/database.yml', 'config/secrets.yml')
+    on :launch do
+      in_path(fetch(:current_path)) do
+        invoke :'puma:phased_restart'
+      end
+    end
+  end
 
-# Default value for linked_dirs is []
-# set :linked_dirs, fetch(:linked_dirs, []).push('log', 'tmp/pids', 'tmp/cache', 'tmp/sockets', 'vendor/bundle', 'public/system')
+  # you can use `run :local` to run tasks on local machine before of after the deploy scripts
+  # run(:local){ say 'done' }
+end
 
-# Default value for default_env is {}
-# set :default_env, { path: "/opt/ruby/bin:$PATH" }
-
-# Default value for keep_releases is 5
-set :keep_releases, 2
-
-set :puma_workers, 1
-set :puma_threads, [1, 1]
-set :puma_bind, %w(tcp://0.0.0.0:9292)
+# For help in making your deploy script, see the Mina documentation:
+#
+#  - https://github.com/mina-deploy/mina/tree/master/docs

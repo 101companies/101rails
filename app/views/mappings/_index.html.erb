@@ -1,0 +1,19 @@
+<table class='table'>
+  <thead>
+    <tr>
+      <th>Index term</th>
+      <th>Page</th>
+      <th>Comment</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% mappings.each do |mapping| %>
+      <tr>
+        <td><%= mapping.index_term %></td>
+        <td><%#= mapping.page %></td>
+        <td><%= mapping.comment %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

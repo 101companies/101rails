@@ -66,7 +66,7 @@
           </a>
         <% end %>
 
-        <%= link_to(script_path(page.full_underscore_title), class: 'btn btn-sm btn-default') do %>
+        <%= link_to(script_path(page.full_underscore_title), class: 'btn btn-sm btn-default', title: 'Script', 'data-content' => 'Generate a lecture script', 'data-toggle' => 'popover', 'data-trigger' => 'hover', 'data-placement' => 'bottom') do %>
           <i class="glyphicon glyphicon-pencil"></i>
           <strong class="editbuttontext"> Script</strong>
         <% end %>
@@ -166,6 +166,6 @@
 
 <% unless @script_render %>
   <div class='copyright-notice'>
-    (C) 2012--<%= Time.now.year %> <a href='http://101companies.org'>101companies.org</a> and <a href='http://softlang.org'>softlang.org</a>
+    (C) 2012-<%= Time.now.year %> <a href='http://101companies.org'>101companies.org</a> and <a href='http://softlang.org'>softlang.org</a>
   </div>
 <% end %>

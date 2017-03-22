@@ -1,5 +1,10 @@
 Wiki::Application.routes.draw do
 
+  resources :mappings
+  resources :books, except: [:show] do
+    post :create_index, on: :member
+    resources :chapters, only: [:new, :edit, :update, :destroy, :create]
+  end
   namespace :admin do
     get '/', to: 'admin#index'
     resources :pages
