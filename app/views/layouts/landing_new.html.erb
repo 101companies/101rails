@@ -1,0 +1,82 @@
+
+<!DOCTYPE html>
+<html lang='en'>
+  <head>
+    <meta charset='utf-8'>
+    <title>Wiki of 101companies</title>
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+    <meta content='width=device-width, initial-scale=1.0' name='viewport'>
+    <%= stylesheet_link_tag "landing", media: "all" %>
+    <%= javascript_include_tag "landing" %>
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+    <!--[if lt IE 9]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js">
+    </script>
+    <![endif]-->
+    <!-- Le fav -->
+    <!-- <script>
+      // History, and back button
+      $(function() {
+
+        $('a.scroll').click(function(e) {
+          e.preventDefault();
+          var hash = this.hash;
+          $('html, body').animate({
+            scrollTop: $(this.hash).offset().top - 20
+          }, 500, function(){
+            // when done, add hash to url
+            // (default click behaviour)
+            window.location.hash = hash;
+          });
+
+        });
+
+      });
+    </script> -->
+  </head>
+  <!-- activate scrollspy -->
+  <body data-offset='50' data-spy='scroll' data-target='.navbar' id='top'>
+    <!-- Nav button -->
+    <!-- <a class='closed' id='toggle'>
+      <i class='icon-reorder'></i>
+    </a> -->
+    <!-- Navigation -->
+    <nav class="navbar navbar-inverse navbar-fixed-top" style="height: 80px">
+      <div class='container'>
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">101companies</a>
+        </div>
+
+        <ul class='nav navbar-nav navbar-right'>
+          <li>
+            <a class='scroll brand-4 header-nav-link' href='#contributions'>What is 101?</a>
+          </li>
+          <li>
+            <a class='scroll brand-1 header-nav-link' href='#linkeddata'>Contributions</a>
+          </li>
+          <li class='active'>
+            <a class='scroll brand-4 header-nav-link' href='#project'>Technologies</a>
+          </li>
+          <li>
+            <a class='scroll brand-4 header-nav-link' href='#contributions'>Eductional Content</a>
+          </li>
+          <li>
+            <form class='form navbar-form navbar-search pull-left' action='/search'>
+              <div class='form-group'>
+                <input class='search-query category-title' name='q' value='<%= (defined? @query_string) ? @query_string : "" %>' id='search-query' placeholder="Search" type='text'>
+              </div>
+            </form>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+    <%= yield %>
+  </body>
+</html>

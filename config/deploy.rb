@@ -43,6 +43,10 @@ task :setup do
   # command %{rbenv install 2.3.0}
 end
 
+task :restart_server do
+  command 'sudo systemctl restart puma.service'
+end
+
 desc "Deploys the current version to the server."
 task :deploy do
   # uncomment this line to make sure you pushed your local branch to the remote origin
@@ -59,7 +63,7 @@ task :deploy do
 
     on :launch do
       in_path(fetch(:current_path)) do
-        invoke :'puma:phased_restart'
+        invoke :restart_server
       end
     end
   end
