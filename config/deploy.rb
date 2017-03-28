@@ -10,11 +10,12 @@ require 'mina/puma'
 #   repository   - Git repo to clone from. (needed by mina/git)
 #   branch       - Branch name to deploy. (needed by mina/git)
 
-set :application_name, '101wiki'
+set :application_name, '101rails'
 set :domain, '101companies.org'
-set :deploy_to, '/var/www/101wiki'
+set :deploy_to, '/home/ubuntu/101rails'
 set :repository, 'https://github.com/101companies/101rails.git'
 set :branch, 'master'
+set :user, 'ubuntu'
 
 # Optional settings:
 #   set :user, 'foobar'          # Username in the server to SSH to.

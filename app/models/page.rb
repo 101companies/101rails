@@ -290,9 +290,13 @@ class Page < ActiveRecord::Base
   end
 
   def preview
-    content = sections[0]['content']
-    content = content.sub(/==.*==/, '')
-    content = content[0..100]
+    if sections.length > 0
+      content = sections[0]['content']
+      content = content.sub(/==.*==/, '')
+      content = content[0..100]
+    else
+      content = ''
+    end
 
     parser = WikiCloth::Parser.new(data: content, noedit: true)
     parser.to_html.gsub('<pre></pre>', '')

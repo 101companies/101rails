@@ -14,7 +14,7 @@ Wiki::Application.routes.draw do
   resources :scripts, only: [:show]
 
   # homepage
-  root to: "application#landing_page"
+  root to: "landing#index"
   # sitemap
   get '/sitemap.xml' => 'application#sitemap'
   # link for downloading slides from slideshare
