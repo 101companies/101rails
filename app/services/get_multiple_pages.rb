@@ -14,13 +14,17 @@ class GetMultiplePages
   end
 
   def retrieve_pages(params)
-    scope = Page.where(namespace: params[:nts].first['namespace'], title: params[:nts].first['title'])
-    params[:nts].drop(1).each do |nt|
-      scope = scope.or(Page.where(namespace: nt['namespace'], title: nt['title']))
-    end
+    if params[:nts].length > 0
+      scope = Page.where(namespace: params[:nts].first['namespace'], title: params[:nts].first['title'])
+      params[:nts].drop(1).each do |nt|
+        scope = scope.or(Page.where(namespace: nt['namespace'], title: nt['title']))
+      end
 
-    params[:pages] = scope.to_a.select do |page|
-      !page.nil?
+      params[:pages] = scope.to_a.select do |page|
+        !page.nil?
+      end
+    else
+      params[:pages] = []
     end
 
     continue(params)

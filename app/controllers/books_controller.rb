@@ -1,4 +1,5 @@
 class BooksController < ApplicationController
+  authorize_resource
   before_action :set_book, only: [:edit, :update, :destroy, :create_index]
 
   # GET /books

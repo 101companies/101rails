@@ -34,11 +34,10 @@ ActiveRecord::Schema.define(version: 20170220144426) do
   end
 
   create_table "chapters", force: :cascade do |t|
-    t.string   "url"
-    t.string   "title"
-    t.string   "content"
-    t.string   "check_sum"
     t.integer  "book_id"
+    t.string   "name"
+    t.string   "url"
+    t.string   "checksum"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["book_id"], name: "index_chapters_on_book_id", using: :btree
@@ -159,6 +158,7 @@ ActiveRecord::Schema.define(version: 20170220144426) do
     t.index ["visit_token"], name: "index_visits_on_visit_token", unique: true, using: :btree
   end
 
+  add_foreign_key "chapters", "books"
   add_foreign_key "page_changes", "pages"
   add_foreign_key "page_changes", "users"
   add_foreign_key "repo_links", "pages"

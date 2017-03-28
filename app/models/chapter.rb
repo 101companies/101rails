@@ -3,5 +3,5 @@ class Chapter < ApplicationRecord
   has_many :mappings
 
   validates :url, presence: true, url: true
-  validates :title, presence: true
+  validates :name, presence: true
 end

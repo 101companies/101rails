@@ -1,7 +1,5 @@
 require 'rails_helper'
 
-
-
 RSpec.describe ResourceController, type: :controller do
 
   before(:each) do
@@ -27,12 +25,12 @@ RSpec.describe ResourceController, type: :controller do
     describe 'GET resource' do
 
       it 'returns existing resource' do
-        @testformats.each do |f,e|
+        @testformats.each do |f, e|
 
           # controller returns a json response of an existing resource
           get(:get, params: { resource_name: 'resource_controller_spec.rb', format: f})
-          expect(response.body).not_to eq(e)
 
+          expect(response.body).not_to eq(e)
         end
 
       end

@@ -10,6 +10,7 @@ class Page < ActiveRecord::Base
 
   validates_presence_of :title
   validates_presence_of :namespace
+  validates :title, uniqueness: { scope: [:namespace] }
 
   before_save :preparing_the_page
 

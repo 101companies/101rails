@@ -1,4 +1,6 @@
 class ChaptersController < ApplicationController
+  authorize_resource
+
   before_action :set_book
   before_action :set_chapter, only: [:edit, :update, :destroy]
 
@@ -61,6 +63,6 @@ class ChaptersController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def chapter_params
-    params.require(:chapter).permit(:url, :title, :content, :check_sum, :book)
+    params.require(:chapter).permit(:url, :name, :check_sum)
   end
 end

@@ -189,8 +189,8 @@ describe Page do
   describe 'last_change' do
 
     it 'gives last change' do
-      page = create :page_with_changes
-      change = page.page_changes[0]
+      page = create(:page_with_changes)
+      change = page.page_changes[1]
 
       result = page.get_last_change
 
