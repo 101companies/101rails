@@ -8,23 +8,16 @@
 
 Before starting work with the application, you need to install such dependencies, if you are using Ubuntu:
 
-    apt-get install curl nodejs build-essential libxslt-dev libxml2-dev mongodb zlib1g-dev libreadline-dev libssl-dev libcurl4-openssl-dev
-
-For OSX there are such dependencies, that can be installed via [homebrew](http://brew.sh/):
-
-    brew install mongodb node
-
-apt:
-
-    apt-get install mongodb mongodb-tools
+    apt-get install postfix curl git-core zlib1g-dev libssl-dev libreadline-dev
+      libyaml-dev libsqlite3-dev sqlite3 libxml2-dev libxslt1-dev postgresql-server-dev-all postgresql-contrib build-essential nodejs ruby2.3 ruby2.3-dev htop postgresql-9.5 postgresql-client bundler
 
 ## Ruby
 
-With OSX you already have Ruby (e.g. 2.0.0p247 for Mavericks).
+With OSX you already have Ruby.
 
 If you are using Ubuntu you can install ruby via [rvm](http://rvm.io) or [rbenv](https://github.com/sstephenson/rbenv/).
 
-This app was tested with ruby 2.2.1.
+This app was tested with ruby 2.3.0-2.3.3.
 
 ## Installing the app
 
@@ -36,18 +29,14 @@ Now you need go to the project folder und install app:
 
     bundle install
 
-You need a mongodb dump which must be acquired from the 101companies admins.
+You need a postgres dump which must be acquired from the 101companies admins.
 If you have a dump load it like this:
 
-    mongorestore --directoryperdb dump/wiki_development --drop
+    cat wiki_db.gz | gunzip | psql wiki_development
 
-If you have troubles with installing gem on OSX and have error:
+After setting up the database you need to start it and then launch application with:
 
-     clang: error: unknown argument: '-multiply_definedsuppress' [-Wunused-command-line-argument-hard-error-in-future]
-
-After installing mongodb you need to start it and then launch application with:
-
-    bundle exec rails s
+    bin/rails s
 
 ## Admin rights
 
@@ -69,20 +58,14 @@ You can ask [@avaranovich](https://github.com/avaranovich), [@rlaemmel](https://
 
 For successful work with project in development mode you need to define next ENV variables in your .bashrc/.zshrc, for deployment, place them inside /etc/environment.
 
-    export SLIDESHARE_API_KEY=""
-    export SLIDESHARE_API_SECRET=""
-    export GMAIL_PASSWORD=""
-    export GITHUB_KEY_DEV=""
-    export GITHUB_SECRET_DEV=""
-    export MONGODB_USER=""
-    export MONGODB_PWD=""
-
-## Populating db
-
-You need to execute this task:
-
-    bundle exec rake import_production_db_to_local_dev_db
-
+    export SLIDESHARE_API_KEY=
+    export SLIDESHARE_API_SECRET=
+    export GMAIL_PASSWORD=
+    export GITHUB_KEY_DEV=
+    export GITHUB_SECRET_DEV=
+    export MONGODB_USER=
+    export MONGODB_PWD=
+    
 ## Contributing
 
 If you make improvements to this application, please share with others.
