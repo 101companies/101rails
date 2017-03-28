@@ -39,7 +39,7 @@ $(document).on('turbolinks:load', function() {
         type: 'DELETE'
       }).done(function(data) {
         if(data.success) {
-          window.location.href = '/wiki/101project';
+          window.location.href = '/101project';
         }
         else {
           alert(data.success);
@@ -57,7 +57,7 @@ $(document).on('turbolinks:load', function() {
         newTitle: $('#newTitle').val()
       }
     }).done(function(data) {
-      window.location.pathname = '/wiki/' + data.newTitle;
+      window.location.pathname = '/' + data.newTitle;
     })
   });
 });

@@ -96,9 +96,9 @@ Wiki::Application.configure do
   config.books_adapter = BooksAdapters::WorkerAdapter.new
 
   Rails.application.config.middleware.use ExceptionNotification::Rack,
-    :email => {
+    email: {
       email_prefix: "[EXCEPTION] ",
-      :sender_address => %{"notifier" <rails@101companies.org>},
-      :exception_recipients => %w{101companies@gmail.com}
+      sender_address: %{"notifier" <noreply@101companies.org>},
+      exception_recipients: %w{kevin.k1252@gmail.com}
     }
 end

@@ -16,7 +16,7 @@ RSpec.describe ContributionsController, type: :controller do
       post(:create, params: params)
 
       expect(response.status).to eq(302)
-      expect(response).to redirect_to('/wiki/101project')
+      expect(response).to redirect_to(page_path('101project'))
     end
 
     it 'no Repo URL' do
@@ -69,7 +69,7 @@ RSpec.describe ContributionsController, type: :controller do
       }.to change(Page, :count).by(1)
 
       expect(response.status).to eq(302)
-      expect(response).to redirect_to('/wiki/Contribution:SomeTitle')
+      expect(response).to redirect_to(page_path('Contribution:SomeTitle'))
     end
 
     it 'Success as normal user' do
@@ -84,7 +84,7 @@ RSpec.describe ContributionsController, type: :controller do
       }.to change(Page, :count).by(1)
 
       expect(response.status).to eq(302)
-      expect(response).to redirect_to('/wiki/Contribution:SomeTitle')
+      expect(response).to redirect_to(page_path('Contribution:SomeTitle'))
     end
 
     it 'sends emails' do
@@ -119,7 +119,7 @@ RSpec.describe ContributionsController, type: :controller do
       }.to change(Page, :count).by(1)
 
       expect(response.status).to eq(302)
-      expect(response).to redirect_to('/wiki/Contribution:SomeTitle')
+      expect(response).to redirect_to(page_path('Contribution:SomeTitle'))
     end
   end
 

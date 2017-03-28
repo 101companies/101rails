@@ -7,7 +7,7 @@ class ApplicationController < ActionController::Base
   end
 
   def go_to_homepage
-    redirect_to '/wiki/101project'
+    redirect_to page_path('101project')
   end
 
   def landing_page
@@ -60,7 +60,7 @@ class ApplicationController < ActionController::Base
         xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
         http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">'
     Page.all.each do |page|
-      text = text + '<url><loc>http://101companies.org/wiki/' + page.url + '</loc>'+
+      text = text + '<url><loc>http://101companies.org/' + page.url + '</loc>'+
           "<lastmod>#{page.updated_at.to_date}</lastmod>" +
           '<changefreq>weekly</changefreq>'+
           '</url>'

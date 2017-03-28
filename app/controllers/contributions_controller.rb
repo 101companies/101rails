@@ -61,7 +61,8 @@ class ContributionsController < ApplicationController
     end
     Mailer.user_created_contribution(@contribution_page, current_user.email).deliver_now
     Mailer.admin_created_contribution(@contribution_page).deliver_now
-    redirect_to  "/wiki/#{@contribution_page.url}"
+
+    redirect_to  page_path(@contribution_page.url)
   end
 
   def new

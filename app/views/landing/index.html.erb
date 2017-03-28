@@ -39,138 +39,6 @@
   </div>
 </div>
 
-<!-- <div class='page color-4' id='project'>
-  <br>
-  <div class='inner-page'>
-    <h2 class='page-headline large'><%= t('landing.project_title') %></h2>
-  </div>
-  <div class='row inner-page'>
-    <div class='col-md-6 pull-right'>
-      <div class='tag-cloud'></div>
-    </div>
-    <div class='col-md-6 pull-right'>
-      <%= t('landing.project_text') %>
-      <br>
-      <br>
-      <a class='btn btn-centered' href='/wiki/101project' title='Read the wiki'>
-         <%= t('landing.project_go') %>
-      </a>
-    </div>
-  </div>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-</div>
-<div class='page color-1' id='linkeddata'>
-  <br>
-  <div class='inner-page'>
-    <h2 class='page-headline large'><%= t('landing.linkeddata_title') %></h2>
-  </div>
-  <div class='row inner-page'>
-    <div class='col-md-6 pull-right'>
-      <%= image_tag("101linkeddata.png", class: 'pull-right') %>
-    </div>
-    <div class='col-md-6 pull-right'>
-      <%= t('landing.linkeddata_text') %>
-      <br>
-      <br>
-      <a class='btn btn-centered' href='resource' title='<%= t('landing.linkeddata_go') %>'>
-        <%= t('landing.linkeddata_go') %>
-      </a>
-    </div>
-  </div>
-  <br>
-  <br>
-  <br>
-</div>
-<div class='page color-4' id='contributions'>
-  <br>
-  <div class='inner-page'>
-    <h2 class='page-headline large'><%= t('landing.contribution_title') %></h2>
-  </div>
-  <div class='row inner-page'>
-    <div class='col-md-6 pull-right'>
-      <center>
-        <%= image_tag("codercat.png") %>
-      </center>
-    </div>
-    <div class='col-md-6 pull-right'>
-        <%= t('landing.contribution_text') %>
-      <br>
-      <br>
-      <a class='btn btn-centered' href='/contribute/new' title='<%= t('landing.contribution_go') %>'>
-        <%= t('landing.contribution_go') %>
-      </a>
-      <br>
-      <br>
-      <br>
-      <br>
-      <br>
-      <br>
-      <br>
-      <br>
-      <br>
-    </div>
-  </div>
-</div>
-<footer class='page color-1' id='contact'>
-<div class='inner-page'>
-<h2 class='page-headline large'>Contact</h2>
-</div>
-<div class='inner-page row'>
-<div class='span4 social'>
-<ul class='big-list'>
-<li>
-<a href='https://twitter.com/101companies' target='blank'>
-<i class='icon-twitter'></i>
-Twitter
-</a>
-</li>
-<li>
-<a href='https://github.com/101companies' target='blank'>
-<i class='icon-github-sign'></i>
-Github
-</a>
-</li>
-</ul>
-</div>
-<div class='span4 social'>
-<ul class='big-list'>
-<li>
-<a href='https://www.youtube.com/channel/UCzecm5qz_9KDcxuhgbRDy-w' target='blank'>
-<i class='icon-youtube-play'></i>
-Youtube
-</a>
-</li>
-<li>
-<a href='http://101companies.tumblr.com' target='blank'>
-<i class='icon-tumblr'></i>
-Blog
-</a>
-</li>
-</ul>
-</div>
-<div class='span4 social'>
-<ul class='big-list'>
-<li>
-<a href='http://softlang.wikidot.com/' target='blank'>
-<i class='icon-globe'></i>
-Info
-</a>
-</li>
-<li>
-<a href='mailto:101companies@gmail.com' target='blank'>
-<i class='icon-inbox'></i>
-Email
-</a>
-</li>
-</ul>
-</div>
-</div>
-</footer> -->
-
 <script>
   var data = <%= raw @technologies.to_json %>
 
@@ -231,7 +99,7 @@ Email
       .style("fill", function(d, i) { return fill(i); })
       .attr("text-anchor", "middle")
       .on("click", function(d) {
-        window.location.href = '/wiki/Technology:' + d.text;
+        window.location.href = '/Technology:' + d.text;
       })
       .attr("transform", function(d) {
         return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";

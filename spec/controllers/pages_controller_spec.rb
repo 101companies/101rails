@@ -47,7 +47,7 @@ RSpec.describe PagesController, type: :controller do
       }.to change(Page, :count).by(1)
 
       expect(response.status).to eq(302)
-      expect(response).to redirect_to("/wiki/Contributor:#{user.github_name}")
+      expect(response).to redirect_to(page_path("Contributor:#{user.github_name}"))
     end
 
     it 'auto creates a new page' do
@@ -57,7 +57,7 @@ RSpec.describe PagesController, type: :controller do
         get(:show, params: { id: 'does_not_exist' }, session: { user_id: user.id })
       }.to change(Page, :count).by(0)
 
-      expect(response).to redirect_to('/wiki/does_not_exist/create_new_page_confirmation')
+      expect(response).to redirect_to('/does_not_exist/create_new_page_confirmation')
     end
   end
 
@@ -114,7 +114,7 @@ RSpec.describe PagesController, type: :controller do
       }.to change(Page, :count).by(1)
 
       expect(response.status).to eq(302)
-      expect(response).to redirect_to('/wiki/new_page')
+      expect(response).to redirect_to(page_path('new_page'))
     end
 
     it 'does not create new page' do
@@ -123,7 +123,7 @@ RSpec.describe PagesController, type: :controller do
       }.not_to change(Page, :count)
 
       expect(flash[:error].length).to be > 0
-      expect(response).to redirect_to('/wiki/101project')
+      expect(response).to redirect_to(page_path('101project'))
     end
   end
 

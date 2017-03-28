@@ -19,7 +19,7 @@ class PagesController < ApplicationController
     # if page doesn't exist, but it's user page -> create page and redirect
     if @page.nil? && !current_user.nil? && full_title.downcase=="Contributor:#{current_user.github_name}".downcase
       PageModule.create_page_by_full_title(full_title)
-      redirect_to "/wiki/#{full_title}" and return
+      redirect_to page_path(full_title) and return
     end
     # page not found and user can create page -> create new page by full_title
     if @page.nil? && (can? :create, Page.new)
@@ -128,10 +128,10 @@ class PagesController < ApplicationController
     full_title = params[:id]
     page = PageModule.create_page_by_full_title(full_title)
     if page
-      redirect_to "/wiki/#{full_title}" and return
+      redirect_to page_path(full_title) and return
     else
       flash[:error] = "You cannot create new page #{full_title}"
-      redirect_to "/wiki/101project" and return
+      redirect_to page_path('101project') and return
     end
   end
 
@@ -154,7 +154,7 @@ class PagesController < ApplicationController
     # save page and link
     (@page.save and @page.repo_link.save) ?
       flash[:success]="Updated linked repo" : flash[:error] = "Failed to update linked repo"
-    redirect_to  "/wiki/#{@page.url}"
+    redirect_to page_path(@page.url)
   end
 
   def edit
@@ -215,7 +215,7 @@ class PagesController < ApplicationController
       end
 
       failure(:contributor_page_created) do |result|
-        redirect_to "/wiki/#{result[:full_title]}"
+        redirect_to page_path(result[:full_title])
       end
 
     end

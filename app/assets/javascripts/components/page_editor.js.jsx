@@ -22,7 +22,7 @@ class PageEditor extends React.Component {
         newTitle: this.props.full_title
       }
     }).done(function(data) {
-      window.location.pathname = '/wiki/' + data.newTitle;
+      window.location.pathname = '/' + data.newTitle;
     });
   }
 

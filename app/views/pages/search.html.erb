@@ -5,7 +5,7 @@
     <ul>
       <% pages.each do |page| %>
         <li class='search-result'>
-          <a href='<%= '/wiki/' + page.url %>'><%= page.title %></a>
+          <a href='<%= page_path(page.url) %>'><%= page.title %></a>
         </li>
       <% end %>
     </ul>

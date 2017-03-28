@@ -46,7 +46,7 @@
           <% if !contribution.nil? %>
             <li>
               Developed contribution
-              <a href="/wiki/<%= contribution.full_title %>" target="_blank">#{contribution.full_title}</a>
+              <a href="<%= page_path(contribution.full_title) %>" target="_blank">#{contribution.full_title}</a>
             </li>
           <% end %>
         <% end %>
@@ -64,7 +64,7 @@
           <% if !page_edit.page.nil? %>
             <li>
               Edited page
-              <a href="/wiki/<%= page_edit.page.full_title %>" target="_blank">#{page_edit.page.full_title}</a>
+              <a href="<%= page_path(page_edit.page.full_title) %>" target="_blank">#{page_edit.page.full_title}</a>
               <a href="/page_changes/show/<%= page_edit.id %>" target="_blank">#{time_ago_in_words(page_edit.created_at)} ago</a>
             </li>
           <% end %>

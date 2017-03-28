@@ -69,16 +69,6 @@ Wiki::Application.routes.draw do
     get '/check/:title' => 'clones#show'
   end
 
-  # pages routes
-  resources :pages, path: 'wiki', id: /.*/ do
-    get :unverified, on: :collection
-    post :verify, on: :member
-    get :unverify, on: :member
-    get :create_new_page, on: :member
-    get :create_new_page_confirmation, on: :member
-    put :rename, on: :member
-  end
-
   scope '/api/wiki/' do
     get '/:id' => 'api_pages#show', defaults: { format: :json }
   end
@@ -110,5 +100,15 @@ Wiki::Application.routes.draw do
     match '/github/callback' => 'authentications#create', via: [:get, :post]
     match '/failure' => 'authentications#failure', via: [:get, :post]
     match '/local_login/:admin' => 'authentications#local_auth', via: [:get, :post]
+  end
+
+  # pages routes
+  resources :pages, path: '/', id: /.*/ do
+    get :unverified, on: :collection
+    post :verify, on: :member
+    get :unverify, on: :member
+    get :create_new_page, on: :member
+    get :create_new_page_confirmation, on: :member
+    put :rename, on: :member
   end
 end

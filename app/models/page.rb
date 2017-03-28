@@ -128,7 +128,7 @@ class Page < ActiveRecord::Base
       nice_link = PageModule.url link
 
       html.gsub! "<a href=\"#{link}\"", "<a "+
-          "href=\"/wiki/#{nice_link}\""
+          "href=\"/#{nice_link}\""
     end
 
     return html.html_safe

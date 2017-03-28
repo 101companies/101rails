@@ -65,7 +65,7 @@ class ShowPage
 
     good_link = page.url
     if good_link != full_title
-      return fail(:bad_link, { url: '/wiki/'+ good_link })
+      return fail(:bad_link, { url: good_link })
     end
 
     continue(params)
