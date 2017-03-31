@@ -27,6 +27,6 @@ production:
   pool: 8
   encoding: unicode
   host: localhost
-  username: postgres
-  password: root110120
-  database: wiki_development
+  username: <%= ENV['DATABASE_USER'] %>
+  password: <%= ENV['DATABASE_PASSWORD'] %>
+  database: wiki_production
