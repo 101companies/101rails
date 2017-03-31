@@ -557,6 +557,7 @@ DEPENDENCIES
   simple_form
   simplecov
   solid_use_case (~> 2.1.1)
+  sparql
   stackprof
   sucker_punch
   turbolinks (~> 5.0.0)

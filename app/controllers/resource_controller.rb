@@ -1,6 +1,16 @@
 class ResourceController < ApplicationController
-
   helper_method :render_resource
+
+  def query
+    query = params[:query]
+    sse = SPARQL.parse(query)
+
+    result = sse.execute($graph.snapshot)
+    result = Kaminari.paginate_array(result).page(params[:page]).per(100)
+    result = RDF::Query::Solutions.new(result)
+    
+    render json: result.to_json
+  end
 
   def landing
     if(params[:q].present?)
@@ -15,11 +25,12 @@ class ResourceController < ApplicationController
                                 path: 'resource/namespace')
         # - prepare subject ----------------------
 
+        # + queries on graph -------------------
+        @result = $graph.query([:s, :p, @subject]).to_a.uniq { |s,p,o| s.pname }.sort_by { |s,p,o| s.pname }
+
         # + execute rdf querys -----------------
         respond_to do |format|
           format.html {
-            # + queries on graph -------------------
-            @result = $graph.query([:s, :p, @subject]).to_a.uniq{|s,p,o| s.pname}.sort_by { |s,p,o| s.pname }
             render file: 'resource/landing.html.erb'
           }
         end

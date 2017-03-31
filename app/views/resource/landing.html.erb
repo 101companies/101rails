@@ -6,9 +6,13 @@
     <h2>Let's explore <a target="_blank" href="http://101companies.org">101companies.org</a></h2>
     <form class='form navbar-form navbar-search pull-left' action='/resource'>
       <div class='form-group'>
-        <input style='width: 250px;' class='search-query' name='q' value='' id='search-query' placeholder="<%= t('landing.linkeddata_search') %>" type='text'>
+        <input style='width: 250px;' class='search-query form-control' name='q' value='' id='search-query' placeholder="<%= t('landing.linkeddata_search') %>" type='text'>
       </div>
     </form>
+
+    <%= form_tag(query_path, method: 'GET') do %>
+      <%= text_field_tag('query', @query, class: 'form-control', placeholder: 'sparql query') %>
+    <% end %>
     <table class="res">
       <tr>
         <th></th>

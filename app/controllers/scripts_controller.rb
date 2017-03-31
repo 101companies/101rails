@@ -1,7 +1,7 @@
 class ScriptsController < ApplicationController
 
   def show
-    GetPage.run(full_title: params[:id]).match do
+    ShowPage.run(full_title: params[:id]).match do
       success do |result|
         @page = result[:page]
         links = @page.raw_content.scan(/\[\[([^\]]+)\]\]/).select do |link|
@@ -13,6 +13,11 @@ class ScriptsController < ApplicationController
             @pages = [@page] + result[:pages]
           end
         end
+      end
+
+      failure(:page_not_found) do |result|
+        flash[:error] = "Page wasn't not found. Redirected to main wiki page"
+        go_to_homepage
       end
     end
   end

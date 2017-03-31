@@ -40,7 +40,7 @@ RSpec.describe PagesController, type: :controller do
     end
 
     it 'gets a new contributor page' do
-      user = create :user
+      user = create(:user)
 
       expect {
         get(:show, params: { id: "Contributor:#{user.github_name}" }, session: { user_id: user.id })

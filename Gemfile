@@ -134,6 +134,7 @@ gem 'rdf-json'
 gem 'rdf-rdfxml'
 gem 'rdf-turtle'
 gem 'rdf-n3'
+gem 'sparql'
 
 gem 'flamegraph'
 gem 'stackprof'

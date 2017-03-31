@@ -4,9 +4,9 @@ RSpec.describe ScriptsController, type: :controller do
   let!(:page) { create(:page) }
   let!(:abstraction_page) { create(:abstraction_page) }
 
-  describe 'index' do
+  describe 'show' do
 
-    it 'gets index' do
+    it 'gets show' do
       get(:show, params: { id: page.full_underscore_title })
 
       expect(response).to render_template(:show)
@@ -14,6 +14,11 @@ RSpec.describe ScriptsController, type: :controller do
       expect(assigns(:pages)).to eq([page, abstraction_page])
     end
 
-  end
+    it 'it is non existing page' do
+      get(:show, params: { id: 'contribution::DOES_NOT_EXIST' })
 
+      expect(response).to redirect_to(page_path('101project'))
+    end
+
+  end
 end
