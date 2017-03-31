@@ -201,8 +201,8 @@ class PagesController < ApplicationController
         @contributions  = result[:contributions]
       end
 
-      failure(:page_not_found) do |result|
-        flash[:error] = "Page wasn't not found. Redirected to main wiki page"
+      failure do |result|
+        flash[:error] = 'could not create script'
         go_to_homepage
       end
 
