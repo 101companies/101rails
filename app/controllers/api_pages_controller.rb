@@ -5,6 +5,7 @@ class ApiPagesController < ApplicationController
     result = GetPage.run(full_title: params[:id]).match do
 
       success do |result|
+        ap result
         render locals: { page: result[:page] }, format: :json
       end
 

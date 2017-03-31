@@ -35,7 +35,6 @@
 
  = require select2
  = require moment
- = require humane-rails
  = require page
  */
 

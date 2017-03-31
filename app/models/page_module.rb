@@ -1,8 +1,6 @@
 # this module includes all static methods for pages
 
 class PageModule
-  require 'media_wiki'
-
   def self.match_page_score(found_page, query_string)
     # find match ignoring case
     score = found_page.full_title.downcase.index query_string.downcase
@@ -72,19 +70,19 @@ class PageModule
   # link for using in html rendering
   # replace ' ' with '_', remove trailing spaces
   def self.url(title)
-    self.unescape_wiki_url(title).strip.gsub(' ', '_')
+    unescape_wiki_url(title).strip.gsub(' ', '_')
   end
 
   def self.escape_wiki_url(full_title)
-    MediaWiki::send :upcase_first_char, MediaWiki::wiki_to_uri(full_title)
+    StringUtils::upcase_first_char(wiki_to_uri(full_title))
   end
 
   def self.unescape_wiki_url(full_title)
-    MediaWiki::send :upcase_first_char, MediaWiki::uri_to_wiki(full_title)
+    uri_to_wiki(full_title)
   end
 
   def self.create_page_by_full_title(full_title)
-    full_title = self.unescape_wiki_url full_title
+    full_title = self.unescape_wiki_url(full_title)
     namespace_and_title = self.retrieve_namespace_and_title full_title
 
     page = Page.new(
@@ -96,13 +94,27 @@ class PageModule
 
   # find page without creating
   def self.find_by_full_title(full_title)
-    full_title = (self.unescape_wiki_url full_title).strip
-    nt = self.retrieve_namespace_and_title full_title
+    full_title = (self.unescape_wiki_url(full_title)).strip
+    nt = self.retrieve_namespace_and_title(full_title)
     Page.where(namespace: nt['namespace'], title: nt['title']).first
   end
 
   def self.uncapitalize_first_char(string)
     string[0,1].downcase + string[1..-1]
+  end
+
+  private
+
+  # [wiki] Page name string in URL
+  def self.uri_to_wiki(uri)
+    StringUtils::upcase_first_char(CGI.unescape(uri).tr('_', ' ').tr('#<>[]|{}', '')) if uri
+  end
+
+  # Convert a Wiki page name ("Getting there & away") to URI-safe format ("Getting_there_%26_away"),
+  # taking care not to mangle slashes or colons
+  # [wiki] Page name string in Wiki format
+  def self.wiki_to_uri(wiki)
+    wiki.to_s.split('/').map {|chunk| CGI.escape(CGI.unescape(chunk).tr(' ', '_')) }.join('/').gsub('%3A', ':') if wiki
   end
 
 end

@@ -5,7 +5,6 @@ public/assets/*
 capybara-*.html
 dump
 dump_zip
-.rspec
 /.bundle
 /vendor/bundle
 /log/*

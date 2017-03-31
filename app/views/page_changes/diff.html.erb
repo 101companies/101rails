@@ -1,0 +1,6 @@
+<%= content_for :title, "Difference between revisions" %>
+<h1>Comparing revisions for page <%= @title %></h1>
+<a class="btn btn-info" href="/<%= @page.url %>#page-changes">Back to history list</a>
+<pre class="differ">
+  <%= @diff %>
+</pre>

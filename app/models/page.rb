@@ -1,5 +1,3 @@
-require 'media_wiki'
-
 class Page < ActiveRecord::Base
 
   # relations here
@@ -60,8 +58,10 @@ class Page < ActiveRecord::Base
   end
 
   def render
-    preparing_the_page
-    self.parse
+    Rails.cache.fetch("#{cache_key}/content") do
+      preparing_the_page
+      self.parse
+    end
   end
 
   def get_metadata_section
@@ -217,7 +217,10 @@ class Page < ActiveRecord::Base
   end
 
   def get_parser
-    WikiCloth::Parser.context = {ns: (MediaWiki::send :upcase_first_char, self.namespace), title: self.title}
+    WikiCloth::Parser.context = {
+      ns: StringUtils.upcase_first_char(self.namespace),
+      title: self.title
+    }
     parser = WikiCloth::Parser.new(data: self.raw_content, noedit: true)
 
     parser.to_html

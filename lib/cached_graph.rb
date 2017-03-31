@@ -5,6 +5,7 @@ class CachedGraph
       @graph = RDF::Graph.load(onto_path, format: :ttl)
       @mtime = File.mtime(onto_path)
     end
+
     @lock = Concurrent::ReadWriteLock.new
 
     @update_task = Concurrent::TimerTask.new(timeout_interval: 60, run_now: true) do
@@ -33,7 +34,7 @@ class CachedGraph
   def method_missing(method_name, *arguments, &block)
     if @graph.respond_to?(method_name)
       @lock.with_read_lock do
-        @graph.send(method_name, *arguments, &block)
+        @graph.public_send(method_name, *arguments, &block)
       end
     end
   end

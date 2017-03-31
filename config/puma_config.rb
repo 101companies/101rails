@@ -8,7 +8,7 @@ pidfile "/home/ubuntu/101rails/shared/tmp/pids/puma.pid"
 state_path "/home/ubuntu/101rails/shared/tmp/pids/puma.state"
 stdout_redirect '/home/ubuntu/101rails/shared/log/puma_access.log', '/home/ubuntu/101rails/shared/log/puma_error.log', true
 
-threads 0,16
+threads 0,4
 
 bind 'tcp://localhost:3000'
 

@@ -3,7 +3,7 @@ class ResourceController < ApplicationController
   helper_method :render_resource
 
   def landing
-    if(params[:q])
+    if(params[:q].present?)
       params[:resource_name] = params[:q]
       get
     else
@@ -11,7 +11,7 @@ class ResourceController < ApplicationController
 
         # + prepare subject ----------------------
         @subject = RDF::URI.new(scheme: request.scheme.dup,
-                                host: request.host,
+                                host: '101companies.org',
                                 path: 'resource/namespace')
         # - prepare subject ----------------------
 
@@ -32,10 +32,9 @@ class ResourceController < ApplicationController
 
   def get
     if($graph.has_graph?)
-
       # + prepare subject ----------------------
       @subject = RDF::URI.new(scheme: request.scheme.dup,
-                             host: request.host,
+                             host: '101companies.org',
                              path: 'resource/' + params[:resource_name])
       # - prepare subject ----------------------
 
@@ -106,17 +105,21 @@ class ResourceController < ApplicationController
   private
 
   # helper function for render resources
-  def render_resource_url (res_uri)
+  def render_resource_url(res_uri)
     return request.protocol + request.host_with_port + '/resource/' + res_uri.split('/').last
   end
 
-  def render_resource (res)
+  def render_resource_path(res_uri)
+    return '/resource/' + res_uri.split('/').last
+  end
+
+  def render_resource(res)
     if res.literal?
       # literal
       require 'uri'
       if res.value =~ URI::regexp
         # url literal
-        view_context.link_to res.value, res.value, :target => "_blank"
+        view_context.link_to res.value, res.value
       else
         # text literal
         view_context.raw res.value
@@ -125,10 +128,10 @@ class ResourceController < ApplicationController
       # node
       if res.value.split(request.host).count < 2
         # external uri
-        view_context.link_to res.value.split('/').last, res.value, :target => "_blank"
+        view_context.link_to res.value.split('/').last, res.value
       else
         # internal uri
-        view_context.link_to  res.value.split('/').last, render_resource_url(res.value)
+        view_context.link_to  res.value.split('/').last, render_resource_path(res.value)
       end
     end
   end

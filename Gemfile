@@ -14,11 +14,10 @@ gem 'fast-stemmer'
 
 # gem 'newrelic_rpm'
 gem 'kaminari'
-gem 'bson'
 gem 'sucker_punch'
-gem 'coffee-rails'
 gem 'turbolinks', '~> 5.0.0'
 gem 'execjs'
+gem 'mediawiki-gateway', '0.6.0', require: 'media_wiki'
 
 gem 'solid_use_case', '~> 2.1.1'
 
@@ -36,7 +35,6 @@ gem 'responders'
 # frontend
 gem 'jquery-rails'
 gem 'jquery-ui-rails'
-gem 'haml-rails'
 
 # github auth
 gem 'omniauth'
@@ -52,10 +50,6 @@ gem 'font-awesome-rails'
 gem 'cancancan', '~> 1.9'
 
 gem 'validate_url'
-
-gem 'flamegraph'
-gem 'stackprof'
-gem 'rack-mini-profiler'
 
 group :development, :test do
   # remove assets-logs in console
@@ -89,14 +83,10 @@ gem 'hightop'
 gem 'groupdate'
 gem 'chartkick'
 
-
 # web-scraping
 gem 'json_pure'
 gem 'json'
 gem 'httparty', '0.13.1'
-
-# work with mediawiki
-gem 'mediawiki-gateway', '0.6.0'
 
 # work with wiki markdown
 gem 'wikicloth', git: 'https://github.com/101companies/wikicloth'
@@ -120,7 +110,7 @@ gem 'momentjs-rails'
 gem 'differ', '0.1.2'
 
 # growl-like notifications
-gem 'humane-rails'
+# gem 'humane-rails'
 
 # deploy tool
 # update only after reading upgrade manual
@@ -130,7 +120,7 @@ gem 'humane-rails'
 # gem 'net-ssh-gateway', '1.2.0'
 
 # for wiki-editor
-gem 'aced_rails', '0.3.1', git: 'https://github.com/101companies/aced_rails'
+gem 'aced_rails', git: 'https://github.com/101companies/aced_rails'
 
 gem 'bootstrap-tour-rails', '0.4.0'
 
@@ -144,3 +134,8 @@ gem 'rdf-json'
 gem 'rdf-rdfxml'
 gem 'rdf-turtle'
 gem 'rdf-n3'
+
+gem 'flamegraph'
+gem 'stackprof'
+gem 'memory_profiler'
+gem 'rack-mini-profiler'

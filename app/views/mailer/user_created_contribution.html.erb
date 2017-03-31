@@ -1,0 +1,28 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+  <head>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
+  </head>
+  <body>
+    <h1>
+      Dear <%= @contribution.repo_link.user %>,
+    </h1>
+    <p>
+      You have successfully submitted new contribution to 101companies.
+      Please wait, till it will be verfied by an administrator.
+    </p>
+    <p>
+      But you can already start to write documentation on the page
+      <a href="http://101companies.org/<%= @contribution.url %>">
+        <%= @contribution.url %>
+      </a>
+    </p>
+    <p>
+      Hints to editing you page can find
+      <a href="http://101companies.org/<%= @contribution.url %>#editing-help">here.</a>
+    </p>
+    <p>
+      101companies team.
+    </p>
+  </body>
+</html>

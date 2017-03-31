@@ -25,8 +25,8 @@ class ContributionsController < ApplicationController
       redirect_to action: 'new' and return
     end
     @contribution_page = Page.new
-    full_title = PageModule.unescape_wiki_url "Contribution:#{params[:contrb_title]}"
-    namespace_and_title = PageModule.retrieve_namespace_and_title full_title
+    full_title = PageModule.unescape_wiki_url("Contribution:#{params[:contrb_title]}")
+    namespace_and_title = PageModule.retrieve_namespace_and_title(full_title)
     @contribution_page.title = namespace_and_title["title"]
     @contribution_page.namespace = namespace_and_title["namespace"]
     # page already exists

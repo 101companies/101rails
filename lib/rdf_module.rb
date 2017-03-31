@@ -91,7 +91,7 @@ module RdfModule
 
   def add_ingoing_triples(graph, page)
     predicates = get_used_predicates.map do |x|
-      x = MediaWiki::send :upcase_first_char, x
+      x = StringUtils::upcase_first_char(x)
       "#{x}::#{page.full_title}"
     end
     Page.where('used_links @> ARRAY[?]::varchar[]', predicates).each do |page|
