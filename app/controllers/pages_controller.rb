@@ -202,7 +202,7 @@ class PagesController < ApplicationController
       end
 
       failure do |result|
-        flash[:error] = 'could not create script'
+        flash[:error] = "Page wasn't not found. Redirected to main wiki page"
         go_to_homepage
       end
 

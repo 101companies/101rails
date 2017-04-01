@@ -15,7 +15,7 @@ class ScriptsController < ApplicationController
         end
       end
 
-      failure(:page_not_found) do |result|
+      failure do |result|
         flash[:error] = "Page wasn't not found. Redirected to main wiki page"
         go_to_homepage
       end
