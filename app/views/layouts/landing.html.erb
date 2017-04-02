@@ -79,9 +79,7 @@
           <%= t('landing.project_text') %>
           <br>
           <br>
-          <a class='btn btn-info btn-centered' href='/101project' title='Read the wiki'>
-             <%= t('landing.project_go') %>
-          </a>
+          <%= link_to(t('landing.project_go'), page_path('101project'), class: 'btn btn-info btn-centered') %>
         </div>
       </div>
     </div>
@@ -99,9 +97,7 @@
           <%= t('landing.linkeddata_text') %>
           <br>
           <br>
-          <a class='btn btn-info btn-centered' href='resource' title='<%= t('landing.linkeddata_go') %>'>
-            <%= t('landing.linkeddata_go') %>
-          </a>
+          <%= link_to(t('landing.linkeddata_go'), resources_path, class: 'btn btn-info') %>
         </div>
       </div>
       <br>
