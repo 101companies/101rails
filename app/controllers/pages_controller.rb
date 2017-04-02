@@ -130,6 +130,7 @@ class PagesController < ApplicationController
     if page
       redirect_to page_path(full_title) and return
     else
+      ap page
       flash[:error] = "You cannot create new page #{full_title}"
       redirect_to page_path('101project') and return
     end
@@ -201,7 +202,7 @@ class PagesController < ApplicationController
         @contributions  = result[:contributions]
       end
 
-      failure do |result|
+      failure(:page_not_found) do |result|
         flash[:error] = "Page wasn't not found. Redirected to main wiki page"
         go_to_homepage
       end

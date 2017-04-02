@@ -77,11 +77,12 @@ gem 'awesome_print'
 gem 'puma'
 
 gem 'colorize', '0.7.3'
-gem 'ahoy_matey'
 gem 'ionicons-rails'
 gem 'hightop'
 gem 'groupdate'
 gem 'chartkick'
+
+gem 'ahoy_matey'
 
 # web-scraping
 gem 'json_pure'
@@ -94,7 +95,7 @@ gem 'wikicloth', git: 'https://github.com/101companies/wikicloth'
 gem 'rdf', git: 'https://github.com/ruby-rdf/rdf'
 
 # source text highlighting
-gem 'pygments.rb', '0.5.4'
+gem 'pygments.rb'
 gem 'closure-compiler', '1.1.10'
 
 # better work with form -> bindings to models

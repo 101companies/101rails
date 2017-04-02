@@ -1,0 +1,8 @@
+<% if @page.present? %>
+  <%= render 'pages/page', :@script_render => true, page: @page %>
+<% end %>
+
+<%= form_tag(query_resources_path, method: 'GET') do %>
+  <%= text_area_tag('query', @query, class: 'form-control', placeholder: 'sparql query', rows: 5) %>
+  <%= submit_tag('execute', class: 'btn btn-success') %>
+<% end %>

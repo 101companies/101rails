@@ -1,22 +1,28 @@
-class ResourceController < ApplicationController
+class ResourcesController < ApplicationController
   helper_method :render_resource
 
   def query
     query = params[:query]
-    sse = SPARQL.parse(query)
+    begin
+      sse = SPARQL.parse(query)
+    rescue NoMethodError
+      flash[:error] = 'Error parsing query'
+      return redirect_to(resources_path)
+    end
 
     result = sse.execute($graph.snapshot)
     result = Kaminari.paginate_array(result).page(params[:page]).per(100)
     result = RDF::Query::Solutions.new(result)
-    
+
     render json: result.to_json
   end
 
-  def landing
+  def index
     if(params[:q].present?)
       params[:resource_name] = params[:q]
       get
     else
+      @page = PageModule.find_by_full_title('Language:sparql')
       if($graph.has_graph?)
 
         # + prepare subject ----------------------
@@ -30,9 +36,7 @@ class ResourceController < ApplicationController
 
         # + execute rdf querys -----------------
         respond_to do |format|
-          format.html {
-            render file: 'resource/landing.html.erb'
-          }
+          format.html
         end
       else
         flash[:error] = "Ontology file seems to be missing."
@@ -41,7 +45,7 @@ class ResourceController < ApplicationController
     end
   end
 
-  def get
+  def show
     if($graph.has_graph?)
       # + prepare subject ----------------------
       @subject = RDF::URI.new(scheme: request.scheme.dup,

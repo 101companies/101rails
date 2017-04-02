@@ -1,6 +1,11 @@
 Wiki::Application.routes.draw do
 
   resources :mappings
+
+  resources :resources, only: [:index, :show] do
+    get :query, to: 'resources#query', on: :collection
+  end
+
   resources :books, except: [:show] do
     post :create_index, on: :member
     resources :chapters, only: [:new, :edit, :update, :destroy, :create]
@@ -39,13 +44,6 @@ Wiki::Application.routes.draw do
     post '/analyze/:id' => 'contributions#analyze', constraints: { id: /.*/ }
     post '/new' => 'contributions#create'
     get '/repo_dirs/:repo' => 'contributions#get_repo_dirs', constraints: { repo: /.*/ }
-  end
-
-  # linked open data (regex for accept resource_names with dots in it)
-  scope 'resource' do
-    get '/' => 'resource#landing'
-    get '/query' => 'resource#query'
-    get ':resource_name' => 'resource#get', :resource_name => /([^\/]+?)(?=\.json|\.ttl|\.n3|\.xml|\.html|$|\/)/
   end
 
   # tours

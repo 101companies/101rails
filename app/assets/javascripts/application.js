@@ -13,7 +13,6 @@
 
  = require jquery
  = require turbolinks
- = require ahoy
 
  = require typo/typo
  = require spellcheck_ace/spellcheck_ace
@@ -54,3 +53,5 @@ String.prototype.endsWith = function (s) {
 }
 
 ahoy.trackAll();
+
+// = require ahoy
