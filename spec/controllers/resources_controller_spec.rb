@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe ResourceController, type: :controller do
+RSpec.describe ResourcesController, type: :controller do
 
   before(:each) do
     @testformats = [
@@ -28,7 +28,7 @@ RSpec.describe ResourceController, type: :controller do
         @testformats.each do |f, e|
 
           # controller returns a json response of an existing resource
-          get(:get, params: { resource_name: 'resource_controller_spec.rb', format: f})
+          get(:show, params: { id: 'resource_controller_spec.rb', format: f})
 
           expect(response.body).not_to eq(e)
         end
@@ -39,7 +39,7 @@ RSpec.describe ResourceController, type: :controller do
         @testformats.each do |f,e|
 
           # controller returns a json response of an non-existing resource
-          get(:get, params: { resource_name: 'resource_that_does_not_exist', format: f })
+          get(:show, params: { id: 'resource_that_does_not_exist', format: f })
           expect(response.body).to eq(e)
 
         end
@@ -51,22 +51,22 @@ RSpec.describe ResourceController, type: :controller do
     render_views
 
     it 'returns html of existing resource' do
+      get(:show, params: { id: 'resource_controller_spec.rb', format: 'html' })
+      ap response.body
 
-      get(:get, params: { resource_name: 'resource_controller_spec.rb', format: 'html' })
-      expect(response.body).to include('>resource_controller_spec.rb<', '<h1>About:')
-
+      expect(response.body).to include('resource_controller_spec.rb', '<h1>About:')
     end
 
     it 'resource without type and abstract' do
 
-      get(:get, params: { resource_name: 'test_ontology', format: 'html' })
+      get(:show, params: { id: 'test_ontology', format: 'html' })
       expect(response).to have_http_status(:success)
 
     end
 
-    it 'search with search_str.length > 2 (with results)' do
+    it 'search with search_strf.length > 2 (with results)' do
 
-      get(:get, params: { resource_name: 'resource', format: 'html' })
+      get(:show, params: { id: 'resource', format: 'html' })
       expect(response.body).to include('<h1>Nothing found...</h1>', 'maybe you mean')
 
     end
@@ -74,21 +74,21 @@ RSpec.describe ResourceController, type: :controller do
 
     it 'search with search_str.length > 2 (without results)' do
 
-      get(:get, params: { resource_name: 'resource_that_does_not_exist', format: 'html' })
+      get(:show, params: { id: 'resource_that_does_not_exist', format: 'html' })
       expect(response.body).to include('<h1>Nothing found...</h1>', 'some cats')
 
     end
 
     it 'search with search_str.length <= 2' do
 
-      get(:get, params: { resource_name: 'xy', format: 'html' })
+      get(:show, params: { id: 'xy', format: 'html' })
       expect(response.body).to include('<h1>Nothing found...</h1>', 'some cats')
 
     end
 
     it 'returns html of landing' do
 
-      get( :landing )
+      get(:index)
       expect(response.body).to include('<h1>Welcome to 101linkeddata</h1>')
 
     end
@@ -96,7 +96,7 @@ RSpec.describe ResourceController, type: :controller do
     it 'get without graph' do
 
       allow($graph).to receive(:has_graph?) { nil }
-      get(:get, params: { resource_name: 'resource_controller_spec.rb', format: 'html' })
+      get(:show, params: { id: 'resource_controller_spec.rb', format: 'html' })
       expect(response).not_to have_http_status(:success)
 
     end
@@ -104,7 +104,7 @@ RSpec.describe ResourceController, type: :controller do
     it 'landing without graph' do
 
       allow($graph).to receive(:has_graph?) { nil }
-      get( :landing )
+      get(:index)
       expect(response).not_to have_http_status(:success)
 
     end

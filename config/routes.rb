@@ -2,8 +2,10 @@ Wiki::Application.routes.draw do
 
   resources :mappings
 
-  resources :resources, only: [:index, :show] do
-    get :query, to: 'resources#query', on: :collection
+  constraints(id: /([^\/]+?)(?=\.json|\.ttl|\.n3|\.xml|\.html|$|\/)/) do
+    resources :resources, only: [:index, :show] do
+      get :query, to: 'resources#query', on: :collection
+    end
   end
 
   resources :books, except: [:show] do

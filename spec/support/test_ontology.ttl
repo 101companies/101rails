@@ -1,10 +1,10 @@
 @prefix dc: <http://purl.org/dc/terms/> .
 @prefix dc1_1: <http://purl.org/dc/elements/1.1/> .
-@prefix ns101: <http://101companies.org/resource/> .
+@prefix ns101: <http://101companies.org/resources/> .
 
-<http://101companies.org/resource/resource_controller_spec.rb> a <http://101companies.org/resource/specification> ;
-    dc1_1:isPartOf <http://101companies.org/resource/101rails>;
+<http://101companies.org/resources/resource_controller_spec.rb> a <http://101companies.org/resources/specification> ;
+    dc1_1:isPartOf <http://101companies.org/resources/101rails>;
     dc:abstract "The exploration service of the 101 project in a linked open data manner."@en;
     ns101:external_url "http://101companies.org" .
 
-<http://test.host/resource/test_ontology> dc1_1:isPartOf <http://101companies.org/resource/101rails> .
+<http://test.host/resources/test_ontology> dc1_1:isPartOf <http://101companies.org/resources/101rails> .

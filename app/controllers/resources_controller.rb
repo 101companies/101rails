@@ -19,8 +19,8 @@ class ResourcesController < ApplicationController
 
   def index
     if(params[:q].present?)
-      params[:resource_name] = params[:q]
-      get
+      params[:id] = params[:q]
+      show
     else
       @page = PageModule.find_by_full_title('Language:sparql')
       if($graph.has_graph?)
@@ -28,7 +28,7 @@ class ResourcesController < ApplicationController
         # + prepare subject ----------------------
         @subject = RDF::URI.new(scheme: request.scheme.dup,
                                 host: '101companies.org',
-                                path: 'resource/namespace')
+                                path: 'resources/namespace')
         # - prepare subject ----------------------
 
         # + queries on graph -------------------
@@ -40,7 +40,7 @@ class ResourcesController < ApplicationController
         end
       else
         flash[:error] = "Ontology file seems to be missing."
-        render file: 'resource/search.html.erb', success: false, status: 500
+        render file: 'resources/search.html.erb', success: false, status: 500
       end
     end
   end
@@ -50,7 +50,7 @@ class ResourcesController < ApplicationController
       # + prepare subject ----------------------
       @subject = RDF::URI.new(scheme: request.scheme.dup,
                              host: '101companies.org',
-                             path: 'resource/' + params[:resource_name])
+                             path: 'resources/' + params[:id])
       # - prepare subject ----------------------
 
       sub_set = nil
@@ -93,13 +93,13 @@ class ResourcesController < ApplicationController
           # - queries on graph -------------------
 
           # + additional informationes -----------
-          @headline = params[:resource_name] #request.path.dup.to_s.split('/').last
+          @headline = params[:id]
           @headline_url = request.url
 
           # - additional informationes -----------
           if(sub_set.length + obj_set.length == 0)
             # html format without results tries a search
-            search_str = params[:resource_name].downcase
+            search_str = params[:id].downcase
 
             if search_str.length > 2
               @result = $graph.to_a.uniq{|s,p,o| s.pname }.select{ |s,p,o| s.pname.split('/').last.downcase.include?(search_str) }.sort_by { |s,p,o| s.pname }
@@ -107,13 +107,13 @@ class ResourcesController < ApplicationController
               @result = nil
             end
             @graphsize = $graph.count
-            render file: 'resource/search.html.erb', success: true
+            render file: 'resources/search.html.erb', success: true
           end
         }
         end
     else
       flash[:error] = "Ontology file seems to be missing."
-      render file: 'resource/search.html.erb', success: false, status: 500
+      render file: 'resources/search.html.erb', success: false, status: 500
     end
   end
 
@@ -121,11 +121,11 @@ class ResourcesController < ApplicationController
 
   # helper function for render resources
   def render_resource_url(res_uri)
-    return request.protocol + request.host_with_port + '/resource/' + res_uri.split('/').last
+    return request.protocol + request.host_with_port + '/resources/' + res_uri.split('/').last
   end
 
   def render_resource_path(res_uri)
-    return '/resource/' + res_uri.split('/').last
+    return '/resources/' + res_uri.split('/').last
   end
 
   def render_resource(res)

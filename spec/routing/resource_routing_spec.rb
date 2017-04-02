@@ -1,52 +1,52 @@
-require 'rspec'
+require 'rails_helper'
 
-describe 'resource routing' do
+describe ResourcesController, type: :routing do
 
-  it "routes resource/ to resource#landing" do
-    expect(:get => 'resource/').to route_to('resource#landing')
+  it "routes resources/ to resource#index" do
+    expect(:get => '/resources').to route_to('resources#index')
   end
 
   it "routes to specified format" do
-    expect(:get => 'resource/rspec.rb.json').
-        to route_to(:controller => "resource",
-                    :action => "get",
-                    :resource_name => "rspec.rb",
+    expect(:get => '/resources/rspec.rb.json').
+        to route_to(:controller => "resources",
+                    :action => "show",
+                    :id => "rspec.rb",
                     :format => "json")
 
-    expect(:get => 'resource/rspec.rb.xml').
-        to route_to(:controller => "resource",
-                    :action => "get",
-                    :resource_name => "rspec.rb",
+    expect(:get => '/resources/rspec.rb.xml').
+        to route_to(:controller => "resources",
+                    :action => "show",
+                    :id => "rspec.rb",
                     :format => "xml")
 
-    expect(:get => 'resource/rspec.rb.ttl').
-        to route_to(:controller => "resource",
-                    :action => "get",
-                    :resource_name => "rspec.rb",
+    expect(:get => '/resources/rspec.rb.ttl').
+        to route_to(:controller => "resources",
+                    :action => "show",
+                    :id => "rspec.rb",
                     :format => "ttl")
 
-    expect(:get => 'resource/rspec.rb.n3').
-        to route_to(:controller => "resource",
-                    :action => "get",
-                    :resource_name => "rspec.rb",
+    expect(:get => '/resources/rspec.rb.n3').
+        to route_to(:controller => "resources",
+                    :action => "show",
+                    :id => "rspec.rb",
                     :format => "n3")
   end
 
   it "routes to html (default)" do
-    expect(:get => 'resource/rspec.rb.html').
-        to route_to(:controller => "resource",
-                    :action => "get",
-                    :resource_name => "rspec.rb",
+    expect(:get => '/resources/rspec.rb.html').
+        to route_to(:controller => "resources",
+                    :action => "show",
+                    :id => "rspec.rb",
                     :format => "html")
 
-    expect(:get => 'resource/rspec.rb').
-        to route_to(:controller => "resource",
-                    :action => "get",
-                    :resource_name => "rspec.rb")
+    expect(:get => '/resources/rspec.rb').
+        to route_to(:controller => "resources",
+                    :action => "show",
+                    :id => "rspec.rb")
 
-    expect(:get => 'resource/rspec').
-        to route_to(:controller => "resource",
-                    :action => "get",
-                    :resource_name => "rspec")
+    expect(:get => '/resources/rspec').
+        to route_to(:controller => "resources",
+                    :action => "show",
+                    :id => "rspec")
   end
 end
