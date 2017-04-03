@@ -35,19 +35,15 @@ end
 </div>
 <% end %>
 
-<% books.each do |book| %>
-<% next if book['error'] %>
-<div class="resource" data-toggle="<%= book['fullName'] %>">
+<% mappings.each do |mapping| %>
+<div class="resource" data-toggle="<%= mapping.book_title %>">
 
-  <h5 class="resourcename"><ul><li><%= book['fullName'] %></li></ul></h5>
+  <h5 class="resourcename"><ul><li><%= mapping.book_title %></li></ul></h5>
   <br>
-  <div id="<%= book['fullName'] %>" class="resourcebar" style="height: auto">
-    <% book['secondary'].each do |chapter| %>
+  <div id="<%= mapping.book_title %>" class="resourcebar" style="height: auto">
     <span class="resourcebox nonbookresource" data-toggle="collapse resource" data-original-title="" title="">
-      <a href="<%= chapter['full'] %>"><%= chapter['chapter'] %></a>
-
+      <a href="<%= mapping.chapter_url %>"><%= mapping.chapter_name %></a>
     </span>
-    <% end %>
   </div>
 </div>
 <% end %>

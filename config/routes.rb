@@ -1,6 +1,6 @@
 Wiki::Application.routes.draw do
 
-  resources :mappings
+  resources :mappings, only: [:edit, :update]
 
   constraints(id: /([^\/]+?)(?=\.json|\.ttl|\.n3|\.xml|\.html|$|\/)/) do
     resources :resources, only: [:index, :show] do
@@ -22,6 +22,7 @@ Wiki::Application.routes.draw do
 
   # homepage
   root to: "landing#index"
+  get '/new_landing' => 'landing#new_index'
   # sitemap
   get '/sitemap.xml' => 'application#sitemap'
   # link for downloading slides from slideshare

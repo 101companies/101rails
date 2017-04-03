@@ -1,4 +1,4 @@
-<%= form_for(mapping) do |f| %>
+<%= simple_form_for(mapping, wrapper: :horizontal_form, html: { class: 'form-vertical' }) do |f| %>
   <% if mapping.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(mapping.errors.count, "error") %> prohibited this mapping from being saved:</h2>
@@ -11,22 +11,11 @@
     </div>
   <% end %>
 
-  <div class="field">
-    <%= f.label :index_term %>
-    <%= f.text_field :index_term %>
-  </div>
-
-  <div class="field">
-    <%= f.label :page %>
-    <%= f.text_field :page %>
-  </div>
-
-  <div class="field">
-    <%= f.label :comment %>
-    <%= f.text_field :comment %>
-  </div>
+  <%= f.input :index_term, disabled: true %>
+  <%= f.input :comment %>
+  <%= f.association :page, collection: Page.order(:title), label_method: :full_title %>
 
   <div class="actions">
-    <%= f.submit %>
+    <%= f.submit(class: 'btn btn-success') %>
   </div>
 <% end %>

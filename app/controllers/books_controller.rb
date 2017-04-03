@@ -17,22 +17,22 @@ class BooksController < ApplicationController
   end
 
   def create_index
-    threads = []
     documents = {}
-    tags_mutex = Mutex.new
     stemmer = Lingua::Stemmer.new(language: 'en')
     wordnet = Wordnet.new
+    pre_stemmed = {}
 
     @book.chapters.each do |chapter|
       text = Net::HTTP.get(URI.parse(chapter.url))
       doc = Nokogiri::HTML(text)
       doc.css('pre').remove
-      # p doc.to_s
       text = Html2Text.convert(doc.to_s)
       text = text.gsub!(/[^A-Za-z ]/, '')
       text = text.split(' ')
-      text = text.map do |word|
-        stemmer.stem(word).downcase
+      text.map! do |word|
+        new_word = stemmer.stem(word).downcase
+        pre_stemmed[new_word] = word
+        new_word
       end
 
       text = text.select do |word|
@@ -41,32 +41,10 @@ class BooksController < ApplicationController
 
       counts = score(text)
 
-      tags_mutex.synchronize { documents[chapter] = counts }
+      documents[chapter] = counts
     end
 
-    # raise
-
     chapters_count = @book.chapters.count
-    max_chapters = chapters_count / 4
-    # if max_chapters == 0
-    #   max_chapters = 2
-    # end
-
-    # data = data.map do |chapter, frequencies|
-    #   frequencies = frequencies.select do |word, count|
-    #     chapter_count = 0
-    #     if count > 3
-    #       data.each do |_, other_frequency|
-    #         if other_frequency[word] > 3
-    #           chapter_count += 1
-    #         end
-    #       end
-    #     end
-    #     chapter_count < max_chapters
-    #   end
-    #   [chapter, frequencies]
-    # end.to_h
-
 
     document_frequency = Hash.new(0)
     documents.each do |chapter, frequencies|
@@ -75,13 +53,9 @@ class BooksController < ApplicationController
       end
     end
 
-    # ap document_frequency.sort_by {|_key, value| value}.to_h
-
     inverted_document_frequency = document_frequency.map do |word, count|
       [word, Math.log(chapters_count / count)]
     end.to_h
-
-    # ap all_words.sort_by {|_key, value| value}.to_h
 
     vectors = documents.map do |chapter, frequencies|
       weighted_frequencies = frequencies.map do |word, frequency|
@@ -99,23 +73,16 @@ class BooksController < ApplicationController
       [chapter, new_frequencies]
     end.to_h
 
-    # ap vectors.sort_by {|_key, value| value}.to_h
-    # vectors.each do |chapter, frequencies|
-    #   ap chapter
-    #   ap frequencies.sort_by {|_key, value| value}.to_h
-    # end
-
     data = vectors.map do |chapter, frequencies|
-      words = frequencies.sort_by {|k,v| v}.reverse.map { |k, v| "#{k} #{v}" }.first(15)
+      words = frequencies.sort_by {|k,v| v}.reverse.map { |k, v| k }.first(15)
       [chapter, words]
     end.to_h
-
 
     Book.transaction do
       data.each do |chapter, words|
         chapter.mappings.clear
         words.each do |word|
-          chapter.mappings.create!(index_term: word)
+          chapter.mappings.create!(index_term: pre_stemmed[word])
         end
       end
     end

@@ -57,7 +57,7 @@ group :development, :test do
   # nice error output
   gem 'better_errors'
   gem 'rails-controller-testing'
-  gem 'binding_of_caller'
+  # gem 'binding_of_caller'
   gem 'rspec-rails'
   gem 'simplecov', require: false
   gem 'factory_girl_rails'

@@ -5,6 +5,7 @@ class Page < ActiveRecord::Base
   has_many :page_changes
   has_many :page_verifications
   has_and_belongs_to_many :users
+  has_many :mappings
 
   validates_presence_of :title
   validates_presence_of :namespace

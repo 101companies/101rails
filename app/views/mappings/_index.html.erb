@@ -2,8 +2,11 @@
   <thead>
     <tr>
       <th>Index term</th>
-      <th>Page</th>
       <th>Comment</th>
+      <th>
+        Page
+      </th>
+      <th></th>
     </tr>
   </thead>
 
@@ -11,8 +14,13 @@
     <% mappings.each do |mapping| %>
       <tr>
         <td><%= mapping.index_term %></td>
-        <td><%#= mapping.page %></td>
         <td><%= mapping.comment %></td>
+        <td>
+          <%= mapping.page_title %>
+        </td>
+        <td>
+          <%= link_to('Edit', edit_mapping_path(mapping), class: 'btn btn-success') %>
+        </td>
       </tr>
     <% end %>
   </tbody>

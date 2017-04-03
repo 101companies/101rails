@@ -197,6 +197,7 @@ class PagesController < ApplicationController
       success do |result|
         @page           = result[:page]
         @books          = result[:books]
+        ap @books
         @rdf            = result[:triples]
         @resources      = result[:resources]
         @contributions  = result[:contributions]

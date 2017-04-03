@@ -36,67 +36,11 @@ RSpec.describe MappingsController, type: :controller do
   # MappingsController. Be sure to keep this updated too.
   let(:valid_session) { {} }
 
-  describe "GET #index" do
-    it "assigns all mappings as @mappings" do
-      mapping = Mapping.create! valid_attributes
-      get :index, params: {}, session: valid_session
-      expect(assigns(:mappings)).to eq([mapping])
-    end
-  end
-
-  describe "GET #show" do
-    it "assigns the requested mapping as @mapping" do
-      mapping = Mapping.create! valid_attributes
-      get :show, params: {id: mapping.to_param}, session: valid_session
-      expect(assigns(:mapping)).to eq(mapping)
-    end
-  end
-
-  describe "GET #new" do
-    it "assigns a new mapping as @mapping" do
-      get :new, params: {}, session: valid_session
-      expect(assigns(:mapping)).to be_a_new(Mapping)
-    end
-  end
-
   describe "GET #edit" do
     it "assigns the requested mapping as @mapping" do
       mapping = Mapping.create! valid_attributes
       get :edit, params: {id: mapping.to_param}, session: valid_session
       expect(assigns(:mapping)).to eq(mapping)
-    end
-  end
-
-  describe "POST #create" do
-    context "with valid params" do
-      it "creates a new Mapping" do
-        expect {
-          post :create, params: {mapping: valid_attributes}, session: valid_session
-        }.to change(Mapping, :count).by(1)
-      end
-
-      it "assigns a newly created mapping as @mapping" do
-        post :create, params: {mapping: valid_attributes}, session: valid_session
-        expect(assigns(:mapping)).to be_a(Mapping)
-        expect(assigns(:mapping)).to be_persisted
-      end
-
-      it "redirects to the created mapping" do
-        post :create, params: {mapping: valid_attributes}, session: valid_session
-        expect(response).to redirect_to(Mapping.last)
-      end
-    end
-
-    context "with invalid params" do
-      it "assigns a newly created but unsaved mapping as @mapping" do
-        post :create, params: {mapping: invalid_attributes}, session: valid_session
-        expect(assigns(:mapping)).to be_a_new(Mapping)
-      end
-
-      it "re-renders the 'new' template" do
-        post :create, params: {mapping: invalid_attributes}, session: valid_session
-        expect(response).to render_template("new")
-      end
     end
   end
 
