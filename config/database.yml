@@ -26,7 +26,5 @@ production:
   reconnect: false
   pool: 8
   encoding: unicode
-  host: localhost
-  username: <%= ENV['DATABASE_USER'] %>
-  password: <%= ENV['DATABASE_PASSWORD'] %>
+  url: <%= ENV['POSTGRESQL_URL'] %>
   database: wiki_production
