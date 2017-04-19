@@ -1,24 +1,3 @@
-$(document).ready(function() {
-  if($('meta[name=last_message_id]').length == 0) {
-    return;
-  }
-  MessageBus.alwaysLongPoll = true;
-  MessageBus.callbackInterval = 5000;
-
-  MessageBus.start();
-
-  var last_id = $('meta[name=last_message_id]')[0].content;
-
-  MessageBus.subscribe("/messages", function(data, _, message_id){
-    alert(data);
-    $.post('/last_received', { last_message_id: message_id })
-      .done(function(result) {
-        console.log(result);
-      });
-
-  }, last_id);
-});
-
 $(document).on('turbolinks:load', function() {
   $('[data-toggle="popover"]').popover();
 
