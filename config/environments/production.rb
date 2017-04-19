@@ -21,6 +21,10 @@ Wiki::Application.configure do
   # Disable Rails's static asset server (Apache or nginx will already do this)
   config.public_file_server.enabled = false
 
+  logger           = ActiveSupport::Logger.new(STDOUT)
+  logger.formatter = config.log_formatter
+  config.logger = ActiveSupport::TaggedLogging.new(logger)
+
   # Compress JavaScripts and CSS
   config.assets.compress = true
 
@@ -79,7 +83,7 @@ Wiki::Application.configure do
   config.action_mailer.delivery_method = :sendmail
   config.action_mailer.perform_deliveries = true
   config.action_mailer.raise_delivery_errors = true
-  
+
   config.eager_load = true
 
   config.books_adapter = BooksAdapters::WorkerAdapter.new
