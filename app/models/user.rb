@@ -1,32 +1,8 @@
 class User < ActiveRecord::Base
 
-  # rails_admin do
-  #   list do
-  #     field :name
-  #     field :github_name
-  #     field :role
-  #     field :email
-  #   end
-  #
-  #   field :name
-  #   field :github_name
-  #   field :role
-  #   field :email
-  # end
-
   def self.role_options
     ['admin', 'editor', 'guest']
   end
-
-  # field :email,          type: String
-  # field :role,           type: String, default: "guest"
-  # field :name,           type: String
-  #
-  # # github data
-  # field :github_name,    type: String
-  # field :github_avatar,  type: String, default: "http://www.gravatar.com/avatar"
-  # field :github_token,   type: String
-  # field :github_uid,     type: String
 
   has_many :old_wiki_users
   has_many :page_changes
