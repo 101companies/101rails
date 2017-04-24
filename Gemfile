@@ -1,5 +1,5 @@
 source 'https://rubygems.org'
-ruby '2.4.0'
+ruby '2.4.1'
 
 gem 'rails', '~> 5.0', '>= 5.0.0.1'
 gem 'activerecord', '~> 5.0', '>= 5.0.0.1'
@@ -51,22 +51,13 @@ gem 'cancancan', '~> 1.9'
 gem 'validate_url'
 
 group :development, :test do
-  # remove assets-logs in console
-  # gem 'quiet_assets', '1.0.2'
   # nice error output
   gem 'better_errors'
   gem 'rails-controller-testing'
-  # gem 'binding_of_caller'
   gem 'rspec-rails'
   gem 'simplecov', require: false
   gem 'factory_girl_rails'
 
-  # gem 'capistrano-rails',   '~> 1.1', require: false
-  # gem 'capistrano-bundler', '~> 1.1', require: false
-  # gem 'capistrano3-puma', git: "https://github.com/seuros/capistrano-puma"
-  # gem 'capistrano-rvm'
-  gem 'mina'
-  gem 'mina-puma', require: false
   gem 'rails-erd'
 end
 
@@ -108,16 +99,6 @@ gem 'momentjs-rails'
 
 # ui for diff
 gem 'differ', '0.1.2'
-
-# growl-like notifications
-# gem 'humane-rails'
-
-# deploy tool
-# update only after reading upgrade manual
-# gem 'capistrano', '2.15.5'
-# locking 2 gems to prevent failing updates with capistrano
-# gem 'net-ssh', '2.7.0'
-# gem 'net-ssh-gateway', '1.2.0'
 
 # for wiki-editor
 gem 'aced_rails', git: 'https://github.com/101companies/aced_rails'

@@ -38,7 +38,5 @@ Wiki::Application.configure do
 
   config.eager_load = true
 
-  config.books_adapter = BooksAdapters::TestAdapter.new
-
   ActiveSupport::Deprecation.debug = true
 end

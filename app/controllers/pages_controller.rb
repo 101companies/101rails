@@ -130,7 +130,6 @@ class PagesController < ApplicationController
     if page
       redirect_to page_path(full_title) and return
     else
-      ap page
       flash[:error] = "You cannot create new page #{full_title}"
       redirect_to page_path('101project') and return
     end
@@ -197,7 +196,6 @@ class PagesController < ApplicationController
       success do |result|
         @page           = result[:page]
         @books          = result[:books]
-        ap @books
         @rdf            = result[:triples]
         @resources      = result[:resources]
         @contributions  = result[:contributions]

@@ -52,7 +52,6 @@ RSpec.describe ResourcesController, type: :controller do
 
     it 'returns html of existing resource' do
       get(:show, params: { id: 'resource_controller_spec.rb', format: 'html' })
-      ap response.body
 
       expect(response.body).to include('resource_controller_spec.rb', '<h1>About:')
     end
