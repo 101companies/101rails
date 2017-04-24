@@ -98,6 +98,6 @@ Wiki::Application.configure do
     email: {
       email_prefix: "[EXCEPTION] ",
       sender_address: %{"notifier" <noreply@101companies.org>},
-      exception_recipients: %w{kevin.k1252@gmail.com}
+      exception_recipients: %w{101companies@gmail.com}
     }
 end
