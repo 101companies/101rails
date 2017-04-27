@@ -19,7 +19,7 @@ module RdfModule
     json = []
     get_rdf_graph(title, directions).each do |res|
       if directions
-        json << { :direction => res[0].to_s, :predicate => res[1].to_s, :node => res[2].to_s }
+        json << { direction: res[0].to_s, predicate: res[1].to_s, node: res[2].to_s }
       else
         # ingoing triples
         res = reverse_statement res, title if res[0].to_s == 'IN'
@@ -92,8 +92,12 @@ module RdfModule
   def add_ingoing_triples(graph, page)
     predicates = get_used_predicates.map do |x|
       x = StringUtils::upcase_first_char(x)
-      "#{x}::#{page.full_title}"
-    end
+      [
+        "#{x}::#{page.full_title}",
+        "#{x}::#{page.full_title.gsub(' ', '_')}",
+        "#{x}::#{page.full_title.gsub('_', ' ')}"
+      ]
+    end.flatten
     Page.where('used_links @> ARRAY[?]::varchar[]', predicates).each do |page|
       graph << ["IN", x.camelize(:lower), page.full_title]
     end
