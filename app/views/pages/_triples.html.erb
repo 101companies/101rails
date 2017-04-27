@@ -21,7 +21,7 @@
                 link = '/' + triple[:node]
               end
               %>
-              <a href="<%= link %>">
+              <a href="<%= link.gsub(' ', '_') %>">
                 <%= triple[:node] %>
               </a>
             </div>
@@ -37,7 +37,7 @@
                 link = '/' + triple[:node]
               end
               %>
-              <a href="<%= link %>">
+              <a href="<%= link.gsub(' ', '_') %>">
                 <%= triple[:node] %>
               </a>
             </div>
