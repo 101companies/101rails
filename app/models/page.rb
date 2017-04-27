@@ -330,7 +330,7 @@ class Page < ActiveRecord::Base
       SELECT DISTINCT substr(link, 0, pos)
       FROM pages, unnest(used_links) AS link, strpos(link, \'::\') AS pos
       WHERE pos > 0
-    ').values.map { |row| row[0] }
+    ').values.map { |row| row[0] }.sort
   end
 
   def self.cached_count
