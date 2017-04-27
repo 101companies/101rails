@@ -58,6 +58,12 @@ class Page < ActiveRecord::Base
     where('LOWER(title) like ? or LOWER(raw_content) like ? or (namespace || \':\' || title) = ?', like, like, text)
   end
 
+  def self.search_title(text)
+    like = sanitize_sql_like(text.downcase)
+    like = "%#{like}%"
+    where('LOWER(title) like ? or (namespace || \':\' || title) = ?', like, text)
+  end
+
   def render
     Rails.cache.fetch("#{cache_key}/content") do
       preparing_the_page

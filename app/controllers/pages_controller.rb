@@ -224,7 +224,13 @@ class PagesController < ApplicationController
 
   def search
     @query_string = params[:q] || ''
-    @search_results = PageModule.search(@query_string, params.dig(:namespace, :name))
+    @title_only = params[:title_only]
+    if @title_only
+      @search_results = PageModule.search_title(@query_string, params.dig(:namespace, :name))
+    else
+      @search_results = PageModule.search(@query_string, params.dig(:namespace, :name))
+    end
+
     respond_with @search_results
   end
 

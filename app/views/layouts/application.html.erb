@@ -39,6 +39,10 @@
             <li>
               <form class='form navbar-form navbar-search pull-left' action='/search'>
                 <div class='form-group'>
+                  <label for='title_only'>Title only</label>
+                  <%= check_box_tag('title_only', checked=@title_only) %>
+                </div>
+                <div class='form-group'>
                   <%= select("namespace", "name", Page.order('namespace').pluck('distinct trim(namespace) as namespace'), { include_blank: true, selected: params.dig(:namespace, :name) }, { class: 'form-control' }) %>
                 </div>
                 <div class='form-group'>
