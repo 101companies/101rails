@@ -6,7 +6,7 @@ class User < ActiveRecord::Base
 
   has_many :old_wiki_users
   has_many :page_changes
-  has_and_belongs_to_many :pages #, class_name: 'Page', inverse_of: :users
+  has_and_belongs_to_many :pages
 
   validates_uniqueness_of :email
   validates_uniqueness_of :github_uid
@@ -15,8 +15,8 @@ class User < ActiveRecord::Base
 
   def get_repos
     # using oauth token to increase limit of request to github api to 5000
-    client = Octokit::Client.new access_token: self.github_token
-    (client.repositories self.github_name, type: 'all', per_page: 100).map do |repo|
+    client = Octokit::Client.new #access_token: self.github_token
+    client.repositories(self.github_name, type: 'all', per_page: 100).map do |repo|
       repo.full_name
     end
   end
@@ -24,14 +24,27 @@ class User < ActiveRecord::Base
   def get_repo_dirs(repo, recursive = false)
     base_url = "https://api.github.com/repos/"
     # using oauth token to increase limit of request to github api to 5000
-    last_commit = JSON.parse(HTTParty.get(
-                                 "#{base_url}#{repo}/commits",
-                                 headers: {"User-Agent" => '101wiki'}
-                             ).body).first["sha"]
+    uri = URI("#{base_url}#{repo}/commits")
+    req = Net::HTTP::Get.new(uri)
+    req['User-Agent'] = '101wiki'
+
+    res = Net::HTTP.start(uri.hostname, uri.port, use_ssl: true) {|http|
+      http.request(req)
+    }
+    response_data = res.body
+    last_commit = JSON.parse(response_data).first['sha']
+
     run_recursive = recursive ? "&recursive=1" : ""
     # using oauth token to increase limit of request to github api to 5000
-    url = "#{base_url}#{repo}/git/trees/#{last_commit}?#{run_recursive}"
-    files_and_dirs = JSON.parse(HTTParty.get(url, headers: {"User-Agent" => '101wiki'}).body)
+    url = URI("#{base_url}#{repo}/git/trees/#{last_commit}?#{run_recursive}")
+    req = Net::HTTP::Get.new(url)
+    req['User-Agent'] = '101wiki'
+
+    res = Net::HTTP.start(uri.hostname, uri.port, use_ssl: true) {|http|
+      http.request(req)
+    }
+
+    files_and_dirs = JSON.parse(res.body)
     repos = files_and_dirs["tree"].each.select{|node| node["type"] == 'tree'}.map{|node| '/' + node['path']}
     repos.prepend '/'
   end

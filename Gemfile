@@ -1,22 +1,19 @@
 source 'https://rubygems.org'
-ruby '2.4.0'
+ruby '2.4.1'
 
 gem 'rails', '~> 5.0', '>= 5.0.0.1'
 gem 'activerecord', '~> 5.0', '>= 5.0.0.1'
 gem 'pg'
-gem 'database_cleaner'
 gem 'concurrent-ruby'
 gem 'html2text'
 gem 'ruby-stemmer', '>=0.8.3', :require => 'lingua/stemmer'
 gem 'pmap'
 gem 'fast-stemmer'
 
-# gem 'newrelic_rpm'
 gem 'kaminari'
 gem 'sucker_punch'
 gem 'turbolinks', '~> 5.0.0'
 gem 'execjs'
-gem 'mediawiki-gateway', '0.6.0', require: 'media_wiki'
 
 gem 'solid_use_case', '~> 2.1.1'
 
@@ -51,20 +48,13 @@ gem 'cancancan', '~> 1.9'
 gem 'validate_url'
 
 group :development, :test do
-  # remove assets-logs in console
-  # gem 'quiet_assets', '1.0.2'
-  # nice error output
   gem 'better_errors'
   gem 'rails-controller-testing'
   # gem 'binding_of_caller'
   gem 'rspec-rails'
   gem 'simplecov', require: false
   gem 'factory_girl_rails'
-
-  # gem 'capistrano-rails',   '~> 1.1', require: false
-  # gem 'capistrano-bundler', '~> 1.1', require: false
-  # gem 'capistrano3-puma', git: "https://github.com/seuros/capistrano-puma"
-  # gem 'capistrano-rvm'
+  gem 'database_cleaner'
   gem 'mina'
   gem 'mina-puma', require: false
   gem 'rails-erd'
@@ -83,11 +73,6 @@ gem 'chartkick'
 
 gem 'ahoy_matey'
 
-# web-scraping
-gem 'json_pure'
-gem 'json'
-gem 'httparty', '0.13.1'
-
 # work with wiki markdown
 gem 'wikicloth', git: 'https://github.com/101companies/wikicloth'
 
@@ -95,7 +80,6 @@ gem 'rdf', git: 'https://github.com/ruby-rdf/rdf'
 
 # source text highlighting
 gem 'pygments.rb'
-gem 'closure-compiler', '1.1.10'
 
 # better work with form -> bindings to models
 gem 'simple_form'
@@ -108,16 +92,6 @@ gem 'momentjs-rails'
 
 # ui for diff
 gem 'differ', '0.1.2'
-
-# growl-like notifications
-# gem 'humane-rails'
-
-# deploy tool
-# update only after reading upgrade manual
-# gem 'capistrano', '2.15.5'
-# locking 2 gems to prevent failing updates with capistrano
-# gem 'net-ssh', '2.7.0'
-# gem 'net-ssh-gateway', '1.2.0'
 
 # for wiki-editor
 gem 'aced_rails', git: 'https://github.com/101companies/aced_rails'

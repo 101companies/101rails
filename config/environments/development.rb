@@ -38,7 +38,5 @@ Wiki::Application.configure do
 
   config.eager_load = false
 
-  config.books_adapter = BooksAdapters::LocalWorkerAdapter.new
-
   config.action_cable.disable_request_forgery_protection = true
 end

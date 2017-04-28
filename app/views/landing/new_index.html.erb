@@ -16,7 +16,9 @@
         </h2>
 
         <div class='content'>
-          <%= raw page.preview %>
+          <%= cache(page) do %>
+            <%= raw page.preview %>
+          <% end %>
         </div>
       </div>
       <hr />
@@ -31,7 +33,9 @@
         </h2>
 
         <div class='content'>
-          <%= raw page.preview %>
+          <%= cache(page) do %>
+            <%= raw page.preview %>
+          <% end %>
         </div>
       </div>
       <hr />
