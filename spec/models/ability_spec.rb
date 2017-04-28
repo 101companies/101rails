@@ -6,7 +6,7 @@ describe PageModule do
 
   end
 
-  describe 'match_page_score' do
+  describe 'rights' do
 
     it 'makes sure admins can access everyting' do
       user = create(:user)
@@ -49,12 +49,12 @@ describe PageModule do
       destroy_pages = ability.can?(:destroy, Page.new)
 
       rails_admin = ability.can?(:access, :rails_admin)
-      
+
       expect(access_pages).to be true
       expect(edit_pages).to be false
       expect(destroy_pages).to be false
       expect(rails_admin).to be false
-    
+
     end
 
   end

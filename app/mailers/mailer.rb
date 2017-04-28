@@ -3,7 +3,7 @@ class Mailer < ActionMailer::Base
 
   def user_created_contribution(contribution, email)
     @contribution = contribution
-    mail(to: email, subject: "Your have submitted your contribution '#{@contribution.title}'")
+    mail(to: email, subject: "You have submitted your contribution '#{@contribution.title}'")
   end
 
   def admin_created_contribution(contribution)

@@ -6,34 +6,6 @@ describe PageModule do
 
   end
 
-  describe 'match_page_score' do
-
-    it 'best score' do
-      page = create :page
-
-      result = PageModule.match_page_score page, page.full_title
-
-      expect(result).to eq(-1)
-    end
-
-    it 'regular score' do
-      page = create :page
-
-      result = PageModule.match_page_score page, page.title
-
-      expect(result).to eq(13)
-    end
-
-    it 'worst score' do
-      page = create :page
-
-      result = PageModule.match_page_score page, 'fsdfjsdf'
-
-      expect(result).to eq(10000)
-    end
-
-  end
-
   describe 'contribution_array_to_string' do
 
     it 'joins contribution names unless they are nil' do

@@ -130,7 +130,6 @@ class PagesController < ApplicationController
     if page
       redirect_to page_path(full_title) and return
     else
-      ap page
       flash[:error] = "You cannot create new page #{full_title}"
       redirect_to page_path('101project') and return
     end
@@ -197,7 +196,6 @@ class PagesController < ApplicationController
       success do |result|
         @page           = result[:page]
         @books          = result[:books]
-        ap @books
         @rdf            = result[:triples]
         @resources      = result[:resources]
         @contributions  = result[:contributions]
@@ -226,7 +224,13 @@ class PagesController < ApplicationController
 
   def search
     @query_string = params[:q] || ''
-    @search_results = PageModule.search(@query_string, params.dig(:namespace, :name))
+    @title_only = params[:title_only]
+    if @title_only
+      @search_results = PageModule.search_title(@query_string, params.dig(:namespace, :name))
+    else
+      @search_results = PageModule.search(@query_string, params.dig(:namespace, :name))
+    end
+
     respond_with @search_results
   end
 

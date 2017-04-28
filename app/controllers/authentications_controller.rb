@@ -28,7 +28,7 @@ class AuthenticationsController < ApplicationController
     else
       flash[:error] = "Failed to login. Have you added name and public email into GitHub account?"
     end
-    go_to_previous_page
+    go_to_homepage
   end
 
   def local_auth
@@ -38,7 +38,7 @@ class AuthenticationsController < ApplicationController
 
     user = User.find(params[:admin])
     session[:user_id] = user.id
-    go_to_previous_page
+    go_to_homepage
   end
 
   def create_user_page_and_set_permissions(user)
@@ -52,14 +52,14 @@ class AuthenticationsController < ApplicationController
 
   def failure
     flash[:warning] = "Sorry, but login wasn't successful"
-    go_to_previous_page
+    go_to_homepage
   end
 
   # destroy user's authentication and return to the authentication page.
   def destroy
     session[:user_id] = nil
     flash[:notice] = t(:signed_out)
-    go_to_previous_page
+    go_to_homepage
   end
 
 end

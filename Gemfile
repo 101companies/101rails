@@ -50,13 +50,10 @@ gem 'validate_url'
 group :development, :test do
   gem 'better_errors'
   gem 'rails-controller-testing'
-  # gem 'binding_of_caller'
   gem 'rspec-rails'
   gem 'simplecov', require: false
   gem 'factory_girl_rails'
   gem 'database_cleaner'
-  gem 'mina'
-  gem 'mina-puma', require: false
   gem 'rails-erd'
 end
 

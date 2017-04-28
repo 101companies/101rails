@@ -26,7 +26,7 @@ class ResourcesController < ApplicationController
       if($graph.has_graph?)
 
         # + prepare subject ----------------------
-        @subject = RDF::URI.new(scheme: request.scheme.dup,
+        @subject = RDF::URI.new(scheme: 'http',
                                 host: '101companies.org',
                                 path: 'resources/namespace')
         # - prepare subject ----------------------
@@ -48,7 +48,7 @@ class ResourcesController < ApplicationController
   def show
     if($graph.has_graph?)
       # + prepare subject ----------------------
-      @subject = RDF::URI.new(scheme: request.scheme.dup,
+      @subject = RDF::URI.new(scheme: 'http',
                              host: '101companies.org',
                              path: 'resources/' + params[:id])
       # - prepare subject ----------------------

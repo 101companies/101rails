@@ -1,19 +1,6 @@
 # this module includes all static methods for pages
 
 class PageModule
-  def self.match_page_score(found_page, query_string)
-    # find match ignoring case
-    score = found_page.full_title.downcase.index query_string.downcase
-    # not found match in title, make score worst
-    if score == nil
-      score = 10000
-    end
-    # exact match -> best score (lowest)
-    if found_page.full_title.downcase == query_string.downcase
-      score = -1
-    end
-    score
-  end
 
   def self.contribution_array_to_string(array)
     if !array.nil?
@@ -60,6 +47,21 @@ class PageModule
     end
 
     found_pages = pages.search(query_string).order(:title)
+    # nothing found -> go out
+    if found_pages.nil?
+      return []
+    end
+    found_pages
+  end
+
+  def self.search_title(query_string, namespace=nil)
+    if namespace.blank?
+      pages = Page.all
+    else
+      pages = Page.where(namespace: namespace)
+    end
+
+    found_pages = pages.search_title(query_string).order(:title)
     # nothing found -> go out
     if found_pages.nil?
       return []
