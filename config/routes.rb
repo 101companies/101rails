@@ -105,7 +105,7 @@ Wiki::Application.routes.draw do
   end
 
   # pages routes
-  resources :pages, path: '/', id: /.*/ do
+  resources :pages, path: '/', id: /[^\/]*/ do
     get :unverified, on: :collection
     post :verify, on: :member
     get :unverify, on: :member
@@ -113,4 +113,16 @@ Wiki::Application.routes.draw do
     get :create_new_page_confirmation, on: :member
     put :rename, on: :member
   end
+
+  scope '/wiki' do
+    resources :pages, path: '/', id: /[^\/]*/ do
+      get :unverified, on: :collection
+      post :verify, on: :member
+      get :unverify, on: :member
+      get :create_new_page, on: :member
+      get :create_new_page_confirmation, on: :member
+      put :rename, on: :member
+    end
+  end
+
 end
