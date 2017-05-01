@@ -207,7 +207,7 @@ class PagesController < ApplicationController
       end
 
       failure(:bad_link) do |result|
-        redirect_to result[:url]
+        redirect_to page_path(result[:url])
       end
 
       failure(:page_not_found_but_creating) do |result|
@@ -225,10 +225,16 @@ class PagesController < ApplicationController
   def search
     @query_string = params[:q] || ''
     @title_only = params[:title_only]
+    namespace = params.dig(:namespace, :name)
+
     if @title_only
-      @search_results = PageModule.search_title(@query_string, params.dig(:namespace, :name))
+      @search_results = PageModule.search_title(@query_string, namespace)
     else
-      @search_results = PageModule.search(@query_string, params.dig(:namespace, :name))
+      if namespace == 'Property'
+        @search_results = PageModule.search_property(@query_string)
+      else
+        @search_results = PageModule.search(@query_string, namespace)
+      end
     end
 
     respond_with @search_results

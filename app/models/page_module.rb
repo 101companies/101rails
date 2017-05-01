@@ -54,6 +54,10 @@ class PageModule
     found_pages
   end
 
+  def self.search_property(name)
+    Page.joins(:triples).where(triples: { predicate: name })
+  end
+
   def self.search_title(query_string, namespace=nil)
     if namespace.blank?
       pages = Page.all
