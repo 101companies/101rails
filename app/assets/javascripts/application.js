@@ -46,11 +46,10 @@
 //= require app
 //= require Chart.bundle
 //= require chartkick
+// = require ahoy
 
 String.prototype.endsWith = function (s) {
   return this.length >= s.length && this.substr(this.length - s.length) == s;
 }
 
 ahoy.trackAll();
-
-// = require ahoy

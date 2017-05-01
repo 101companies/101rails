@@ -1,12 +1,12 @@
 class Page < ActiveRecord::Base
 
   # relations here
-  has_one :repo_link
-  has_many :page_changes
-  has_many :page_verifications
+  has_one :repo_link, dependent: :destroy
+  has_many :page_changes, dependent: :destroy
+  has_many :page_verifications, dependent: :destroy
   has_and_belongs_to_many :users
-  has_many :mappings
-  has_many :triples, autosave: true
+  has_many :mappings, dependent: :destroy
+  has_many :triples, autosave: true, dependent: :destroy
 
   validates_presence_of :title
   validates_presence_of :namespace
