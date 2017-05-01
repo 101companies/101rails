@@ -103,6 +103,17 @@
 <div id='sections'>
   <%= page.render.html_safe %>
 
+  <% if (@resources && @resources.count > 0) || (@books && @books.count > 0) %>
+  <div class='addtional-sections' id='last-section'>
+
+    <div class='section' id='resources' style='display: block;'>
+      <h2 class='headline'>Resources</h2>
+
+      <%= render 'resources', resources: @resources, mappings: @books %>
+    </div>
+  </div>
+  <% end %>
+
   <% if @rdf && @rdf.count > 0 %>
   <div class='section' id='metasection'>
     <div class='headlinecontainer'>
@@ -110,7 +121,6 @@
     </div>
 
     <%= render 'pages/triples', triples: @rdf, hover_show: false %>
-
   </div>
   <% end %>
 
@@ -131,17 +141,6 @@
        <% end %>
      </div>
 
-  </div>
-</div>
-<% end %>
-
-<% if (@resources && @resources.count > 0) || (@books && @books.count > 0) %>
-<div class='addtional-sections' id='last-section'>
-
-  <div class='section' id='resources' style='display: block;'>
-    <h2 class='headline'>Resources</h2>
-
-    <%= render 'resources', resources: @resources, mappings: @books %>
   </div>
 </div>
 <% end %>

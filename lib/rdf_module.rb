@@ -91,20 +91,11 @@ module RdfModule
   end
 
   def add_ingoing_triples(graph, page)
-    predicates = get_used_predicates.map do |x|
-      [
-        "#{StringUtils.downcase_first_char(x)}::#{page.full_title}",
-        "#{StringUtils.downcase_first_char(x)}::#{page.full_title.gsub(' ', '_')}",
-        "#{StringUtils.downcase_first_char(x)}::#{page.full_title.gsub('_', ' ')}",
-        "#{x}::#{page.full_title}",
-        "#{x}::#{page.full_title.gsub(' ', '_')}",
-        "#{x}::#{page.full_title.gsub('_', ' ')}"
-      ]
-    end.flatten.uniq
-    Page.where('used_links && ARRAY[?]::varchar[]', predicates).each do |linking_page|
-      x = linking_page.used_links.find { |predicate| predicate.include?("::#{page.full_title}") }
-      x = x[0..x.index('::')-1]
-      graph << ["IN", x.camelize(:lower), linking_page.full_title]
+    triples = Triple.includes(:page).joins(:page).
+      where(triples: { object: [page.full_title, page.full_title.gsub(' ', '_'), page.full_title.gsub('_', ' ')]})
+
+    triples.find_each do |triple|
+      graph << ["IN", triple.predicate, triple.page.full_title]
     end
     graph
   end

@@ -6,6 +6,7 @@ class Page < ActiveRecord::Base
   has_many :page_verifications
   has_and_belongs_to_many :users
   has_many :mappings
+  has_many :triples, autosave: true
 
   validates_presence_of :title
   validates_presence_of :namespace
@@ -48,6 +49,14 @@ class Page < ActiveRecord::Base
       end
     end
     self.used_links = links.flatten.uniq
+
+    self.triples.clear
+    used_links.each do |link|
+      if link.include?('::')
+        predicate, object = link.split('::')
+        self.triples << self.triples.new(predicate: predicate, object: object)
+      end
+    end
 
     self.headline = get_headline_html_content
   end
@@ -248,9 +257,7 @@ class Page < ActiveRecord::Base
     self.get_parser.sections.first.children.each do |section|
       content_with_subsections = section.wikitext.sub(/\s+\Z/, "")
 
-
-
-          	parsed_html = parse content_with_subsections
+      parsed_html = parse content_with_subsections
 
       sections << {
           'is_resource' => section.is_resource_section,
@@ -265,11 +272,11 @@ class Page < ActiveRecord::Base
   end
 
   def backlinking_pages
-    Page.where('used_links @> ARRAY[?]::varchar[]', full_title)
+    Page.where('used_links && ARRAY[?]::varchar[]', full_title)
   end
 
   def self.by_author(user)
-    where('used_links @> ARRAY[?]::varchar[]', "developedBy::Contributor:#{user.github_name}/")
+    where('used_links && ARRAY[?]::varchar[]', "developedBy::Contributor:#{user.github_name}/")
   end
 
   def backlinks
