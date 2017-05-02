@@ -73,7 +73,5 @@ module Wiki
     config.react.jsx_transform_options = {
       stage: 0
     }
-
-    config.active_job.queue_adapter = :sucker_punch
   end
 end

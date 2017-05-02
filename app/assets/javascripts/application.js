@@ -30,8 +30,6 @@
  = require ace/mode-wiki
  = require ace/ext-language_tools
 
- = require bootstrap-tour
-
  = require select2
  = require moment
  = require page

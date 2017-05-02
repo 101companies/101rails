@@ -11,8 +11,8 @@ class ResourcesController < ApplicationController
     end
 
     result = sse.execute($graph.snapshot)
-    result = Kaminari.paginate_array(result).page(params[:page]).per(100)
-    result = RDF::Query::Solutions.new(result)
+    result = ArrayPaginator.new(result).page(params[:page]).per(100)
+    result = RDF::Query::Solutions.new(result.to_a)
 
     render json: result.to_json
   end

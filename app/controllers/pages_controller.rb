@@ -5,8 +5,6 @@ class PagesController < ApplicationController
   # for calling from view
   helper_method :get_rdf_json
 
-  respond_to :json, :html
-
   # before_filter need to be before load_and_authorize_resource
   # methods, that need to check permissions
   before_action :get_the_page, only: [:edit, :rename, :update, :update_repo, :destroy]
@@ -237,7 +235,7 @@ class PagesController < ApplicationController
       end
     end
 
-    respond_with @search_results
+    respond_to :html
   end
 
   def rename
