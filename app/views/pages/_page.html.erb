@@ -1,21 +1,31 @@
 <div style="display: none;" id='rename-path' data-value="<%= rename_page_path(page) %>"></div>
 
+<div class="modal fade" tabindex="-1" role="dialog" id='confirm-delete'>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-body">
+        <p>Delete page <b><%= page.full_title %></b>?</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" data-dismiss="modal" class="btn">Cancel</button>
+        <button type="button" data-dismiss="modal" class="btn btn-primary" id="delete">Delete</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div id="renameModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class='modal-dialog'>
     <div class='modal-content'>
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-        <h3>Rename Page</h3>
-      </div>
       <div class="modal-body">
         <div class="modal-body">
-          <p>New title:</p>
+          New title:
           <input id="newTitle" name="newTitle" value="<%= page.full_title %>" type="text">
         </div>
       </div>
       <div class="modal-footer">
-        <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
-        <button class="btn btn-primary" id='renamePageButton'>Save changes</button>
+        <button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
+        <button class="btn btn-primary" id='renamePageButton'>Rename</button>
       </div>
     </div>
   </div>

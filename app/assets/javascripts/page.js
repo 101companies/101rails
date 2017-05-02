@@ -11,8 +11,11 @@ $(document).on('turbolinks:load', function() {
   metadata.parent().hide();
 
   $('#pageDeleteButton').click(function() {
-    var ok = confirm("Are you sure?");
-    if(ok == true) {
+    $('#confirm-delete').modal({
+      backdrop: 'static',
+      keyboard: false
+    })
+    .one('click', '#delete', function(e) {
       $.ajax({
         url: window.pagePath,
         type: 'DELETE'
@@ -24,7 +27,7 @@ $(document).on('turbolinks:load', function() {
           alert(data.success);
         }
       });
-    }
+    });
   });
 
   $('#renamePageButton').click(function() {
