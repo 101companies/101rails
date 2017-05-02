@@ -82,14 +82,7 @@ Wiki::Application.routes.draw do
   end
 
   scope '/wiki' do
-    resources :pages, path: '/', id: /[^\/]*/ do
-      get :unverified, on: :collection
-      post :verify, on: :member
-      get :unverify, on: :member
-      get :create_new_page, on: :member
-      get :create_new_page_confirmation, on: :member
-      put :rename, on: :member
-    end
+    match "(*path)" => redirect {|params, req| "/#{params[:path]}"},  via: [:get, :post]
   end
 
 end
