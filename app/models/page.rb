@@ -229,7 +229,7 @@ class Page < ActiveRecord::Base
   end
 
   def url
-    PageModule.url full_title
+    PageModule.url(full_title)
   end
 
   def get_parser

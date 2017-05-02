@@ -85,7 +85,7 @@ Wiki::Application.routes.draw do
 
   scope '/wiki' do
     match "(*path)" => redirect { |params, req|
-      URI.encode(params[:path])
+      URI.encode("/#{params[:path]}")
     }, via: [:get, :post]
   end
 

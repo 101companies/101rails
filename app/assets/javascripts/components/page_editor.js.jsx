@@ -82,14 +82,6 @@ class PageEditor extends React.Component {
     </div>)
   }
 
-  /*
-  <MetaDataEditor
-    triples={triples}
-    pages={this.props.pages}
-    onChange={this.onChangeTriples.bind(this)}
-    predicates={this.props.predicates}  />
-  */
-
   onChangeTriples(triples) {
     var indexMetadata = this.state.rawContent.indexOf('== Metadata ==');
     var pageWithoutMetadata = this.state.rawContent;
@@ -107,5 +99,4 @@ class PageEditor extends React.Component {
   onChangeContent(content) {
     this.setState({ rawContent: content });
   }
-
 }

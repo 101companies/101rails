@@ -156,8 +156,6 @@ class PagesController < ApplicationController
   end
 
   def edit
-    @pages = Page.all.map &:full_title
-
     begin
       url = "http://worker.101companies.org/data/dumps/wiki-predicates.json"
       url = URI.encode url
