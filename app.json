@@ -1,0 +1,13 @@
+{
+  "name": "101rails",
+  "description": "101wiki",
+  "keywords": [
+    "101",
+    "softlang"
+  ],
+  "scripts": {
+    "dokku": {
+      "postdeploy": "bundle exec rake db:migrate"
+    }
+  }
+}

@@ -1,5 +1,9 @@
 Wiki::Application.routes.draw do
 
+  constraints(host: /101companies.org/) do
+    match "/(*path)" => redirect {|params, req| "https://101wiki.softlang.org/#{params[:path]}"},  via: [:get, :post]
+  end
+
   resources :mappings, only: [:edit, :update]
 
   constraints(id: /([^\/]+?)(?=\.json|\.ttl|\.n3|\.xml|\.html|$|\/)/) do
@@ -12,7 +16,7 @@ Wiki::Application.routes.draw do
     post :create_index, on: :member
     resources :chapters, only: [:new, :edit, :update, :destroy, :create]
   end
-  
+
   namespace :admin do
     get '/', to: 'admin#index'
     resources :pages
