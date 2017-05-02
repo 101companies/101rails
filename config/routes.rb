@@ -1,7 +1,7 @@
 Wiki::Application.routes.draw do
 
   constraints(host: /101companies.org/) do
-    match "/(*path)" => redirect {|params, req| "https://101wiki.softlang.org/#{params[:path].gsub(' ', '_')}"},  via: [:get, :post]
+    match "/(*path)" => redirect {|params, req| "https://101wiki.softlang.org/#{params[:path]&.gsub(' ', '_')}"},  via: [:get, :post]
   end
 
   resources :mappings, only: [:edit, :update]
