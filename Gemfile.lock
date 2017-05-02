@@ -7,14 +7,12 @@ GIT
 
 GIT
   remote: https://github.com/101companies/wikicloth
-  revision: 28794fa5381aa84d4603618ecd54ca9af88af66c
+  revision: bdce6c63f6e79c46b857fdcf320bac7506673586
   specs:
     wikicloth (0.8.0)
       activesupport
       builder
       expression_parser
-      httparty
-      json
       nokogiri
       pygments.rb
       rinku
@@ -151,9 +149,6 @@ GEM
     html2text (0.2.0)
       nokogiri (~> 1.6)
     htmlentities (4.3.4)
-    httparty (0.13.1)
-      json (~> 1.8)
-      multi_xml (>= 0.5.2)
     i18n (0.8.1)
     ionicons-rails (2.0.0)
     jbuilder (2.6.0)
@@ -165,14 +160,11 @@ GEM
       thor (>= 0.14, < 2.0)
     jquery-ui-rails (5.0.5)
       railties (>= 3.2.16)
-    json (1.8.6)
+    json (2.1.0)
     json-ld (2.1.2)
       multi_json (~> 1.12)
       rdf (~> 2.1)
     jwt (1.5.6)
-    kaminari (0.17.0)
-      actionpack (>= 3.0.0)
-      activesupport (>= 3.0.0)
     ld-patch (0.3.0)
       ebnf (~> 1.0, >= 1.0.1)
       rdf (~> 2.0)
@@ -241,7 +233,7 @@ GEM
       omniauth (~> 1.2)
     pg (0.19.0)
     puma (3.6.0)
-    pygments.rb (1.1.1)
+    pygments.rb (1.1.2)
       multi_json (>= 1.0.0)
     rack (2.0.1)
     rack-attack (5.0.1)
@@ -476,7 +468,6 @@ DEPENDENCIES
   jbuilder
   jquery-rails
   jquery-ui-rails
-  kaminari
   linkeddata
   memory_profiler
   momentjs-rails
