@@ -1,35 +1,37 @@
-<div style="display: none;" id='rename-path' data-value="<%= rename_page_path(page) %>"></div>
+<% if !@script_render %>
+  <div style="display: none;" id='rename-path' data-value="<%= rename_page_path(page) %>"></div>
 
-<div class="modal fade" tabindex="-1" role="dialog" id='confirm-delete'>
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-body">
-        <p>Delete page <b><%= page.full_title %></b>?</p>
-      </div>
-      <div class="modal-footer">
-        <button type="button" data-dismiss="modal" class="btn">Cancel</button>
-        <button type="button" data-dismiss="modal" class="btn btn-primary" id="delete">Delete</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div id="renameModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class='modal-dialog'>
-    <div class='modal-content'>
-      <div class="modal-body">
+  <div class="modal fade" tabindex="-1" role="dialog" id='confirm-delete'>
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
         <div class="modal-body">
-          New title:
-          <input id="newTitle" name="newTitle" value="<%= page.full_title %>" type="text">
+          <p>Delete page <b><%= page.full_title %></b>?</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" data-dismiss="modal" class="btn">Cancel</button>
+          <button type="button" data-dismiss="modal" class="btn btn-primary" id="delete">Delete</button>
         </div>
       </div>
-      <div class="modal-footer">
-        <button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
-        <button class="btn btn-primary" id='renamePageButton'>Rename</button>
+    </div>
+  </div>
+
+  <div id="renameModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class='modal-dialog'>
+      <div class='modal-content'>
+        <div class="modal-body">
+          <div class="modal-body">
+            New title:
+            <input id="newTitle" name="newTitle" value="<%= page.full_title %>" type="text">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
+          <button class="btn btn-primary" id='renamePageButton'>Rename</button>
+        </div>
       </div>
     </div>
   </div>
-</div>
+<% end %>
 
 <% if !page.nil? && page.verified == false %>
 <div class=alert alert-warning>
@@ -80,30 +82,16 @@
           <i class="glyphicon glyphicon-pencil"></i>
           <strong class="editbuttontext"> Script</strong>
         <% end %>
+
+        <%= link_to(script_path(page.full_underscore_title, format: :pdf), class: 'btn btn-sm btn-default', title: 'Script', 'data-content' => 'Generate a lecture script', 'data-toggle' => 'popover', 'data-trigger' => 'hover', 'data-placement' => 'bottom') do %>
+          <i class="glyphicon glyphicon-pencil"></i>
+          <strong class="editbuttontext"> PDF</strong>
+        <% end %>
       </div>
      </div>
   </div>
   <% end %>
 
-  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-          <h4 class="modal-title" id="myModalLabel">Save Page As HTML</h4>
-        </div>
-        <div class="modal-body">
-          Do you really want to save the current page and all referenced pages?<br>
-          The result will be stored here:<br>
-          <a href='http://data.101companies.org/pages' target="_blank">http://data.101companies.org/pages</a>
-        </div>
-        <div class="modal-footer">
-          <a type="button" class="btn btn-default" href='#' id='render-page-button' data-page-id="<%= raw page.id %>">Ok</a>
-          <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-        </div>
-      </div>
-    </div>
-  </div>
   <div id="<%= page_path(page.full_underscore_title) %>">
     <h1><%= page.full_title %></h1>
   </div>

@@ -7,6 +7,8 @@ gem 'pg'
 gem 'concurrent-ruby'
 gem 'html2text'
 gem 'ruby-stemmer', '>=0.8.3', :require => 'lingua/stemmer'
+gem 'wicked_pdf'
+gem 'wkhtmltopdf-binary'
 
 gem 'turbolinks', '~> 5.0.0'
 gem 'execjs'

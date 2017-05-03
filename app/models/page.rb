@@ -13,6 +13,7 @@ class Page < ActiveRecord::Base
   validates :title, uniqueness: { scope: [:namespace] }
 
   before_save :preparing_the_page
+  include RdfModule
 
   def self.unverified
     where(verified: false)
