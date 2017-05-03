@@ -65,13 +65,13 @@ class Page < ActiveRecord::Base
   def self.search(text)
     like = sanitize_sql_like(text.downcase)
     like = "%#{like}%"
-    where('LOWER(title) like ? or LOWER(raw_content) like ? or (namespace || \':\' || title) = ?', like, like, text)
+    where('LOWER(title) like ? or LOWER(raw_content) like ? or (namespace || \':\' || title) = ?', like, like, text).distinct
   end
 
   def self.search_title(text)
     like = sanitize_sql_like(text.downcase)
     like = "%#{like}%"
-    where('LOWER(title) like ? or (namespace || \':\' || title) = ?', like, text)
+    where('LOWER(title) like ? or (namespace || \':\' || title) = ?', like, text).distinct
   end
 
   def render

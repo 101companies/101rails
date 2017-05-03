@@ -30,7 +30,9 @@ end
       <div class="predicate">
         <%= link_to(triple[:predicate].camelize(:lower), page_path("Property:#{triple[:predicate]}")) %>
       </div>
-      <a href="<%= triple[:node].gsub(' ', '_') %>"><%= triple[:node] %></a>
+      <div class="object label">
+        <a href="<%= triple[:node].gsub(' ', '_') %>"><%= triple[:node] %></a>
+      </div>
     </span>
     <% end %>
   </div>
