@@ -40,129 +40,131 @@
 <% end %>
 
 
-<div id='contentTop'>
-  <% if !@script_render %>
-  <div id='topEditBar' class='editBar'>
-    <div class="btn-toolbar notEditing" style="display: block;">
+<div class='alwaysbreak'>
+  <div id='contentTop'>
+    <% if !@script_render %>
+    <div id='topEditBar' class='editBar'>
+      <div class="btn-toolbar notEditing" style="display: block;">
 
-      <div class="btn-group">
-        <%= render "/pages/repo_tab" %>
-        <% if request && can?(:edit, page) %>
-        <a href='<%= edit_page_path(page.full_title) %>' class="editbutton  btn btn-sm btn-default" id="pageEditButton">
-          <i class="glyphicon glyphicon-pencil"></i>
-          <strong class="editbuttontext"> Edit</strong>
-        </a>
-        <% if current_user.role == ('admin' || 'editor') %>
-          <% if !page.nil? && page.verified == false %>
-          	<a href='<%= verify_page_path(page.full_title) %>' data-method="put" class="editbutton  btn btn-sm btn-default" id="pageVerifyButton">
-              <i class=""></i>
-              <strong class="editbuttontext"> Verify</strong>
-            </a>
-        	<% end %>
-          <button class="editbutton  btn btn-sm btn-default" id="pageDeleteButton">
-            <i class="glyphicon glyphicon-trash"></i><strong> Delete</strong>
-          </button>
-        <% end %>
-          <a href='#renameModal' data-toggle="modal" class="editbutton  btn btn-sm btn-default" id="pageRenameButton">
-            <i class="glyphicon glyphicon-share-alt"></i>
-            <strong class="editbuttontext"> Rename</strong>
+        <div class="btn-group">
+          <%= render "/pages/repo_tab" %>
+          <% if request && can?(:edit, page) %>
+          <a href='<%= edit_page_path(page.full_title) %>' class="editbutton  btn btn-sm btn-default" id="pageEditButton">
+            <i class="glyphicon glyphicon-pencil"></i>
+            <strong class="editbuttontext"> Edit</strong>
           </a>
-          <%= link_to(unverify_page_path(page.full_title), class: 'editbutton  btn btn-sm btn-default') do %>
-            <i class="glyphicon glyphicon-remove-circle"></i>
-            <strong class="editbuttontext"> Unverify</strong>
+          <% if current_user.role == ('admin' || 'editor') %>
+            <% if !page.nil? && page.verified == false %>
+            	<a href='<%= verify_page_path(page.full_title) %>' data-method="put" class="editbutton  btn btn-sm btn-default" id="pageVerifyButton">
+                <i class=""></i>
+                <strong class="editbuttontext"> Verify</strong>
+              </a>
+          	<% end %>
+            <button class="editbutton  btn btn-sm btn-default" id="pageDeleteButton">
+              <i class="glyphicon glyphicon-trash"></i><strong> Delete</strong>
+            </button>
           <% end %>
-        <% else %>
-          <a href='<%= edit_page_path(page.full_title) %>' class="editbutton  btn btn-sm btn-default" id="showSourceButton">
-            <i class="glyphicon glyphicon-share-alt"></i>
-            <strong class="editbuttontext"> Show Markup</strong>
-          </a>
-        <% end %>
+            <a href='#renameModal' data-toggle="modal" class="editbutton  btn btn-sm btn-default" id="pageRenameButton">
+              <i class="glyphicon glyphicon-share-alt"></i>
+              <strong class="editbuttontext"> Rename</strong>
+            </a>
+            <%= link_to(unverify_page_path(page.full_title), class: 'editbutton  btn btn-sm btn-default') do %>
+              <i class="glyphicon glyphicon-remove-circle"></i>
+              <strong class="editbuttontext"> Unverify</strong>
+            <% end %>
+          <% else %>
+            <a href='<%= edit_page_path(page.full_title) %>' class="editbutton  btn btn-sm btn-default" id="showSourceButton">
+              <i class="glyphicon glyphicon-share-alt"></i>
+              <strong class="editbuttontext"> Show Markup</strong>
+            </a>
+          <% end %>
 
-        <%= link_to(script_path(page.full_underscore_title), class: 'btn btn-sm btn-default', title: 'Script', 'data-content' => 'Generate a lecture script', 'data-toggle' => 'popover', 'data-trigger' => 'hover', 'data-placement' => 'bottom') do %>
-          <i class="glyphicon glyphicon-pencil"></i>
-          <strong class="editbuttontext"> Script</strong>
-        <% end %>
+          <%= link_to(script_path(page.full_underscore_title), class: 'btn btn-sm btn-default', title: 'Script', 'data-content' => 'Generate a lecture script', 'data-toggle' => 'popover', 'data-trigger' => 'hover', 'data-placement' => 'bottom') do %>
+            <i class="glyphicon glyphicon-pencil"></i>
+            <strong class="editbuttontext"> Script</strong>
+          <% end %>
 
-        <%= link_to(script_path(page.full_underscore_title, format: :pdf), class: 'btn btn-sm btn-default', title: 'Script', 'data-content' => 'Generate a lecture script', 'data-toggle' => 'popover', 'data-trigger' => 'hover', 'data-placement' => 'bottom') do %>
-          <i class="glyphicon glyphicon-pencil"></i>
-          <strong class="editbuttontext"> PDF</strong>
-        <% end %>
+          <%= link_to(script_path(page.full_underscore_title, format: :pdf), class: 'btn btn-sm btn-default', title: 'Script', 'data-content' => 'Generate a lecture script', 'data-toggle' => 'popover', 'data-trigger' => 'hover', 'data-placement' => 'bottom') do %>
+            <i class="glyphicon glyphicon-pencil"></i>
+            <strong class="editbuttontext"> PDF</strong>
+          <% end %>
+        </div>
+       </div>
+     </div>
+    <% end %>
+
+    <div id="<%= page_path(page.full_underscore_title) %>">
+      <h1><%= page.full_title %></h1>
+    </div>
+
+  </div>
+
+  <div id='sections'>
+    <%= page.render.html_safe %>
+
+    <% if (@resources && @resources.count > 0) || (@books && @books.count > 0) %>
+    <div class='addtional-sections' id='last-section'>
+
+      <div class='section' id='resources' style='display: block;'>
+        <h2 class='headline'>Resources</h2>
+
+        <%= render 'resources', resources: @resources, mappings: @books %>
       </div>
-     </div>
+    </div>
+    <% end %>
+
+    <% if @rdf && @rdf.count > 0 %>
+    <div class='section' id='metasection'>
+      <div class='headlinecontainer'>
+        <h2 class='headline'>Metadata</h2>
+      </div>
+
+      <%= render 'pages/triples', triples: @rdf, hover_show: false %>
+    </div>
+    <% end %>
+
   </div>
-  <% end %>
 
-  <div id="<%= page_path(page.full_underscore_title) %>">
-    <h1><%= page.full_title %></h1>
-  </div>
+  <% if !@script_render && page.backlinks.count > 0 %>
+  <div class='additional-sections'>
+    <div class="section" id="backlinks" style="display: block;">
+       <h2>Backlinks</h2>
 
-</div>
+       <div class='backlinks-body'>
+         <% page.backlinks.each do |link| %>
+           <a href="<%= '/' + link.sub(' ', '_') %>">
+             <span class="backlink">
+               <%= link %>
+             </span>
+           </a>
+         <% end %>
+       </div>
 
-<div id='sections'>
-  <%= page.render.html_safe %>
-
-  <% if (@resources && @resources.count > 0) || (@books && @books.count > 0) %>
-  <div class='addtional-sections' id='last-section'>
-
-    <div class='section' id='resources' style='display: block;'>
-      <h2 class='headline'>Resources</h2>
-
-      <%= render 'resources', resources: @resources, mappings: @books %>
     </div>
   </div>
   <% end %>
 
-  <% if @rdf && @rdf.count > 0 %>
-  <div class='section' id='metasection'>
-    <div class='headlinecontainer'>
-      <h2 class='headline'>Metadata</h2>
-    </div>
+  <hr>
 
-    <%= render 'pages/triples', triples: @rdf, hover_show: false %>
-  </div>
+  <% if !@script_render %>
+    <div id="infofooter">
+      <div class='history'>
+        <% @change = page.get_last_change %>
+        <% if @change[:created_at] %>
+        <img class="small_avatar" height="24" src="<%= @change[:user_pic] %>" width="24">
+        <a href="mailto:<%= @change[:user_email] %>"><%= @change[:user_name] %></a>
+
+        edited this article at
+        <%= l @change[:created_at] %>
+        <% end %>
+
+      </div>
+    </div>
   <% end %>
 
-</div>
-
-<% if !@script_render && page.backlinks.count > 0 %>
-<div class='additional-sections'>
-  <div class="section" id="backlinks" style="display: block;">
-     <h2>Backlinks</h2>
-
-     <div class='backlinks-body'>
-       <% page.backlinks.each do |link| %>
-         <a href="<%= '/' + link.sub(' ', '_') %>">
-           <span class="backlink">
-             <%= link %>
-           </span>
-         </a>
-       <% end %>
-     </div>
-
-  </div>
-</div>
-<% end %>
-
-<hr>
-
-<% if !@script_render %>
-  <div id="infofooter">
-    <div class='history'>
-      <% @change = page.get_last_change %>
-      <% if @change[:created_at] %>
-      <img class="small_avatar" height="24" src="<%= @change[:user_pic] %>" width="24">
-      <a href="mailto:<%= @change[:user_email] %>"><%= @change[:user_name] %></a>
-
-      edited this article at
-      <%= l @change[:created_at] %>
-      <% end %>
-
+  <% unless @script_render %>
+    <div class='copyright-notice'>
+      (C) 2012-<%= Time.now.year %> <a href='http://101companies.org'>101companies.org</a> and <a href='http://softlang.org'>softlang.org</a>
     </div>
-  </div>
-<% end %>
-
-<% unless @script_render %>
-  <div class='copyright-notice'>
-    (C) 2012-<%= Time.now.year %> <a href='http://101companies.org'>101companies.org</a> and <a href='http://softlang.org'>softlang.org</a>
-  </div>
-<% end %>
+  <% end %>
+</div>
