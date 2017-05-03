@@ -5,7 +5,7 @@
         <p>Create new page <b><%= @full_title %></b>?</p>
       </div>
       <div class="modal-footer">
-        <%= link_to('Cancel', '/101project', type: 'button', class: 'btn btn-default', 'data-dismiss' => 'modal') %>
+        <%= link_to('Cancel', '#', onclick: 'window.history.back();', type: 'button', class: 'btn btn-default', 'data-dismiss' => 'modal') %>
         <%= link_to('Create', create_new_page_page_path(@full_title), type: 'button', class: 'btn btn-primary') %>
       </div>
     </div>
