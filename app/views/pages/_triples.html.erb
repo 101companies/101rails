@@ -11,7 +11,7 @@
               this
             </div>
             <div class='predicate'>
-              <%= triple[:predicate] %>
+              <%= link_to(triple[:predicate], page_path("Property:#{triple[:predicate]}")) %>
             </div>
             <div class="object label">
               <%
@@ -42,7 +42,7 @@
               </a>
             </div>
             <div class='predicate'>
-              <%= triple[:predicate] %>
+              <%= link_to(triple[:predicate], page_path("Property:#{triple[:predicate]}")) %>
             </div>
             <div class="object label">
               this
