@@ -27,7 +27,9 @@ end
     <% triples.each do |triple| %>
     <span class="resourcebox nonbookresource" data-toggle="collapse resource" data-original-title="" title="">
       <div class="subject label">this</div>
-      <div class="predicate"><%= triple[:predicate] %></div>
+      <div class="predicate">
+        <%= link_to(triple[:predicate].camelize(:lower), page_path("Property:#{triple[:predicate]}")) %>
+      </div>
       <a href="<%= triple[:node].gsub(' ', '_') %>"><%= triple[:node] %></a>
     </span>
     <% end %>
