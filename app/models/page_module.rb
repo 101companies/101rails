@@ -60,7 +60,7 @@ class PageModule
     else
       like_name = Page.send(:sanitize_sql_like, name.downcase)
       like_name = "%#{like_name}%"
-      Page.left_outer_joins(:triples).where('(lower(triples.predicate) = ?) or (lower(pages.title) like ? and pages.namespace = ?)', name.downcase, like_name, 'Property')
+      Page.left_outer_joins(:triples).where('(lower(triples.predicate) = ?) or (lower(pages.title) like ? and pages.namespace = ?)', name.downcase, like_name, 'Property').distinct
     end
   end
 
