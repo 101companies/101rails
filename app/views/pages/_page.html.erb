@@ -9,7 +9,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" data-dismiss="modal" class="btn">Cancel</button>
-          <button type="button" data-dismiss="modal" class="btn btn-primary" id="delete">Delete</button>
+          <%= link_to 'Delete', page_path(page.full_title), method: :delete, class: 'btn btn-primary' %>
         </div>
       </div>
     </div>
@@ -17,18 +17,20 @@
 
   <div id="renameModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class='modal-dialog'>
-      <div class='modal-content'>
-        <div class="modal-body">
+      <%= form_tag(rename_page_path(page.full_title), method: :put) do %>
+        <div class='modal-content'>
           <div class="modal-body">
-            New title:
-            <input id="newTitle" name="newTitle" value="<%= page.full_title %>" type="text">
+            <div class="modal-body">
+              New title:
+              <input id="newTitle" name="newTitle" value="<%= page.full_title %>" type="text">
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
+            <button type='submit' class='btn btn-primary'>Rename</button>
           </div>
         </div>
-        <div class="modal-footer">
-          <button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
-          <button class="btn btn-primary" id='renamePageButton'>Rename</button>
-        </div>
-      </div>
+      <% end %>
     </div>
   </div>
 <% end %>
@@ -60,7 +62,7 @@
                 <strong class="editbuttontext"> Verify</strong>
               </a>
           	<% end %>
-            <button class="editbutton  btn btn-sm btn-default" id="pageDeleteButton">
+            <button class="editbutton  btn btn-sm btn-default" data-toggle="modal" data-target="#confirm-delete">
               <i class="glyphicon glyphicon-trash"></i><strong> Delete</strong>
             </button>
           <% end %>
