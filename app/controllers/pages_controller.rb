@@ -173,7 +173,7 @@ class PagesController < ApplicationController
   def destroy
     authorize! :destroy, @page
 
-    result = @page.delete
+    result = @page.destroy
     respond_to do |format|
       format.html { redirect_to page_path('101project'), notice: "Page #{@page.full_title} was deleted" }
     end
