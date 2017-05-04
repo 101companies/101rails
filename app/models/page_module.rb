@@ -55,7 +55,13 @@ class PageModule
   end
 
   def self.search_property(name)
-    Page.joins(:triples).where(triples: { predicate: name })
+    if name.blank?
+      Page.where(namespace: 'Property')
+    else
+      like_name = Page.send(:sanitize_sql_like, name.downcase)
+      like_name = "%#{like_name}%"
+      Page.left_outer_joins(:triples).where('(lower(triples.predicate) = ?) or (lower(pages.title) like ? and pages.namespace = ?)', name.downcase, like_name, 'Property')
+    end
   end
 
   def self.search_title(query_string, namespace=nil)
