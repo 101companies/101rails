@@ -149,6 +149,17 @@ RSpec.describe PagesController, type: :controller do
 
       expect(@page.reload.title).to eq('OtherTitle')
     end
+
+    it 'renames a semantic property' do
+      user = create(:user)
+      page = create(:property_having_page)
+      property_page = create(:property_page)
+
+      get(:rename, params: { id: property_page.full_title, newTitle: 'Property:hasDomain' }, session: { user_id: user.id })
+
+      page.reload
+      expect(page.raw_content).to include('[[hasDomain::SomeDomain]]')
+    end
   end
 
   describe 'search' do

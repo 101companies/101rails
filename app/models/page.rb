@@ -169,7 +169,7 @@ class Page < ActiveRecord::Base
   def rewrite_backlink(related_page, old_title)
     if !related_page.nil?
       # rewrite link in page, found by backlink
-      related_page.raw_content = related_page.rewrite_internal_links old_title, self.full_title
+      related_page.raw_content = related_page.rewrite_internal_links(old_title, self.full_title)
       # and save changes
       if !related_page.save
         Rails.logger.info "Failed to rewrite links for page " + related_page.full_title
@@ -203,6 +203,15 @@ class Page < ActiveRecord::Base
     content
   end
 
+  def rename_property(name, new_name)
+    Page.find_each do |page|
+      if page.raw_content.include?("[[#{name}")
+        page.raw_content = page.raw_content.gsub("[[#{name}", "[[#{new_name}")
+        page.save!
+      end
+    end
+  end
+
   def update_or_rename(new_title, content, sections, user)
     page_change = PageChange.new title: self.title,
                                  namespace: self.namespace,
@@ -210,10 +219,15 @@ class Page < ActiveRecord::Base
                                  page: self,
                                  user: user
 
+    new_title_only = PageModule.retrieve_namespace_and_title(new_title)['title']
+    if namespace == 'Property'
+      rename_property(title, new_title_only)
+    end
+
     self.raw_content = content
     # sections
     # unescape new title to nice readable url
-    new_title = PageModule.unescape_wiki_url new_title
+    new_title = PageModule.unescape_wiki_url(new_title)
     # if title was changed -> rename page
     if (new_title != self.full_title and GetPage.run(full_title: new_title).value[:page].nil?)
       self.rename(new_title, page_change)
