@@ -43,5 +43,7 @@
 </script>
 
 <% @pages.each do |page| %>
-  <%= render(partial: 'pages/page', locals: {:@rdf => @triples[page], :@script_render => true, page: page}) %>
+  <% cache page do %>
+    <%= render(partial: 'pages/page', locals: {:@rdf => @triples[page], :@script_render => true, page: page}) %>
+  <% end %>
 <% end %>
