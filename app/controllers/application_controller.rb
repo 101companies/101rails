@@ -1,6 +1,18 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery
 
+  rescue_from ActionController::UnknownFormat,  with: :render_404
+
+  def render_404
+    respond_to do |format|
+      format.html { render file: "public/404.html", status: 404, layout: false }
+      format.xml { head 404 }
+      format.js { head 404 }
+      format.json { head 404 }
+    end
+  rescue ActionController::UnknownFormat
+    render status: 404, text: "Not Found"
+  end
   # return to previous page after sign in
   def after_sign_in_path_for(resource)
     request.env['omniauth.origin'] || stored_location_for(resource) || root_path

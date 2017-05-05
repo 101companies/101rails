@@ -37,5 +37,4 @@ class ScriptsController < ApplicationController
       end
     end
   end
-
 end
