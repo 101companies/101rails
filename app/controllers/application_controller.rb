@@ -11,7 +11,6 @@ class ApplicationController < ActionController::Base
       format.json { head 404 }
     end
   rescue ActionController::UnknownFormat
-    render status: 404, text: "Not Found"
   end
   # return to previous page after sign in
   def after_sign_in_path_for(resource)
