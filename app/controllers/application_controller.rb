@@ -12,6 +12,7 @@ class ApplicationController < ActionController::Base
     end
   rescue ActionController::UnknownFormat
   end
+  
   # return to previous page after sign in
   def after_sign_in_path_for(resource)
     request.env['omniauth.origin'] || stored_location_for(resource) || root_path

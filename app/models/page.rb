@@ -1,4 +1,4 @@
-class Page < ActiveRecord::Base
+class Page < ApplicationRecord
 
   # relations here
   has_one :repo_link, dependent: :destroy
@@ -29,6 +29,10 @@ class Page < ActiveRecord::Base
 
   def self.technologies
     where(namespace: 'Technology')
+  end
+
+  def self.contributions
+    where(namespace: 'Contribution')
   end
 
   def preparing_the_page
@@ -306,7 +310,7 @@ class Page < ActiveRecord::Base
   def self.popular_technology_pages
     Page.find_by_sql('
     SELECT * FROM pages
-    inner join
+    left outer join
       (SELECT  properties ->> \'title\' as properties_title,
         COUNT(*) AS count_all
         FROM "ahoy_events"
@@ -314,7 +318,7 @@ class Page < ActiveRecord::Base
         (position(\'Technology:\' in properties ->> \'title\') <> 0)
         GROUP BY properties ->> \'title\' ORDER BY count_all desc LIMIT 5) as popular_pages
     on (pages.namespace || \':\' || pages.title) = properties_title
-    order by count_all desc')
+    order by count_all desc limit 5')
   end
 
   def self.recently_updated
@@ -355,10 +359,54 @@ class Page < ActiveRecord::Base
 
   def self.used_predicates
     Page.connection.execute('
-      SELECT DISTINCT substr(link, 0, pos)
+      SELECT DISTINCT substr(link, 0, pos) as predicate
       FROM pages, unnest(used_links) AS link, strpos(link, \'::\') AS pos
-      WHERE pos > 0
-    ').values.map { |row| row[0] }.sort
+      WHERE pos > 0 order by predicate
+    ').values.map { |row| row[0] }
+  end
+
+  def self.most_referenced_contributions
+    Triple.where('position(\'Contribution\' in triples.object) = 1').group(:object).limit(200).order('count_all').count
+  end
+
+  def self.popular_contributions
+    rows = Page.connection.execute(<<-SQL
+      with popular_pages as (
+        SELECT  properties ->> \'title\' as properties_title,
+          COUNT(*) AS count_all
+          FROM "ahoy_events"
+          WHERE "ahoy_events"."name" = \'$view\' AND
+          (position(\'Contribution:\' in properties ->> \'title\') <> 0)
+          GROUP BY properties ->> \'title\' ORDER BY count_all desc
+      )
+      SELECT
+        pages.title as link,
+        CASE WHEN "popular_pages"."count_all" is NULL THEN 1 ELSE "popular_pages"."count_all" END as count_all
+      FROM pages
+      left outer join popular_pages
+      on (pages.namespace || \':\' || pages.title) = popular_pages.properties_title
+      where pages.namespace = \'Contribution\'
+      order by count_all desc
+      SQL
+    )
+
+    rows.map do |row|
+      [row['link'], row['count_all']]
+    end.to_h
+  end
+
+  def self.popular_contribution_pages
+    Page.find_by_sql('
+    SELECT * FROM pages
+    inner join
+      (SELECT  properties ->> \'title\' as properties_title,
+        COUNT(*) AS count_all
+        FROM "ahoy_events"
+        WHERE "ahoy_events"."name" = \'$view\' AND
+        (position(\'Contribution:\' in properties ->> \'title\') <> 0)
+        GROUP BY properties ->> \'title\' ORDER BY count_all desc LIMIT 5) as popular_pages
+    on (pages.namespace || \':\' || pages.title) = properties_title
+    order by count_all desc')
   end
 
   def self.cached_count

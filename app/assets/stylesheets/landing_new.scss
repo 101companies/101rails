@@ -5,6 +5,13 @@
 img {
     margin-bottom: 10px;
 }
+.col-md-6 {
+    text-align: justify;
+}
+
+.page {
+  font-size: 17px;
+}
 
 .big-list li a {
     line-height: 2em;
@@ -40,6 +47,10 @@ text {
   height: 100%;
 }
 
+.frontpage-description {
+  margin-right: 20px;
+}
+
 html {
   max-height: 100%;
   max-width: 100%;
@@ -50,7 +61,8 @@ body {
   max-height: 100%;
   max-width: 100%;
   overflow: hidden;
-  font-family: 'Roboto', sans-serif;
+  font-weight: 300;
+  font-family: Open Sans,Source Sans Pro,Helvetica,Arial,sans-serif;
 }
 
 h2 {
