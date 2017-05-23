@@ -9,17 +9,13 @@ $(document).on('turbolinks:load', function() {
   metadata.parent().nextAll("p").hide();
   metadata.parent().nextAll("pre").hide();
   metadata.parent().hide();
-
-//   $('#renamePageButton').click(function() {
-//     var url = $('#rename-path').data('value');
-//     $.ajax({
-//       url: url,
-//       type: 'PUT',
-//       data: {
-//         newTitle: $('#newTitle').val()
-//       }
-//     }).done(function(data) {
-//       window.location.pathname = '/' + data.newTitle;
-//     })
-//   });
 });
+
+function goBack() {
+  if(window.history.length == 2) {
+    window.location.href = '/101project'
+  }
+  else {
+    window.history.back();
+  }
+}
