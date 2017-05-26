@@ -8,9 +8,18 @@
   iframe {
       display: none;
   }
+  .video-title {
+    display: none;
+  }
 </style>
 
 <script type="text/javascript">
+  $(document).ready(function() {
+    $('iframe').each(function() {
+      var title = $(this).prev().text();
+      $(this).replaceWith('<a href="' + $(this).attr('src') + '">' + title + '</a>')
+    });
+  });
   <%
     page_refs = @pages.map do |page|
       {
