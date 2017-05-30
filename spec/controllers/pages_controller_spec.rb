@@ -117,6 +117,18 @@ RSpec.describe PagesController, type: :controller do
       expect(response).to redirect_to(page_path('new_page'))
     end
 
+    it 'creates page with special characters' do
+      user = create(:user)
+
+      expect {
+        get(:create_new_page, params: { id: 'AST^+' }, session: { user_id: user.id })
+      }.to change(Page, :count).by(1)
+
+      expect(response.status).to eq(302)
+      expect(response).to redirect_to(page_path('AST^+'))
+      expect(Page.where(title: 'AST^+').count).to eq(1)
+    end
+
     it 'does not create new page' do
       expect {
         get(:create_new_page, params: { id: 'new_page' })

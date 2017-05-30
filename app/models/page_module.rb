@@ -125,7 +125,7 @@ class PageModule
 
   # [wiki] Page name string in URL
   def self.uri_to_wiki(uri)
-    StringUtils::upcase_first_char(CGI.unescape(uri).tr('_', ' ').tr('#<>[]|{}', '')) if uri
+    StringUtils::upcase_first_char(uri.tr('_', ' ').tr('#<>[]|{}', '')) if uri
   end
 
   # Convert a Wiki page name ("Getting there & away") to URI-safe format ("Getting_there_%26_away"),
