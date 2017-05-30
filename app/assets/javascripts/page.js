@@ -12,7 +12,7 @@ $(document).on('turbolinks:load', function() {
 });
 
 function goBack() {
-  if(window.history.length == 2) {
+  if(window.history.length <= 2) {
     window.location.href = '/101project'
   }
   else {
