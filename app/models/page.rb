@@ -326,16 +326,7 @@ class Page < ApplicationRecord
   end
 
   def preview
-    if sections.length > 0
-      content = sections[0]['content']
-      content = content.sub(/==.*==/, '')
-      content = content[0..100]
-    else
-      content = ''
-    end
-
-    parser = WikiCloth::Parser.new(data: content, noedit: true)
-    parser.to_html.gsub('<pre></pre>', '')
+    headline
   end
 
   def self.popular_technologies
@@ -343,6 +334,7 @@ class Page < ApplicationRecord
       result = Triple.where('substring(object from 0 for 11) = \'Technology\'').group(:object).count
 
       result.map do |key, value|
+        # strip namespace
         _, key = key.split(':') if key.include?(':')
         [key, value]
       end.to_h
