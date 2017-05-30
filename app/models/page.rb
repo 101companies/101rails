@@ -35,6 +35,10 @@ class Page < ApplicationRecord
     where(namespace: 'Contribution')
   end
 
+  def self.languages
+    where(namespace: 'Language')
+  end
+
   def preparing_the_page
     self.html_content = self.parse
 
@@ -307,18 +311,18 @@ class Page < ApplicationRecord
     self.get_parser.sections.first.children.find { |s| s.full_title.downcase == section.downcase }
   end
 
-  def self.popular_technology_pages
-    Page.find_by_sql('
+  def self.popular_pages(namespace)
+    Page.find_by_sql("
     SELECT * FROM pages
-    left outer join
-      (SELECT  properties ->> \'title\' as properties_title,
+    inner join
+      (SELECT  properties ->> 'title' as properties_title,
         COUNT(*) AS count_all
-        FROM "ahoy_events"
-        WHERE "ahoy_events"."name" = \'$view\' AND
-        (position(\'Technology:\' in properties ->> \'title\') <> 0)
-        GROUP BY properties ->> \'title\' ORDER BY count_all desc LIMIT 5) as popular_pages
-    on (pages.namespace || \':\' || pages.title) = properties_title
-    order by count_all desc limit 5')
+        FROM \"ahoy_events\"
+        WHERE \"ahoy_events\".\"name\" = '$view' AND
+        (position('#{namespace}:' in properties ->> 'title') <> 0)
+        GROUP BY properties ->> 'title' ORDER BY count_all desc LIMIT 5) as popular_pages
+    on (pages.namespace || ':' || pages.title) = properties_title
+    order by count_all desc limit 5")
   end
 
   def self.recently_updated
@@ -333,11 +337,15 @@ class Page < ApplicationRecord
     Rails.cache.fetch("popular_technologies", expires_in: 12.hours) do
       result = Triple.where('substring(object from 0 for 11) = \'Technology\'').group(:object).count
 
-      result.map do |key, value|
-        # strip namespace
-        _, key = key.split(':') if key.include?(':')
-        [key, value]
-      end.to_h
+      strip_namespaces(result)
+    end
+  end
+
+  def self.popular_languages
+    Rails.cache.fetch("popular_languages", expires_in: 12.hours) do
+      result = Triple.where('substring(object from 0 for 9) = \'Language\'').group(:object).count
+
+      strip_namespaces(result)
     end
   end
 
@@ -397,6 +405,16 @@ class Page < ApplicationRecord
     Rails.cache.fetch("page_count", expires_in: 12.hours) do
       count
     end
+  end
+
+  private
+
+  def self.strip_namespaces(data)
+    data.map do |key, value|
+      # strip namespace
+      _, key = key.split(':') if key.include?(':')
+      [key, value]
+    end.to_h
   end
 
 end
