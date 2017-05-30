@@ -5,7 +5,7 @@ class ResourcesController < ApplicationController
     query = params[:query]
     begin
       sse = SPARQL.parse(query)
-    rescue NoMethodError
+    rescue NoMethodError, EBNF::LL1::Parser::Error
       flash[:error] = 'Error parsing query'
       return redirect_to(resources_path)
     end

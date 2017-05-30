@@ -340,20 +340,12 @@ class Page < ApplicationRecord
 
   def self.popular_technologies
     Rails.cache.fetch("popular_technologies", expires_in: 12.hours) do
-      technologies = Page.connection.execute('
-        SELECT substring(link from 12) AS link, count(*)
-        FROM pages, unnest(used_links) AS link
-        WHERE substring(link from 0 for 11) = \'Technology\'
-        GROUP BY 1
-        order by 2 desc
-      ')
+      result = Triple.where('substring(object from 0 for 11) = \'Technology\'').group(:object).count
 
-      result = {}
-      technologies.each do |row|
-        result[row['link']] = row['count']
-      end
-
-      result
+      result.map do |key, value|
+        _, key = key.split(':') if key.include?(':')
+        [key, value]
+      end.to_h
     end
   end
 

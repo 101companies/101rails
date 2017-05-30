@@ -101,12 +101,37 @@ RSpec.describe ResourcesController, type: :controller do
     end
 
     it 'landing without graph' do
-
       allow($graph).to receive(:has_graph?) { nil }
-      get(:index)
-      expect(response).not_to have_http_status(:success)
 
+      get(:index)
+
+      expect(response).not_to have_http_status(:success)
     end
 
+  end
+
+  describe 'query' do
+    it 'gets most frequently used predicates' do
+      query = 'SELECT ?predicate (COUNT(*)AS ?frequency)
+WHERE {?subject ?predicate ?obDEject}
+GROUP BY ?predicate
+ORDER BY DESC(?frequency)
+LIMIT 2'
+
+      get(:query, params: { query: query })
+
+      expect(response).to have_http_status(:ok)
+      expect(json_response['head']['vars']).to eq(['predicate', 'frequency'])
+      expect(json_response['results']['bindings'].length).to eq(2)
+    end
+
+    it 'can handle invalid syntax' do
+      query = 'this is not sparql'
+
+      get(:query, params: { query: query })
+
+      expect(response).to redirect_to(resources_path)
+      expect(flash[:error]).not_to be(nil)
+    end
   end
 end
