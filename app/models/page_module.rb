@@ -117,6 +117,30 @@ class PageModule
     Page.where(namespace: nt['namespace'], title: nt['title']).first
   end
 
+  def self.front_page
+    page = find_by_full_title('Internal:FrontPage')
+    if page.nil?
+      page = Page.create!(
+        namespace: 'Internal',
+        title: 'FrontPage',
+        raw_content: "== Headline ==\n\nFront Page"
+      )
+    end
+    page
+  end
+
+  def self.courses_page
+    page = find_by_full_title('Internal:FrontPage')
+    if page.nil?
+      page = Page.create!(
+        namespace: 'Internal',
+        title: 'Courses',
+        raw_content: "== Headline ==\n\nCourses Page"
+      )
+    end
+    page
+  end
+
   def self.uncapitalize_first_char(string)
     string[0,1].downcase + string[1..-1]
   end

@@ -1,10 +1,24 @@
 <div class="tab-content page">
   <div class="tab-pane" id='technologies'>
-    <%= render('technologies') %>
+    <%= render(
+          'landing_tab',
+          tag_class_name: 'technologies-cloud',
+          popular_pages: @popular_technology_pages,
+          recent_pages: @recent_technology_pages,
+          tagcloud_data: @technologies
+        )
+    %>
   </div>
 
   <div class="tab-pane" id='languages'>
-    <%= render('languages') %>
+    <%= render(
+          'landing_tab',
+          tag_class_name: 'languages-cloud',
+          popular_pages: @popular_language_pages,
+          recent_pages: @recent_language_pages,
+          tagcloud_data: @languages
+        )
+    %>
   </div>
 
   <div class="tab-pane active" id='101'>
@@ -12,7 +26,24 @@
   </div>
 
   <div class="tab-pane" id='contributions'>
-    <%= render('contributions') %>
+    <%= render(
+          'landing_tab',
+          tag_class_name: 'contributions-cloud',
+          popular_pages: @popular_contribution_pages,
+          recent_pages: @recent_contribution_pages,
+          tagcloud_data: @contributions
+        )
+    %>
+  </div>
+
+  <div class='tab-pane' id='courses'>
+    <div class='container'>
+      <div class='row inner-page' style="margin-top: 100px;">
+        <div class='col-md-12'>
+          <%= @courses_page.render.html_safe %>
+        </div>
+      </div>
+    </div>
   </div>
 
 </div>

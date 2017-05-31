@@ -5,6 +5,8 @@ class LandingController < ApplicationController
   end
 
   def new_index
+    @front_page = PageModule.front_page
+    @courses_page = PageModule.courses_page
     @technologies = Page.popular_technologies
     @popular_technology_pages = Page.popular_pages('Technology')
     @recent_technology_pages = Page.technologies.recently_updated

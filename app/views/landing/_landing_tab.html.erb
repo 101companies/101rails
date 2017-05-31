@@ -1,19 +1,47 @@
-<div class='row inner-page' style="margin-top: 100px;">
+<div class='row' style="margin-top: 100px;">
   <div class='col-md-6'>
-    <div class='tag-cloud'></div>
+    <div class='<%= tag_class_name %>'></div>
   </div>
-  <div class='col-md-6'>
-    <div class='frontpage-description'>
-      <%= @front_page.render.html_safe %>
-    </div>
-    <br>
-    <br>
+
+  <div class='col-md-3'>
+    <h2 class='category-title'>Popular</h2>
+    <% popular_pages.each do |page| %>
+      <div class='page-preview'>
+        <h2>
+          <%= link_to(page.full_title, page_path(page.full_title))  %>
+        </h2>
+
+        <div class='content'>
+          <%= cache(page) do %>
+            <%= raw page.preview %>
+          <% end %>
+        </div>
+      </div>
+      <hr />
+    <% end %>
+  </div>
+  <div class='col-md-3'>
+    <h2 class='category-title'>Recent</h2>
+    <% recent_pages.each do |page| %>
+      <div class='page-preview'>
+        <h2>
+          <%= link_to(page.full_title, page_path(page.full_title))  %>
+        </h2>
+
+        <div class='content'>
+          <%= cache(page) do %>
+            <%= raw page.preview %>
+          <% end %>
+        </div>
+      </div>
+      <hr />
+    <% end %>
   </div>
 </div>
 
 <script>
   $(document).ready(function() {
-    var data = <%= raw @technologies.to_json %>
+    var data = <%= raw tagcloud_data.to_json %>
 
     var width = window.innerWidth / 2;
     var height = window.innerHeight - 120;
@@ -29,7 +57,6 @@
     var words = $.map(data, function(_, x) {
       return x;
     });
-    console.log(word_numbers);
 
     var step = Math.max.apply(null, word_numbers) / 6;
 
@@ -55,7 +82,7 @@
     .start();
 
     function draw(words) {
-      d3.selectAll(".tag-cloud").append("svg")
+      d3.selectAll(".<%= tag_class_name %>").append("svg")
       .attr("width", width)
       .attr("height", height)
       .append("g")
