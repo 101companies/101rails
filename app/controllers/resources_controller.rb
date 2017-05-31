@@ -18,6 +18,7 @@ class ResourcesController < ApplicationController
   end
 
   def index
+    @resources_page = PageModule.resources_page
     if(params[:q].present?)
       params[:id] = params[:q]
       show

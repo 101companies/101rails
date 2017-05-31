@@ -141,6 +141,18 @@ class PageModule
     page
   end
 
+  def self.resources_page
+    page = find_by_full_title('Internal:Resources')
+    if page.nil?
+      page = Page.create!(
+        namespace: 'Internal',
+        title: 'Resources',
+        raw_content: "== Headline ==\n\nResources Page"
+      )
+    end
+    page
+  end
+
   def self.uncapitalize_first_char(string)
     string[0,1].downcase + string[1..-1]
   end

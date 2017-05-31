@@ -9,7 +9,7 @@ class PageEditor extends React.Component {
 
     this.state = {
       rawContent: this.props.rawContent,
-      containerWidth: 400
+      containerWidth: 50
     }
   }
 
@@ -17,6 +17,16 @@ class PageEditor extends React.Component {
     this.setState({
       containerWidth: this.container.clientWidth,
     });
+
+    $(window).resize(() => {
+      this.setState({
+        containerWidth: this.container.clientWidth,
+      });
+    });
+  }
+
+  componentWillUnmount() {
+    $(window).off("resize");
   }
 
   savePage() {
@@ -56,7 +66,7 @@ class PageEditor extends React.Component {
       }
     });
 
-    return (<div className='container' ref={(container) => { this.container = container; }}>
+    return (<div className='' ref={(container) => { this.container = container; }}>
       <div id="contentTop">
         <div id="topEditBar" className="editBar">
           <div className="btn-toolbar editing" style={{display: 'block'}}>

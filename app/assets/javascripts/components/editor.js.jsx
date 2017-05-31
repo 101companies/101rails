@@ -36,7 +36,7 @@ var Editor = React.createClass({
       mode   : '',
       theme  : '',
       height : '500px',
-      width  : '500px',
+      width  : '50px',
       value  : '',
       fontSize   : 12,
       showGutter : true,
