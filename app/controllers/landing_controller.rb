@@ -14,7 +14,7 @@ class LandingController < ApplicationController
 
     @recent_language_pages = Page.languages.recently_updated
     @popular_language_pages = Page.popular_pages('Language')
-    @languages = Page.popular_page_views('Feature')
+    @languages = Page.popular_page_views('Language')
 
     @recent_feature_pages = Page.features.recently_updated
     @popular_feature_pages = Page.popular_pages('Feature')
