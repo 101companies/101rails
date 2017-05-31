@@ -27,6 +27,10 @@ class Page < ApplicationRecord
     where(namespace: 'Script')
   end
 
+  def self.features
+    where(namespace: 'Feature')
+  end
+
   def self.technologies
     where(namespace: 'Technology')
   end
@@ -341,6 +345,14 @@ class Page < ApplicationRecord
     end
   end
 
+  def self.popular_features
+    Rails.cache.fetch("popular_features", expires_in: 12.hours) do
+      result = Triple.where('substring(object from 0 for 8) = \'Feature\'').group(:object).count
+
+      strip_namespaces(result)
+    end
+  end
+
   def self.popular_languages
     Rails.cache.fetch("popular_languages", expires_in: 12.hours) do
       result = Triple.where('substring(object from 0 for 9) = \'Language\'').group(:object).count
@@ -359,6 +371,32 @@ class Page < ApplicationRecord
 
   def self.most_referenced_contributions
     Triple.where('position(\'Contribution\' in triples.object) = 1').group(:object).limit(200).order('count_all').count
+  end
+
+  def self.popular_page_views(namespace)
+    rows = Page.connection.execute(<<-SQL
+      with popular_pages as (
+        SELECT  properties ->> \'title\' as properties_title,
+          COUNT(*) AS count_all
+          FROM "ahoy_events"
+          WHERE "ahoy_events"."name" = \'$view\' AND
+          (position(\'#{namespace}:\' in properties ->> \'title\') <> 0)
+          GROUP BY properties ->> \'title\' ORDER BY count_all desc
+      )
+      SELECT
+        pages.title as link,
+        CASE WHEN "popular_pages"."count_all" is NULL THEN 1 ELSE "popular_pages"."count_all" END as count_all
+      FROM pages
+      left outer join popular_pages
+      on (pages.namespace || \':\' || pages.title) = popular_pages.properties_title
+      where pages.namespace = \'#{namespace}\'
+      order by count_all desc
+      SQL
+    )
+
+    rows.map do |row|
+      [row['link'], row['count_all']]
+    end.to_h
   end
 
   def self.popular_contributions

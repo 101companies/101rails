@@ -130,7 +130,7 @@ class PageModule
   end
 
   def self.courses_page
-    page = find_by_full_title('Internal:FrontPage')
+    page = find_by_full_title('Internal:Courses')
     if page.nil?
       page = Page.create!(
         namespace: 'Internal',

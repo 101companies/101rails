@@ -10,6 +10,17 @@
     %>
   </div>
 
+  <div class="tab-pane" id='features'>
+    <%= render(
+          'landing_tab',
+          tag_class_name: 'features-cloud',
+          popular_pages: @popular_feature_pages,
+          recent_pages: @recent_feature_pages,
+          tagcloud_data: @features
+        )
+    %>
+  </div>
+
   <div class="tab-pane" id='languages'>
     <%= render(
           'landing_tab',
