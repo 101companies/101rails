@@ -1,12 +1,5 @@
 var TripleEditor = React.createClass({
 
-  componentDidMount: function() {
-    $(this.objectInput).autocomplete({
-      source: this.props.pages,
-      change: this.onChange
-    });
-  },
-
   onObjectChange: function(event) {
     this.props.onChange({
       id: this.props.triple.id,
