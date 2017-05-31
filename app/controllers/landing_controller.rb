@@ -1,10 +1,6 @@
 class LandingController < ApplicationController
 
   def index
-    @technologies = Page.popular_technologies
-  end
-
-  def new_index
     @front_page = PageModule.front_page
     @courses_page = PageModule.courses_page
 
@@ -24,7 +20,7 @@ class LandingController < ApplicationController
     @popular_feature_pages = Page.popular_pages('Feature')
     @features = Page.popular_page_views('Feature')
 
-    render layout: 'landing_new'
+    render layout: 'landing'
   end
 
 end

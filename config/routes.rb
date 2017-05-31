@@ -29,7 +29,6 @@ Wiki::Application.routes.draw do
 
   # homepage
   root to: "landing#index"
-  get '/new_landing' => 'landing#new_index'
   # sitemap
   get '/sitemap.xml' => 'application#sitemap'
   # link for downloading slides from slideshare
