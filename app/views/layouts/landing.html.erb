@@ -41,7 +41,7 @@
     </a> -->
     <!-- Navigation -->
     <nav class="navbar navbar-inverse navbar-fixed-top" style="height: 80px">
-      <div class='container'>
+      <div class='container-fluid'>
         <div class="navbar-header">
           <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
             <span class="sr-only">Toggle navigation</span>
@@ -49,36 +49,39 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="#">101wiki</a>
+          <a class="navbar-brand" href="#">
+            <%= image_tag('tower.png', style: 'max-width: 100%; max-height: 100%;') %>
+          </a>
         </div>
 
-        <ul class='nav navbar-nav navbar-right'>
-          <li class='active'>
-            <a class='scroll brand-4 header-nav-link' href='#101' data-toggle="tab">What's 101?</a>
-          </li>
-          <li>
-            <a class='scroll brand-4 header-nav-link' href='#languages' data-toggle="tab">Languages</a>
-          </li>
-          <li>
-            <a class='scroll brand-4 header-nav-link' href='#technologies' data-toggle="tab">Technologies</a>
-          </li>
-          <li>
-            <a class='scroll brand-4 header-nav-link' href='#features' data-toggle="tab">Features</a>
-          </li>
-          <li>
-            <a class='scroll brand-1 header-nav-link' href='#contributions' data-toggle="tab">Contributions</a>
-          </li>
-          <li>
-            <a class='scroll brand-4 header-nav-link' href='#courses' data-toggle="tab">Courses</a>
-          </li>
-          <li>
-            <form class='form navbar-form navbar-search pull-left' action='/search'>
-              <div class='form-group'>
-                <input class='search-query category-title' name='q' value='<%= (defined? @query_string) ? @query_string : "" %>' id='search-query' placeholder="Search" type='text'>
-              </div>
-            </form>
-          </li>
-        </ul>
+        <div class="collapse navbar-collapse" id='bs-example-navbar-collapse-1'>
+          <ul class='nav navbar-nav navbar-right'>
+            <li class='active'>
+              <a class='scroll brand-4 header-nav-link' href='#101' data-toggle="tab">What's 101?</a>
+            </li>
+            <li>
+              <a class='scroll brand-4 header-nav-link' href='#languages' data-toggle="tab">Languages</a>
+            </li>
+            <li>
+              <a class='scroll brand-4 header-nav-link' href='#technologies' data-toggle="tab">Technologies</a>
+            </li>
+            <li>
+              <a class='scroll brand-4 header-nav-link' href='#features' data-toggle="tab">Features</a>
+            </li>
+            <li>
+              <a class='scroll brand-1 header-nav-link' href='#contributions' data-toggle="tab">Contributions</a>
+            </li>
+            <li>
+              <a class='scroll brand-4 header-nav-link' href='#courses' data-toggle="tab">Courses</a>
+            </li>
+            <li>
+              <form class='form navbar-form navbar-search pull-left' action='/search'>
+                <div class='form-group'>
+                  <input class='search-query category-title' name='q' value='<%= (defined? @query_string) ? @query_string : "" %>' id='search-query' placeholder="Search" type='text'>
+                </div>
+              </form>
+            </li>
+          </ul>
       </div>
     </nav>
 
