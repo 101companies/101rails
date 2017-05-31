@@ -86,10 +86,9 @@ RSpec.describe ResourcesController, type: :controller do
     end
 
     it 'returns html of landing' do
-
       get(:index)
-      expect(response.body).to include('<h1>Welcome to 101linkeddata</h1>')
 
+      expect(response.body).to include('<title>101linkeddata</title>')
     end
 
     it 'get without graph' do
