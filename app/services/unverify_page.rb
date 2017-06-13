@@ -5,7 +5,7 @@ class UnverifyPage
   def validate(params)
     page = params[:page]
 
-    unless page.verified
+    if page.verified == false
       fail(:page_already_unverified)
     else
       continue(params)

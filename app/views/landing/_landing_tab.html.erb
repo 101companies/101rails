@@ -1,9 +1,9 @@
 <div class='row' style="margin-top: 100px;">
-  <div class='col-md-6'>
+  <div class='col-md-6 hidden-sm'>
     <div class='<%= tag_class_name %>'></div>
   </div>
 
-  <div class='col-md-3'>
+  <div class='col-md-3 col-sm-6'>
     <h2 class='category-title'>Popular</h2>
     <% popular_pages.each do |page| %>
       <div class='page-preview'>
@@ -20,7 +20,7 @@
       <hr />
     <% end %>
   </div>
-  <div class='col-md-3'>
+  <div class='col-md-3 col-sm-6'>
     <h2 class='category-title'>Recent</h2>
     <% recent_pages.each do |page| %>
       <div class='page-preview'>

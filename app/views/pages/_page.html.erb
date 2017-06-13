@@ -57,7 +57,7 @@
           </a>
           <% if current_user.role == ('admin' || 'editor') %>
             <% if !page.nil? && page.verified == false %>
-            	<a href='<%= verify_page_path(page.full_title) %>' data-method="put" class="editbutton  btn btn-sm btn-default" id="pageVerifyButton">
+            	<a href='<%= verify_page_path(page.full_title) %>' data-method="post" class="editbutton  btn btn-sm btn-default" id="pageVerifyButton">
                 <i class=""></i>
                 <strong class="editbuttontext"> Verify</strong>
               </a>

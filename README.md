@@ -17,7 +17,7 @@ With OSX you already have Ruby.
 
 If you are using Ubuntu you can install ruby via [rvm](http://rvm.io) or [rbenv](https://github.com/sstephenson/rbenv/).
 
-This app was tested with ruby 2.3.0-2.3.3.
+This app was tested with ruby 2.3.0-2.4.1.
 
 ## Installing the app
 
@@ -65,7 +65,7 @@ For successful work with project in development mode you need to define next ENV
     export GITHUB_SECRET_DEV=
     export MONGODB_USER=
     export MONGODB_PWD=
-    
+
 ## Contributing
 
 If you make improvements to this application, please share with others.
