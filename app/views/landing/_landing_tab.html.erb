@@ -40,7 +40,9 @@
 </div>
 
 <script>
-  $(document).ready(function() {
+  <% name = "render#{SecureRandom.hex}" %>
+  function <%= name %>() {
+    $('.<%= tag_class_name %>').empty();
     var data = <%= raw tagcloud_data.to_json %>
 
     var width = window.innerWidth / 2;
@@ -106,6 +108,8 @@
       .text(function(d) { return d.text; });
     }
 
-  });
+  }
+  $(document).ready(<%= name %>);
+  $(window).resize(<%= name %>);
 
 </script>
