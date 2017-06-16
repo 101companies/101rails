@@ -44,6 +44,7 @@
                 <div class='form-group'>
                   <input class='search-query' name='q' value='<%= (defined? @query_string) ? @query_string : "" %>' id='search-query' placeholder="Search" type='text'>
                 </div>
+                <button type="submit" class="btn btn-default">Search</button>
               </form>
             </li>
             <li>
@@ -70,7 +71,7 @@
                       <%= link_to('Unverified Pages', unverified_pages_path) %>
                     </li>
                     <li>
-                      <%= link_to raw("<i class=\"icon-lock\"></i> Admin UI"), '/admin', "data-turbolinks" => false %>
+                      <%= link_to raw("<i class=\"icon-lock\"></i> Admin Interface"), '/admin', "data-turbolinks" => false %>
                     </li>
                   <% end %>
                   <li>

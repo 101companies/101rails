@@ -5,8 +5,6 @@ class PagesController < ApplicationController
   # for calling from view
   helper_method :get_rdf_json
 
-  respond_to :json, :html
-
   # before_filter need to be before load_and_authorize_resource
   # methods, that need to check permissions
   before_action :get_the_page, only: [:edit, :rename, :update, :update_repo, :destroy]
@@ -158,31 +156,16 @@ class PagesController < ApplicationController
   end
 
   def edit
-    @pages = Page.all.map &:full_title
-
-    begin
-      url = "http://worker.101companies.org/data/dumps/wiki-predicates.json"
-      url = URI.encode url
-      url = URI(url)
-
-      request = Net::HTTP::Get.new url
-      response = Net::HTTP.start(url.host, url.port, read_timeout: 0.5, connect_timeout: 1) {|http| http.request(request)}
-      @predicates = JSON::parse(response.message)
-    rescue JSON::ParserError, SocketError, Timeout::Error, Errno::EINVAL, Errno::ECONNRESET, EOFError, Net::HTTPBadResponse, Net::HTTPHeaderSyntaxError, Net::ProtocolError => e
-      @predicates = {}
-      Rails.logger.warn("Predicates retrieval failed")
-    end
+    @predicates = Triple.pluck(:predicate).uniq
   end
 
   def destroy
     authorize! :destroy, @page
 
-    result = @page.delete
-    # generate flash_message if deleting was successful
-    if result
-      flash[:notice] = 'Page ' + @page.full_title + ' was deleted'
+    result = @page.destroy
+    respond_to do |format|
+      format.html { redirect_to page_path('101project'), notice: "Page #{@page.full_title} was deleted" }
     end
-    render json: { success: result }
   end
 
   def show
@@ -207,7 +190,7 @@ class PagesController < ApplicationController
       end
 
       failure(:bad_link) do |result|
-        redirect_to result[:url]
+        redirect_to page_path(result[:url])
       end
 
       failure(:page_not_found_but_creating) do |result|
@@ -225,22 +208,28 @@ class PagesController < ApplicationController
   def search
     @query_string = params[:q] || ''
     @title_only = params[:title_only]
+    namespace = params.dig(:namespace, :name)
+
     if @title_only
-      @search_results = PageModule.search_title(@query_string, params.dig(:namespace, :name))
+      @search_results = PageModule.search_title(@query_string, namespace)
     else
-      @search_results = PageModule.search(@query_string, params.dig(:namespace, :name))
+      if namespace == 'Property'
+        @search_results = PageModule.search_property(@query_string)
+      else
+        @search_results = PageModule.search(@query_string, namespace)
+      end
     end
 
-    respond_with @search_results
+    respond_to :html
   end
 
   def rename
     new_name = PageModule.unescape_wiki_url params[:newTitle]
     result = @page.update_or_rename(new_name, @page.raw_content, [], current_user)
-    render json: {
-      success: result,
-      newTitle: @page.url
-    }
+
+    respond_to do |format|
+      format.html { redirect_to page_path(new_name), notice: "Page #{@page.full_title} was rename to #{new_name}" }
+    end
   end
 
   def update

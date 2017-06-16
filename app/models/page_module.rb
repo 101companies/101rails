@@ -54,6 +54,22 @@ class PageModule
     found_pages
   end
 
+  def self.search_property(name)
+    if name.blank?
+      Page.where(namespace: 'Property')
+    else
+      if name.include?('::')
+        property_name, object_name = name.split('::')
+
+        Page.left_outer_joins(:triples).where('lower(triples.predicate) = ? and lower(triples.object) = ?', property_name.downcase, object_name.downcase).distinct
+      else
+        like_name = Page.send(:sanitize_sql_like, name.downcase)
+        like_name = "%#{like_name}%"
+        Page.left_outer_joins(:triples).where('(lower(triples.predicate) = ?) or (lower(pages.title) like ? and pages.namespace = ?)', name.downcase, like_name, 'Property').distinct
+      end
+    end
+  end
+
   def self.search_title(query_string, namespace=nil)
     if namespace.blank?
       pages = Page.all
@@ -101,6 +117,42 @@ class PageModule
     Page.where(namespace: nt['namespace'], title: nt['title']).first
   end
 
+  def self.front_page
+    page = find_by_full_title('Internal:FrontPage')
+    if page.nil?
+      page = Page.create!(
+        namespace: 'Internal',
+        title: 'FrontPage',
+        raw_content: "== Headline ==\n\nFront Page"
+      )
+    end
+    page
+  end
+
+  def self.courses_page
+    page = find_by_full_title('Internal:Courses')
+    if page.nil?
+      page = Page.create!(
+        namespace: 'Internal',
+        title: 'Courses',
+        raw_content: "== Headline ==\n\nCourses Page"
+      )
+    end
+    page
+  end
+
+  def self.resources_page
+    page = find_by_full_title('Internal:Resources')
+    if page.nil?
+      page = Page.create!(
+        namespace: 'Internal',
+        title: 'Resources',
+        raw_content: "== Headline ==\n\nResources Page"
+      )
+    end
+    page
+  end
+
   def self.uncapitalize_first_char(string)
     string[0,1].downcase + string[1..-1]
   end
@@ -109,7 +161,7 @@ class PageModule
 
   # [wiki] Page name string in URL
   def self.uri_to_wiki(uri)
-    StringUtils::upcase_first_char(CGI.unescape(uri).tr('_', ' ').tr('#<>[]|{}', '')) if uri
+    StringUtils::upcase_first_char(uri.tr('_', ' ').tr('#<>[]|{}', '')) if uri
   end
 
   # Convert a Wiki page name ("Getting there & away") to URI-safe format ("Getting_there_%26_away"),

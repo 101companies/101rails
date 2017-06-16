@@ -117,6 +117,18 @@ RSpec.describe PagesController, type: :controller do
       expect(response).to redirect_to(page_path('new_page'))
     end
 
+    it 'creates page with special characters' do
+      user = create(:user)
+
+      expect {
+        get(:create_new_page, params: { id: 'AST^+' }, session: { user_id: user.id })
+      }.to change(Page, :count).by(1)
+
+      expect(response.status).to eq(302)
+      expect(response).to redirect_to(page_path('AST^+'))
+      expect(Page.where(title: 'AST^+').count).to eq(1)
+    end
+
     it 'does not create new page' do
       expect {
         get(:create_new_page, params: { id: 'new_page' })
@@ -148,6 +160,17 @@ RSpec.describe PagesController, type: :controller do
       }.not_to change(Page, :count)
 
       expect(@page.reload.title).to eq('OtherTitle')
+    end
+
+    it 'renames a semantic property' do
+      user = create(:user)
+      page = create(:property_having_page)
+      property_page = create(:property_page)
+
+      get(:rename, params: { id: property_page.full_title, newTitle: 'Property:hasDomain' }, session: { user_id: user.id })
+
+      page.reload
+      expect(page.raw_content).to include('[[hasDomain::SomeDomain]]')
     end
   end
 

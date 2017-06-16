@@ -10,7 +10,7 @@ var MetaDataEditor = React.createClass({
         onChange={this.onTripleChange} />
     }.bind(this));
 
-    return <form>
+    return (<form>
       <h4>Metadata Editor</h4>
       <fieldset>
         { triplesView }
@@ -18,14 +18,14 @@ var MetaDataEditor = React.createClass({
       <button className='btn btn-default' onClick={this.onNewTriple}>
         New Triple
       </button>
-    </form>;
+    </form>);
   },
 
   onNewTriple: function(event) {
     event.preventDefault();
 
     var predicate = Object.keys(this.props.predicates)[0];
-    var object = this.props.predicates[predicate][0];
+    var object = '';
 
     var newTriples = React.addons.update(this.props.triples, { $push: [{ object: object, predicate: predicate }] })
     this.props.onChange(newTriples);

@@ -8,8 +8,25 @@ class PageEditor extends React.Component {
     super(props);
 
     this.state = {
-      rawContent: this.props.rawContent
+      rawContent: this.props.rawContent,
+      containerWidth: 50
     }
+  }
+
+  componentDidMount() {
+    this.setState({
+      containerWidth: this.container.clientWidth,
+    });
+
+    $(window).resize(() => {
+      this.setState({
+        containerWidth: this.container.clientWidth,
+      });
+    });
+  }
+
+  componentWillUnmount() {
+    $(window).off("resize");
   }
 
   savePage() {
@@ -49,7 +66,7 @@ class PageEditor extends React.Component {
       }
     });
 
-    return (<div>
+    return (<div className='' ref={(container) => { this.container = container; }}>
       <div id="contentTop">
         <div id="topEditBar" className="editBar">
           <div className="btn-toolbar editing" style={{display: 'block'}}>
@@ -70,25 +87,26 @@ class PageEditor extends React.Component {
         </div>
       </div>
       <div id="sections">
-        <div id="sections-source" style={{height: '400px', width: '100%' }}>
+        <div id="sections-source" style={{minHeight: '400px', width: '100%' }}>
           <Editor theme='wiki'
             mode='wiki'
             value={this.state.rawContent}
             onChange={this.onChangeContent.bind(this)}
             height='300px'
-            width='820px' />
+            width={this.state.containerWidth + 'px'} />
+          <div class='row'>
+            <div class='col-md-12'>
+              <MetaDataEditor
+                triples={triples}
+                pages={this.props.pages}
+                onChange={this.onChangeTriples.bind(this)}
+                predicates={this.props.predicates}  />
+            </div>
+          </div>
         </div>
       </div>
     </div>)
   }
-
-  /*
-  <MetaDataEditor
-    triples={triples}
-    pages={this.props.pages}
-    onChange={this.onChangeTriples.bind(this)}
-    predicates={this.props.predicates}  />
-  */
 
   onChangeTriples(triples) {
     var indexMetadata = this.state.rawContent.indexOf('== Metadata ==');
@@ -107,5 +125,4 @@ class PageEditor extends React.Component {
   onChangeContent(content) {
     this.setState({ rawContent: content });
   }
-
 }

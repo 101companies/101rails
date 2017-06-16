@@ -18,6 +18,24 @@ FactoryGirl.define do
     raw_content 'Some stuff'
   end
 
+  factory :property_having_page, parent: :page do
+    raw_content "== Metadata ==\n[[domainOf::SomeDomain]]"
+  end
+
+  factory :technology_having_page, parent: :page do
+    raw_content "== Metadata ==\n[[uses::Technology:Tech]]"
+  end
+
+  factory :technology_page, parent: :page do
+    title 'Tech'
+    namespace 'Technology'
+  end
+
+  factory :property_page, parent: :page do
+    title 'domainOf'
+    namespace 'Property'
+  end
+
   factory :contributor_page, parent: :page do
     title 'Kevin'
     namespace 'Contributor'

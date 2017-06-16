@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170220144426) do
+ActiveRecord::Schema.define(version: 20170502133652) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -108,6 +108,16 @@ ActiveRecord::Schema.define(version: 20170220144426) do
     t.datetime "updated_at", null: false
     t.integer  "page_id"
     t.index ["page_id"], name: "index_repo_links_on_page_id", using: :btree
+  end
+
+  create_table "triples", force: :cascade do |t|
+    t.integer "page_id"
+    t.string  "predicate", null: false
+    t.string  "object"
+    t.index ["object"], name: "index_triples_on_object", using: :btree
+    t.index ["page_id"], name: "index_triples_on_page_id", using: :btree
+    t.index ["predicate", "object"], name: "index_triples_on_predicate_and_object", using: :btree
+    t.index ["predicate"], name: "index_triples_on_predicate", using: :btree
   end
 
   create_table "users", force: :cascade do |t|

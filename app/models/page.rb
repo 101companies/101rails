@@ -1,17 +1,19 @@
-class Page < ActiveRecord::Base
+class Page < ApplicationRecord
 
   # relations here
-  has_one :repo_link
-  has_many :page_changes
-  has_many :page_verifications
+  has_one :repo_link, dependent: :destroy
+  has_many :page_changes, dependent: :destroy
+  has_many :page_verifications, dependent: :destroy
   has_and_belongs_to_many :users
-  has_many :mappings
+  has_many :mappings, dependent: :destroy
+  has_many :triples, autosave: true, dependent: :destroy
 
   validates_presence_of :title
   validates_presence_of :namespace
   validates :title, uniqueness: { scope: [:namespace] }
 
   before_save :preparing_the_page
+  include RdfModule
 
   def self.unverified
     where(verified: false)
@@ -25,8 +27,20 @@ class Page < ActiveRecord::Base
     where(namespace: 'Script')
   end
 
+  def self.features
+    where(namespace: 'Feature')
+  end
+
   def self.technologies
     where(namespace: 'Technology')
+  end
+
+  def self.contributions
+    where(namespace: 'Contribution')
+  end
+
+  def self.languages
+    where(namespace: 'Language')
   end
 
   def preparing_the_page
@@ -49,19 +63,27 @@ class Page < ActiveRecord::Base
     end
     self.used_links = links.flatten.uniq
 
+    self.triples.clear
+    used_links.each do |link|
+      if link.include?('::')
+        predicate, object = link.split('::')
+        self.triples << self.triples.new(predicate: predicate, object: object)
+      end
+    end
+
     self.headline = get_headline_html_content
   end
 
   def self.search(text)
     like = sanitize_sql_like(text.downcase)
     like = "%#{like}%"
-    where('LOWER(title) like ? or LOWER(raw_content) like ? or (namespace || \':\' || title) = ?', like, like, text)
+    where('LOWER(title) like ? or LOWER(raw_content) like ? or (namespace || \':\' || title) = ?', like, like, text).distinct
   end
 
   def self.search_title(text)
     like = sanitize_sql_like(text.downcase)
     like = "%#{like}%"
-    where('LOWER(title) like ? or (namespace || \':\' || title) = ?', like, text)
+    where('LOWER(title) like ? or (namespace || \':\' || title) = ?', like, text).distinct
   end
 
   def render
@@ -159,7 +181,7 @@ class Page < ActiveRecord::Base
   def rewrite_backlink(related_page, old_title)
     if !related_page.nil?
       # rewrite link in page, found by backlink
-      related_page.raw_content = related_page.rewrite_internal_links old_title, self.full_title
+      related_page.raw_content = related_page.rewrite_internal_links(old_title, self.full_title)
       # and save changes
       if !related_page.save
         Rails.logger.info "Failed to rewrite links for page " + related_page.full_title
@@ -193,6 +215,15 @@ class Page < ActiveRecord::Base
     content
   end
 
+  def rename_property(name, new_name)
+    Page.find_each do |page|
+      if page.raw_content.include?("[[#{name}")
+        page.raw_content = page.raw_content.gsub("[[#{name}", "[[#{new_name}")
+        page.save!
+      end
+    end
+  end
+
   def update_or_rename(new_title, content, sections, user)
     page_change = PageChange.new title: self.title,
                                  namespace: self.namespace,
@@ -200,10 +231,15 @@ class Page < ActiveRecord::Base
                                  page: self,
                                  user: user
 
+    new_title_only = PageModule.retrieve_namespace_and_title(new_title)['title']
+    if namespace == 'Property'
+      rename_property(title, new_title_only)
+    end
+
     self.raw_content = content
     # sections
     # unescape new title to nice readable url
-    new_title = PageModule.unescape_wiki_url new_title
+    new_title = PageModule.unescape_wiki_url(new_title)
     # if title was changed -> rename page
     if (new_title != self.full_title and GetPage.run(full_title: new_title).value[:page].nil?)
       self.rename(new_title, page_change)
@@ -220,7 +256,7 @@ class Page < ActiveRecord::Base
   end
 
   def url
-    PageModule.url full_title
+    PageModule.url(full_title)
   end
 
   def get_parser
@@ -248,9 +284,7 @@ class Page < ActiveRecord::Base
     self.get_parser.sections.first.children.each do |section|
       content_with_subsections = section.wikitext.sub(/\s+\Z/, "")
 
-
-
-          	parsed_html = parse content_with_subsections
+      parsed_html = parse content_with_subsections
 
       sections << {
           'is_resource' => section.is_resource_section,
@@ -265,11 +299,11 @@ class Page < ActiveRecord::Base
   end
 
   def backlinking_pages
-    Page.where('used_links @> ARRAY[?]::varchar[]', full_title)
+    Page.where('used_links && ARRAY[?]::varchar[]', full_title)
   end
 
   def self.by_author(user)
-    where('used_links @> ARRAY[?]::varchar[]', "developedBy::Contributor:#{user.github_name}/")
+    where('used_links && ARRAY[?]::varchar[]', "developedBy::Contributor:#{user.github_name}/")
   end
 
   def backlinks
@@ -281,18 +315,18 @@ class Page < ActiveRecord::Base
     self.get_parser.sections.first.children.find { |s| s.full_title.downcase == section.downcase }
   end
 
-  def self.popular_technology_pages
-    Page.find_by_sql('
+  def self.popular_pages(namespace)
+    Page.find_by_sql("
     SELECT * FROM pages
     inner join
-      (SELECT  properties ->> \'title\' as properties_title,
+      (SELECT  properties ->> 'title' as properties_title,
         COUNT(*) AS count_all
-        FROM "ahoy_events"
-        WHERE "ahoy_events"."name" = \'$view\' AND
-        (position(\'Technology:\' in properties ->> \'title\') <> 0)
-        GROUP BY properties ->> \'title\' ORDER BY count_all desc LIMIT 5) as popular_pages
-    on (pages.namespace || \':\' || pages.title) = properties_title
-    order by count_all desc')
+        FROM \"ahoy_events\"
+        WHERE \"ahoy_events\".\"name\" = '$view' AND
+        (position('#{namespace}:' in properties ->> 'title') <> 0)
+        GROUP BY properties ->> 'title' ORDER BY count_all desc LIMIT 5) as popular_pages
+    on (pages.namespace || ':' || pages.title) = properties_title
+    order by count_all desc limit 5")
   end
 
   def self.recently_updated
@@ -300,49 +334,125 @@ class Page < ActiveRecord::Base
   end
 
   def preview
-    if sections.length > 0
-      content = sections[0]['content']
-      content = content.sub(/==.*==/, '')
-      content = content[0..100]
-    else
-      content = ''
-    end
-
-    parser = WikiCloth::Parser.new(data: content, noedit: true)
-    parser.to_html.gsub('<pre></pre>', '')
+    headline
   end
 
   def self.popular_technologies
     Rails.cache.fetch("popular_technologies", expires_in: 12.hours) do
-      technologies = Page.connection.execute('
-        SELECT substring(link from 12) AS link, count(*)
-        FROM pages, unnest(used_links) AS link
-        WHERE substring(link from 0 for 11) = \'Technology\'
-        GROUP BY 1
-        order by 2 desc
-      ')
+      result = Triple.where('substring(object from 0 for 11) = \'Technology\'').group(:object).count
 
-      result = {}
-      technologies.each do |row|
-        result[row['link']] = row['count']
-      end
+      strip_namespaces(result)
+    end
+  end
 
-      result
+  def self.popular_features
+    Rails.cache.fetch("popular_features", expires_in: 12.hours) do
+      result = Triple.where('substring(object from 0 for 8) = \'Feature\'').group(:object).count
+
+      strip_namespaces(result)
+    end
+  end
+
+  def self.popular_languages
+    Rails.cache.fetch("popular_languages", expires_in: 12.hours) do
+      result = Triple.where('substring(object from 0 for 9) = \'Language\'').group(:object).count
+
+      strip_namespaces(result)
     end
   end
 
   def self.used_predicates
     Page.connection.execute('
-      SELECT DISTINCT substr(link, 0, pos)
+      SELECT DISTINCT substr(link, 0, pos) as predicate
       FROM pages, unnest(used_links) AS link, strpos(link, \'::\') AS pos
-      WHERE pos > 0
-    ').values.map { |row| row[0] }.sort
+      WHERE pos > 0 order by predicate
+    ').values.map { |row| row[0] }
+  end
+
+  def self.most_referenced_contributions
+    Triple.where('position(\'Contribution\' in triples.object) = 1').group(:object).limit(200).order('count_all').count
+  end
+
+  def self.popular_page_views(namespace)
+    rows = Page.connection.execute(<<-SQL
+      with popular_pages as (
+        SELECT  properties ->> \'title\' as properties_title,
+          COUNT(*) AS count_all
+          FROM "ahoy_events"
+          WHERE "ahoy_events"."name" = \'$view\' AND
+          (position(\'#{namespace}:\' in properties ->> \'title\') <> 0)
+          GROUP BY properties ->> \'title\' ORDER BY count_all desc
+      )
+      SELECT
+        pages.title as link,
+        CASE WHEN "popular_pages"."count_all" is NULL THEN 1 ELSE "popular_pages"."count_all" END as count_all
+      FROM pages
+      left outer join popular_pages
+      on (pages.namespace || \':\' || pages.title) = popular_pages.properties_title
+      where pages.namespace = \'#{namespace}\'
+      order by count_all desc
+      SQL
+    )
+
+    rows.map do |row|
+      [row['link'], row['count_all']]
+    end.to_h
+  end
+
+  def self.popular_contributions
+    rows = Page.connection.execute(<<-SQL
+      with popular_pages as (
+        SELECT  properties ->> \'title\' as properties_title,
+          COUNT(*) AS count_all
+          FROM "ahoy_events"
+          WHERE "ahoy_events"."name" = \'$view\' AND
+          (position(\'Contribution:\' in properties ->> \'title\') <> 0)
+          GROUP BY properties ->> \'title\' ORDER BY count_all desc
+      )
+      SELECT
+        pages.title as link,
+        CASE WHEN "popular_pages"."count_all" is NULL THEN 1 ELSE "popular_pages"."count_all" END as count_all
+      FROM pages
+      left outer join popular_pages
+      on (pages.namespace || \':\' || pages.title) = popular_pages.properties_title
+      where pages.namespace = \'Contribution\'
+      order by count_all desc
+      SQL
+    )
+
+    rows.map do |row|
+      [row['link'], row['count_all']]
+    end.to_h
+  end
+
+  def self.popular_contribution_pages
+    Page.find_by_sql('
+    SELECT * FROM pages
+    inner join
+      (SELECT  properties ->> \'title\' as properties_title,
+        COUNT(*) AS count_all
+        FROM "ahoy_events"
+        WHERE "ahoy_events"."name" = \'$view\' AND
+        (position(\'Contribution:\' in properties ->> \'title\') <> 0)
+        GROUP BY properties ->> \'title\' ORDER BY count_all desc LIMIT 5) as popular_pages
+    on (pages.namespace || \':\' || pages.title) = properties_title
+    order by count_all desc')
   end
 
   def self.cached_count
     Rails.cache.fetch("page_count", expires_in: 12.hours) do
       count
     end
+  end
+
+  private
+
+  def self.strip_namespaces(data)
+    data.map do |key, value|
+      # strip namespace
+      _, key = key.split(':') if key.include?(':')
+      [key, value]
+    end.to_h
   end
 
 end

@@ -1,7 +1,5 @@
 class PageChangesController < ApplicationController
 
-  respond_to :html
-
   def diff
     page_change = PageChange.get_by_id params[:page_change_id]
     another_page_change = PageChange.get_by_id params[:another_page_change_id]
@@ -80,7 +78,5 @@ class PageChangesController < ApplicationController
 
     # do internal work with links e.t.c
     @page.preparing_the_page
-
   end
-
 end

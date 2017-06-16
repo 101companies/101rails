@@ -25,6 +25,9 @@ var EditorBar = React.createClass({
         <button className="btn btn-small" onClick={this.onInsert.bind(this, {start: "[[", end: "]]"})}>
           <u style={{color: 'rgb(62, 133, 201)'}}>Link</u>
         </button>
+        <button className="btn btn-small" onClick={this.onInsert.bind(this, {start: "[", end: "]"})}>
+          <u style={{color: 'rgb(62, 133, 201)'}}>External Link</u>
+        </button>
         <button className="btn btn-small" onClick={this.onInsert.bind(this, {start: "<syntaxhighlight lang=\"???\">\n", end: "\n</syntaxhighlight>"})}>
           <span className="code-button">Source Code</span>
         </button>

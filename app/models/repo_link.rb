@@ -33,6 +33,11 @@ class RepoLink < ActiveRecord::Base
   end
 
   def full_url
+    if repo && user && repo.include?(user)
+      _, normalized_repo = repo.split('/', 2)
+    else
+      normalized_repo = repo
+    end
     "https://github.com/#{user}/#{repo}#{folder=='/' ? '' : '/tree/master'+folder}"
   end
 

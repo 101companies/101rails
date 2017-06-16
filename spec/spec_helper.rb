@@ -20,9 +20,18 @@ require 'solid_use_case/rspec_matchers'
 # users commonly want.
 #
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
+
+module ApiHelper
+  def json_response
+    JSON.parse(response.body)
+  end
+end
+
+
 RSpec.configure do |config|
   config.include(SolidUseCase::RSpecMatchers)
 
+  config.include(ApiHelper)
 # The settings below are suggested to provide a good initial experience
 # with RSpec, but feel free to customize to your heart's content.
 =begin

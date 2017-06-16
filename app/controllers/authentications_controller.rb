@@ -18,13 +18,13 @@ class AuthenticationsController < ApplicationController
     failed_to_populate_data = false
     begin
       user.populate_data omniauth
-    rescue
+    rescue Exception => e
       failed_to_populate_data = true
     end
     if !failed_to_populate_data and user.save
       session[:user_id] = user.id
       create_user_page_and_set_permissions(user)
-      flash[:notice] = t :signed_in
+      flash[:notice] = t(:signed_in)
     else
       flash[:error] = "Failed to login. Have you added name and public email into GitHub account?"
     end
@@ -33,7 +33,7 @@ class AuthenticationsController < ApplicationController
 
   def local_auth
     if Rails.env.production?
-      render :file => "public/401.html", :status => :unauthorized
+      return go_to_homepage
     end
 
     user = User.find(params[:admin])
@@ -48,11 +48,6 @@ class AuthenticationsController < ApplicationController
                            :namespace => 'Contributor'
       user_page.save
     end
-  end
-
-  def failure
-    flash[:warning] = "Sorry, but login wasn't successful"
-    go_to_homepage
   end
 
   # destroy user's authentication and return to the authentication page.

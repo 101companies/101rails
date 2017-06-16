@@ -11,6 +11,15 @@ class ScriptsController < ApplicationController
         GetMultiplePages.run(links: links).match do
           success do |result|
             @pages = [@page] + result[:pages]
+            @triples = {}
+
+            @pages.each do |page|
+              GetTriplesForPage.run(page: page).match do
+                success do |result|
+                  @triples[page] = result[:triples]
+                end
+              end
+            end
           end
         end
       end
@@ -20,6 +29,12 @@ class ScriptsController < ApplicationController
         go_to_homepage
       end
     end
-  end
 
+    respond_to do |format|
+      format.html
+      format.pdf do
+        render pdf: "file_name"
+      end
+    end
+  end
 end

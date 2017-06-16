@@ -1,5 +1,4 @@
 class PageChange  < ActiveRecord::Base
-
   require 'differ/string'
 
   belongs_to :page

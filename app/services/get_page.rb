@@ -16,8 +16,11 @@ class GetPage
 
   def get_page(params)
     nt = params[:nt]
+    namespace = nt['namespace']
+    title = nt['title']
+    underscore_title = title.gsub(' ', '_')
 
-    page = Page.where(namespace: nt['namespace'], title: nt['title']).first
+    page = Page.where(namespace: namespace, title: [title, underscore_title]).first
 
     params[:page] = page
     continue(params)

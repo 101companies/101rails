@@ -1,4 +1,25 @@
+<%= stylesheet_link_tag wicked_pdf_asset_base64("application") %>
+<%= javascript_include_tag wicked_pdf_asset_base64("application") %>
+
+<style>
+  div.alwaysbreak { page-break-before: always; }
+  div.nobreak:before { clear:both; }
+  div.nobreak { page-break-inside: avoid; }
+  iframe {
+      display: none;
+  }
+  .video-title {
+    display: none;
+  }
+</style>
+
 <script type="text/javascript">
+  $(document).ready(function() {
+    $('iframe').each(function() {
+      var title = $(this).prev().text();
+      $(this).replaceWith('<a href="' + $(this).attr('src') + '">' + title + '</a>')
+    });
+  });
   <%
     page_refs = @pages.map do |page|
       {
@@ -42,8 +63,19 @@
   });
 </script>
 
+<!-- <script>
+  function number_pages() {
+    var vars={};
+    var x=document.location.search.substring(1).split('&');
+    for(var i in x) {var z=x[i].split('=',2);vars[z[0]] = decodeURIComponent(z[1]);}
+    var x=['frompage','topage','page','webpage','section','subsection','subsubsection'];
+    for(var i in x) {
+      var y = document.getElementsByClassName(x[i]);
+      for(var j=0; j<y.length; ++j) y[j].textContent = vars[x[i]];
+    }
+  }
+</script> -->
+
 <% @pages.each do |page| %>
-  <% cache page do %>
-    <%= render(partial: 'pages/page', locals: {:@rdf => @triples[page], :@script_render => true, page: page}) %>
-  <% end %>
+  <%= render(partial: 'pages/page', formats: :html, locals: {:@script_render => true, page: page}) %>
 <% end %>

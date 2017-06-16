@@ -7,11 +7,9 @@ gem 'pg'
 gem 'concurrent-ruby'
 gem 'html2text'
 gem 'ruby-stemmer', '>=0.8.3', :require => 'lingua/stemmer'
-gem 'pmap'
-gem 'fast-stemmer'
+gem 'wicked_pdf'
+gem 'wkhtmltopdf-binary'
 
-gem 'kaminari'
-gem 'sucker_punch'
 gem 'turbolinks', '~> 5.0.0'
 gem 'execjs'
 
@@ -25,8 +23,6 @@ gem 'bootstrap-sass'
 
 gem 'sassc-rails'
 gem 'uglifier'
-
-gem 'responders'
 
 # frontend
 gem 'jquery-rails'
@@ -92,8 +88,6 @@ gem 'differ', '0.1.2'
 
 # for wiki-editor
 gem 'aced_rails', git: 'https://github.com/101companies/aced_rails'
-
-gem 'bootstrap-tour-rails', '0.4.0'
 
 gem 'react-rails'
 

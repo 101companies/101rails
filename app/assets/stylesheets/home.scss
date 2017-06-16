@@ -331,8 +331,6 @@ p {
 }
 
 #sections-parsed, #sections-source {
-  width: 50%;
-  float: left;
   min-height: 10px;
 }
 
@@ -382,11 +380,6 @@ p {
   p, ul {
     font-size: 14px;
   }
-}
-
-.section-content-source, #sections-source {
-  height: 0px;
-  margin-bottom: 30px;
 }
 
 .section-content p {

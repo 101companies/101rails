@@ -1,5 +1,11 @@
 Wiki::Application.routes.draw do
 
+  constraints(host: /101companies.org/) do
+    match "/(*path)" => redirect { |params, req|
+      URI.encode("https://101wiki.softlang.org/#{params[:path]}")
+    },  via: [:get, :post]
+  end
+
   resources :mappings, only: [:edit, :update]
 
   constraints(id: /([^\/]+?)(?=\.json|\.ttl|\.n3|\.xml|\.html|$|\/)/) do
@@ -12,6 +18,7 @@ Wiki::Application.routes.draw do
     post :create_index, on: :member
     resources :chapters, only: [:new, :edit, :update, :destroy, :create]
   end
+
   namespace :admin do
     get '/', to: 'admin#index'
     resources :pages
@@ -22,7 +29,6 @@ Wiki::Application.routes.draw do
 
   # homepage
   root to: "landing#index"
-  get '/new_landing' => 'landing#new_index'
   # sitemap
   get '/sitemap.xml' => 'application#sitemap'
   # link for downloading slides from slideshare
@@ -33,8 +39,6 @@ Wiki::Application.routes.draw do
   get '/search' => 'pages#search'
   get '/contributors_without_github_name' => 'application#contributors_without_github_name'
   get '/pullRepo.json' => 'application#pull_repo'
-
-  post '/last_received' => 'messages#last_received'
 
   # urls for contribution process
   scope 'contribute' do
@@ -49,31 +53,7 @@ Wiki::Application.routes.draw do
     get '/repo_dirs/:repo' => 'contributions#get_repo_dirs', constraints: { repo: /.*/ }
   end
 
-  # tours
-  scope 'tours' do
-    get '/' => 'tours#index'
-    get '/:title' => 'tours#show'
-  end
-
-  # tours api
-  scope 'api/tours' do
-    get ':title' => 'tours#show', as: :tour
-    put ':title' => 'tours#update'
-    delete ':title' => 'tours#delete'
-  end
-
   get 'users/logout' => 'authentications#destroy'
-
-  # clones
-  scope 'clones' do
-    get '/new' => 'clones#show_create'
-    get '/' => 'clones#show'
-    get '/check/:title' => 'clones#show'
-  end
-
-  scope '/api/wiki/' do
-    get '/:id' => 'api_pages#show', defaults: { format: :json }
-  end
 
   # routes for work with history
   scope 'page_changes' do
@@ -86,26 +66,14 @@ Wiki::Application.routes.draw do
     get 'apply/:page_change_id' => 'page_changes#apply'
   end
 
-  # json api requests for pages
-  scope 'api', format: :json do
-    # clones api
-    get 'clones/:title' => 'clones#get'
-    post 'clones/:title' => 'clones#create'
-    put 'clones/:title' => 'clones#update'
-    get 'clones/:title' => 'clones#get'
-    delete 'clones/:title' => 'clones#delete'
-    get 'clones' => 'clones#index'
-  end
-
   # authentications
   scope 'auth' do
     match '/github/callback' => 'authentications#create', via: [:get, :post]
-    match '/failure' => 'authentications#failure', via: [:get, :post]
     match '/local_login/:admin' => 'authentications#local_auth', via: [:get, :post]
   end
 
   # pages routes
-  resources :pages, path: '/', id: /.*/ do
+  resources :pages, path: '/', id: /[^\/]*/ do
     get :unverified, on: :collection
     post :verify, on: :member
     get :unverify, on: :member
@@ -113,4 +81,11 @@ Wiki::Application.routes.draw do
     get :create_new_page_confirmation, on: :member
     put :rename, on: :member
   end
+
+  scope '/wiki' do
+    match "(*path)" => redirect { |params, req|
+      URI.encode("/#{params[:path]}")
+    }, via: [:get, :post]
+  end
+
 end

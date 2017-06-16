@@ -1,6 +1,18 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery
 
+  rescue_from ActionController::UnknownFormat,  with: :render_404
+
+  def render_404
+    respond_to do |format|
+      format.html { render file: "public/404.html", status: 404, layout: false }
+      format.xml { head 404 }
+      format.js { head 404 }
+      format.json { head 404 }
+    end
+  rescue ActionController::UnknownFormat
+  end
+  
   # return to previous page after sign in
   def after_sign_in_path_for(resource)
     request.env['omniauth.origin'] || stored_location_for(resource) || root_path
@@ -60,7 +72,7 @@ class ApplicationController < ActionController::Base
         xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
         http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">'
     Page.all.each do |page|
-      text = text + '<url><loc>http://101companies.org/' + page.url + '</loc>'+
+      text = text + '<url><loc>http://101wiki.softlang.org/' + page.url + '</loc>'+
           "<lastmod>#{page.updated_at.to_date}</lastmod>" +
           '<changefreq>weekly</changefreq>'+
           '</url>'

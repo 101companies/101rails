@@ -5,19 +5,20 @@ class ResourcesController < ApplicationController
     query = params[:query]
     begin
       sse = SPARQL.parse(query)
-    rescue NoMethodError
+    rescue NoMethodError, EBNF::LL1::Parser::Error
       flash[:error] = 'Error parsing query'
       return redirect_to(resources_path)
     end
 
     result = sse.execute($graph.snapshot)
-    result = Kaminari.paginate_array(result).page(params[:page]).per(100)
-    result = RDF::Query::Solutions.new(result)
+    result = ArrayPaginator.new(result).page(params[:page]).per(100)
+    result = RDF::Query::Solutions.new(result.to_a)
 
     render json: result.to_json
   end
 
   def index
+    @resources_page = PageModule.resources_page
     if(params[:q].present?)
       params[:id] = params[:q]
       show

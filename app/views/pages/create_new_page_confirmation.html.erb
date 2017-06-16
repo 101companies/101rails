@@ -1,10 +1,13 @@
-<h2>
-  If you want to create a new page
-  <b><%= @full_title %></b>
-  <%= link_to('click here', create_new_page_page_path(@full_title)) %>
-</h2>
-
-<h2>
-  Or go
-  <%= link_to('to homepage', '/101project') %>
-</h2>
+<div class="modal show" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-body">
+        <p>Create new page <b><%= @full_title %></b>?</p>
+      </div>
+      <div class="modal-footer">
+        <%= link_to('Cancel', '#', onclick: 'goBack();', type: 'button', class: 'btn btn-default', 'data-dismiss' => 'modal') %>
+        <%= link_to('Create', create_new_page_page_path(@full_title), type: 'button', class: 'btn btn-primary') %>
+      </div>
+    </div>
+  </div>
+</div>
