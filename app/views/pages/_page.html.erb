@@ -1,5 +1,6 @@
 <% if !@script_render %>
-  <div style="display: none;" id='rename-path' data-value="<%= rename_page_path(page) %>"></div>
+  <div style="display: none;" id='rename-path' data-value="<%= rename_page_path(page) %>">
+  </div>
 
   <div class="modal fade" tabindex="-1" role="dialog" id='confirm-delete'>
     <div class="modal-dialog" role="document">
@@ -100,6 +101,7 @@
     </div>
 
   </div>
+</div>
 
   <div id='sections'>
     <%= page.render.html_safe %>

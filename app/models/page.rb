@@ -63,11 +63,31 @@ class Page < ApplicationRecord
     end
     self.used_links = links.flatten.uniq
 
-    self.triples.clear
-    used_links.each do |link|
+    new_triples = used_links.map do |link|
       if link.include?('::')
         predicate, object = link.split('::')
-        self.triples << self.triples.new(predicate: predicate, object: object)
+        {predicate: predicate, object: object}
+      else
+        nil
+      end
+    end.compact
+
+    triples.each do |current_triple|
+      contained = new_triples.any? do |new_triple|
+        new_triple[:predicate] == current_triple.predicate && new_triple[:object] == current_triple.object
+      end
+      unless contained
+        current_triple.destroy
+      end
+    end
+
+    new_triples.each do |new_triple|
+      contained = triples.any? do |current_triple|
+        new_triple[:predicate] == current_triple.predicate && new_triple[:object] == current_triple.object
+      end
+
+      unless contained
+        triples << triples.new(new_triple)
       end
     end
 
