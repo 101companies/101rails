@@ -7,7 +7,7 @@ GIT
 
 GIT
   remote: https://github.com/101companies/wikicloth
-  revision: 4f51dba3da3be2a382e7c154bf168eb39cd2a092
+  revision: 056b32962c2e89fd8cf045e63705ee20122dfc94
   specs:
     wikicloth (0.8.0)
       activesupport
@@ -149,7 +149,7 @@ GEM
     html2text (0.2.0)
       nokogiri (~> 1.6)
     htmlentities (4.3.4)
-    i18n (0.8.1)
+    i18n (0.8.4)
     ionicons-rails (2.0.0)
     jbuilder (2.6.0)
       activesupport (>= 3.0.0, < 5.1)
@@ -203,8 +203,8 @@ GEM
     mime-types (3.1)
       mime-types-data (~> 3.2015)
     mime-types-data (3.2016.0521)
-    mini_portile2 (2.1.0)
-    minitest (5.10.1)
+    mini_portile2 (2.2.0)
+    minitest (5.10.2)
     momentjs-rails (2.15.1)
       railties (>= 3.1)
     multi_json (1.12.1)
@@ -212,8 +212,8 @@ GEM
     multipart-post (2.0.0)
     net-http-persistent (2.9.4)
     nio4r (2.0.0)
-    nokogiri (1.7.1)
-      mini_portile2 (~> 2.1.0)
+    nokogiri (1.8.0)
+      mini_portile2 (~> 2.2.0)
     oauth2 (1.2.0)
       faraday (>= 0.8, < 0.10)
       jwt (~> 1.0)
