@@ -16,4 +16,6 @@ $(document).ready(function() {
     window.location.hash = this.hash;
     $('html,body').scrollTop(scrollmem);
   });
+
+  $("#flash-modal").modal({ show : true });
 });
