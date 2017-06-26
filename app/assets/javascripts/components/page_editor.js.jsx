@@ -9,7 +9,8 @@ class PageEditor extends React.Component {
 
     this.state = {
       rawContent: this.props.rawContent,
-      containerWidth: 50
+      containerWidth: 50,
+      predicates: this.props.predicates
     }
   }
 
@@ -94,13 +95,13 @@ class PageEditor extends React.Component {
             onChange={this.onChangeContent.bind(this)}
             height='300px'
             width={this.state.containerWidth + 'px'} />
-          <div class='row'>
-            <div class='col-md-12'>
+          <div className='row'>
+            <div className='col-md-12'>
               <MetaDataEditor
                 triples={triples}
                 pages={this.props.pages}
                 onChange={this.onChangeTriples.bind(this)}
-                predicates={this.props.predicates}  />
+                predicates={this.state.predicates}  />
             </div>
           </div>
         </div>
@@ -119,10 +120,34 @@ class PageEditor extends React.Component {
       return '* [[' + triple.predicate + '::' + triple.object + ']]';
     }).join('\n') + '\n\n';
 
-    this.setState({ rawContent: pageWithoutMetadata + metadata });
+    this.setState({ rawContent: pageWithoutMetadata + metadata, predicates: new_predicates });
   }
 
   onChangeContent(content) {
-    this.setState({ rawContent: content });
+    var metadata = content.substring(content.indexOf('== Metadata =='));
+    var lines = metadata.split('\n');
+    lines = lines.filter(function(line) {
+      return line[0] == '*' && line.match(/\[\[[\S ]+\]\]/);
+    }).map(function(line) {
+      line = line.substring(1).trim();
+      return line.substring(line.indexOf('[['));
+    });
+
+    var triples = lines.map(function(line, index) {
+      line = line.replace('[[', '').replace(']]', '');
+      return {
+        predicate: line.split('::')[0],
+        object: line.split('::')[1],
+        id: index
+      }
+    });
+
+    var new_predicates = this.state.predicates;
+    triples.forEach((triple) => {
+      if(new_predicates.indexOf(triple.predicate) == -1) {
+        new_predicates = React.addons.update(this.props.predicates, { $push: [triple.predicate] });
+      }
+    });
+    this.setState({ rawContent: content, predicates: new_predicates });
   }
 }
