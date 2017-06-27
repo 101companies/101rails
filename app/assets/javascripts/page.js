@@ -5,10 +5,10 @@ $(document).on('turbolinks:load', function() {
   var metadata = $('[class="mw-headline"][id="Metadata"]');
 
   // hide list
-  metadata.parent().nextAll("ul").hide();
-  metadata.parent().nextAll("p").hide();
-  metadata.parent().nextAll("pre").hide();
-  metadata.parent().hide();
+  metadata.parent().parent().nextAll("ul").hide();
+  metadata.parent().parent().nextAll("p").hide();
+  metadata.parent().parent().nextAll("pre").hide();
+  metadata.parent().parent().hide();
 });
 
 function goBack() {
