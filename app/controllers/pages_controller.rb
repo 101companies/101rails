@@ -228,7 +228,7 @@ class PagesController < ApplicationController
     result = @page.update_or_rename(new_name, @page.raw_content, [], current_user)
 
     respond_to do |format|
-      format.html { redirect_to page_path(new_name), notice: "Page #{@page.full_title} was renamed to #{new_name}." }
+      format.html { redirect_to page_path(new_name), notice: "Page #{params[:id]} was renamed to #{new_name}." }
     end
   end
 
