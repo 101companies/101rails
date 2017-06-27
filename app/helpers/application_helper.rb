@@ -37,4 +37,12 @@ module ApplicationHelper
 
   alias j json_escape
 
+  def highlight_url(url)
+    pieces = url.split('/')
+    domain = pieces[2]
+    domain = "<u>#{domain}</u>"
+    pieces[2] = domain
+    pieces.join('/')
+  end
+
 end

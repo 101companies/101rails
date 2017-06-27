@@ -116,10 +116,11 @@
     <% if @rdf && @rdf.count > 0 %>
     <div class='section' id='metasection'>
       <div class='headlinecontainer'>
-        <h2 class='headline'>Metadata</h2>
+        <h2 class='headline'><%= link_to('Metadata', page_path('Section:Metadata')) %></h2>
       </div>
       <% if (@resources && @resources.count > 0) || (@books && @books.count > 0) %>
-        <%= render 'resources', resources: @resources, mappings: @books %>
+        <%= render 'pages/triples', triples: @resources %>
+        <hr  />
       <% end %>
       <%= render 'pages/triples', triples: @rdf, hover_show: false %>
     </div>

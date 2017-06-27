@@ -1,3 +1,4 @@
+<% first_in = false %>
 <div class='section-content-container'>
   <div class='section-content'>
     <div class='section-content-parsed'>
@@ -15,17 +16,23 @@
             </div>
             <div class="object label">
               <%
-              if triple[:node].start_with? 'http://'
+              if triple[:node].start_with?('http://') || triple[:node].start_with?('https://')
                 link = triple[:node]
+                title = highlight_url(link)
               else
                 link = '/' + triple[:node]
+                title = triple[:node]
               end
               %>
               <a href="<%= link.gsub(' ', '_') %>">
-                <%= triple[:node] %>
+                <%= raw title %>
               </a>
             </div>
           <% else %>
+            <% unless first_in %>
+              <hr />
+              <% first_in = true %>
+            <% end %>
             <div class='arrow'>
               ▶
             </div>
