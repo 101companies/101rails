@@ -16,7 +16,7 @@ RSpec.describe ContributionsController, type: :controller do
       post(:create, params: params)
 
       expect(response.status).to eq(302)
-      expect(response).to redirect_to(page_path('101project'))
+      expect(response).to redirect_to(root_path)
     end
 
     it 'no Repo URL' do

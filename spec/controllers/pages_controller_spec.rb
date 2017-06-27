@@ -135,7 +135,7 @@ RSpec.describe PagesController, type: :controller do
       }.not_to change(Page, :count)
 
       expect(flash[:error].length).to be > 0
-      expect(response).to redirect_to(page_path('101project'))
+      expect(response).to redirect_to(root_path)
     end
   end
 

@@ -30,7 +30,7 @@ RSpec.describe PageChangesController, type: :controller do
     it 'is missing both page' do
       get(:diff, params: { page_change_id: '' })
 
-      expect(response).to redirect_to(page_path('101project'))
+      expect(response).to redirect_to(root_path)
     end
 
   end
@@ -51,14 +51,14 @@ RSpec.describe PageChangesController, type: :controller do
     it 'cant apply without privileges' do
       get(:apply, params: { page_change_id: page_change.id })
 
-      expect(response).to redirect_to(page_path('101project'))
+      expect(response).to redirect_to(root_path)
       expect(flash[:error]).not_to be(nil)
     end
 
     it 'has invalid page change id' do
       get(:apply, params: { page_change_id: 0 })
 
-      expect(response).to redirect_to(page_path('101project'))
+      expect(response).to redirect_to(root_path)
       expect(flash[:error]).not_to be(nil)
     end
 
@@ -87,7 +87,7 @@ RSpec.describe PageChangesController, type: :controller do
     it 'has invalid change id' do
       get(:show, params: { page_change_id: 0 })
 
-      expect(response).to redirect_to(page_path('101project'))
+      expect(response).to redirect_to(root_path)
       expect(flash[:error]).not_to be(nil)
     end
 

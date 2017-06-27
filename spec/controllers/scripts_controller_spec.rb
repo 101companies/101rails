@@ -17,7 +17,7 @@ RSpec.describe ScriptsController, type: :controller do
     it 'it is non existing page' do
       get(:show, params: { id: 'contribution::DOES_NOT_EXIST' })
 
-      expect(response).to redirect_to(page_path('101project'))
+      expect(response).to redirect_to(root_path)
     end
 
   end

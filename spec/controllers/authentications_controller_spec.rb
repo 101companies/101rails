@@ -13,7 +13,7 @@ RSpec.describe AuthenticationsController, type: :controller do
 
       post(:create)
 
-      expect(response).to redirect_to(page_path('101project'))
+      expect(response).to redirect_to(root_path)
       expect(flash[:error]).to include('Failed to login')
     end
 
@@ -47,7 +47,7 @@ RSpec.describe AuthenticationsController, type: :controller do
 
       post(:local_auth, params: { admin: 1 })
 
-      expect(response).to redirect_to(page_path('101project'))
+      expect(response).to redirect_to(root_path)
     end
 
     it 'works' do
@@ -67,7 +67,7 @@ RSpec.describe AuthenticationsController, type: :controller do
       get(:destroy)
 
       expect(session[:user_id]).to be(nil)
-      expect(response).to redirect_to(page_path('101project'))
+      expect(response).to redirect_to(root_path)
     end
   end
 
