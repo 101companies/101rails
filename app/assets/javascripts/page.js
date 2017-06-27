@@ -9,6 +9,13 @@ $(document).on('turbolinks:load', function() {
   metadata.parent().parent().nextAll("p").hide();
   metadata.parent().parent().nextAll("pre").hide();
   metadata.parent().parent().hide();
+
+  $('#newTitle').on('keypress', function(e) {
+    if(e.which == 13) {
+      $('#rename-form').submit();
+    }
+  });
+
 });
 
 function goBack() {
