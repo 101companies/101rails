@@ -327,8 +327,7 @@ class Page < ApplicationRecord
   end
 
   def backlinks
-    r = backlinking_pages.map { |page| page.full_title}
-    r.uniq
+    backlinking_pages.map { |page| page.full_title}.uniq
   end
 
   def section(section)
