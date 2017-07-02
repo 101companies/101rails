@@ -184,6 +184,14 @@ RSpec.describe PagesController, type: :controller do
       expect(response).to render_template(:search)
     end
 
+    it 'searchs for section foobar' do
+      page = create(:foobar_page)
+
+      get(:search, params: { q: 'Section:FooBar' })
+
+      expect(assigns(:search_results)).to eq([page])
+    end
+
     it 'can search without text' do
       expect {
         get(:search)

@@ -12,6 +12,10 @@ FactoryGirl.define do
     verified true
   end
 
+  factory :foobar_page, parent: :page do
+    raw_content "== Metadata ==\n\n* [[similarTo::Section:FooBar]]"
+  end
+
   factory :abstraction_page, parent: :page do
     title 'Abstraction'
     namespace 'Concept'
