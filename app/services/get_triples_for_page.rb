@@ -2,7 +2,7 @@ class GetTriplesForPage
   include SolidUseCase
   include RdfModule
 
-  steps :get_rdf_for_page, :sort_rdf, :get_resources, :get_triples
+  steps :get_rdf_for_page, :sort_rdf, :get_resources, :get_triples, :fix_recursive
 
   def get_rdf_for_page(params)
     page = params[:page]
@@ -45,6 +45,24 @@ class GetTriplesForPage
     triples = rdf.select do |triple|
       node = triple[:node]
       !triple[:node].include?('://')
+    end
+
+    params[:triples] = triples
+    continue(params)
+  end
+
+  def fix_recursive(params)
+    page = params[:page]
+    full_title = page.full_title
+    triples = params[:triples]
+
+    triples = triples.map do |triple|
+      if triple[:node] == full_title
+        triple[:node] = 'this'
+        triple
+      else
+        triple
+      end
     end
 
     params[:triples] = triples
