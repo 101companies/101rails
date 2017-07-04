@@ -56,13 +56,13 @@ class PageModule
 
     search.each do |item|
       if item[:query]
-        if item[:query][:identifier] == 'namespace'
+        if item[:query][:identifier] == 'inNamespace'
           if pages.none?
             pages = Page.all
           end
           namespace = item[:query][:value].to_s
 
-          pages = pages.where(namespace: namespace)
+          pages = pages.where('lower(namespace) = ?', namespace.downcase)
         end
       end
     end

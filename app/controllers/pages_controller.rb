@@ -206,24 +206,17 @@ class PagesController < ApplicationController
   end
 
   def search
-    @query_string = params[:q] || ''
+    @query_string = params[:q]
     @title_only = params[:title_only]
-    parser = SearchParser.new
+    if @query_string.present?
+      parser = SearchParser.new
 
-    query = parser.parse(@query_string)
+      query = parser.parse(@query_string)
 
-    @search_results = PageModule.search(query)
-
-    # if @title_only
-    #   @search_results = PageModule.search_title(@query_string)
-    # else
-    #   if @query_string.starts_with?('Property:')
-    #     @search_results = PageModule.search_property(@query_string.gsub('Property:', ''))
-    #   else
-    #     @search_results = PageModule.search(@query_string)
-    #   end
-    # end
-
+      @search_results = PageModule.search(query)
+    else
+      @search_results = Page.none
+    end
     respond_to :html
   end
 

@@ -58,26 +58,6 @@ describe PageModule do
 
   end
 
-  describe 'search' do
-
-    it 'finds a page' do
-      page = create(:page)
-
-      result = PageModule.search page.full_title
-
-      expect(result.length).to eq(1)
-    end
-
-    it 'finds no page' do
-      page = create(:page)
-
-      result = PageModule.search 'fffff'
-
-      expect(result.length).to eq(0)
-    end
-
-  end
-
   describe 'escape_wiki_url' do
 
     it 'escapes a wiki url' do
