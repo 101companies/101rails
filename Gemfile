@@ -12,6 +12,7 @@ gem 'wkhtmltopdf-binary'
 
 gem 'turbolinks', '~> 5.0.0'
 gem 'execjs'
+gem 'parslet', git: 'https://github.com/kschiess/parslet.git'
 
 gem 'solid_use_case', '~> 2.1.1'
 

@@ -39,19 +39,35 @@ class PageModule
         "Source code for this contribution you can find [#{url} here]."
   end
 
-  def self.search(query_string, namespace=nil)
-    if namespace.blank?
-      pages = Page.all
-    else
-      pages = Page.where(namespace: namespace)
+  def self.search(query, namespace=nil)
+    search = query[:search]
+    pages = Page.none
+
+    search.each do |item|
+      if item[:text]
+        text = item[:text].to_s
+        if text.starts_with?('Property:')
+          pages = pages.or(search_property(text))
+        else
+          pages = pages.or(Page.search(item[:text].to_s))
+        end
+      end
     end
 
-    found_pages = pages.search(query_string).order(:title)
-    # nothing found -> go out
-    if found_pages.nil?
-      return []
+    search.each do |item|
+      if item[:query]
+        if item[:query][:identifier] == 'namespace'
+          if pages.none?
+            pages = Page.all
+          end
+          namespace = item[:query][:value].to_s
+
+          pages = pages.where(namespace: namespace)
+        end
+      end
     end
-    found_pages
+
+    pages.order(:title)
   end
 
   def self.search_property(name)
@@ -63,9 +79,14 @@ class PageModule
 
         Page.left_outer_joins(:triples).where('lower(triples.predicate) = ? and lower(triples.object) = ?', property_name.downcase, object_name.downcase).distinct
       else
-        like_name = Page.send(:sanitize_sql_like, name.downcase)
-        like_name = "%#{like_name}%"
-        Page.left_outer_joins(:triples).where('(lower(triples.predicate) = ?) or (lower(pages.title) like ? and pages.namespace = ?)', name.downcase, like_name, 'Property').distinct
+        if name.include?(':')
+          _, name = name.split(':')
+          Page.left_outer_joins(:triples).where('lower(triples.predicate) = ?', name.downcase).distinct
+        else
+          like_name = Page.send(:sanitize_sql_like, name.downcase)
+          like_name = "%#{like_name}%"
+          Page.left_outer_joins(:triples).where('(lower(triples.predicate) = ?) or (lower(pages.title) like ? and pages.namespace = ?)', name.downcase, like_name, 'Property').distinct
+        end
       end
     end
   end

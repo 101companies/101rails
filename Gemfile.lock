@@ -18,6 +18,12 @@ GIT
       rinku
 
 GIT
+  remote: https://github.com/kschiess/parslet.git
+  revision: 46bc703db3dd4ed21a75af1fc90bf685fe293759
+  specs:
+    parslet (1.8.0)
+
+GIT
   remote: https://github.com/ruby-rdf/rdf
   revision: aeb042e5984412f524dc9153f1a665400f36a912
   specs:
@@ -476,6 +482,7 @@ DEPENDENCIES
   octokit (~> 4.0)
   omniauth
   omniauth-github
+  parslet!
   pg
   puma
   pygments.rb

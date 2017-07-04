@@ -2,24 +2,9 @@
   <div class="panel-body">
     <form class='form form-horizontal' action='/search'>
       <div class='form-group'>
-        <label for="namespace" class="col-sm-2 control-label">Namespace</label>
-        <div class='col-sm-10'>
-          <%= select("namespace", "name", Page.order('namespace').pluck('distinct trim(namespace) as namespace'), { include_blank: true, selected: params.dig(:namespace, :name) }, { class: 'form-control' }) %>
-        </div>
-      </div>
-      <div class='form-group'>
         <label for="q" class="col-sm-2 control-label">Search</label>
         <div class='col-sm-10'>
           <%= text_field_tag(:q, @query_string, placeholder: 'Search', class: 'form-control') %>
-        </div>
-      </div>
-      <div class='form-group'>
-        <div class="col-sm-offset-2 col-sm-10">
-          <div class="checkbox">
-            <label>
-              <%= check_box_tag('title_only', '1', @title_only) %>  Title only
-            </label>
-          </div>
         </div>
       </div>
 
