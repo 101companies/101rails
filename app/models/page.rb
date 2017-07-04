@@ -92,6 +92,7 @@ class Page < ApplicationRecord
     end
 
     self.headline = get_headline_html_content
+    self.db_sections = sections
   end
 
   def self.search(text)
@@ -304,7 +305,7 @@ class Page < ApplicationRecord
     self.get_parser.sections.first.children.each do |section|
       content_with_subsections = section.wikitext.sub(/\s+\Z/, "")
 
-      parsed_html = parse content_with_subsections
+      parsed_html = parse(content_with_subsections)
 
       sections << {
           'is_resource' => section.is_resource_section,
@@ -314,7 +315,6 @@ class Page < ApplicationRecord
       }
     end
 
-    self.save
     sections
   end
 
