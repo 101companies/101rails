@@ -20,7 +20,7 @@
 
 <div id='search-results'>
 
-  <% @search_results.order(title: :asc).group_by(&:namespace).each do |name, pages| %>
+  <% @search_results.group_by(&:namespace).each do |name, pages| %>
     <h3><%= name %></h3>
     <ul>
       <% pages.each do |page| %>

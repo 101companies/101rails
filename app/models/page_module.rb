@@ -41,33 +41,53 @@ class PageModule
 
   def self.search(query, namespace=nil)
     search = query[:search]
-    pages = Page.none
+    # pages = Page.none
 
+    query = []
     search.each do |item|
       if item[:text]
-        text = item[:text].to_s
-        if text.starts_with?('Property:')
-          pages = pages.or(search_property(text))
-        else
-          pages = pages.or(Page.search(item[:text].to_s))
-        end
+        text = ActiveRecord::Base.connection.quote(item[:text].to_s)
+        query << "plainto_tsquery('english', #{text})"
       end
     end
 
+    query = "(#{query.join(' && ')})"
+
+    scope_query = []
     search.each do |item|
       if item[:query]
         if item[:query][:identifier] == 'inNamespace'
-          if pages.none?
-            pages = Page.all
-          end
-          namespace = item[:query][:value].to_s
+          namespace = ActiveRecord::Base.connection.quote(item[:query][:value].to_s).downcase
 
-          pages = pages.where('lower(namespace) = ?', namespace.downcase)
+          scope_query << "lower(page_namespace) = #{namespace}"
         end
       end
     end
 
-    pages.order(:title)
+    scope_query = scope_query.join(' and ')
+    unless scope_query.blank?
+      scope_query = "and #{scope_query}"
+    end
+
+    Page.find_by_sql("
+    select search.page_id as id, search.page_title as title, search.page_namespace as namespace
+    from
+    (
+      select
+        setweight(to_tsvector('english', pages.title), 'A') ||
+        setweight(to_tsvector('english', pages.namespace), 'B') ||
+        setweight(to_tsvector('english', pages.raw_content), 'C')
+        as document,
+        pages.id as page_id,
+        pages.title as page_title,
+        pages.namespace as page_namespace
+      from pages
+    ) as search
+    where search.document @@ #{query} #{scope_query}
+    order by ts_rank(search.document, #{query}) desc
+    ").to_a
+
+    # pages.order(:title)
   end
 
   def self.search_property(name)
