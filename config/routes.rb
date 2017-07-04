@@ -72,8 +72,10 @@ Wiki::Application.routes.draw do
     match '/local_login/:admin' => 'authentications#local_auth', via: [:get, :post]
   end
 
+  resources :pages, only: [:index]
+
   # pages routes
-  resources :pages, path: '/', id: /[^\/]*/ do
+  resources :pages, path: '/', id: /([^\/]+?)(?=\.json|\.ttl|\.n3|\.xml|\.html|$|\/)/ do
     get :unverified, on: :collection
     post :verify, on: :member
     get :unverify, on: :member

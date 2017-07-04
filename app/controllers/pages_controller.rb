@@ -1,6 +1,7 @@
 class PagesController < ApplicationController
-
   include RdfModule
+
+  before_action :set_default_response_format, only: [:index]
 
   # for calling from view
   helper_method :get_rdf_json
@@ -57,6 +58,15 @@ class PagesController < ApplicationController
     end
 
     @books = []
+  end
+
+  def index
+    if params[:after_id]
+      @pages = Page.where('id > ?', params[:after_id]).includes(:triples)
+    else
+      @pages = Page.includes(:triples).all
+    end
+    @pages = @pages.order(:id).limit(100)
   end
 
   def unverify
@@ -200,9 +210,7 @@ class PagesController < ApplicationController
       failure(:contributor_page_created) do |result|
         redirect_to page_path(result[:full_title])
       end
-
     end
-
   end
 
   def search
@@ -235,6 +243,12 @@ class PagesController < ApplicationController
       success: result,
       newTitle: @page.url
     }
+  end
+
+  protected
+
+  def set_default_response_format
+    request.format = :json
   end
 
 end
