@@ -41,7 +41,6 @@ class PageModule
 
   def self.search(query, namespace=nil)
     search = query[:search]
-    # pages = Page.none
 
     query = []
     search.each do |item|
@@ -86,8 +85,6 @@ class PageModule
     where search.document @@ #{query} #{scope_query}
     order by ts_rank(search.document, #{query}) desc
     ").to_a
-
-    # pages.order(:title)
   end
 
   def self.search_property(name)

@@ -186,13 +186,7 @@ class Page < ApplicationRecord
 
   # get fullname with namespace and  title
   def full_title
-    # if used default namespaces -> remove from full title
-    if (self.namespace == '101') or (self.namespace == 'Concept')
-      self.title
-    else
-      # else use normal building of full url
-      self.namespace + ':' + self.title
-    end
+    self.namespace + ':' + self.title
   end
 
   def full_underscore_title
@@ -253,9 +247,6 @@ class Page < ApplicationRecord
                                  user: user
 
     new_title_only = PageModule.retrieve_namespace_and_title(new_title)['title']
-    if namespace == 'Property'
-      rename_property(title, new_title_only)
-    end
 
     self.raw_content = content
     # sections
@@ -264,6 +255,10 @@ class Page < ApplicationRecord
     # if title was changed -> rename page
     if (new_title != self.full_title and GetPage.run(full_title: new_title).value[:page].nil?)
       self.rename(new_title, page_change)
+
+      if namespace == 'Property'
+        rename_property(title, new_title_only)
+      end
     end
     page_change.save!
     self.save!
@@ -302,7 +297,7 @@ class Page < ApplicationRecord
 
   def sections
     sections = []
-    self.get_parser.sections.first.children.each do |section|
+    get_parser.sections.first.children.each do |section|
       content_with_subsections = section.wikitext.sub(/\s+\Z/, "")
 
       parsed_html = parse(content_with_subsections)
