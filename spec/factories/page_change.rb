@@ -4,7 +4,7 @@
 FactoryGirl.define do
 
   factory :page_change do
-    title 'Page_Change_Title'
+    title 'Concept:Page_Change_Title'
     namespace 'some namespace'
     raw_content '== Title =='
     user
@@ -12,7 +12,7 @@ FactoryGirl.define do
   end
 
   factory :other_page_change, parent: :page_change do
-    title 'Other_Change_Title'
+    title 'Concept:Other_Change_Title'
     namespace 'some other namespace'
     raw_content '== Other Title =='
     user
