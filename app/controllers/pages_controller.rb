@@ -221,10 +221,11 @@ class PagesController < ApplicationController
 
       query = parser.parse(@query_string)
 
-      @search_results = PageModule.search(query)
+      @search_results = PageModule.search(query, namespace: params.dig(:namespace, :name))
     else
       @search_results = Page.none
     end
+
     respond_to :html
   end
 

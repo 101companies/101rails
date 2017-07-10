@@ -39,7 +39,7 @@ class PageModule
         "Source code for this contribution you can find [#{url} here]."
   end
 
-  def self.search(query, namespace=nil)
+  def self.search(query, namespace: nil)
     search = query[:search]
 
     query = []
@@ -53,14 +53,9 @@ class PageModule
     query = "(#{query.join(' && ')})"
 
     scope_query = []
-    search.each do |item|
-      if item[:query]
-        if item[:query][:identifier] == 'inNamespace'
-          namespace = ActiveRecord::Base.connection.quote(item[:query][:value].to_s).downcase
-
-          scope_query << "lower(page_namespace) = #{namespace}"
-        end
-      end
+    if namespace.present?
+      namespace = ActiveRecord::Base.connection.quote(namespace.to_s.downcase)
+      scope_query << "lower(page_namespace) = #{namespace}"
     end
 
     scope_query = scope_query.join(' and ')

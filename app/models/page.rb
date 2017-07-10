@@ -1,6 +1,4 @@
 class Page < ApplicationRecord
-
-  # relations here
   has_one :repo_link, dependent: :destroy
   has_many :page_changes, dependent: :destroy
   has_many :page_verifications, dependent: :destroy
@@ -198,9 +196,10 @@ class Page < ApplicationRecord
       # rewrite link in page, found by backlink
       related_page.raw_content = related_page.rewrite_internal_links(old_title, self.full_title)
       # and save changes
-      if !related_page.save
-        Rails.logger.info "Failed to rewrite links for page " + related_page.full_title
-      end
+      related_page.save!
+      # if !related_page.save
+      #   Rails.logger.info "Failed to rewrite links for page " + related_page.full_title
+      # end
     else
       Rails.logger.info "Couldn't find page with link " + backlink
     end
@@ -217,9 +216,14 @@ class Page < ApplicationRecord
     self.title = nt['title']
     # rewrite links in pages, that links to the page
     old_backlinking_pages.each do |old_backlinking_page|
-      self.rewrite_backlink old_backlinking_page, old_title
+      self.rewrite_backlink(old_backlinking_page, old_title)
     end
-    self.rewrite_backlink self, old_title
+    self.rewrite_backlink(self, old_title)
+
+    if namespace == 'Property'
+      old_nt = PageModule.retrieve_namespace_and_title(old_title)
+      rename_property(old_nt['title'], title)
+    end
   end
 
   def build_content_from_sections(sections)
@@ -253,22 +257,33 @@ class Page < ApplicationRecord
     # unescape new title to nice readable url
     new_title = PageModule.unescape_wiki_url(new_title)
     # if title was changed -> rename page
-    if (new_title != self.full_title and GetPage.run(full_title: new_title).value[:page].nil?)
+    if (new_title != self.full_title && GetPage.run(full_title: new_title).value[:page].nil?)
       self.rename(new_title, page_change)
-
-      if namespace == 'Property'
-        rename_property(title, new_title_only)
-      end
     end
     page_change.save!
     self.save!
   end
 
   def rewrite_internal_links(from, to)
-    regex = /(\[\[:?)(~)?([^:\]\[]+::)?(#{Regexp.escape(from.gsub("_", " "))})(\s*)(\|[^\[\]]*)?(\]\])/i
-    self.raw_content.gsub("_", " ").gsub(regex) do
-      "#{$1}#{$2}#{$3}#{$4[0].downcase == $4[0] ? PageModule.uncapitalize_first_char(to) : to}#{$5}#{$6}#{$7}"
+    from_nt = PageModule.retrieve_namespace_and_title(from)
+
+    replacements = [
+      { from: "[[#{from}]]", to: "[[#{to}]]" }, #regular link
+      { from: "::#{from}]]", to: "::#{to}]]" }
+    ]
+
+    if from_nt['namespace'] == 'Concept'
+      title_only = from_nt['title'] # concepts might not have an explicit namespace
+      replacements << { from: "[[#{title_only}]]", to: "[[#{to}]]" }
+      replacements << { from: "::#{title_only}]]", to: "::#{to}]]" }
     end
+
+    content = raw_content
+    replacements.each do |replacement|
+      content = content.gsub(replacement[:from], replacement[:to])
+    end
+
+    content
   end
 
   def url
@@ -314,7 +329,14 @@ class Page < ApplicationRecord
   end
 
   def backlinking_pages
-    Page.where('used_links && ARRAY[?]::varchar[]', full_title)
+    result = Page.where('used_links && ARRAY[?]::varchar[]', full_title)
+
+    nt = PageModule.retrieve_namespace_and_title(full_title)
+    if nt['namespace'] == 'Concept'
+      result = result.or(Page.where('used_links && ARRAY[?]::varchar[]', nt['title']))
+    end
+
+    result
   end
 
   def self.by_author(user)
