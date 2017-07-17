@@ -33,7 +33,7 @@ class PageRepo
       result = result.or(Page.where('used_links && ARRAY[?]::varchar[]', nt['title']))
     end
 
-    result
+    result.map { |page| build_page_entity(page) }
   end
 
   def search(text)
@@ -41,6 +41,17 @@ class PageRepo
     like = "%#{like}%"
     pages = Page.where('LOWER(title) like ? or LOWER(raw_content) like ? or (namespace || \':\' || title) = ?', like, like, text).distinct
     pages.map { |page| build_page_entity(page) }
+  end
+
+  def search_title(text)
+    like = Page.send(:sanitize_sql_like, text.downcase)
+    like = "%#{like}%"
+    result = Page.where('LOWER(title) like ? or (namespace || \':\' || title) = ?', like, text).distinct
+    result.map { |page| build_page_entity(page)  }
+  end
+
+  def self.recently_updated
+    Page.order(updated_at: :desc).limit(5)
   end
 
 end

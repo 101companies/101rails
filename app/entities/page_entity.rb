@@ -2,6 +2,8 @@ class PageEntity < Dry::Struct
   attribute :title, Types::Strict::String
   attribute :namespace, Types::Strict::String
   attribute :raw_content, Types::Strict::String
+  attribute :used_links, Types::Strict::Array.member(Types::Coercible::String)
+  attribute :triples, Types::Strict::Array.member(TripleEntity)
 
   include RdfModule
 
@@ -55,12 +57,6 @@ class PageEntity < Dry::Struct
 
     self.headline = get_headline_html_content
     self.db_sections = sections
-  end
-
-  def self.search_title(text)
-    like = sanitize_sql_like(text.downcase)
-    like = "%#{like}%"
-    where('LOWER(title) like ? or (namespace || \':\' || title) = ?', like, text).distinct
   end
 
   def render
@@ -131,7 +127,7 @@ class PageEntity < Dry::Struct
 
     parsed_page.internal_links.each do |link|
       link = link
-      nice_link = PageModule.url link
+      nice_link = PageModule.url(link)
 
       html.gsub! "<a href=\"#{link}\"", "<a "+
           "href=\"/#{nice_link}\""
@@ -142,7 +138,7 @@ class PageEntity < Dry::Struct
 
   # get fullname with namespace and  title
   def full_title
-    self.namespace + ':' + self.title
+    "#{namespace}:#{title}"
   end
 
   def full_underscore_title
@@ -292,10 +288,6 @@ class PageEntity < Dry::Struct
 
   def section(section)
     self.get_parser.sections.first.children.find { |s| s.full_title.downcase == section.downcase }
-  end
-
-  def self.recently_updated
-    order(updated_at: :desc).limit(5)
   end
 
   def preview
