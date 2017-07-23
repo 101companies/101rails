@@ -20,7 +20,8 @@ class GetPage
     title = nt['title']
     underscore_title = title.gsub(' ', '_')
 
-    page = Page.where(namespace: namespace, title: [title, underscore_title]).first
+    repo = PageRepo.new
+    page = repo.get(namespace, title)
 
     params[:page] = page
     continue(params)

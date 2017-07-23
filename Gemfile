@@ -17,6 +17,8 @@ gem 'parslet', git: 'https://github.com/kschiess/parslet.git'
 gem 'solid_use_case', '~> 2.1.1'
 gem 'dry-struct'
 gem 'dry-types'
+gem 'dry-monads'
+gem 'dry-logic'
 
 # send email on error
 gem 'exception_notification', '4.0.1'

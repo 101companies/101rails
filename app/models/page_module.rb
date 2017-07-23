@@ -147,7 +147,7 @@ class PageModule
   def self.find_by_full_title(full_title)
     full_title = (self.unescape_wiki_url(full_title)).strip
     nt = self.retrieve_namespace_and_title(full_title)
-    Page.where(namespace: nt['namespace'], title: nt['title']).first
+    PageRepo.new.get(nt['namespace'], nt['title'])
   end
 
   def self.front_page

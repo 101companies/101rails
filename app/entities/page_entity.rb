@@ -1,62 +1,71 @@
 class PageEntity < Dry::Struct
+  attribute :id, Types::Strict::Int
   attribute :title, Types::Strict::String
   attribute :namespace, Types::Strict::String
   attribute :raw_content, Types::Strict::String
   attribute :used_links, Types::Strict::Array.member(Types::Coercible::String)
   attribute :triples, Types::Strict::Array.member(TripleEntity)
+  attribute :headline, Types::Strict::String.maybe
+  attribute :updated_at, Types::Strict::DateTime.maybe
+  attribute :created_at, Types::Strict::DateTime.maybe
+  attribute :html_content, Types::Strict::String.maybe
 
   include RdfModule
 
+  def cache_key
+    "page/#{id}/#{updated_at}"
+  end
+
   def preparing_the_page
-    self.html_content = self.parse
-
-    self.subresources = []
-    self.used_links   = []
-
-    # we hack this for now
-    links = raw_content.scan /\[\[[^\]]*\]\]/
-    links = links.map do |link|
-      link.sub('[[', '').sub(']]', '').sub(/\|.*/, '')
-    end
-    links = links.map do |link|
-      if link.include?('://')
-        link
-      else
-        PageModule.unescape_wiki_url(link)
-      end
-    end
-    self.used_links = links.flatten.uniq
-
-    new_triples = used_links.map do |link|
-      if link.include?('::')
-        predicate, object = link.split('::')
-        {predicate: predicate, object: object}
-      else
-        nil
-      end
-    end.compact
-
-    triples.each do |current_triple|
-      contained = new_triples.any? do |new_triple|
-        new_triple[:predicate] == current_triple.predicate && new_triple[:object] == current_triple.object
-      end
-      unless contained
-        current_triple.destroy
-      end
-    end
-
-    new_triples.each do |new_triple|
-      contained = triples.any? do |current_triple|
-        new_triple[:predicate] == current_triple.predicate && new_triple[:object] == current_triple.object
-      end
-
-      unless contained
-        triples << triples.new(new_triple)
-      end
-    end
-
-    self.headline = get_headline_html_content
-    self.db_sections = sections
+    # self.html_content = self.parse
+    #
+    # self.subresources = []
+    # self.used_links   = []
+    #
+    # # we hack this for now
+    # links = raw_content.scan /\[\[[^\]]*\]\]/
+    # links = links.map do |link|
+    #   link.sub('[[', '').sub(']]', '').sub(/\|.*/, '')
+    # end
+    # links = links.map do |link|
+    #   if link.include?('://')
+    #     link
+    #   else
+    #     PageModule.unescape_wiki_url(link)
+    #   end
+    # end
+    # self.used_links = links.flatten.uniq
+    #
+    # new_triples = used_links.map do |link|
+    #   if link.include?('::')
+    #     predicate, object = link.split('::')
+    #     {predicate: predicate, object: object}
+    #   else
+    #     nil
+    #   end
+    # end.compact
+    #
+    # triples.each do |current_triple|
+    #   contained = new_triples.any? do |new_triple|
+    #     new_triple[:predicate] == current_triple.predicate && new_triple[:object] == current_triple.object
+    #   end
+    #   unless contained
+    #     current_triple.destroy
+    #   end
+    # end
+    #
+    # new_triples.each do |new_triple|
+    #   contained = triples.any? do |current_triple|
+    #     new_triple[:predicate] == current_triple.predicate && new_triple[:object] == current_triple.object
+    #   end
+    #
+    #   unless contained
+    #     triples << triples.new(new_triple)
+    #   end
+    # end
+    #
+    # self.headline = get_headline_html_content
+    # self.db_sections = sections
   end
 
   def render
@@ -71,10 +80,12 @@ class PageEntity < Dry::Struct
   end
 
   def get_headline_html_content
-    begin
-      Nokogiri::HTML(self.html_content).css('#Headline').first.parent.next_element.text.strip
-    rescue
-      ''
+    html_content.bind do |content|
+      if Nokogiri::HTML(content).css('#Headline').first
+        Nokogiri::HTML(content).css('#Headline').first.parent.parent.next_element.text.strip
+      else
+        nil
+      end
     end
   end
 
@@ -291,7 +302,11 @@ class PageEntity < Dry::Struct
   end
 
   def preview
-    headline
+    if headline.value.blank?
+      get_headline_html_content
+    else
+      headline
+    end
   end
 
   def self.cached_count

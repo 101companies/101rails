@@ -40,4 +40,8 @@ class Page < ApplicationRecord
     where(namespace: 'Language')
   end
 
+  def self.recently_updated
+    order(updated_at: :desc)
+  end
+
 end

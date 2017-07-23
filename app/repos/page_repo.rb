@@ -50,8 +50,20 @@ class PageRepo
     result.map { |page| build_page_entity(page)  }
   end
 
-  def self.recently_updated
-    Page.order(updated_at: :desc).limit(5)
+  def recent_technologies
+    Page.technologies.recently_updated.limit(5).map { |page| build_page_entity(page)  }
+  end
+
+  def recent_languages
+    Page.languages.recently_updated.limit(5).map { |page| build_page_entity(page)  }
+  end
+
+  def recent_contributions
+    Page.contributions.recently_updated.limit(5).map { |page| build_page_entity(page)  }
+  end
+
+  def recent_features
+    Page.features.recently_updated.limit(5).map { |page| build_page_entity(page)  }
   end
 
 end

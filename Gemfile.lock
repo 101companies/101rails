@@ -128,6 +128,9 @@ GEM
       dry-container (~> 0.2, >= 0.2.6)
       dry-core (~> 0.2)
       dry-equalizer (~> 0.2)
+    dry-monads (0.3.1)
+      dry-core
+      dry-equalizer
     dry-struct (0.3.1)
       dry-configurable (~> 0.1)
       dry-core (~> 0.3)
@@ -492,6 +495,8 @@ DEPENDENCIES
   concurrent-ruby
   database_cleaner
   differ (= 0.1.2)
+  dry-logic
+  dry-monads
   dry-struct
   dry-types
   exception_notification (= 4.0.1)
