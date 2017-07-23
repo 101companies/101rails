@@ -223,7 +223,11 @@ class PagesController < ApplicationController
 
       @search_results = PageModule.search(query, namespace: params.dig(:namespace, :name))
     else
-      @search_results = Page.none
+      if params.dig(:namespace, :name)
+        @search_results = Page.where(namespace: params.dig(:namespace, :name)).order(:title)
+      else
+        @search_results = Page.none
+      end
     end
 
     respond_to :html

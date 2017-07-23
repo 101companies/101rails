@@ -44,7 +44,7 @@ class PageModule
 
     query = []
     search.each do |item|
-      if item[:text]
+      if item[:text].present?
         text = ActiveRecord::Base.connection.quote(item[:text].to_s)
         query << "plainto_tsquery('english', #{text})"
       end
