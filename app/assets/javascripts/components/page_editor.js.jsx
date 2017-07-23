@@ -67,21 +67,37 @@ class PageEditor extends React.Component {
       }
     });
 
+    var toolbar = null;
+    var tripleEditor = null;
+    if(this.props.can_edit) {
+      toolbar = (
+        <div className="btn-toolbar editing" style={{display: 'block'}}>
+          <div className="btn-group">
+            <div className="editButton btn btn-sm btn-default" id="pageCancelButton" onClick={this.onCancel.bind(this)}>
+              <i className="icon-remove" />
+              <strong>Cancel</strong>
+            </div>
+            <div className="editButton btn btn-sm btn-default" id="pageSaveButton" onClick={this.savePage.bind(this)}>
+              <i className="icon-ok" />
+              <strong>Save</strong>
+            </div>
+          </div>
+        </div>
+      );
+
+      tripleEditor = (
+        <MetaDataEditor
+          triples={triples}
+          pages={this.props.pages}
+          onChange={this.onChangeTriples.bind(this)}
+          predicates={this.state.predicates}  />
+      );
+    }
+
     return (<div className='' ref={(container) => { this.container = container; }}>
       <div id="contentTop">
         <div id="topEditBar" className="editBar">
-          <div className="btn-toolbar editing" style={{display: 'block'}}>
-            <div className="btn-group">
-              <div className="editButton btn btn-sm btn-default" id="pageCancelButton" onClick={this.onCancel.bind(this)}>
-                <i className="icon-remove" />
-                <strong>Cancel</strong>
-              </div>
-              <div className="editButton btn btn-sm btn-default" id="pageSaveButton" onClick={this.savePage.bind(this)}>
-                <i className="icon-ok" />
-                <strong>Save</strong>
-              </div>
-            </div>
-          </div>
+          {toolbar}
         </div>
         <div id="title">
           <h1>{this.props.full_title}</h1>
@@ -97,11 +113,7 @@ class PageEditor extends React.Component {
             width={this.state.containerWidth + 'px'} />
           <div className='row'>
             <div className='col-md-12'>
-              <MetaDataEditor
-                triples={triples}
-                pages={this.props.pages}
-                onChange={this.onChangeTriples.bind(this)}
-                predicates={this.state.predicates}  />
+              {tripleEditor}
             </div>
           </div>
         </div>

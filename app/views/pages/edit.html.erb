@@ -17,7 +17,8 @@
       {
         rawContent: @page.raw_content,
         predicates: @predicates,
-        full_title: @page.full_title
+        full_title: @page.full_title,
+        can_edit: (can? :edit, @page)
       }) %>
     </div>
 
