@@ -65,7 +65,8 @@ RSpec.describe PageChangesController, type: :controller do
     it 'applies' do
       get(:apply, params: { page_change_id: page_change.id }, session: { user_id: user.id })
 
-      expect(response).to redirect_to(page_path(page_change.title))
+      ap page_change
+      expect(response).to redirect_to(page_path(page_change.full_title))
       expect(flash[:warning]).not_to be(nil)
 
       page.reload

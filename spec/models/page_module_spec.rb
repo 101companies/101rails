@@ -89,7 +89,7 @@ describe PageModule do
     it 'makes sure page has the given title' do
       result = PageModule.create_page_by_full_title 'Some title'
 
-      expect(result.full_title).to eq('Some title')
+      expect(result.full_title).to eq('Concept:Some title')
     end
 
   end

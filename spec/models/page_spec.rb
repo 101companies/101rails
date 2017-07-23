@@ -115,15 +115,6 @@ describe Page do
 
       expect(result).to include(page.title, page.namespace)
     end
-
-    it 'gets full title for concept page' do
-      page = create :concept_page
-
-      result = page.full_title
-
-      expect(result).to eq(page.title)
-    end
-
   end
 
   describe 'update_or_rename' do

@@ -1,3 +1,3 @@
-class TripleEntity < Dry::Struct
-
-end
+# class TripleEntity < Dry::Struct
+#
+# end

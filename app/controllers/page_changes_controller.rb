@@ -52,6 +52,7 @@ class PageChangesController < ApplicationController
     end
 
     page = page_change.page
+    page.namespace = page_change.namespace
     applying_result = page.update_or_rename(page_change.title, page_change.raw_content, nil, current_user)
     flash[:warning] =  applying_result ? 'Restored page from revision' : 'Restoring was unsuccessful'
 

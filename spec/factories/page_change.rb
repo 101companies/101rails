@@ -5,7 +5,7 @@ FactoryGirl.define do
 
   factory :page_change do
     title 'Page_Change_Title'
-    namespace 'some namespace'
+    namespace 'Concept'
     raw_content '== Title =='
     user
     page
