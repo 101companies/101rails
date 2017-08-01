@@ -21,12 +21,16 @@
     });
   });
   <%
+  if @pages
     page_refs = @pages.map do |page|
       {
         id: page_path(page.full_underscore_title),
         full_title: page.full_underscore_title
       }
     end
+  else
+    page_refs = []
+  end
    %>
 
   var links = <%= raw page_refs.to_json %>;
