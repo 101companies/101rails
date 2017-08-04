@@ -90,4 +90,16 @@ Wiki::Application.routes.draw do
     }, via: [:get, :post]
   end
 
+  #routes for Software Analysis as a Service
+  get '/service/', to: 'services#index'
+  post '/service/manage', to: 'services#manage'
+  post '/service/reset', to: 'services#reset'
+  post '/service/stop', to: 'services#stop'
+  post 'reload', to: 'repos#getInfoAsync'
+  post 'repos/reqDownload', to: 'repos#sendDownload'
+  resources :repos, param: :name, only: [:index,:show,:create,:destroy] do
+    resources :parts, param: :name, only: [:show,:create,:destroy]
+  end
+
+
 end
