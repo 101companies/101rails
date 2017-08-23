@@ -80,6 +80,6 @@
   }
 </script> -->
 
-<% @pages.each do |page| %>
+<% @pages&.each do |page| %>
   <%= render(partial: 'pages/page', formats: :html, locals: {:@script_render => true, page: page}) %>
 <% end %>

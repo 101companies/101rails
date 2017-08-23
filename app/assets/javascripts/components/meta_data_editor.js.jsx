@@ -24,7 +24,7 @@ var MetaDataEditor = React.createClass({
   onNewTriple: function(event) {
     event.preventDefault();
 
-    var predicate = Object.keys(this.props.predicates)[0];
+    var predicate = this.props.predicates[0];
     var object = '';
 
     var newTriples = React.addons.update(this.props.triples, { $push: [{ object: object, predicate: predicate }] })

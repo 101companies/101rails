@@ -132,7 +132,7 @@ class PageEditor extends React.Component {
       return '* [[' + triple.predicate + '::' + triple.object + ']]';
     }).join('\n') + '\n\n';
 
-    this.setState({ rawContent: pageWithoutMetadata + metadata, predicates: new_predicates });
+    this.setState({ rawContent: pageWithoutMetadata + metadata });
   }
 
   onChangeContent(content) {
