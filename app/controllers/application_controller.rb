@@ -19,7 +19,11 @@ class ApplicationController < ActionController::Base
   end
 
   def go_to_homepage
-    redirect_back(fallback_location: root_path)
+    if session[:last_page]
+      redirect_to page_path(session[:last_page])
+    else
+      redirect_back(fallback_location: root_path)
+    end
   end
 
   def landing_page

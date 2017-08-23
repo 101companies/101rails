@@ -2,6 +2,7 @@ class PagesController < ApplicationController
   include RdfModule
 
   before_action :set_default_response_format, only: [:index]
+  after_action :set_last_page
 
   # for calling from view
   helper_method :get_rdf_json
@@ -254,6 +255,12 @@ class PagesController < ApplicationController
 
   def set_default_response_format
     request.format = :json
+  end
+
+  def set_last_page
+    if @page
+      session[:last_page] = @page.full_title
+    end
   end
 
 end
