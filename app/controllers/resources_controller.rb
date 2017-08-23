@@ -23,7 +23,7 @@ class ResourcesController < ApplicationController
       params[:id] = params[:q]
       show
     else
-      @page = PageModule.find_by_full_title('Language:sparql')
+      @page = PageModule.sparql_page
       if($graph.has_graph?)
 
         # + prepare subject ----------------------

@@ -162,6 +162,18 @@ class PageModule
     page
   end
 
+  def self.sparql_page
+    page = find_by_full_title('Internal:Sparql')
+    if page.nil?
+      page = Page.create!(
+        namespace: 'Internal',
+        title: 'Sparql',
+        raw_content: "== Headline ==\n\nSparql Page"
+      )
+    end
+    page
+  end
+
   def self.courses_page
     page = find_by_full_title('Internal:Courses')
     if page.nil?
