@@ -10,6 +10,5 @@ class AutocompleteController < ApplicationController
     else
       render json: Page.where(namespace: @namespace).pluck(:title)
     end
-
   end
 end

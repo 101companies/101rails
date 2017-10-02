@@ -4,8 +4,10 @@ RSpec.describe PagesController, type: :controller do
   let(:valid_attributes) { attributes_for(:page) }
 
   before(:each) do
-    @abstraction_page = create :abstraction_page
-    @page = create :page
+    @abstraction_page = create(:abstraction_page, :reindex)
+    @page = create(:page, :reindex)
+
+    Page.search_index.refresh
   end
 
   describe 'GET show' do
@@ -177,7 +179,7 @@ RSpec.describe PagesController, type: :controller do
   describe 'search' do
     it 'returns the correct page' do
       expect {
-        get(:search, params: { q: @page.full_title })
+        get(:search, params: { q: @page.title })
       }.not_to change(Page, :count)
 
       expect(assigns(:search_results).length).to eq(1)
@@ -185,11 +187,12 @@ RSpec.describe PagesController, type: :controller do
     end
 
     it 'searchs for section foobar' do
-      page = create(:foobar_page)
+      page = create(:foobar_page, :reindex)
+      Page.search_index.refresh
 
       get(:search, params: { q: 'Section:FooBar' })
 
-      expect(assigns(:search_results)).to eq([page])
+      expect(assigns(:search_results).to_a).to eq([page])
     end
 
     it 'can search without text' do

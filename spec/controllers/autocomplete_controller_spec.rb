@@ -1,10 +1,12 @@
 require 'rails_helper'
 
-RSpec.describe AutocompleteController, type: :controller do
+RSpec.describe AutocompleteController, search: true, type: :controller do
 
   before(:each) do
-    @abstraction_page = create(:abstraction_page)
-    @page = create(:page)
+    @abstraction_page = create(:abstraction_page, :reindex)
+    @page = create(:page, :reindex)
+
+    Page.search_index.refresh
   end
 
   describe 'GET index' do
@@ -18,7 +20,7 @@ RSpec.describe AutocompleteController, type: :controller do
     end
 
     it 'autocompletes all pages from namespace and prefix' do
-      get :index, params: { prefix: "#{@page.namespace}::#{@page.title[0]}" }
+      get :index, params: { prefix: "#{@page.namespace}:#{@page.title[0]}" }
 
       data = JSON.parse(@response.body)
 

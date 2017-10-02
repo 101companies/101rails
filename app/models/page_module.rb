@@ -40,47 +40,52 @@ class PageModule
   end
 
   def self.search(query, namespace: nil)
-    search = query[:search]
-
-    query = []
-    search.each do |item|
-      if item[:text].present?
-        text = "#{text}:*"
-        text = ActiveRecord::Base.connection.quote(item[:text].to_s)
-        query << "to_tsquery('english', #{text})"
-      end
-    end
-
-    query = "(#{query.join(' && ')})"
-
-    scope_query = []
     if namespace.present?
-      namespace = ActiveRecord::Base.connection.quote(namespace.to_s.downcase)
-      scope_query << "lower(page_namespace) = #{namespace}"
+      Page.search(query, fields: ["title^10", "raw_content", 'full_title^10'], match: :word_middle, where: { namespace: namespace })
+    else
+      Page.search(query, fields: ["title^10", "raw_content", 'full_title^10'], match: :word_middle)
     end
-
-    scope_query = scope_query.join(' and ')
-    unless scope_query.blank?
-      scope_query = "and #{scope_query}"
-    end
-
-    Page.find_by_sql("
-    select search.page_id as id, search.page_title as title, search.page_namespace as namespace
-    from
-    (
-      select
-        setweight(to_tsvector('english', pages.title), 'A') ||
-        setweight(to_tsvector('english', pages.namespace), 'B') ||
-        setweight(to_tsvector('english', pages.raw_content), 'C')
-        as document,
-        pages.id as page_id,
-        pages.title as page_title,
-        pages.namespace as page_namespace
-      from pages
-    ) as search
-    where search.document @@ #{query} #{scope_query}
-    order by ts_rank(search.document, #{query}) desc
-    ").to_a
+    # search = query[:search]
+    #
+    # query = []
+    # search.each do |item|
+    #   if item[:text].present?
+    #     text = "#{text}:*"
+    #     text = ActiveRecord::Base.connection.quote(item[:text].to_s)
+    #     query << "to_tsquery('english', #{text})"
+    #   end
+    # end
+    #
+    # query = "(#{query.join(' && ')})"
+    #
+    # scope_query = []
+    # if namespace.present?
+    #   namespace = ActiveRecord::Base.connection.quote(namespace.to_s.downcase)
+    #   scope_query << "lower(page_namespace) = #{namespace}"
+    # end
+    #
+    # scope_query = scope_query.join(' and ')
+    # unless scope_query.blank?
+    #   scope_query = "and #{scope_query}"
+    # end
+    #
+    # Page.find_by_sql("
+    # select search.page_id as id, search.page_title as title, search.page_namespace as namespace
+    # from
+    # (
+    #   select
+    #     setweight(to_tsvector('english', pages.title), 'A') ||
+    #     setweight(to_tsvector('english', pages.namespace), 'B') ||
+    #     setweight(to_tsvector('english', pages.raw_content), 'C')
+    #     as document,
+    #     pages.id as page_id,
+    #     pages.title as page_title,
+    #     pages.namespace as page_namespace
+    #   from pages
+    # ) as search
+    # where search.document @@ #{query} #{scope_query}
+    # order by ts_rank(search.document, #{query}) desc
+    # ").to_a
   end
 
   def self.search_property(name)

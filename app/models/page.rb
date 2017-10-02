@@ -1,4 +1,12 @@
 class Page < ApplicationRecord
+  searchkick merge_mappings: true, word_middle: [:title, :raw_content], mappings: {
+    page: {
+      properties: {
+        full_title: { type: 'string', analyzer: 'searchkick_autocomplete_search' }
+      }
+    }
+  }
+
   has_one :repo_link, dependent: :destroy
   has_many :page_changes, dependent: :destroy
   has_many :page_verifications, dependent: :destroy
@@ -12,6 +20,14 @@ class Page < ApplicationRecord
 
   before_save :preparing_the_page
   include RdfModule
+
+  def search_data
+    {
+      title: title,
+      raw_content: raw_content,
+      full_title: full_title
+    }
+  end
 
   def self.unverified
     where(verified: false)
@@ -90,19 +106,9 @@ class Page < ApplicationRecord
     end
 
     self.headline = get_headline_html_content
-    self.db_sections = sections
-  end
-
-  def self.search(text)
-    like = sanitize_sql_like(text.downcase)
-    like = "%#{like}%"
-    where('LOWER(title) like ? or LOWER(raw_content) like ? or (namespace || \':\' || title) = ?', like, like, text).distinct
-  end
-
-  def self.search_title(text)
-    like = sanitize_sql_like(text.downcase)
-    like = "%#{like}%"
-    where('LOWER(title) like ? or (namespace || \':\' || title) = ?', like, text).distinct
+    if respond_to?(:db_sections=)
+      self.db_sections = sections
+    end
   end
 
   def render

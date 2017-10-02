@@ -2,6 +2,7 @@ source 'https://rubygems.org'
 ruby '2.4.2'
 
 gem 'newrelic_rpm'
+gem 'searchkick'
 
 gem 'rails', '~> 5.0', '>= 5.0.0.1'
 gem 'activerecord', '~> 5.0', '>= 5.0.0.1'
@@ -11,6 +12,8 @@ gem 'html2text'
 gem 'ruby-stemmer', '>=0.8.3', :require => 'lingua/stemmer'
 gem 'wicked_pdf'
 gem 'wkhtmltopdf-binary'
+gem 'oj'
+gem 'typhoeus'
 
 gem 'turbolinks', '~> 5.0.0'
 gem 'execjs'
