@@ -188,11 +188,13 @@ class PagesController < ApplicationController
     ShowPage.run(args).match do
 
       success do |result|
+        @similarities   = result[:similarities]
         @page           = result[:page]
         @books          = result[:books]
         @rdf            = result[:triples]
         @resources      = result[:resources]
         @contributions  = result[:contributions]
+        @errors         = result[:errors]
       end
 
       failure(:page_not_found) do |result|

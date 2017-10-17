@@ -31,8 +31,10 @@ RSpec.describe PagesController, type: :controller do
 
     it 'gets a contributor page' do
       user = create(:user)
-      page = create(:contributor_page)
+      page = create(:contributor_page, :reindex)
       change = create(:page_change, user: user)
+
+      Page.search_index.refresh
 
       expect {
         get(:show, params: { id: page.full_title }, session: { user_id: user.id })

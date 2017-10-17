@@ -1,0 +1,9 @@
+<h4>10 most similar pages:</h4>
+
+<ul>
+  <% @similarities.each do |page| %>
+    <li>
+      <%= link_to(page[:full_title], page_path(page[:full_title]))  %> - <%= page[:score] %>
+    </li>
+  <% end %>
+</ul>

@@ -51,6 +51,7 @@ gem 'validate_url'
 
 group :development, :test do
   gem 'better_errors'
+  gem 'binding_of_caller'
   gem 'rails-controller-testing'
   gem 'rspec-rails'
   gem 'simplecov', require: false

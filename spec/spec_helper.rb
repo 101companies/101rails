@@ -38,7 +38,7 @@ RSpec.configure do |config|
     Page.reindex
 
     # and disable callbacks
-    Searchkick.disable_callbacks
+    # Searchkick.disable_callbacks
   end
 
   config.around(:each, search: true) do |example|

@@ -1,0 +1,2 @@
+module CreateWikiMetricsHelper
+end

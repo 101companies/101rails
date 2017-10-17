@@ -1,8 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe ScriptsController, type: :controller do
-  let!(:page) { create(:page) }
-  let!(:abstraction_page) { create(:abstraction_page) }
+  let!(:page) { create(:page, :reindex) }
+  let!(:abstraction_page) { create(:abstraction_page, :reindex) }
 
   describe 'show' do
 

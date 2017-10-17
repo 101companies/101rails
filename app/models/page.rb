@@ -25,7 +25,8 @@ class Page < ApplicationRecord
     {
       title: title,
       raw_content: raw_content,
-      full_title: full_title
+      full_title: full_title,
+      namespace: namespace
     }
   end
 
@@ -109,6 +110,10 @@ class Page < ApplicationRecord
     if respond_to?(:db_sections=)
       self.db_sections = sections
     end
+  end
+
+  def section_names
+    db_sections.map { |section| section['title'] }
   end
 
   def render

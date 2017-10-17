@@ -145,4 +145,13 @@ namespace :pages do
     end
   end
 
+  task :findSimilar => :environment do
+    Page.find_each do |page|
+      p
+      ap page.full_title
+      ap 'similar:'
+      ap page.similar.map(&:full_title)
+    end
+  end
+
 end

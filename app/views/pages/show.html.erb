@@ -1,5 +1,20 @@
 <%= render "/pages/shared/default" %>
 <%= content_for :title, @page.full_title %>
+
+<% if current_user %>
+  <% if @errors.length > 0 %>
+    <div class="alert alert-danger" role="alert">
+      <ul>
+        <% @errors.each do |error| %>
+          <li>
+            <%= error %>
+          </li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+<% end %>
+
 <ul class="nav nav-tabs">
   <li class="active">
     <a class="tab-link" data-toggle="tab" href="#page" id="page-tab-link">101wiki</a>
@@ -16,11 +31,13 @@
   <li>
     <a class="tab-link" data-toggle="tab" href="#editing-help" id="editing-help-tab-link">Help</a>
   </li>
-  <% if current_user %>
     <li>
       <a class="tab-link" data-toggle="tab" href="#page-changes" id="page-changes-tab-link">History</a>
     </li>
-  <% end %>
+
+    <li>
+      <a class="tab-link" data-toggle="tab" href="#page-similarities" id="page-changes-tab-link">Similarities</a>
+    </li>
 </ul>
 <div class="tab-content">
   <!-- tab with backbone page
@@ -76,6 +93,10 @@
   -->
   <div class="tab-pane" id="editing-help">
     <%= render "/pages/editing_help" %>
+  </div>
+
+  <div class="tab-pane" id="page-similarities">
+    <%= render "/pages/similarities" %>
   </div>
   <!-- tab with all repo settings
   -->
