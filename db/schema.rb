@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171018100312) do
+ActiveRecord::Schema.define(version: 20171018124351) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -91,8 +91,10 @@ ActiveRecord::Schema.define(version: 20171018100312) do
     t.datetime "updated_at",                null: false
     t.jsonb    "db_sections"
     t.index ["namespace"], name: "index_pages_on_namespace", using: :btree
+    t.index ["subresources"], name: "index_pages_on_subresources", using: :gin
     t.index ["title", "namespace"], name: "index_pages_on_title_and_namespace", unique: true, using: :btree
     t.index ["title"], name: "index_pages_on_title", using: :btree
+    t.index ["used_links"], name: "index_pages_on_used_links", using: :gin
     t.index ["verified"], name: "index_pages_on_verified", using: :btree
   end
 

@@ -364,7 +364,7 @@ class Page < ApplicationRecord
   end
 
   def backlinks
-    backlinking_pages.map { |page| page.full_title}.uniq
+    backlinking_pages.select(:title, :namespace).map { |page| page.full_title}.uniq
   end
 
   def section(section)
