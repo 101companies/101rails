@@ -195,6 +195,7 @@ class PagesController < ApplicationController
         @resources      = result[:resources]
         @contributions  = result[:contributions]
         @errors         = result[:errors]
+        @warnings       = result[:warnings]
       end
 
       failure(:page_not_found) do |result|

@@ -13,6 +13,18 @@
       </ul>
     </div>
   <% end %>
+
+  <% if @warnings.length > 0 %>
+    <div class="alert alert-warning" role="alert">
+      <ul>
+        <% @warnings.each do |error| %>
+          <li>
+            <%= error %>
+          </li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
 <% end %>
 
 <ul class="nav nav-tabs">
