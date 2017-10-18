@@ -86,17 +86,20 @@ class ValidatePage
     property_pages.each do |property_page|
       property_page.triples.each do |triple|
         if triple.predicate == 'hasRange'
-          ranges[property_page.title] = domains[property_page.title] + [triple.object.split(':')[1]]
+          namespace = PageModule.retrieve_namespace_and_title(triple.object)['title']
+          ranges[property_page.title] = ranges[property_page.title] + [namespace]
         end
       end
     end
+
+    # raise
 
     page.triples.each do |triple|
       if domains[triple.predicate].length > 0 && !domains[triple.predicate].include?(page.namespace) && !domains[triple.predicate].include?('Any')
         errors << "Invalid domain for #{triple.predicate}::#{triple.object}, '#{triple.predicate}' has domain #{domains[triple.predicate].join(', ')}"
       end
 
-      object_namespace = PageModule.retrieve_namespace_and_title(triple.object.split(':'))['namespace']
+      object_namespace = PageModule.retrieve_namespace_and_title(triple.object)['namespace']
       if ranges[triple.predicate].length > 0 && !ranges[triple.predicate].include?(object_namespace) && !ranges[triple.predicate].include?('Any')
         errors << "Invalid range for #{triple.predicate}::#{triple.object}, '#{triple.predicate}' has range #{ranges[triple.predicate].join(', ')}"
       end
