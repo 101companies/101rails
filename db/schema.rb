@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170704132941) do
+ActiveRecord::Schema.define(version: 20171018100312) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -173,4 +173,15 @@ ActiveRecord::Schema.define(version: 20170704132941) do
   add_foreign_key "page_changes", "pages"
   add_foreign_key "page_changes", "users"
   add_foreign_key "repo_links", "pages"
+
+  create_view "wiki_at_times",  sql_definition: <<-SQL
+      SELECT pages.id,
+      COALESCE(page_changes.title, pages.title) AS title,
+      pages.namespace,
+      COALESCE(page_changes.raw_content, pages.raw_content) AS raw_content,
+      COALESCE(page_changes.created_at, pages.created_at) AS valid_from
+     FROM (pages
+       LEFT JOIN page_changes ON ((page_changes.page_id = pages.id)));
+  SQL
+
 end

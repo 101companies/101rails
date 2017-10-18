@@ -76,9 +76,11 @@ class ShowPage
   def similar_pages(params)
     page = params[:page]
 
-    if page.present?
+    if page.present? && !page.instance_of?(WikiAtTimes)
       similarities = page.similar(load: false)
       params[:similarities] = similarities.response['hits']['hits'].map { |item| {id: item['_id'], full_title: item['_source']['full_title'], score: item['_score']}  }
+    else
+      params[:similarities] = []  
     end
 
     continue(params)

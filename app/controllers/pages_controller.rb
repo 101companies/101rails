@@ -182,7 +182,8 @@ class PagesController < ApplicationController
   def show
     args = {
       full_title: params[:id],
-      current_user: current_user
+      current_user: current_user,
+      time: params[:time]
     }
 
     ShowPage.run(args).match do

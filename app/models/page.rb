@@ -13,6 +13,7 @@ class Page < ApplicationRecord
   has_and_belongs_to_many :users
   has_many :mappings, dependent: :destroy
   has_many :triples, autosave: true, dependent: :destroy
+  before_save :create_metrics
 
   validates_presence_of :title
   validates_presence_of :namespace
@@ -20,6 +21,10 @@ class Page < ApplicationRecord
 
   before_save :preparing_the_page
   include RdfModule
+
+  def create_metrics
+
+  end
 
   def search_data
     {
@@ -113,7 +118,11 @@ class Page < ApplicationRecord
   end
 
   def section_names
-    db_sections.map { |section| section['title'] }
+    if db_sections.present?
+      db_sections.map { |section| section['title'] }
+    else
+      sections.map { |section|  section['title'] }
+    end
   end
 
   def render

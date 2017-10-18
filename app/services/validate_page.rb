@@ -10,7 +10,7 @@ class ValidatePage
   def validate(params)
     page = params[:page]
 
-    if page.present?
+    if page.present? && !page.instance_of?(WikiAtTimes)
       namespace_page = PageModule.find_by_full_title("Namespace:#{page.namespace}")
       errors = []
       warnings = []
@@ -61,6 +61,9 @@ class ValidatePage
 
       params[:errors] = errors
       params[:warnings] = warnings
+    else
+      params[:errors] = []
+      params[:warnings] = []
     end
 
     continue(params)
@@ -71,7 +74,10 @@ class ValidatePage
   def validate_triple_ranges(page)
     errors = []
     triples = page.triples
-    property_pages = Page.includes(:triples).where(namespace: 'Property', title: page.triples.pluck(:predicate))
+    property_pages = Page
+      .select(:id, :title)
+      .includes(:triples)
+      .where(namespace: 'Property', title: page.triples.pluck(:predicate))
 
     domains = Hash.new([])
     property_pages.each do |property_page|

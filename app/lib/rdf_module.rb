@@ -91,11 +91,24 @@ module RdfModule
   end
 
   def add_ingoing_triples(graph, page)
-    triples = Triple.includes(:page).joins(:page).
-      where(triples: { object: [page.full_title, page.full_title.gsub(' ', '_'), page.full_title.gsub('_', ' ')]})
+    # triples = Triple.includes(:page).joins(:page)
+    #   .where(triples: { object: })
 
-    triples.find_each do |triple|
-      graph << ["IN", triple.predicate, triple.page.full_title]
+    titles = [page.full_title, page.full_title.gsub(' ', '_'), page.full_title.gsub('_', ' ')]
+    titles = titles.map do |title|
+      Triple.connection.quote(title)
+    end.join(', ')
+
+    triples = Triple.connection.execute(<<-SQL
+      select triples.predicate, pages.namespace, pages.title
+      from triples
+      inner join pages on pages.id = triples.page_id
+      where triples.object in (#{titles})
+    SQL
+    )
+
+    triples.to_a.each do |triple|
+      graph << ["IN", triple['predicate'], "#{triple['namespace']}:#{triple['title']}"]
     end
     graph
   end

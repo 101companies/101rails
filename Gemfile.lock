@@ -405,6 +405,9 @@ GEM
     sawyer (0.7.0)
       addressable (>= 2.3.5, < 2.5)
       faraday (~> 0.8, < 0.10)
+    scenic (1.4.0)
+      activerecord (>= 4.0.0)
+      railties (>= 4.0.0)
     searchkick (2.3.2)
       activemodel (>= 4.1)
       elasticsearch (>= 1)
@@ -523,6 +526,7 @@ DEPENDENCIES
   rspec-rails
   ruby-stemmer (>= 0.8.3)
   sassc-rails
+  scenic
   searchkick
   select2-rails (= 3.5.7)
   simple_form

@@ -17,10 +17,14 @@ class GetPage
   def get_page(params)
     nt = params[:nt]
     namespace = nt['namespace']
-    title = nt['title']
-    underscore_title = title.gsub(' ', '_')
+    title = nt['title'].downcase
+    underscore_title = title.gsub(' ', '_').downcase
 
-    page = Page.where(namespace: namespace, title: [title, underscore_title]).first
+    if params[:time]
+      page = WikiAtTimes.page_at_time(namespace, title, DateTime.parse(params[:time]))
+    else
+      page = Page.where(namespace: namespace).where('lower(title) in (?)', [title, underscore_title]).first
+    end
 
     params[:page] = page
     continue(params)
