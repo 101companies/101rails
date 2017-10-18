@@ -11,19 +11,20 @@ class ValidatePage
     page = params[:page]
 
     if page.present? && !page.instance_of?(WikiAtTimes)
-      namespace_page = PageModule.find_by_full_title("Namespace:#{page.namespace}")
+      full_title = "Namespace:#{page.namespace}"
       errors = []
       warnings = []
 
-      unless namespace_page.present?
-        errors << "No namespace page found for #{page.namespace}"
-        params[:errors] = errors
-        return continue(params)
-      end
+      full_title = PageModule.unescape_wiki_url(full_title).strip
+      nt = PageModule.retrieve_namespace_and_title(full_title)
 
-      schema_triples = namespace_page.triples.where(predicate: SCHEMA_PREDICATES)
+      schema_triples = Triple
+        .joins(:page)
+        .where(pages: {namespace: nt['namespace'], title: nt['title']})
+        .where(triples: {predicate: SCHEMA_PREDICATES})
+
       section_names = page.section_names
-      triple_predicates = page.triples.pluck(:predicate)
+      triple_predicates = page.triples.map(&:predicate)
 
       section_errors, section_warnings = validate_sections(schema_triples, triple_predicates, section_names)
       errors = errors + section_errors

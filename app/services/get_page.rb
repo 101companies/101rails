@@ -23,7 +23,7 @@ class GetPage
     if params[:time]
       page = WikiAtTimes.page_at_time(namespace, title, DateTime.parse(params[:time]))
     else
-      page = Page.where(namespace: namespace).where('lower(title) in (?)', [title, underscore_title]).first
+      page = Page.includes(:triples).where(namespace: namespace).where('lower(title) in (?)', [title, underscore_title]).first
     end
 
     params[:page] = page
