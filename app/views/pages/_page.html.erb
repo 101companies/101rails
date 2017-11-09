@@ -113,7 +113,7 @@
   <div id='sections'>
     <%= page.render.html_safe %>
 
-    <% if @rdf && @rdf.count > 0 %>
+    <% if (@rdf && @rdf.count > 0) || (@resources && @resources.count > 0) || (@books && @books.count > 0) %>
     <div class='section' id='metasection'>
       <div class='headlinecontainer'>
         <h2 class='headline'><%= link_to('Metadata', page_path('Section:Metadata')) %></h2>
