@@ -13,7 +13,6 @@ class Admin::AdminController < ApplicationController
   end
 
   private
-
   def admin_layout
     'admin'
   end

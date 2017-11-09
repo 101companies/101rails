@@ -1,5 +1,5 @@
 require 'rails_helper'
-require 'sucker_punch/testing/inline'
+# require 'sucker_punch/testing/inline'
 require 'fileutils'
 
 RSpec.describe AnalyseJob, type: :job do
@@ -181,6 +181,3 @@ RSpec.describe AnalyseJob, type: :job do
     end
   end
 end
-
-
-

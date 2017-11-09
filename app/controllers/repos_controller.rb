@@ -1,6 +1,6 @@
 require 'fileutils'
-require './lib/repos_support'
-require './lib/git_api_support'
+# require './lib/repos_support'
+# require './lib/git_api_support'
 
 class ReposController < ApplicationController
   include ReposSupport

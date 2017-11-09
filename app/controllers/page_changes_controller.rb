@@ -29,6 +29,15 @@ class PageChangesController < ApplicationController
 
   end
 
+  def index
+    if params[:after_id]
+      @changes = PageChange.where('id > ?', params[:after_id])
+    else
+      @changes = PageChange.all
+    end
+    @changes = @changes.order(:id).limit(500)
+  end
+
   def get_all
     data = ""
     begin

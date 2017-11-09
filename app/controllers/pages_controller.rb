@@ -67,7 +67,7 @@ class PagesController < ApplicationController
     else
       @pages = Page.includes(:triples).all
     end
-    @pages = @pages.order(:id).limit(100)
+    @pages = @pages.order(:id).limit(500)
   end
 
   def unverify

@@ -32,7 +32,6 @@ class ValidatePage
 
       triple_errors, _ = validate_triple_ranges(page)
       errors = errors + triple_errors
-      # warnings = warnings + section_warnings
 
       # missing links
       normalized_links = page.used_links

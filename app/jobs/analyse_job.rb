@@ -1,10 +1,10 @@
-require './lib/repos_support'
-require 'fileutils'
+# require './lib/repos_support'
+# require 'fileutils'
 
 class AnalyseJob
-  include SuckerPunch::Job
+  # include SuckerPunch::Job
   include ReposSupport
-  workers 1
+  # workers 1
 
   def perform(link, rev, name, size, modules)
     repo = Repo.find_by(name: name)
