@@ -103,6 +103,23 @@ ActiveRecord::Schema.define(version: 20171018124351) do
     t.integer "user_id", null: false
   end
 
+  create_table "parts", force: :cascade do |t|
+    t.string   "name"
+    t.integer  "state"
+    t.integer  "repo_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string   "result"
+    t.string   "dependsOn"
+  end
+
+  create_table "raw_repos", force: :cascade do |t|
+    t.string  "name"
+    t.integer "state"
+    t.integer "repo_id"
+    t.integer "size"
+  end
+
   create_table "repo_links", force: :cascade do |t|
     t.string   "repo"
     t.string   "folder"
@@ -111,6 +128,24 @@ ActiveRecord::Schema.define(version: 20171018124351) do
     t.datetime "updated_at", null: false
     t.integer  "page_id"
     t.index ["page_id"], name: "index_repo_links_on_page_id", using: :btree
+  end
+
+  create_table "repos", force: :cascade do |t|
+    t.string   "name"
+    t.string   "link"
+    t.integer  "size"
+    t.string   "rev"
+    t.integer  "state"
+    t.integer  "raw_repo_id"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
+  create_table "system_settings", force: :cascade do |t|
+    t.string   "name"
+    t.string   "value"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "triples", force: :cascade do |t|
