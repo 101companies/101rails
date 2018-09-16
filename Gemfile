@@ -4,6 +4,7 @@ ruby '2.4.2'
 gem 'newrelic_rpm'
 gem 'searchkick'
 gem 'scenic'
+gem 'rupy'
 
 gem 'rails', '~> 5.0', '>= 5.0.0.1'
 gem 'activerecord', '~> 5.0', '>= 5.0.0.1'
