@@ -7,7 +7,7 @@ GIT
 
 GIT
   remote: https://github.com/101companies/wikicloth
-  revision: a741ab71b91f31f34b1eca7e5ff8a73d0a41e76d
+  revision: 78f9ed04eb64ede5a3bdafa18193b99f56a53063
   specs:
     wikicloth (0.8.0)
       activesupport
