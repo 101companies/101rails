@@ -59,7 +59,13 @@ class ApplicationController < ActionController::Base
     # parse markup to html
     html = WikiCloth::Parser.new(:data => "<media url='#{CGI.unescape(slideshare_url)}'>", :noedit => true).to_html
     # get download link from html and redirect to it
-    redirect_to (html.match /download-link='(.+?)'/)[1]
+    matches = html.match /download-link='(.+?)'/
+
+    if matches.count > 0
+      redirect_to matches[1]
+    else
+      render status: 404
+    end
   end
 
   def sitemap

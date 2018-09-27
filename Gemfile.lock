@@ -7,7 +7,7 @@ GIT
 
 GIT
   remote: https://github.com/101companies/wikicloth
-  revision: 78f9ed04eb64ede5a3bdafa18193b99f56a53063
+  revision: ce1e06b882fb755bedab918f23b4e61de2b01677
   specs:
     wikicloth (0.8.0)
       activesupport
@@ -549,7 +549,7 @@ DEPENDENCIES
   wkhtmltopdf-binary
 
 RUBY VERSION
-   ruby 2.4.2p198
+   ruby 2.5.1p57
 
 BUNDLED WITH
    1.16.4
