@@ -61,7 +61,7 @@ class ApplicationController < ActionController::Base
     # get download link from html and redirect to it
     matches = html.match /download-link='(.+?)'/
 
-    if matches.count > 0
+    if matches.length > 0
       redirect_to matches[1]
     else
       render status: 404
