@@ -104,7 +104,7 @@ GEM
     browser (2.5.3)
     builder (3.2.3)
     cancancan (1.15.0)
-    chartkick (2.1.1)
+    chartkick (3.3.0)
     choice (0.2.0)
     coderay (1.1.1)
     coffee-script-source (1.10.0)
