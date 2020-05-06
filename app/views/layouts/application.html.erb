@@ -2,21 +2,15 @@
   <head>
     <title><%= yield(:title) %></title>
 
-    <%= stylesheet_link_tag "application", :media => "all" %>
-    <%= javascript_include_tag "application" %>
-    <%= aced_tag %>
+    <%= stylesheet_pack_tag 'application', media: 'all' %>
+    <%= javascript_pack_tag 'application' %>
+
     <%= csrf_meta_tags %>
     <% if current_user %>
       <%= tag(:meta, name: 'last_message_id', content: current_user.last_message_id) %>
     <% end %>
 
     <%= yield(:head) %>
-
-    <% if Rails.env.development? %>
-      <script>
-        ahoy.debug();
-      </script>
-    <% end %>
   </head>
 
   <body>

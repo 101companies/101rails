@@ -1,25 +1,25 @@
 # coding: utf-8
 # Read about factories at https://github.com/thoughtbot/factory_girl
 
-FactoryGirl.define do
+FactoryBot.define do
 
   factory :user do
-    name          'user'
+    name          {'user'}
     github_uid    { SecureRandom.hex }
     github_token  { SecureRandom.hex }
-    github_name   'Kevin'
+    github_name   {'Kevin'}
     sequence :email do |n|
       "test#{n}@test.com"
     end
-    role 'admin'
+    role {'admin'}
   end
 
   factory :editor_user, parent: :user do
-    role 'editor'
+    role {'editor'}
   end
 
   factory :contributor_user, parent: :user do
-    role 'contributor'
+    role {'contributor'}
   end
 
 end

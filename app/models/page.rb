@@ -1,11 +1,6 @@
 class Page < ApplicationRecord
-  searchkick merge_mappings: true, word_middle: [:title, :raw_content], mappings: {
-    page: {
-      properties: {
-        full_title: { type: 'string', analyzer: 'searchkick_autocomplete_search' }
-      }
-    }
-  }
+  include PgSearch::Model
+  pg_search_scope :search, against: [:title, :raw_content]
 
   has_one :repo_link, dependent: :destroy
   has_many :page_changes, dependent: :destroy
@@ -13,7 +8,6 @@ class Page < ApplicationRecord
   has_and_belongs_to_many :users
   has_many :mappings, dependent: :destroy
   has_many :triples, autosave: true, dependent: :destroy
-  before_save :create_metrics
 
   validates_presence_of :title
   validates_presence_of :namespace
@@ -21,19 +15,6 @@ class Page < ApplicationRecord
 
   before_save :preparing_the_page
   include RdfModule
-
-  def create_metrics
-
-  end
-
-  def search_data
-    {
-      title: title,
-      raw_content: raw_content,
-      full_title: full_title,
-      namespace: namespace
-    }
-  end
 
   def self.unverified
     where(verified: false)

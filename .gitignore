@@ -20,3 +20,10 @@ pickle-email-*.html
 # RubyMine project files
 .DS_Store
 .idea
+
+/public/packs
+/public/packs-test
+/node_modules
+/yarn-error.log
+yarn-debug.log*
+.yarn-integrity
