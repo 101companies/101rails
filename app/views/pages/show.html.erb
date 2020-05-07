@@ -28,27 +28,27 @@
 <% end %>
 
 <ul class="nav nav-tabs">
-  <li class="active">
-    <a class="tab-link" data-toggle="tab" href="#page" id="page-tab-link">101wiki</a>
+  <li class="nav-item">
+    <a class="nav-link active" data-toggle="tab" href="#page" id="page-tab-link">101wiki</a>
   </li>
   <% if @page.namespace != "Contributor" %>
   <% else %>
-    <li>
+    <li class="nav-item">
       <a class="tab-link" data-toggle="tab" href="#pages-edits" id="pages-edits-tab-link">Pages edits</a>
     </li>
-    <li>
-      <a class="tab-link" data-toggle="tab" href="#contributions" id="contributions-tab-link">Contributions</a>
+    <li class="nav-item">
+      <a class="nav-link" data-toggle="tab" href="#contributions" id="contributions-tab-link">Contributions</a>
     </li>
   <% end %>
-  <li>
-    <a class="tab-link" data-toggle="tab" href="#editing-help" id="editing-help-tab-link">Help</a>
+  <li class="nav-item">
+    <a class="nav-link" data-toggle="tab" href="#editing-help" id="editing-help-tab-link">Help</a>
   </li>
-    <li>
-      <a class="tab-link" data-toggle="tab" href="#page-changes" id="page-changes-tab-link">History</a>
+    <li class="nav-item">
+      <a class="nav-link" data-toggle="tab" href="#page-changes" id="page-changes-tab-link">History</a>
     </li>
 
-    <li>
-      <a class="tab-link" data-toggle="tab" href="#page-similarities" id="page-changes-tab-link">Similarities</a>
+    <li class="nav-item">
+      <a class="nav-link" data-toggle="tab" href="#page-similarities" id="page-changes-tab-link">Similarities</a>
     </li>
 </ul>
 <div class="tab-content">

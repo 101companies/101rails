@@ -41,9 +41,9 @@ class PageModule
 
   def self.search(query, namespace: nil)
     if namespace.present?
-      Page.search(query, fields: ["title^10", "raw_content", 'full_title^10'], match: :word_middle, where: { namespace: namespace })
+      Page.search(query).where(namespace: namespace)
     else
-      Page.search(query, fields: ["title^10", "raw_content", 'full_title^10'], match: :word_middle)
+      Page.search(query)
     end
     # search = query[:search]
     #

@@ -1,9 +1,10 @@
-class PageEditor extends React.Component {
+import React from 'react';
+import $ from 'jquery';
 
-  static propTypes = {
-    rawContent: React.PropTypes.string.isRequired
-  };
+import Editor from './Editor';
+import MetaDataEditor from './MetaDataEditor';
 
+export default class PageEditor extends React.Component {
   constructor(props) {
     super(props);
 
@@ -106,7 +107,7 @@ class PageEditor extends React.Component {
       <div id="sections">
         <div id="sections-source" style={{minHeight: '400px', width: '100%' }}>
           <Editor theme='wiki'
-            mode='wiki'
+            mode='mediawiki'
             value={this.state.rawContent}
             onChange={this.onChangeContent.bind(this)}
             height='300px'

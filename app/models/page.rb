@@ -1,6 +1,13 @@
 class Page < ApplicationRecord
   include PgSearch::Model
-  pg_search_scope :search, against: [:title, :raw_content]
+  pg_search_scope :search, against: {
+    title: 'A',
+    namespace: 'B',
+    raw_content: 'D'
+  },
+  using: {
+    tsearch: { prefix: true, negation: true }
+  }
 
   has_one :repo_link, dependent: :destroy
   has_many :page_changes, dependent: :destroy

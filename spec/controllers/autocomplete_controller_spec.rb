@@ -3,10 +3,8 @@ require 'rails_helper'
 RSpec.describe AutocompleteController, search: true, type: :controller do
 
   before(:each) do
-    @abstraction_page = create(:abstraction_page, :reindex)
-    @page = create(:page, :reindex)
-
-    Page.search_index.refresh
+    @abstraction_page = create(:abstraction_page)
+    @page = create(:page)
   end
 
   describe 'GET index' do

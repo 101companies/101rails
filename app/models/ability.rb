@@ -9,7 +9,7 @@ class Ability
     if user.role == 'admin'
       can :manage, :all
       can :access, :rails_admin
-      can :dashboard
+      can :access, :dashboard
     end
 
     # editor can work with pages

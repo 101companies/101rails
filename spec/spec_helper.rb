@@ -33,20 +33,6 @@ RSpec.configure do |config|
 
   config.include(ApiHelper)
 
-  config.before(:suite) do
-    # reindex models
-    Page.reindex
-
-    # and disable callbacks
-    # Searchkick.disable_callbacks
-  end
-
-  config.around(:each, search: true) do |example|
-    Searchkick.enable_callbacks
-    example.run
-    Searchkick.disable_callbacks
-  end
-
 # The settings below are suggested to provide a good initial experience
 # with RSpec, but feel free to customize to your heart's content.
 =begin
