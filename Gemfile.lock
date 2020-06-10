@@ -154,7 +154,7 @@ GEM
     flamegraph (0.9.5)
     font-awesome-rails (4.7.0.0)
       railties (>= 3.2, < 5.1)
-    geocoder (1.5.0)
+    geocoder (1.6.3)
     globalid (0.3.7)
       activesupport (>= 4.1.0)
     groupdate (3.1.1)
