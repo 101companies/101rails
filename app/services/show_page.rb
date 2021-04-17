@@ -7,7 +7,6 @@ class ShowPage
     :check_not_existing_page,
     :get_contributions_for_user,
     :fix_link,
-    :similar_pages,
     GetTriplesForPage,
     ValidatePage,
     GetBooksForPage)
@@ -68,19 +67,6 @@ class ShowPage
     good_link = page.url
     if good_link != full_title
       return fail(:bad_link, { url: good_link })
-    end
-
-    continue(params)
-  end
-
-  def similar_pages(params)
-    page = params[:page]
-
-    if page.present? && !page.instance_of?(WikiAtTimes)
-      similarities = page.similar(load: false)
-      params[:similarities] = similarities.response['hits']['hits'].map { |item| {id: item['_id'], full_title: item['_source']['full_title'], score: item['_score']}  }
-    else
-      params[:similarities] = []  
     end
 
     continue(params)

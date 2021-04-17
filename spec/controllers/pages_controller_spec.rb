@@ -4,10 +4,8 @@ RSpec.describe PagesController, type: :controller do
   let(:valid_attributes) { attributes_for(:page) }
 
   before(:each) do
-    @abstraction_page = create(:abstraction_page, :reindex)
-    @page = create(:page, :reindex)
-
-    Page.search_index.refresh
+    @abstraction_page = create(:abstraction_page)
+    @page = create(:page)
   end
 
   describe 'GET show' do
@@ -31,10 +29,8 @@ RSpec.describe PagesController, type: :controller do
 
     it 'gets a contributor page' do
       user = create(:user)
-      page = create(:contributor_page, :reindex)
+      page = create(:contributor_page)
       change = create(:page_change, user: user)
-
-      Page.search_index.refresh
 
       expect {
         get(:show, params: { id: page.full_title }, session: { user_id: user.id })
@@ -189,8 +185,7 @@ RSpec.describe PagesController, type: :controller do
     end
 
     it 'searchs for section foobar' do
-      page = create(:foobar_page, :reindex)
-      Page.search_index.refresh
+      page = create(:foobar_page)
 
       get(:search, params: { q: 'Section:FooBar' })
 

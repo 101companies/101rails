@@ -1144,11 +1144,11 @@ a:focus {
 .navbar-nav > .user-menu > .dropdown-menu > .user-footer:after {
   clear: both;
 }
-.navbar-nav > .user-menu > .dropdown-menu > .user-footer .btn-default {
+.navbar-nav > .user-menu > .dropdown-menu > .user-footer .btn-secondary {
   color: #666666;
 }
 @media (max-width: 991px) {
-  .navbar-nav > .user-menu > .dropdown-menu > .user-footer .btn-default:hover {
+  .navbar-nav > .user-menu > .dropdown-menu > .user-footer .btn-secondary:hover {
     background-color: #f9f9f9;
   }
 }
@@ -1588,7 +1588,7 @@ a:focus {
 .box.box-solid {
   border-top: 0;
 }
-.box.box-solid > .box-header .btn.btn-default {
+.box.box-solid > .box-header .btn.btn-secondary {
   background: transparent;
 }
 .box.box-solid > .box-header .btn:hover,
@@ -2227,14 +2227,14 @@ a:focus {
   cursor: inherit;
   display: block;
 }
-.btn-default {
+.btn-secondary {
   background-color: #f4f4f4;
   color: #444;
   border-color: #ddd;
 }
-.btn-default:hover,
-.btn-default:active,
-.btn-default.hover {
+.btn-secondary:hover,
+.btn-secondary:active,
+.btn-secondary.hover {
   background-color: #e7e7e7;
 }
 .btn-primary {

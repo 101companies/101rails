@@ -43,35 +43,3 @@
     </h3>
   <% end %>
 </div>
-<script>
-
-
-
-  $(function(){
-
-    $('#page-changes-tab-link').on('click', function(){
-      //window.reloadHistory();
-    });
-
-    $('#page-tab-link, #repo-tab-link').on('click', function(){
-      $('.one-page-change input').prop({'checked': false});
-    });
-
-    window.pageId = "<%= @page.id %>"
-
-   /*
-    window.reloadHistory = function () {
-      $.ajax({
-        url: '/page_changes/all/'+ window.pageId,
-        dataType: 'JSON',
-        success: function(data){
-          $('#page-changes').html(data['history_html']);
-          window.prepareCompareRevisionUI();
-        }
-      })
-    };*/
-
-  });
-
-
-</script>

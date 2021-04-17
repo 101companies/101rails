@@ -15,7 +15,7 @@ var MetaDataEditor = React.createClass({
       <fieldset>
         { triplesView }
       </fieldset>
-      <button className='btn btn-default' onClick={this.onNewTriple}>
+      <button className='btn btn-secondary' onClick={this.onNewTriple}>
         New Triple
       </button>
     </form>);

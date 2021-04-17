@@ -52,42 +52,42 @@
         <div class="btn-group">
           <%= render "/pages/repo_tab" %>
           <% if request && can?(:edit, page) %>
-          <a href='<%= edit_page_path(page.full_title) %>' class="editbutton  btn btn-sm btn-default" id="pageEditButton">
+          <a href='<%= edit_page_path(page.full_title) %>' class="editbutton btn btn-sm btn-secondary" id="pageEditButton">
             <i class="glyphicon glyphicon-pencil"></i>
             <strong class="editbuttontext"> Edit</strong>
           </a>
           <% if current_user.role == ('admin' || 'editor') %>
             <% if !page.nil? && page.verified == false %>
-            	<a href='<%= verify_page_path(page.full_title) %>' data-method="post" class="editbutton  btn btn-sm btn-default" id="pageVerifyButton">
+            	<a href='<%= verify_page_path(page.full_title) %>' data-method="post" class="editbutton  btn btn-sm btn-secondary" id="pageVerifyButton">
                 <i class=""></i>
                 <strong class="editbuttontext"> Verify</strong>
               </a>
           	<% end %>
-            <button class="editbutton  btn btn-sm btn-default" data-toggle="modal" data-target="#confirm-delete">
+            <button class="editbutton  btn btn-sm btn-secondary" data-toggle="modal" data-target="#confirm-delete">
               <i class="glyphicon glyphicon-trash"></i><strong> Delete</strong>
             </button>
           <% end %>
-            <a href='#renameModal' data-toggle="modal" class="editbutton  btn btn-sm btn-default" id="pageRenameButton">
+            <a href='#renameModal' data-toggle="modal" class="editbutton  btn btn-sm btn-secondary" id="pageRenameButton">
               <i class="glyphicon glyphicon-share-alt"></i>
               <strong class="editbuttontext"> Rename</strong>
             </a>
-            <%= link_to(unverify_page_path(page.full_title), class: 'editbutton  btn btn-sm btn-default') do %>
+            <%= link_to(unverify_page_path(page.full_title), class: 'editbutton  btn btn-sm btn-secondary') do %>
               <i class="glyphicon glyphicon-remove-circle"></i>
               <strong class="editbuttontext"> Unverify</strong>
             <% end %>
           <% else %>
-            <a href='<%= edit_page_path(page.full_title) %>' class="editbutton  btn btn-sm btn-default" id="showSourceButton">
+            <a href='<%= edit_page_path(page.full_title) %>' class="editbutton  btn btn-sm btn-secondary" id="showSourceButton">
               <i class="glyphicon glyphicon-share-alt"></i>
               <strong class="editbuttontext"> Show Markup</strong>
             </a>
           <% end %>
 
-          <%= link_to(script_path(page.full_underscore_title), class: 'btn btn-sm btn-default', title: 'Script', 'data-content' => 'Generate a lecture script', 'data-toggle' => 'popover', 'data-trigger' => 'hover', 'data-placement' => 'bottom') do %>
+          <%= link_to(script_path(page.full_underscore_title), class: 'btn btn-sm btn-secondary', title: 'Script', 'data-content' => 'Generate a lecture script', 'data-toggle' => 'popover', 'data-trigger' => 'hover', 'data-placement' => 'bottom') do %>
             <i class="glyphicon glyphicon-pencil"></i>
             <strong class="editbuttontext"> Script</strong>
           <% end %>
 
-          <%= link_to(script_path(page.full_underscore_title, format: :pdf), class: 'btn btn-sm btn-default', title: 'Script', 'data-content' => 'Generate a lecture script', 'data-toggle' => 'popover', 'data-trigger' => 'hover', 'data-placement' => 'bottom') do %>
+          <%= link_to(script_path(page.full_underscore_title, format: :pdf), class: 'btn btn-sm btn-secondary', title: 'Script', 'data-content' => 'Generate a lecture script', 'data-toggle' => 'popover', 'data-trigger' => 'hover', 'data-placement' => 'bottom') do %>
             <i class="glyphicon glyphicon-pencil"></i>
             <strong class="editbuttontext"> PDF</strong>
           <% end %>

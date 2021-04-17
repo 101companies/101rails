@@ -73,11 +73,11 @@ class PageEditor extends React.Component {
       toolbar = (
         <div className="btn-toolbar editing" style={{display: 'block'}}>
           <div className="btn-group">
-            <div className="editButton btn btn-sm btn-default" id="pageCancelButton" onClick={this.onCancel.bind(this)}>
+            <div className="editButton btn btn-sm btn-secondary" id="pageCancelButton" onClick={this.onCancel.bind(this)}>
               <i className="icon-remove" />
               <strong>Cancel</strong>
             </div>
-            <div className="editButton btn btn-sm btn-default" id="pageSaveButton" onClick={this.savePage.bind(this)}>
+            <div className="editButton btn btn-sm btn-secondary" id="pageSaveButton" onClick={this.savePage.bind(this)}>
               <i className="icon-ok" />
               <strong>Save</strong>
             </div>
