@@ -18,10 +18,18 @@
 // require("@rails/ujs").start()
 import '../src/css/style';
 
-import 'jquery'
-import 'popper.js'
-import 'bootstrap'
+import $ from 'jquery';
+import 'popper.js';
+import 'bootstrap';
+
 // Support component names relative to this directory:
 var componentRequireContext = require.context("components", true);
 var ReactRailsUJS = require("react_ujs");
 ReactRailsUJS.useContext(componentRequireContext);
+
+$(document).ready(() => {
+  $("li.nav-item a.nav-link").click(function() {
+    $("li.nav-item a.nav-link").removeClass('active');
+    $("li.nav-item").removeClass('active');
+  });
+});

@@ -2,20 +2,20 @@
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
 #
-# This file is the source Rails uses to define your schema when running `rails
-# db:schema:load`. When creating a new database, `rails db:schema:load` tends to
+# This file is the source Rails uses to define your schema when running `bin/rails
+# db:schema:load`. When creating a new database, `bin/rails db:schema:load` tends to
 # be faster and is potentially less error prone than running all of your
 # migrations from scratch. Old migrations may fail to apply correctly if those
 # migrations use external dependencies or application code.
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_05_05_141629) do
+ActiveRecord::Schema.define(version: 2017_10_18_124351) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "ahoy_events", id: :serial, force: :cascade do |t|
+  create_table "ahoy_events", force: :cascade do |t|
     t.integer "visit_id"
     t.integer "user_id"
     t.string "name"
@@ -26,14 +26,14 @@ ActiveRecord::Schema.define(version: 2020_05_05_141629) do
     t.index ["visit_id", "name"], name: "index_ahoy_events_on_visit_id_and_name"
   end
 
-  create_table "books", id: :serial, force: :cascade do |t|
+  create_table "books", force: :cascade do |t|
     t.string "name"
     t.string "url"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  create_table "chapters", id: :serial, force: :cascade do |t|
+  create_table "chapters", force: :cascade do |t|
     t.integer "book_id"
     t.string "name"
     t.string "url"
@@ -43,7 +43,7 @@ ActiveRecord::Schema.define(version: 2020_05_05_141629) do
     t.index ["book_id"], name: "index_chapters_on_book_id"
   end
 
-  create_table "mappings", id: :serial, force: :cascade do |t|
+  create_table "mappings", force: :cascade do |t|
     t.string "index_term"
     t.integer "page_id"
     t.string "comment"
@@ -53,7 +53,7 @@ ActiveRecord::Schema.define(version: 2020_05_05_141629) do
     t.index ["page_id"], name: "index_mappings_on_page_id"
   end
 
-  create_table "page_changes", id: :serial, force: :cascade do |t|
+  create_table "page_changes", force: :cascade do |t|
     t.integer "page_id"
     t.integer "user_id"
     t.string "title"
@@ -67,7 +67,7 @@ ActiveRecord::Schema.define(version: 2020_05_05_141629) do
     t.index ["user_id"], name: "index_page_changes_on_user_id"
   end
 
-  create_table "page_verifications", id: :serial, force: :cascade do |t|
+  create_table "page_verifications", force: :cascade do |t|
     t.integer "page_id"
     t.integer "user_id"
     t.datetime "created_at", null: false
@@ -78,7 +78,7 @@ ActiveRecord::Schema.define(version: 2020_05_05_141629) do
     t.index ["user_id"], name: "index_page_verifications_on_user_id"
   end
 
-  create_table "pages", id: :serial, force: :cascade do |t|
+  create_table "pages", force: :cascade do |t|
     t.string "title"
     t.string "namespace"
     t.text "raw_content", default: ""
@@ -103,7 +103,7 @@ ActiveRecord::Schema.define(version: 2020_05_05_141629) do
     t.integer "user_id", null: false
   end
 
-  create_table "parts", id: :serial, force: :cascade do |t|
+  create_table "parts", force: :cascade do |t|
     t.string "name"
     t.integer "state"
     t.integer "repo_id"
@@ -113,23 +113,14 @@ ActiveRecord::Schema.define(version: 2020_05_05_141629) do
     t.string "dependsOn"
   end
 
-  create_table "pg_search_documents", force: :cascade do |t|
-    t.text "content"
-    t.string "searchable_type"
-    t.bigint "searchable_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["searchable_type", "searchable_id"], name: "index_pg_search_documents_on_searchable_type_and_searchable_id"
-  end
-
-  create_table "raw_repos", id: :serial, force: :cascade do |t|
+  create_table "raw_repos", force: :cascade do |t|
     t.string "name"
     t.integer "state"
     t.integer "repo_id"
     t.integer "size"
   end
 
-  create_table "repo_links", id: :serial, force: :cascade do |t|
+  create_table "repo_links", force: :cascade do |t|
     t.string "repo"
     t.string "folder"
     t.string "user"
@@ -139,7 +130,7 @@ ActiveRecord::Schema.define(version: 2020_05_05_141629) do
     t.index ["page_id"], name: "index_repo_links_on_page_id"
   end
 
-  create_table "repos", id: :serial, force: :cascade do |t|
+  create_table "repos", force: :cascade do |t|
     t.string "name"
     t.string "link"
     t.integer "size"
@@ -150,14 +141,14 @@ ActiveRecord::Schema.define(version: 2020_05_05_141629) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "system_settings", id: :serial, force: :cascade do |t|
+  create_table "system_settings", force: :cascade do |t|
     t.string "name"
     t.string "value"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  create_table "triples", id: :serial, force: :cascade do |t|
+  create_table "triples", force: :cascade do |t|
     t.integer "page_id"
     t.string "predicate", null: false
     t.string "object"
@@ -167,7 +158,7 @@ ActiveRecord::Schema.define(version: 2020_05_05_141629) do
     t.index ["predicate"], name: "index_triples_on_predicate"
   end
 
-  create_table "users", id: :serial, force: :cascade do |t|
+  create_table "users", force: :cascade do |t|
     t.string "email"
     t.string "role", default: "guest"
     t.string "name"
@@ -184,7 +175,7 @@ ActiveRecord::Schema.define(version: 2020_05_05_141629) do
     t.index ["name"], name: "index_users_on_name"
   end
 
-  create_table "visits", id: :serial, force: :cascade do |t|
+  create_table "visits", force: :cascade do |t|
     t.string "visit_token"
     t.string "visitor_token"
     t.string "ip"

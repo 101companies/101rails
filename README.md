@@ -17,7 +17,7 @@ With OSX you already have Ruby.
 
 If you are using Ubuntu you can install ruby via [rvm](http://rvm.io) or [rbenv](https://github.com/sstephenson/rbenv/).
 
-This app was tested with ruby 2.3.0-2.4.1.
+This app was tested with ruby 2.3.0-2.7.1.
 
 ## Installing the app
 

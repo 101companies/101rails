@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
-ruby '2.6.5'
+ruby '2.7.1'
 
-gem 'rails', '~> 6.0', '>= 6.0.2.2'
+gem 'rails', '~> 6.0'
 gem 'pg'
 gem 'concurrent-ruby'
 gem 'html2text'
@@ -12,6 +12,8 @@ gem 'oj'
 gem 'webpacker'
 gem 'scenic'
 gem 'pg_search'
+gem 'listen'
+gem "view_component"
 
 gem 'parslet', git: 'https://github.com/kschiess/parslet.git'
 
