@@ -27,6 +27,6 @@ production:
   pool: 8
   encoding: unicode
   username: postgres
-  url: localhost
+  host: localhost
   database: wiki_production
   password: <%= ENV.fetch('PGPASSWORD')  %>
