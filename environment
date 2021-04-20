@@ -1,0 +1,17 @@
+export SLIDESHARE_API_KEY="YsqlI8bk"
+export SLIDESHARE_API_SECRET="2VCqYQzI"
+export WIKIPASSWORD='lambdasrock42'
+export WIKIUSER='wiki101'
+export GMAIL_USERNAME="101companies@gmail.com"
+export GMAIL_PASSWORD="s0ftlang"
+export GITHUB_KEY="ac4daa281db9085c8996"
+export GITHUB_SECRET="4603b46da61284be66743083dc7c0ce1c4168081"
+export GITHUB_KEY_DEV="8d4013d148d9358a5ca9"
+export GITHUB_SECRET_DEV="50e5112a5b5d317b72056ff1f3bf80df60f99f7c"
+export MONGODB_USER=""
+export MONGODB_PWD=""
+export DATABASE_USER="postgres"
+export DATABASE_PASSWORD=postgres
+PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin"
+export SECRET_KEY_BASE="caee0911040e37ddbe671c5d07f2a8774a191fa788d5bf7025076d479584388d97f8935dc62e94a932c18b65394bbb696a14bbedfba8aed6630569c271f23466"
+export PGPASSWORD="ohN8jahz"
