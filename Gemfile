@@ -1,5 +1,5 @@
 source 'https://rubygems.org'
-ruby '2.7.1'
+ruby '3.0'
 
 gem 'concurrent-ruby'
 gem 'html2text'
@@ -23,7 +23,7 @@ gem 'exception_notification'
 # github auth
 gem 'omniauth'
 gem 'omniauth-github'
-gem 'solid_use_case'
+gem 'solid_use_case', github: 'kevin-klein/solid_use_case'
 # github integration
 gem 'octokit'
 

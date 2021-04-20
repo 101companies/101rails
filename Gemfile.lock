@@ -11,6 +11,13 @@ GIT
       rinku
 
 GIT
+  remote: https://github.com/kevin-klein/solid_use_case.git
+  revision: c6262f3680e6f794608f5085acb8b63a069de478
+  specs:
+    solid_use_case (2.2.0)
+      deterministic (~> 0.6.0)
+
+GIT
   remote: https://github.com/kschiess/parslet.git
   revision: 655f0c3c0bd2ebcf528a9a616597b41c1d148c77
   specs:
@@ -327,8 +334,6 @@ GEM
       simplecov_json_formatter (~> 0.1)
     simplecov-html (0.12.3)
     simplecov_json_formatter (0.1.2)
-    solid_use_case (2.2.0)
-      deterministic (~> 0.6.0)
     sprockets (4.0.2)
       concurrent-ruby (~> 1.0)
       rack (> 1, < 3)
@@ -405,7 +410,7 @@ DEPENDENCIES
   scenic
   simple_form
   simplecov
-  solid_use_case
+  solid_use_case!
   stackprof
   validate_url
   view_component
@@ -415,7 +420,7 @@ DEPENDENCIES
   wkhtmltopdf-binary
 
 RUBY VERSION
-   ruby 2.7.1p83
+   ruby 3.0.0p0
 
 BUNDLED WITH
-   1.17.3
+   2.2.16
