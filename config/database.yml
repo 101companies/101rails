@@ -29,4 +29,4 @@ production:
   username: postgres
   host: localhost
   database: wiki_production
-  password: <%= ENV.fetch('PGPASSWORD')  %>
+  password: <%= ENV.fetch('PGPASSWORD') {}  %>

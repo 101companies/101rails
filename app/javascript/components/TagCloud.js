@@ -18,7 +18,7 @@ export default ({data}) => {
       colorOptions={options}
       maxSize={35}
       tags={tagCloudData}
-      onClick={tag => alert(`'${tag.value}' was selected!`)}
+      onClick={(tag) => {window.location.href = tag.value;} }
     />
   );
 }
