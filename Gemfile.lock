@@ -401,6 +401,7 @@ DEPENDENCIES
   rails-controller-testing
   rails-erd
   react-rails
+  rexml
   rspec-rails
   rubocop-github
   rubocop-performance

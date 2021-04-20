@@ -13,7 +13,7 @@ require 'mina/rvm' # for rvm support. (https://rvm.io)
 set :application_name, '101rails'
 set :domain, '101wiki.softlang.org'
 set :deploy_to, '/home/ubuntu/101rails'
-set :repository, 'git@github.com:101companies/101rails.git'
+set :repository, 'https://github.com/101companies/101rails.git'
 set :branch, 'master'
 
 # rails 6 fixes
@@ -40,7 +40,7 @@ task :remote_environment do
   # invoke :'rbenv:load'
 
   # For those using RVM, use this to load an RVM version@gemset.
-  invoke :'rvm:use', '2.7.2'
+  invoke :'rvm:use', '3.0.0'
 end
 
 # Put any custom commands you need to run at setup

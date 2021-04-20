@@ -26,7 +26,7 @@ gem 'omniauth-github'
 gem 'solid_use_case', github: 'kevin-klein/solid_use_case'
 # github integration
 gem 'octokit'
-
+gem 'rexml'
 # roles and permissions
 gem 'cancancan'
 
