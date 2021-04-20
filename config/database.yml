@@ -26,5 +26,7 @@ production:
   reconnect: false
   pool: 8
   encoding: unicode
-  url: <%= ENV['POSTGRESQL_URL'] %>
+  username: postgres
+  url: localhost
   database: wiki_production
+  password: <%= ENV.fetch('PGASSWORD')  %>
