@@ -1,36 +1,26 @@
 require 'rails_helper'
 
 describe Page do
-
-  before(:each) do
-
-  end
-
   describe 'preparing_the_page' do
-
     it 'parses the page' do
       page = create :page
 
-      expect(page.used_links).to include("Abstraction",
-                                         "MemberOf::Vocabulary:Programming",
-                                         "RelatesTo::Result",
-                                         "IsA::Concept")
+      expect(page.used_links).to include('Abstraction',
+                                         'MemberOf::Vocabulary:Programming',
+                                         'RelatesTo::Result',
+                                         'IsA::Concept')
     end
-
   end
 
   describe 'describe render page' do
-
     it 'renders the page' do
       page = create :page
 
       expect(page.render).to include('abstraction')
     end
-
   end
 
   describe 'get_metadata_section' do
-
     it 'gives the section if metadata exists' do
       page = create :page
 
@@ -42,17 +32,15 @@ describe Page do
 
       expect(page.get_metadata_section).to be_nil
     end
-
   end
 
   describe 'inject_triple' do
-
     it 'inserts a triple into a page with metadata' do
       page = create :page
 
       page.inject_triple 'instanceOf::something'
       page.parse
-      expect(page.get_metadata_section['content']).to include("[[instanceOf::something]]")
+      expect(page.get_metadata_section['content']).to include('[[instanceOf::something]]')
     end
 
     it 'inserts a triple into a page without metadata' do
@@ -60,13 +48,11 @@ describe Page do
 
       page.inject_triple 'instanceOf::something'
       page.parse
-      expect(page.get_metadata_section['content']).to include("[[instanceOf::something]]")
+      expect(page.get_metadata_section['content']).to include('[[instanceOf::something]]')
     end
-
   end
 
   describe 'decorate_headline' do
-
     it 'cuts too long headline' do
       page = create :page_with_long_headline
 
@@ -83,11 +69,9 @@ describe Page do
 
       expect(result).to eq(page.title)
     end
-
   end
 
   describe 'get_headline' do
-
     it 'gets headline' do
       page = create :page
 
@@ -103,11 +87,9 @@ describe Page do
 
       expect(result).to include('No headline found')
     end
-
   end
 
   describe 'full_title' do
-
     it 'gets full title for normal page' do
       page = create :page
 
@@ -118,21 +100,18 @@ describe Page do
   end
 
   describe 'update_or_rename' do
-
     it 'renames page and links to it' do
       page = create :page
       abstraction_page = create :abstraction_page
       user = create :user
 
-      result = abstraction_page.update_or_rename 'Other abstraction', abstraction_page.raw_content, abstraction_page.sections, user
+      abstraction_page.update_or_rename 'Other abstraction', abstraction_page.raw_content, abstraction_page.sections, user
 
       expect(page.reload.raw_content).to include('Other abstraction')
     end
-
   end
 
   describe 'page url' do
-
     it 'gives url' do
       page = create :page
 
@@ -140,11 +119,9 @@ describe Page do
 
       expect(url).not_to include(' ')
     end
-
   end
 
   describe 'semantic links' do
-
     it 'lists semantic links' do
       page = create :page
 
@@ -162,11 +139,9 @@ describe Page do
 
       expect(links).to eq([])
     end
-
   end
 
   describe 'backlinks' do
-
     it 'gives backlinks' do
       page = create :page
       abstraction_page = create :abstraction_page
@@ -174,11 +149,9 @@ describe Page do
       links = abstraction_page.backlinks
       expect(links).to include(page.full_title)
     end
-
   end
 
   describe 'last_change' do
-
     it 'gives last change' do
       page = create(:page_with_changes)
       change = page.page_changes[1]
@@ -197,7 +170,5 @@ describe Page do
 
       expect(result).to eq({})
     end
-
   end
-
 end

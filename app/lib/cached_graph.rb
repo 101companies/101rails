@@ -1,7 +1,6 @@
 class CachedGraph
-
   def initialize
-    if File.exists?(onto_path)
+    if File.exist?(onto_path)
       @graph = RDF::Repository.load(onto_path, format: :ttl)
       @mtime = File.mtime(onto_path)
     end
@@ -19,10 +18,8 @@ class CachedGraph
     @update_task.execute
   end
 
-  def with_lock(&block)
-    @lock.with_read_lock do
-      yield
-    end
+  def with_lock
+    @lock.with_read_lock(&block)
   end
 
   def has_graph?
@@ -40,11 +37,10 @@ class CachedGraph
   end
 
   def onto_path
-    if Rails.env.test?
-      @_onto_path ||= Rails.root.join('spec/support/test_ontology.ttl')
-    else
-      @_onto_path ||= File.expand_path('~/101web/data/dumps/ontology.ttl')
-    end
+    @_onto_path ||= if Rails.env.test?
+                      Rails.root.join('spec/support/test_ontology.ttl')
+                    else
+                      File.expand_path('~/101web/data/dumps/ontology.ttl')
+                    end
   end
-
 end

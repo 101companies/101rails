@@ -1,10 +1,10 @@
-#Wiki::Application.config.middleware.use ExceptionNotification::Rack,
+# Wiki::Application.config.middleware.use ExceptionNotification::Rack,
 #  :email => {
 #      :email_format => :html,
 #      :email_prefix => "[101wiki | 500 error] ",
 #      :sender_address => %{"101companies" <101companies@gmail.com>},
 #      :exception_recipients => %w{aleksey.lashin@gmail.com rlaemmel@gmail.com dotnetby@gmail.com tschmorleiz@googlemail.com}
-#}
+# }
 
 Wiki::Application.configure do
   # Settings specified here will take precedence over those in config/application.rb
@@ -20,7 +20,7 @@ Wiki::Application.configure do
 
   config.public_file_server.enabled = true
 
-  logger           = ActiveSupport::Logger.new(STDOUT)
+  logger           = ActiveSupport::Logger.new($stdout)
   logger.formatter = config.log_formatter
   config.logger = ActiveSupport::TaggedLogging.new(logger)
 
@@ -55,13 +55,13 @@ Wiki::Application.configure do
   # config.logger = ActiveSupport::TaggedLogging.new(SyslogLogger.new)
 
   # Use a different cache store in production
-  config.cache_store = :file_store, "/tmp/101rails"
+  config.cache_store = :file_store, '/tmp/101rails'
 
   # Enable serving of images, stylesheets, and JavaScripts from an asset server
   # config.action_controller.asset_host = "http://assets.example.com"
 
   # Precompile additional assets (application.js, application.css, and all non-JS/CSS are already added)
-  config.assets.precompile += %w( clones.css landing.css landing.js )
+  config.assets.precompile += %w[clones.css landing.css landing.js]
 
   # Disable delivery errors, bad email addresses will be ignored
   # config.action_mailer.raise_delivery_errors = false
@@ -76,16 +76,16 @@ Wiki::Application.configure do
   # Send deprecation notices to registered listeners
   config.active_support.deprecation = :notify
 
-  config.action_mailer.default_url_options = { :host => '101companies.org' }
+  config.action_mailer.default_url_options = { host: '101companies.org' }
   # ActionMailer Config
   # Setup for production - deliveries, no errors raised
   config.action_mailer.smtp_settings = {
-    address:              'smtp.gmail.com',
-    port:                 587,
-    domain:               'gmail.com',
-    user_name:            ENV['GMAIL_USERNAME'],
-    password:             ENV['GMAIL_PASSWORD'],
-    authentication:       :login,
+    address: 'smtp.gmail.com',
+    port: 587,
+    domain: 'gmail.com',
+    user_name: ENV['GMAIL_USERNAME'],
+    password: ENV['GMAIL_PASSWORD'],
+    authentication: :login,
     enable_starttls_auto: true
   }
 
@@ -95,9 +95,9 @@ Wiki::Application.configure do
   config.eager_load = true
 
   Rails.application.config.middleware.use ExceptionNotification::Rack,
-    email: {
-      email_prefix: "[EXCEPTION] ",
-      sender_address: %{"notifier" <noreply@101companies.org>},
-      exception_recipients: %w{101companies@gmail.com}
-    }
+                                          email: {
+                                            email_prefix: '[EXCEPTION] ',
+                                            sender_address: %("notifier" <noreply@101companies.org>),
+                                            exception_recipients: %w[101companies@gmail.com]
+                                          }
 end

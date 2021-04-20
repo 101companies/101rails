@@ -1,9 +1,9 @@
 require 'rails_helper'
 
 RSpec.describe ContributionsController, type: :controller do
-
   # clear emails
   before { ActionMailer::Base.deliveries = [] }
+
   let(:current_user) { create(:user) }
 
   describe 'Create Contribution' do
@@ -64,9 +64,9 @@ RSpec.describe ContributionsController, type: :controller do
         repo_link: { user_repo: '101companies/101docs', folder: '/' },
         contrb_description: 'Test describtion'
       }
-      expect {
+      expect do
         post(:create, params: params, session: { user_id: current_user.id })
-      }.to change(Page, :count).by(1)
+      end.to change(Page, :count).by(1)
 
       expect(response.status).to eq(302)
       expect(response).to redirect_to(page_path('Contribution:SomeTitle'))
@@ -79,9 +79,9 @@ RSpec.describe ContributionsController, type: :controller do
         repo_link: { user_repo: '101companies/101docs', folder: '/' },
         contrb_description: 'Test describtion'
       }
-      expect {
+      expect do
         post(:create, params: params, session: { user_id: current_user.id })
-      }.to change(Page, :count).by(1)
+      end.to change(Page, :count).by(1)
 
       expect(response.status).to eq(302)
       expect(response).to redirect_to(page_path('Contribution:SomeTitle'))
@@ -96,15 +96,15 @@ RSpec.describe ContributionsController, type: :controller do
         repo_link: { user_repo: '101companies/101docs', folder: '/' },
         contrb_description: 'Test describtion'
       }
-      expect {
+      expect do
         post(:create, params: params, session: { user_id: current_user.id })
-      }.to change { ActionMailer::Base.deliveries.count }.by(2)
+      end.to change { ActionMailer::Base.deliveries.count }.by(2)
 
       # user email
       expect(ActionMailer::Base.deliveries[0].to[0]).to eq(email)
 
       # admin email
-      expect(ActionMailer::Base.deliveries[1].to[0]).to eq("101companies@gmail.com")
+      expect(ActionMailer::Base.deliveries[1].to[0]).to eq('101companies@gmail.com')
     end
 
     it 'Success with default description' do
@@ -114,9 +114,9 @@ RSpec.describe ContributionsController, type: :controller do
         repo_link: { user_repo: '101companies/101docs', folder: '/' },
         contrb_description: ''
       }
-      expect {
+      expect do
         post(:create, params: params, session: { user_id: current_user.id })
-      }.to change(Page, :count).by(1)
+      end.to change(Page, :count).by(1)
 
       expect(response.status).to eq(302)
       expect(response).to redirect_to(page_path('Contribution:SomeTitle'))

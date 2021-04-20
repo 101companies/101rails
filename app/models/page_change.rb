@@ -1,4 +1,4 @@
-class PageChange  < ActiveRecord::Base
+class PageChange < ApplicationRecord
   require 'differ/string'
 
   belongs_to :page
@@ -16,5 +16,4 @@ class PageChange  < ActiveRecord::Base
     Differ.format = :html
     Differ.diff_by_char(first_content, second_content).to_s.html_safe
   end
-
 end

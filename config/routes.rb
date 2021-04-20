@@ -1,23 +1,22 @@
 Wiki::Application.routes.draw do
-
   resources :create_wiki_metrics
   constraints(host: /101companies.org/) do
-    match "/(*path)" => redirect { |params, req|
+    match '/(*path)' => redirect { |params, _req|
       URI.encode("https://101wiki.softlang.org/#{params[:path]}")
-    },  via: [:get, :post]
+    }, :via => %i[get post]
   end
 
-  resources :mappings, only: [:edit, :update]
+  resources :mappings, only: %i[edit update]
 
-  constraints(id: /([^\/]+?)(?=\.json|\.ttl|\.n3|\.xml|\.html|$|\/)/) do
-    resources :resources, only: [:index, :show] do
+  constraints(id: %r{([^/]+?)(?=\.json|\.ttl|\.n3|\.xml|\.html|$|/)}) do
+    resources :resources, only: %i[index show] do
       get :query, to: 'resources#query', on: :collection
     end
   end
 
   resources :books, except: [:show] do
     post :create_index, on: :member
-    resources :chapters, only: [:new, :edit, :update, :destroy, :create]
+    resources :chapters, only: %i[new edit update destroy create]
   end
 
   namespace :admin do
@@ -29,11 +28,11 @@ Wiki::Application.routes.draw do
   resources :scripts, only: [:show]
 
   # homepage
-  root to: "landing#index"
+  root to: 'landing#index'
   # sitemap
   get '/sitemap.xml' => 'application#sitemap'
   # link for downloading slides from slideshare
-  get '/get_slide/*slideshare' => 'application#get_slide', format: false
+  get '/get_slide/*slideshare' => 'application#get_slide', :format => false
 
   get '/autocomplete' => 'autocomplete#index'
 
@@ -45,13 +44,13 @@ Wiki::Application.routes.draw do
   scope 'contribute' do
     # ui for creating contribution
     get '/new' => 'contributions#new'
-    get '/apply_findings/:id' => 'pages#apply_findings', constraints: { id: /.*/ }
-    post '/update/:id' => 'pages#update_repo', constraints: { id: /.*/ }
-    put '/update/:id' => 'pages#update_repo', constraints: { id: /.*/ }
+    get '/apply_findings/:id' => 'pages#apply_findings', :constraints => { id: /.*/ }
+    post '/update/:id' => 'pages#update_repo', :constraints => { id: /.*/ }
+    put '/update/:id' => 'pages#update_repo', :constraints => { id: /.*/ }
     # method where contribution will be created
-    post '/analyze/:id' => 'contributions#analyze', constraints: { id: /.*/ }
+    post '/analyze/:id' => 'contributions#analyze', :constraints => { id: /.*/ }
     post '/new' => 'contributions#create'
-    get '/repo_dirs/:repo' => 'contributions#get_repo_dirs', constraints: { repo: /.*/ }
+    get '/repo_dirs/:repo' => 'contributions#get_repo_dirs', :constraints => { repo: /.*/ }
   end
 
   get 'users/logout' => 'authentications#destroy'
@@ -70,14 +69,14 @@ Wiki::Application.routes.draw do
 
   # authentications
   scope 'auth' do
-    match '/github/callback' => 'authentications#create', via: [:get, :post]
-    match '/local_login/:admin' => 'authentications#local_auth', via: [:get, :post]
+    match '/github/callback' => 'authentications#create', :via => %i[get post]
+    match '/local_login/:admin' => 'authentications#local_auth', :via => %i[get post]
   end
 
   resources :pages, only: [:index]
 
   # pages routes
-  resources :pages, path: '/', id: /([^\/]+?)(?=\.json|\.ttl|\.n3|\.xml|\.html|$|\/)/ do
+  resources :pages, path: '/', id: %r{([^/]+?)(?=\.json|\.ttl|\.n3|\.xml|\.html|$|/)} do
     get :unverified, on: :collection
     post :verify, on: :member
     get :unverify, on: :member
@@ -87,21 +86,19 @@ Wiki::Application.routes.draw do
   end
 
   scope '/wiki' do
-    match "(*path)" => redirect { |params, req|
+    match '(*path)' => redirect { |params, _req|
       URI.encode("/#{params[:path]}")
-    }, via: [:get, :post]
+    }, :via => %i[get post]
   end
 
-  #routes for Software Analysis as a Service
+  # routes for Software Analysis as a Service
   get '/service/', to: 'services#index'
   post '/service/manage', to: 'services#manage'
   post '/service/reset', to: 'services#reset'
   post '/service/stop', to: 'services#stop'
   post 'reload', to: 'repos#getInfoAsync'
   post 'repos/reqDownload', to: 'repos#sendDownload'
-  resources :repos, param: :name, only: [:index,:show,:create,:destroy] do
-    resources :parts, param: :name, only: [:show,:create,:destroy]
+  resources :repos, param: :name, only: %i[index show create destroy] do
+    resources :parts, param: :name, only: %i[show create destroy]
   end
-
-
 end

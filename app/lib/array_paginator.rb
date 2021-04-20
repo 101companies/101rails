@@ -1,5 +1,4 @@
 class ArrayPaginator
-
   def initialize(array)
     @page = 0
     @array = array
@@ -20,5 +19,4 @@ class ArrayPaginator
     @page ||= page
     self
   end
-
 end

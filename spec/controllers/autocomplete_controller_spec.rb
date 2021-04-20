@@ -1,14 +1,12 @@
 require 'rails_helper'
 
 RSpec.describe AutocompleteController, search: true, type: :controller do
-
-  before(:each) do
+  before do
     @abstraction_page = create(:abstraction_page)
     @page = create(:page)
   end
 
   describe 'GET index' do
-
     it 'autocompletes all pages from namespace' do
       get :index, params: { prefix: "#{@page.namespace}::" }
 
@@ -26,7 +24,7 @@ RSpec.describe AutocompleteController, search: true, type: :controller do
     end
 
     it 'works for namespace without pages' do
-      get :index, params: { prefix: "Script::" }
+      get :index, params: { prefix: 'Script::' }
 
       data = JSON.parse(@response.body)
 
@@ -34,7 +32,7 @@ RSpec.describe AutocompleteController, search: true, type: :controller do
     end
 
     it 'works for unkown namespaces' do
-      get :index, params: { prefix: "SomeUnkownNamespace::" }
+      get :index, params: { prefix: 'SomeUnkownNamespace::' }
 
       data = JSON.parse(@response.body)
 
@@ -48,7 +46,5 @@ RSpec.describe AutocompleteController, search: true, type: :controller do
 
       expect(assigns(:title)).not_to include('*')
     end
-
   end
-
 end

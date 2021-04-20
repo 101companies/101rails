@@ -1,23 +1,22 @@
 module ApplicationHelper
-
   def bootstrap_class_for(flash_type)
     case flash_type.to_sym
-      when :success
-        "alert-success"
-      when :error
-        "alert-error"
-      when :alert
-        "alert-block"
-      when :notice
-        "alert-info"
-      else
-        flash_type.to_s
+    when :success
+      'alert-success'
+    when :error
+      'alert-error'
+    when :alert
+      'alert-block'
+    when :notice
+      'alert-info'
+    else
+      flash_type.to_s
     end
   end
 
   def flash_class(level)
     case level
-      when :alert then level = "error"
+    when :alert then level = 'error'
     end
     level
   end
@@ -28,11 +27,9 @@ module ApplicationHelper
   end
 
   def get_user_repos
-    begin
-      current_user.get_repos
-    rescue
-      []
-    end
+    current_user.get_repos
+  rescue StandardError
+    []
   end
 
   alias j json_escape
@@ -44,5 +41,4 @@ module ApplicationHelper
     pieces[2] = domain
     pieces.join('/')
   end
-
 end

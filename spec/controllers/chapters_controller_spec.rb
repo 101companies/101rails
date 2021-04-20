@@ -25,29 +25,29 @@ RSpec.describe ChaptersController, type: :controller do
   # This should return the minimal set of attributes required to create a valid
   # Chapter. As you add validations to Chapter, be sure to
   # adjust the attributes here as well.
-  let(:valid_attributes) {
+  let(:valid_attributes) do
     attributes_for(:chapter, book: book)
-  }
+  end
 
-  let(:invalid_attributes) {
+  let(:invalid_attributes) do
     attributes_for(:invalid_chapter, book: book)
-  }
+  end
 
   # This should return the minimal set of values that should be in the session
   # in order to pass any filters (e.g. authentication) defined in
   # ChaptersController. Be sure to keep this updated too.
   let(:valid_session) { { user_id: user.id } }
 
-  describe "GET #new" do
-    it "assigns a new chapter as @chapter" do
+  describe 'GET #new' do
+    it 'assigns a new chapter as @chapter' do
       get(:new, params: { book_id: book.id }, session: valid_session)
 
       expect(assigns(:chapter)).to be_a_new(Chapter)
     end
   end
 
-  describe "GET #edit" do
-    it "assigns the requested chapter as @chapter" do
+  describe 'GET #edit' do
+    it 'assigns the requested chapter as @chapter' do
       chapter = create(:chapter, book: book)
 
       get(:edit, params: { book_id: book.id, id: chapter.to_param }, session: valid_session)
@@ -56,30 +56,30 @@ RSpec.describe ChaptersController, type: :controller do
     end
   end
 
-  describe "POST #create" do
-    context "with valid params" do
-      it "creates a new Chapter" do
-        expect {
+  describe 'POST #create' do
+    context 'with valid params' do
+      it 'creates a new Chapter' do
+        expect do
           post(:create, params: { book_id: book.id, chapter: valid_attributes }, session: valid_session)
-        }.to change(Chapter, :count).by(1)
+        end.to change(Chapter, :count).by(1)
       end
 
-      it "assigns a newly created chapter as @chapter" do
+      it 'assigns a newly created chapter as @chapter' do
         post(:create, params: { book_id: book.id, chapter: valid_attributes }, session: valid_session)
 
         expect(assigns(:chapter)).to be_a(Chapter)
         expect(assigns(:chapter)).to be_persisted
       end
 
-      it "redirects to the created chapter" do
+      it 'redirects to the created chapter' do
         post(:create, params: { book_id: book.id, chapter: valid_attributes }, session: valid_session)
 
         expect(response).to redirect_to(edit_book_path(book))
       end
     end
 
-    context "with invalid params" do
-      it "assigns a newly created but unsaved chapter as @chapter" do
+    context 'with invalid params' do
+      it 'assigns a newly created but unsaved chapter as @chapter' do
         post(:create, params: { book_id: book.id, chapter: invalid_attributes }, session: valid_session)
 
         expect(assigns(:chapter)).to be_a_new(Chapter)
@@ -88,7 +88,7 @@ RSpec.describe ChaptersController, type: :controller do
       it "re-renders the 'new' template" do
         post(:create, params: { book_id: book.id, chapter: invalid_attributes }, session: valid_session)
 
-        expect(response).to render_template("new")
+        expect(response).to render_template('new')
       end
     end
   end
@@ -158,5 +158,4 @@ RSpec.describe ChaptersController, type: :controller do
   #     expect(response).to redirect_to(chapters_url)
   #   end
   # end
-
 end

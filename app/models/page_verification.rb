@@ -1,4 +1,4 @@
-class PageVerification < ActiveRecord::Base
+class PageVerification < ApplicationRecord
   belongs_to :user
   belongs_to :page
 end

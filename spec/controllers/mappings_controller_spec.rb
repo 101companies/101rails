@@ -19,85 +19,83 @@ require 'rails_helper'
 # that an instance is receiving a specific message.
 
 RSpec.describe MappingsController, type: :controller do
-
   # This should return the minimal set of attributes required to create a valid
   # Mapping. As you add validations to Mapping, be sure to
   # adjust the attributes here as well.
-  let(:valid_attributes) {
-    skip("Add a hash of attributes valid for your model")
-  }
+  let(:valid_attributes) do
+    skip('Add a hash of attributes valid for your model')
+  end
 
-  let(:invalid_attributes) {
-    skip("Add a hash of attributes invalid for your model")
-  }
+  let(:invalid_attributes) do
+    skip('Add a hash of attributes invalid for your model')
+  end
 
   # This should return the minimal set of values that should be in the session
   # in order to pass any filters (e.g. authentication) defined in
   # MappingsController. Be sure to keep this updated too.
   let(:valid_session) { {} }
 
-  describe "GET #edit" do
-    it "assigns the requested mapping as @mapping" do
+  describe 'GET #edit' do
+    it 'assigns the requested mapping as @mapping' do
       mapping = Mapping.create! valid_attributes
-      get :edit, params: {id: mapping.to_param}, session: valid_session
+      get :edit, params: { id: mapping.to_param }, session: valid_session
       expect(assigns(:mapping)).to eq(mapping)
     end
   end
 
-  describe "PUT #update" do
-    context "with valid params" do
-      let(:new_attributes) {
-        skip("Add a hash of attributes valid for your model")
-      }
-
-      it "updates the requested mapping" do
-        mapping = Mapping.create! valid_attributes
-        put :update, params: {id: mapping.to_param, mapping: new_attributes}, session: valid_session
-        mapping.reload
-        skip("Add assertions for updated state")
+  describe 'PUT #update' do
+    context 'with valid params' do
+      let(:new_attributes) do
+        skip('Add a hash of attributes valid for your model')
       end
 
-      it "assigns the requested mapping as @mapping" do
+      it 'updates the requested mapping' do
         mapping = Mapping.create! valid_attributes
-        put :update, params: {id: mapping.to_param, mapping: valid_attributes}, session: valid_session
+        put :update, params: { id: mapping.to_param, mapping: new_attributes }, session: valid_session
+        mapping.reload
+        skip('Add assertions for updated state')
+      end
+
+      it 'assigns the requested mapping as @mapping' do
+        mapping = Mapping.create! valid_attributes
+        put :update, params: { id: mapping.to_param, mapping: valid_attributes }, session: valid_session
         expect(assigns(:mapping)).to eq(mapping)
       end
 
-      it "redirects to the mapping" do
+      it 'redirects to the mapping' do
         mapping = Mapping.create! valid_attributes
-        put :update, params: {id: mapping.to_param, mapping: valid_attributes}, session: valid_session
+        put :update, params: { id: mapping.to_param, mapping: valid_attributes }, session: valid_session
         expect(response).to redirect_to(mapping)
       end
     end
 
-    context "with invalid params" do
-      it "assigns the mapping as @mapping" do
+    context 'with invalid params' do
+      it 'assigns the mapping as @mapping' do
         mapping = Mapping.create! valid_attributes
-        put :update, params: {id: mapping.to_param, mapping: invalid_attributes}, session: valid_session
+        put :update, params: { id: mapping.to_param, mapping: invalid_attributes }, session: valid_session
         expect(assigns(:mapping)).to eq(mapping)
       end
 
       it "re-renders the 'edit' template" do
         mapping = Mapping.create! valid_attributes
-        put :update, params: {id: mapping.to_param, mapping: invalid_attributes}, session: valid_session
-        expect(response).to render_template("edit")
+        put :update, params: { id: mapping.to_param, mapping: invalid_attributes }, session: valid_session
+        expect(response).to render_template('edit')
       end
     end
   end
 
-  describe "DELETE #destroy" do
-    it "destroys the requested mapping" do
+  describe 'DELETE #destroy' do
+    it 'destroys the requested mapping' do
       mapping = Mapping.create! valid_attributes
-      expect {
-        delete :destroy, params: {id: mapping.to_param}, session: valid_session
-      }.to change(Mapping, :count).by(-1)
+      expect do
+        delete :destroy, params: { id: mapping.to_param }, session: valid_session
+      end.to change(Mapping, :count).by(-1)
     end
 
-    it "redirects to the mappings list" do
+    it 'redirects to the mappings list' do
       mapping = Mapping.create! valid_attributes
-      delete :destroy, params: {id: mapping.to_param}, session: valid_session
+      delete :destroy, params: { id: mapping.to_param }, session: valid_session
       expect(response).to redirect_to(mappings_url)
     end
   end
-
 end

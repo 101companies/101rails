@@ -20,6 +20,7 @@ pickle-email-*.html
 # RubyMine project files
 .DS_Store
 .idea
+wiki.db.gzip
 
 /public/packs
 /public/packs-test

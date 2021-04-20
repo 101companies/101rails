@@ -1,6 +1,4 @@
 FactoryBot.define do
-  factory :admin_page, :class => 'Admin::Page' do
-    
+  factory :admin_page, class: 'Admin::Page' do
   end
-
 end

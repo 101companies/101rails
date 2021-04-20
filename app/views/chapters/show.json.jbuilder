@@ -1,1 +1,1 @@
-json.partial! "chapters/chapter", chapter: @chapter
+json.partial! 'chapters/chapter', chapter: @chapter

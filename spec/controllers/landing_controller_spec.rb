@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 RSpec.describe LandingController, type: :controller do
-
   describe 'index' do
     it 'gets index' do
       tech_page = create(:technology_page)
@@ -9,7 +8,7 @@ RSpec.describe LandingController, type: :controller do
 
       get(:index)
 
-      expect(assigns(:technologies)).to eq({tech_page.title => 1})
+      expect(assigns(:technologies)).to eq({ tech_page.title => 1 })
     end
   end
 end

@@ -1,0 +1,118 @@
+# inherit_from:
+#   - .rubocop_airbnb.yml
+#
+# RSpec/ExpectActual:
+#   Enabled: false
+#
+# Style/HashSyntax:
+#   Enabled: true
+#   EnforcedStyle: ruby19
+#
+# Style/StringLiterals:
+#   Enabled: true
+#   EnforcedStyle: single_quotes
+#
+# Capybara/CurrentPathExpectation:
+#   Enabled: true
+#
+# Metrics/LineLength:
+#   Enabled: false
+
+inherit_gem:
+  rubocop-github:
+    - config/default_edge.yml
+    - config/rails_edge.yml
+
+require: rubocop-rspec
+
+Style/Documentation:
+  Enabled: false
+
+Naming/VariableNumber:
+  Enabled: false
+
+Naming/VariableName:
+  Exclude:
+    - 'app/graphql/**/*'
+
+Naming/MethodParameterName:
+  Exclude:
+    - 'app/graphql/**/*'
+
+Style/StringLiterals:
+  Enabled: true
+  EnforcedStyle: single_quotes
+
+Layout/SpaceAroundMethodCallOperator:
+  Enabled: true
+
+Lint/RaiseException:
+  Enabled: true
+
+Lint/StructNewOverride:
+  Enabled: true
+
+Style/ExponentialNotation:
+  Enabled: true
+
+Style/HashEachMethods:
+  Enabled: true
+
+Style/HashTransformKeys:
+  Enabled: true
+
+Style/HashTransformValues:
+  Enabled: true
+
+Performance/AncestorsInclude:
+  Enabled: true
+
+Performance/BigDecimalWithNumericArgument:
+  Enabled: true
+
+Performance/RedundantSortBlock:
+  Enabled: true
+
+Performance/RedundantStringChars:
+  Enabled: true
+
+Performance/ReverseFirst:
+  Enabled: true
+
+Performance/SortReverse:
+  Enabled: true
+
+Performance/Squeeze:
+  Enabled: true
+
+Performance/StringInclude:
+  Enabled: true
+
+RSpec/MultipleExpectations:
+  Enabled: false
+
+RSpec/ExampleLength:
+  Enabled: false
+
+RSpec/LetSetup:
+  Enabled: false
+
+RSpec/FilePath:
+  Enabled: false
+
+RSpec/DescribeClass:
+  Enabled: false
+
+RSpec/MultipleMemoizedHelpers:
+  Enabled: false
+
+Style/FrozenStringLiteralComment:
+  Enabled: false
+
+AllCops:
+  NewCops: enable
+
+  Exclude:
+    - 'node_modules/**/*'
+    - 'vendor/**/*'
+    - 'bin/**/*'

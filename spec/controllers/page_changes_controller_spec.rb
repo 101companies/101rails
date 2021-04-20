@@ -8,7 +8,6 @@ RSpec.describe PageChangesController, type: :controller do
   let!(:other_page_change) { create(:other_page_change, page: page) }
 
   describe 'diff' do
-
     it 'diffs 2 pages' do
       get(:diff, params: { page_change_id: page_change.id, another_page_change_id: other_page_change.id })
 
@@ -32,22 +31,18 @@ RSpec.describe PageChangesController, type: :controller do
 
       expect(response).to redirect_to(root_path)
     end
-
   end
 
   describe 'get_all' do
-
     it 'gets all' do
       get(:get_all, params: { page_id: page.id })
 
-      data = JSON::parse(response.body)
+      data = JSON.parse(response.body)
       expect(data['success']).to be(true)
     end
-
   end
 
   describe 'apply' do
-
     it 'cant apply without privileges' do
       get(:apply, params: { page_change_id: page_change.id })
 
@@ -71,11 +66,9 @@ RSpec.describe PageChangesController, type: :controller do
       page.reload
       expect(page.raw_content).to eq(page_change.raw_content)
     end
-
   end
 
   describe 'show' do
-
     it 'shows the page' do
       get(:show, params: { page_change_id: page_change.id })
 
@@ -90,7 +83,5 @@ RSpec.describe PageChangesController, type: :controller do
       expect(response).to redirect_to(root_path)
       expect(flash[:error]).not_to be(nil)
     end
-
   end
-
 end

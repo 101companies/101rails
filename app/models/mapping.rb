@@ -17,5 +17,4 @@ class Mapping < ApplicationRecord
   def page_title
     @page_title ||= page&.full_title
   end
-
 end

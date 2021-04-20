@@ -1,19 +1,14 @@
 class AuthenticationsController < ApplicationController
-
   # Create an authentication when this is called from
   # the authentication provider callback.
   def create
-    omniauth = request.env["omniauth.auth"]
+    omniauth = request.env['omniauth.auth']
     # try to catch user by uid
-    user = User.where(:github_uid => omniauth['uid']).first
+    user = User.where(github_uid: omniauth['uid']).first
     # try to catch user by email
-    if user.nil?
-      user = User.where(:email => omniauth['info']['email']).first
-    end
+    user = User.where(email: omniauth['info']['email']).first if user.nil?
     # create new user if not found
-    if user.nil?
-      user = User.new
-    end
+    user = User.new if user.nil?
     # fill user info from omniauth
     failed_to_populate_data = false
     begin
@@ -21,20 +16,18 @@ class AuthenticationsController < ApplicationController
     rescue Exception => e
       failed_to_populate_data = true
     end
-    if !failed_to_populate_data and user.save
+    if !failed_to_populate_data && user.save
       session[:user_id] = user.id
       create_user_page_and_set_permissions(user)
       flash[:notice] = t(:signed_in)
     else
-      flash[:error] = "Failed to login. Have you added name and public email into GitHub account?"
+      flash[:error] = 'Failed to login. Have you added name and public email into GitHub account?'
     end
     go_to_homepage
   end
 
   def local_auth
-    if Rails.env.production?
-      return go_to_homepage
-    end
+    return go_to_homepage if Rails.env.production?
 
     user = User.find(params[:admin])
     session[:user_id] = user.id
@@ -42,10 +35,10 @@ class AuthenticationsController < ApplicationController
   end
 
   def create_user_page_and_set_permissions(user)
-    user_page = Page.where(:title => user.github_name, :namespace => 'Contributor').first
+    user_page = Page.where(title: user.github_name, namespace: 'Contributor').first
     if user_page.nil?
-      user_page = Page.new :title => user.github_name,
-                           :namespace => 'Contributor'
+      user_page = Page.new title: user.github_name,
+                           namespace: 'Contributor'
       user_page.save
     end
   end
@@ -56,5 +49,4 @@ class AuthenticationsController < ApplicationController
     flash[:notice] = t(:signed_out)
     go_to_homepage
   end
-
 end

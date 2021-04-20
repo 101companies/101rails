@@ -1,17 +1,16 @@
 namespace :pages do
-
   task import_mongo: :environment do
-    system "mongoexport --pretty --jsonArray --db wiki_production --collection pages --out pages.json"
-    pages = JSON::parse(File.read('pages.json'))
+    system 'mongoexport --pretty --jsonArray --db wiki_production --collection pages --out pages.json'
+    pages = JSON.parse(File.read('pages.json'))
 
-    system "mongoexport --pretty --jsonArray --db wiki_production --collection page_changes --out page_changes.json"
-    changes = JSON::parse(File.read('page_changes.json'))
+    system 'mongoexport --pretty --jsonArray --db wiki_production --collection page_changes --out page_changes.json'
+    changes = JSON.parse(File.read('page_changes.json'))
 
-    system "mongoexport --pretty --jsonArray --db wiki_production --collection users --out users.json"
-    users = JSON::parse(File.read('users.json'))
+    system 'mongoexport --pretty --jsonArray --db wiki_production --collection users --out users.json'
+    users = JSON.parse(File.read('users.json'))
 
-    system "mongoexport --pretty --jsonArray --db wiki_production --collection repo_links --out repo_links.json"
-    repo_links = JSON::parse(File.read('repo_links.json'))
+    system 'mongoexport --pretty --jsonArray --db wiki_production --collection repo_links --out repo_links.json'
+    repo_links = JSON.parse(File.read('repo_links.json'))
 
     pages = rewrite_foreign_keys(pages)
     changes = rewrite_foreign_keys(changes)
@@ -21,35 +20,29 @@ namespace :pages do
     ActiveRecord::Base.transaction do
       page_mapping = {}
       pages.each do |page|
-        begin
-          ActiveRecord::Base.connection.execute("SAVEPOINT page_savepoint")
-          new_page = Page.create!(
-            title: page['title'],
-            namespace: page['namespace'],
-            raw_content: page['raw_content'],
-            html_content: page['html_content'],
-            used_links: page['used_links'],
-            subresources: page['subresources'],
-            headline: page['headline'],
-            verified: page['verified'],
-            created_at: page['created_at']['$date'],
-            updated_at: page['updated_at']['$date']
-          )
-          page_mapping[page['id']] = new_page
-        rescue ActiveRecord::RecordNotUnique
-          ActiveRecord::Base.connection.execute("ROLLBACK TO SAVEPOINT page_savepoint")
-        end
+        ActiveRecord::Base.connection.execute('SAVEPOINT page_savepoint')
+        new_page = Page.create!(
+          title: page['title'],
+          namespace: page['namespace'],
+          raw_content: page['raw_content'],
+          html_content: page['html_content'],
+          used_links: page['used_links'],
+          subresources: page['subresources'],
+          headline: page['headline'],
+          verified: page['verified'],
+          created_at: page['created_at']['$date'],
+          updated_at: page['updated_at']['$date']
+        )
+        page_mapping[page['id']] = new_page
+      rescue ActiveRecord::RecordNotUnique
+        ActiveRecord::Base.connection.execute('ROLLBACK TO SAVEPOINT page_savepoint')
       end
 
       user_mapping = {}
       users.each do |user|
-        if !user['github_token']
-          next
-        end
+        next unless user['github_token']
 
-        if !user['github_uid']
-          next
-        end
+        next unless user['github_uid']
 
         user_object = User.create!(
           email: user['email'],
@@ -64,21 +57,18 @@ namespace :pages do
         )
         user_mapping[user['id']] = user_object
 
-        if user['page_ids']
-          user['page_ids'].each do |page_id|
-            page_id = page_id['$oid']
-            page = page_mapping[page_id]
-            if page
-              user_object.pages << page
-            end
-          end
+        next unless user['page_ids']
+
+        user['page_ids'].each do |page_id|
+          page_id = page_id['$oid']
+          page = page_mapping[page_id]
+          user_object.pages << page if page
         end
       end
 
       changes.each do |change|
-        if !change['user_id']
-          next
-        end
+        next unless change['user_id']
+
         PageChange.create!(
           page_id: page_mapping[change['page_id']['$oid']],
           user_id: user_mapping[change['user_id']['$oid']],
@@ -90,9 +80,8 @@ namespace :pages do
       end
 
       repo_links.each do |repo_link|
-        if !repo_link['page_id']
-          next
-        end
+        next unless repo_link['page_id']
+
         RepoLink.create!(
           repo: repo_link['repo'],
           folder: repo_link['folder'],
@@ -102,7 +91,6 @@ namespace :pages do
           updated_at: repo_link['updated_at']['$date']
         )
       end
-
     end
   end
 
@@ -126,9 +114,9 @@ namespace :pages do
     end
   end
 
-  desc "dump all pages as csv"
-  task :csv_dump => :environment do
-    CSV.open("pages.csv", "wb") do |csv|
+  desc 'dump all pages as csv'
+  task csv_dump: :environment do
+    CSV.open('pages.csv', 'wb') do |csv|
       csv << ['Title', 'Namespace', 'Delete?']
       Page.each do |page|
         csv << [page.title, page.namespace, '']
@@ -136,16 +124,14 @@ namespace :pages do
     end
   end
 
-  desc "TODO"
-  task :findDuplicates => :environment do
+  desc 'TODO'
+  task findDuplicates: :environment do
     Page.where(namespace: 'Concept').find_each do |page|
-      if Page.where(title: page.title, namespace: 'Contribution').count > 0
-        page.destroy
-      end
+      page.destroy if Page.where(title: page.title, namespace: 'Contribution').count.positive?
     end
   end
 
-  task :findSimilar => :environment do
+  task findSimilar: :environment do
     Page.find_each do |page|
       p
       ap page.full_title
@@ -153,5 +139,4 @@ namespace :pages do
       ap page.similar.map(&:full_title)
     end
   end
-
 end

@@ -1,6 +1,6 @@
 class BooksController < ApplicationController
   authorize_resource
-  before_action :set_book, only: [:edit, :update, :destroy, :create_index]
+  before_action :set_book, only: %i[edit update destroy create_index]
 
   # GET /books
   def index
@@ -13,8 +13,7 @@ class BooksController < ApplicationController
   end
 
   # GET /books/1/edit
-  def edit
-  end
+  def edit; end
 
   def create_index
     documents = {}
@@ -28,7 +27,7 @@ class BooksController < ApplicationController
       doc.css('pre').remove
       text = Html2Text.convert(doc.to_s)
       text = text.gsub!(/[^A-Za-z ]/, '')
-      text = text.split(' ')
+      text = text.split
       text.map! do |word|
         new_word = stemmer.stem(word).downcase
         pre_stemmed[new_word] = word
@@ -47,15 +46,15 @@ class BooksController < ApplicationController
     chapters_count = @book.chapters.count
 
     document_frequency = Hash.new(0)
-    documents.each do |chapter, frequencies|
-      frequencies.each do |k, v|
+    documents.each do |_chapter, frequencies|
+      frequencies.each do |k, _v|
         document_frequency[k] += 1
       end
     end
 
-    inverted_document_frequency = document_frequency.map do |word, count|
-      [word, Math.log(chapters_count / count)]
-    end.to_h
+    inverted_document_frequency = document_frequency.transform_values do |count|
+      Math.log(chapters_count / count)
+    end
 
     vectors = documents.map do |chapter, frequencies|
       weighted_frequencies = frequencies.map do |word, frequency|
@@ -74,7 +73,7 @@ class BooksController < ApplicationController
     end.to_h
 
     data = vectors.map do |chapter, frequencies|
-      words = frequencies.sort_by {|k,v| v}.reverse.map { |k, v| k }.first(15)
+      words = frequencies.sort_by { |_k, v| v }.reverse.map { |k, _v| k }.first(15)
       [chapter, words]
     end.to_h
 
@@ -96,7 +95,7 @@ class BooksController < ApplicationController
       if @book.save
         format.html { redirect_to books_path, notice: 'Book was successfully created.' }
       else
-        format.html { render :new }
+        format.html { render 'new' }
       end
     end
   end
@@ -107,7 +106,7 @@ class BooksController < ApplicationController
       if @book.update(book_params)
         format.html { redirect_to books_path, notice: 'Book was successfully updated.' }
       else
-        format.html { render :edit }
+        format.html { render 'edit' }
       end
     end
   end

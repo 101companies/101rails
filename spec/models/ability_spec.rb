@@ -1,13 +1,7 @@
 require 'rails_helper'
 
 describe PageModule do
-
-  before(:each) do
-
-  end
-
   describe 'rights' do
-
     it 'makes sure admins can access everyting' do
       user = create(:user)
       ability = Ability.new(user)
@@ -54,9 +48,6 @@ describe PageModule do
       expect(edit_pages).to be false
       expect(destroy_pages).to be false
       expect(rails_admin).to be false
-
     end
-
   end
-
 end

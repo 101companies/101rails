@@ -12,8 +12,8 @@ class CreateAhoyEvents < ActiveRecord::Migration[4.2]
       t.timestamp :time
     end
 
-    add_index :ahoy_events, [:visit_id, :name]
-    add_index :ahoy_events, [:user_id, :name]
-    add_index :ahoy_events, [:name, :time]
+    add_index :ahoy_events, %i[visit_id name]
+    add_index :ahoy_events, %i[user_id name]
+    add_index :ahoy_events, %i[name time]
   end
 end

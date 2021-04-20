@@ -8,8 +8,7 @@ class ChangeTripleSchema < ActiveRecord::Migration[5.0]
 
     execute('insert into triples(page_id, predicate, object)
       select id, split_part(link, \'::\', 1), split_part(link, \'::\', 2)
-      from pages, unnest(used_links) as link where strpos(link, \'::\') > 0'
-    )
+      from pages, unnest(used_links) as link where strpos(link, \'::\') > 0')
   end
 
   def down

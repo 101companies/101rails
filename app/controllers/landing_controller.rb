@@ -1,5 +1,4 @@
 class LandingController < ApplicationController
-
   def index
     @front_page = PageModule.front_page
     @courses_page = PageModule.courses_page
@@ -22,5 +21,4 @@ class LandingController < ApplicationController
 
     render layout: 'landing'
   end
-
 end

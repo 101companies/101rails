@@ -2,7 +2,7 @@ class ChaptersController < ApplicationController
   authorize_resource
 
   before_action :set_book
-  before_action :set_chapter, only: [:edit, :update, :destroy]
+  before_action :set_chapter, only: %i[edit update destroy]
 
   # GET /chapters/new
   def new
@@ -10,8 +10,7 @@ class ChaptersController < ApplicationController
   end
 
   # GET /chapters/1/edit
-  def edit
-  end
+  def edit; end
 
   # POST /chapters
   def create
@@ -21,7 +20,7 @@ class ChaptersController < ApplicationController
       if @chapter.save
         format.html { redirect_to edit_book_path(@book), notice: 'Chapter was successfully created.' }
       else
-        format.html { render :new }
+        format.html { render 'new' }
       end
     end
   end
@@ -34,7 +33,7 @@ class ChaptersController < ApplicationController
         format.html { redirect_to @chapter, notice: 'Chapter was successfully updated.' }
         format.json { render :show, status: :ok, location: @chapter }
       else
-        format.html { render :edit }
+        format.html { render 'edit' }
         format.json { render json: @chapter.errors, status: :unprocessable_entity }
       end
     end

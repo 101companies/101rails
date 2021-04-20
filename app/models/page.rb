@@ -5,9 +5,9 @@ class Page < ApplicationRecord
     namespace: 'B',
     raw_content: 'D'
   },
-  using: {
-    tsearch: { prefix: true, negation: true }
-  }
+                           using: {
+                             tsearch: { prefix: true, negation: true }
+                           }
 
   has_one :repo_link, dependent: :destroy
   has_many :page_changes, dependent: :destroy
@@ -16,8 +16,8 @@ class Page < ApplicationRecord
   has_many :mappings, dependent: :destroy
   has_many :triples, autosave: true, dependent: :destroy
 
-  validates_presence_of :title
-  validates_presence_of :namespace
+  validates :title, presence: true
+  validates :namespace, presence: true
   validates :title, uniqueness: { scope: [:namespace] }
 
   before_save :preparing_the_page
@@ -52,13 +52,13 @@ class Page < ApplicationRecord
   end
 
   def preparing_the_page
-    self.html_content = self.parse
+    self.html_content = parse
 
     self.subresources = []
     self.used_links   = []
 
     # we hack this for now
-    links = raw_content.scan /\[\[[^\]]*\]\]/
+    links = raw_content.scan(/\[\[[^\]]*\]\]/)
     links = links.map do |link|
       link.sub('[[', '').sub(']]', '').sub(/\|.*/, '')
     end
@@ -74,9 +74,7 @@ class Page < ApplicationRecord
     new_triples = used_links.map do |link|
       if link.include?('::')
         predicate, object = link.split('::')
-        {predicate: predicate, object: object}
-      else
-        nil
+        { predicate: predicate, object: object }
       end
     end.compact
 
@@ -84,9 +82,7 @@ class Page < ApplicationRecord
       contained = new_triples.any? do |new_triple|
         new_triple[:predicate] == current_triple.predicate && new_triple[:object] == current_triple.object
       end
-      unless contained
-        current_triple.destroy
-      end
+      current_triple.destroy unless contained
     end
 
     new_triples.each do |new_triple|
@@ -94,42 +90,36 @@ class Page < ApplicationRecord
         new_triple[:predicate] == current_triple.predicate && new_triple[:object] == current_triple.object
       end
 
-      unless contained
-        triples << triples.new(new_triple)
-      end
+      triples << triples.new(new_triple) unless contained
     end
 
     self.headline = get_headline_html_content
-    if respond_to?(:db_sections=)
-      self.db_sections = sections
-    end
+    self.db_sections = sections if respond_to?(:db_sections=)
   end
 
   def section_names
     if db_sections.present?
       db_sections.map { |section| section['title'] }
     else
-      sections.map { |section|  section['title'] }
+      sections.map { |section| section['title'] }
     end
   end
 
   def render
     Rails.cache.fetch("#{cache_key}/content") do
       preparing_the_page
-      self.parse
+      parse
     end
   end
 
   def get_metadata_section
-    self.sections.select { |section| section["title"] == 'Metadata' }.first
+    sections.find { |section| section['title'] == 'Metadata' }
   end
 
   def get_headline_html_content
-    begin
-      Nokogiri::HTML(self.html_content).css('#Headline').first.parent.next_element.text.strip
-    rescue
-      ''
-    end
+    Nokogiri::HTML(html_content).css('#Headline').first.parent.next_element.text.strip
+  rescue StandardError
+    ''
   end
 
   def inject_triple(triple)
@@ -137,45 +127,48 @@ class Page < ApplicationRecord
     metadata_section = get_metadata_section
     # not found -> create it
     if metadata_section.nil?
-      self.raw_content = (self.raw_content.nil? || self.raw_content.empty?) ?
-          "== Metadata ==\n* [[#{triple}]]" : self.raw_content + "\n== Metadata == \n* [[#{triple}]]"
-    else
-      if !metadata_section['content'].include?(triple)
-        self.raw_content = self.raw_content.strip + "\n* [[#{triple}]]"
-      end
+      self.raw_content = if raw_content.blank?
+                           "== Metadata ==\n* [[#{triple}]]"
+                         else
+                           raw_content + "\n== Metadata == \n* [[#{triple}]]"
+end
+    elsif metadata_section['content'].exclude?(triple)
+      self.raw_content = raw_content.strip + "\n* [[#{triple}]]"
     end
   end
 
   def decorate_headline(headline_text)
     # if string is too long -> cut to 250 chars and add '...' at the end
     popup_msg_length = 250
-    (headline_text.length < popup_msg_length)  ? headline_text : "#{headline_text[0..popup_msg_length-1]} ..."
+    headline_text.length < popup_msg_length ? headline_text : "#{headline_text[0..popup_msg_length - 1]} ..."
   end
 
   def get_last_change
-    last_change = self.page_changes.order(created_at: :asc).last
-    if last_change && last_change.user
-      history_entry = {
-          user_name: last_change.user.name,
-          user_pic: last_change.user.github_avatar,
-          user_email: last_change.user.email,
-          created_at: last_change.created_at
+    last_change = page_changes.order(created_at: :asc).last
+    if last_change&.user
+      {
+        user_name: last_change.user.name,
+        user_pic: last_change.user.github_avatar,
+        user_email: last_change.user.email,
+        created_at: last_change.created_at
       }
     else
-      history_entry = {}
-    end
-    history_entry
+      {}
+                    end
   end
 
   def get_headline
     # assume that first <p> in html content will be shown as popup
-    headline_elem = Nokogiri::HTML(self.html_content).css('p').first
-    headline_elem.nil? ?
-        "No headline found for page #{self.full_title}" : (decorate_headline(headline_elem.text)).strip
+    headline_elem = Nokogiri::HTML(html_content).css('p').first
+    if headline_elem.nil?
+      "No headline found for page #{full_title}"
+    else
+      decorate_headline(headline_elem.text).strip
+end
   end
 
-  def parse(content = self.raw_content)
-    parsed_page = self.get_parser
+  def parse(_content = raw_content)
+    parsed_page = get_parser
     parsed_page.sections.first.auto_toc = false
     html = parsed_page.to_html
 
@@ -183,50 +176,50 @@ class Page < ApplicationRecord
       link = link
       nice_link = PageModule.url link
 
-      html.gsub! "<a href=\"#{link}\"", "<a "+
-          "href=\"/#{nice_link}\""
+      html.gsub! "<a href=\"#{link}\"", '<a ' \
+                                        "href=\"/#{nice_link}\""
     end
 
-    return html.html_safe
+    html.html_safe
   end
 
   # get fullname with namespace and  title
   def full_title
-    self.namespace + ':' + self.title
+    "#{namespace}:#{title}"
   end
 
   def full_underscore_title
-    full_title.gsub(' ', '_')
+    full_title.tr(' ', '_')
   end
 
   def rewrite_backlink(related_page, old_title)
-    if !related_page.nil?
+    if related_page.nil?
       # rewrite link in page, found by backlink
-      related_page.raw_content = related_page.rewrite_internal_links(old_title, self.full_title)
-      # and save changes
-      related_page.save!
+      Rails.logger.info "Couldn't find page with link #{backlink}"
       # if !related_page.save
       #   Rails.logger.info "Failed to rewrite links for page " + related_page.full_title
       # end
     else
-      Rails.logger.info "Couldn't find page with link " + backlink
+      related_page.raw_content = related_page.rewrite_internal_links(old_title, full_title)
+      # and save changes
+      related_page.save!
     end
   end
 
-  def rename(new_title, page_change)
+  def rename(new_title, _page_change)
     # set new title to page
     nt = PageModule.retrieve_namespace_and_title new_title
-    old_title = self.full_title
+    old_title = full_title
     # save old backlinsk before renaming
-    old_backlinking_pages = self.backlinking_pages
+    old_backlinking_pages = backlinking_pages
     # rename the page
     self.namespace = nt['namespace']
     self.title = nt['title']
     # rewrite links in pages, that links to the page
     old_backlinking_pages.each do |old_backlinking_page|
-      self.rewrite_backlink(old_backlinking_page, old_title)
+      rewrite_backlink(old_backlinking_page, old_title)
     end
-    self.rewrite_backlink(self, old_title)
+    rewrite_backlink(self, old_title)
 
     if namespace == 'Property'
       old_nt = PageModule.retrieve_namespace_and_title(old_title)
@@ -235,10 +228,8 @@ class Page < ApplicationRecord
   end
 
   def build_content_from_sections(sections)
-    content = ""
-    if !sections.nil?
-      sections.each { |s| content += s['content'] + "\n" }
-    end
+    content = ''
+    sections&.each { |s| content += "#{s['content']}\n" }
     content
   end
 
@@ -251,10 +242,10 @@ class Page < ApplicationRecord
     end
   end
 
-  def update_or_rename(new_title, content, sections, user)
-    page_change = PageChange.new title: self.title,
-                                 namespace: self.namespace,
-                                 raw_content: self.raw_content,
+  def update_or_rename(new_title, content, _sections, user)
+    page_change = PageChange.new title: title,
+                                 namespace: namespace,
+                                 raw_content: raw_content,
                                  page: self,
                                  user: user
 
@@ -265,18 +256,16 @@ class Page < ApplicationRecord
     # unescape new title to nice readable url
     new_title = PageModule.unescape_wiki_url(new_title)
     # if title was changed -> rename page
-    if (new_title != self.full_title && GetPage.run(full_title: new_title).value[:page].nil?)
-      self.rename(new_title, page_change)
-    end
+    rename(new_title, page_change) if new_title != full_title && GetPage.run(full_title: new_title).value[:page].nil?
     page_change.save!
-    self.save!
+    save!
   end
 
   def rewrite_internal_links(from, to)
     from_nt = PageModule.retrieve_namespace_and_title(from)
 
     replacements = [
-      { from: "[[#{from}]]", to: "[[#{to}]]" }, #regular link
+      { from: "[[#{from}]]", to: "[[#{to}]]" }, # regular link
       { from: "::#{from}]]", to: "::#{to}]]" }
     ]
 
@@ -300,10 +289,10 @@ class Page < ApplicationRecord
 
   def get_parser
     WikiCloth::Parser.context = {
-      ns: StringUtils.upcase_first_char(self.namespace),
-      title: self.title
+      ns: StringUtils.upcase_first_char(namespace),
+      title: title
     }
-    parser = WikiCloth::Parser.new(data: self.raw_content, noedit: true)
+    parser = WikiCloth::Parser.new(data: raw_content, noedit: true)
 
     parser.to_html
 
@@ -311,25 +300,25 @@ class Page < ApplicationRecord
   end
 
   def semantic_links
-    self.internal_links.select {|link| link.include? "::" }
+    internal_links.select { |link| link.include? '::' }
   end
 
   def internal_links
-    used_links != nil ? self.used_links : []
+    used_links.nil? ? [] : used_links
   end
 
   def sections
     sections = []
     get_parser.sections.first.children.each do |section|
-      content_with_subsections = section.wikitext.sub(/\s+\Z/, "")
+      content_with_subsections = section.wikitext.sub(/\s+\Z/, '')
 
       parsed_html = parse(content_with_subsections)
 
       sections << {
-          'is_resource' => section.is_resource_section,
-          'title' => section.title,
-          'content' => content_with_subsections,
-          'html_content' => parsed_html
+        'is_resource' => section.is_resource_section,
+        'title' => section.title,
+        'content' => content_with_subsections,
+        'html_content' => parsed_html
       }
     end
 
@@ -340,9 +329,7 @@ class Page < ApplicationRecord
     result = Page.where('used_links && ARRAY[?]::varchar[]', full_title)
 
     nt = PageModule.retrieve_namespace_and_title(full_title)
-    if nt['namespace'] == 'Concept'
-      result = result.or(Page.where('used_links && ARRAY[?]::varchar[]', nt['title']))
-    end
+    result = result.or(Page.where('used_links && ARRAY[?]::varchar[]', nt['title'])) if nt['namespace'] == 'Concept'
 
     result
   end
@@ -352,11 +339,11 @@ class Page < ApplicationRecord
   end
 
   def backlinks
-    backlinking_pages.select(:title, :namespace).map { |page| page.full_title}.uniq
+    backlinking_pages.select(:title, :namespace).map(&:full_title).uniq
   end
 
   def section(section)
-    self.get_parser.sections.first.children.find { |s| s.full_title.downcase == section.downcase }
+    get_parser.sections.first.children.find { |s| s.full_title.casecmp(section).zero? }
   end
 
   def self.popular_pages(namespace)
@@ -382,7 +369,7 @@ class Page < ApplicationRecord
   end
 
   def self.popular_technologies
-    Rails.cache.fetch("popular_technologies", expires_in: 12.hours) do
+    Rails.cache.fetch('popular_technologies', expires_in: 12.hours) do
       result = Triple.where('substring(object from 0 for 11) = \'Technology\'').group(:object).count
 
       strip_namespaces(result)
@@ -390,7 +377,7 @@ class Page < ApplicationRecord
   end
 
   def self.popular_features
-    Rails.cache.fetch("popular_features", expires_in: 12.hours) do
+    Rails.cache.fetch('popular_features', expires_in: 12.hours) do
       result = Triple.where('substring(object from 0 for 8) = \'Feature\'').group(:object).count
 
       strip_namespaces(result)
@@ -398,7 +385,7 @@ class Page < ApplicationRecord
   end
 
   def self.popular_languages
-    Rails.cache.fetch("popular_languages", expires_in: 12.hours) do
+    Rails.cache.fetch('popular_languages', expires_in: 12.hours) do
       result = Triple.where('substring(object from 0 for 9) = \'Language\'').group(:object).count
 
       strip_namespaces(result)
@@ -435,8 +422,8 @@ class Page < ApplicationRecord
       on (pages.namespace || \':\' || pages.title) = popular_pages.properties_title
       where pages.namespace = \'#{namespace}\'
       order by count_all desc
-      SQL
-    )
+    SQL
+                                  )
 
     rows.map do |row|
       [row['link'], row['count_all']]
@@ -461,8 +448,8 @@ class Page < ApplicationRecord
       on (pages.namespace || \':\' || pages.title) = popular_pages.properties_title
       where pages.namespace = \'Contribution\'
       order by count_all desc
-      SQL
-    )
+    SQL
+                                  )
 
     rows.map do |row|
       [row['link'], row['count_all']]
@@ -484,12 +471,10 @@ class Page < ApplicationRecord
   end
 
   def self.cached_count
-    Rails.cache.fetch("page_count", expires_in: 12.hours) do
+    Rails.cache.fetch('page_count', expires_in: 12.hours) do
       count
     end
   end
-
-  private
 
   def self.strip_namespaces(data)
     data.map do |key, value|
@@ -498,5 +483,4 @@ class Page < ApplicationRecord
       [key, value]
     end.to_h
   end
-
 end

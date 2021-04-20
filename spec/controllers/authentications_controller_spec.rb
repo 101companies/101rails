@@ -1,11 +1,9 @@
 require 'rails_helper'
 
 RSpec.describe AuthenticationsController, type: :controller do
-
   describe 'create' do
-
     it 'has missing user' do
-      request.env["omniauth.auth"] = {
+      request.env['omniauth.auth'] = {
         'info' => {
           'email': 'test@test.com'
         }
@@ -20,28 +18,26 @@ RSpec.describe AuthenticationsController, type: :controller do
     it 'can login by email' do
       user = create(:user)
 
-      request.env["omniauth.auth"] = {
+      request.env['omniauth.auth'] = {
         'info' => {
-          'email'     => user.email,
-          'name'      => user.name,
-          'nickname'  => user.github_name,
-          'image'     => user.github_avatar,
+          'email' => user.email,
+          'name' => user.name,
+          'nickname' => user.github_name,
+          'image' => user.github_avatar
         },
         'credentials' => {
-          'token'     => user.github_token
+          'token' => user.github_token
         },
-        'uid'       => user.github_uid
+        'uid' => user.github_uid
       }
 
       post(:create)
 
       expect(session[:user_id]).to eq(user.id)
     end
-
   end
 
   describe 'local auth' do
-
     it 'does not work in production' do
       allow(Rails.env).to receive(:production?).and_return(true)
 
@@ -57,7 +53,6 @@ RSpec.describe AuthenticationsController, type: :controller do
 
       expect(session[:user_id]).to eq(user.id)
     end
-
   end
 
   describe 'logout' do
@@ -70,5 +65,4 @@ RSpec.describe AuthenticationsController, type: :controller do
       expect(response).to redirect_to(root_path)
     end
   end
-
 end

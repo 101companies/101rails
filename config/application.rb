@@ -1,7 +1,7 @@
-require File.expand_path('../boot', __FILE__)
+require File.expand_path('boot', __dir__)
 
 require 'rails/all'
-require "view_component/engine"
+require 'view_component/engine'
 
 if defined?(Bundler)
   # Require the gems listed in Gemfile, including any gems
@@ -11,7 +11,6 @@ end
 
 module Wiki
   class Application < Rails::Application
-
     # don't generate RSpec tests for views and helpers
     config.generators do |g|
       g.view_specs false
@@ -25,7 +24,7 @@ module Wiki
 
     # Custom directories with classes and modules you want to be autoloadable.
     # config.autoload_paths += %W(#{config.root}/extras)
-    #config.autoload_paths += %W(#{config.root}/lib)
+    # config.autoload_paths += %W(#{config.root}/lib)
     config.autoload_paths += Dir["#{config.root}/lib", "#{config.root}/lib/**/"]
 
     # Only load the plugins named here, in the order given (default is alphabetical).
@@ -44,10 +43,10 @@ module Wiki
     # config.i18n.default_locale = :de
 
     # Configure the default encoding used in templates for Ruby 1.9.
-    config.encoding = "utf-8"
+    config.encoding = 'utf-8'
 
     # Configure sensitive parameters which will be filtered from the log file.
-    config.filter_parameters += [:password, :password_confirmation]
+    config.filter_parameters += %i[password password_confirmation]
 
     # Enable escaping HTML in JSON.
     config.active_support.escape_html_entities_in_json = true

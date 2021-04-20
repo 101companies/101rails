@@ -3,25 +3,25 @@ require 'rails_helper'
 RSpec.describe PagesController, type: :controller do
   let(:valid_attributes) { attributes_for(:page) }
 
-  before(:each) do
+  before do
     @abstraction_page = create(:abstraction_page)
     @page = create(:page)
   end
 
   describe 'GET show' do
     it 'returns the normal page' do
-      expect {
+      expect do
         get(:show, params: { id: @page.url })
-      }.not_to change(Page, :count)
+      end.not_to change(Page, :count)
 
       expect(response).to render_template(:show)
       expect(assigns(:page)).to eq(@page)
     end
 
     it 'cant find page and redirects' do
-      expect {
+      expect do
         get(:show, params: { id: 'does_not_exist' })
-      }.not_to change(Page, :count)
+      end.not_to change(Page, :count)
 
       expect(response.status).to eq(302)
       expect(assigns(:page)).to be_nil
@@ -32,9 +32,9 @@ RSpec.describe PagesController, type: :controller do
       page = create(:contributor_page)
       change = create(:page_change, user: user)
 
-      expect {
+      expect do
         get(:show, params: { id: page.full_title }, session: { user_id: user.id })
-      }.not_to change(Page, :count)
+      end.not_to change(Page, :count)
 
       expect(response.status).to eq(200)
     end
@@ -42,9 +42,9 @@ RSpec.describe PagesController, type: :controller do
     it 'gets a new contributor page' do
       user = create(:user)
 
-      expect {
+      expect do
         get(:show, params: { id: "Contributor:#{user.github_name}" }, session: { user_id: user.id })
-      }.to change(Page, :count).by(1)
+      end.to change(Page, :count).by(1)
 
       expect(response.status).to eq(302)
       expect(response).to redirect_to(page_path("Contributor:#{user.github_name}"))
@@ -53,9 +53,9 @@ RSpec.describe PagesController, type: :controller do
     it 'auto creates a new page' do
       user = create(:user)
 
-      expect {
+      expect do
         get(:show, params: { id: 'does_not_exist' }, session: { user_id: user.id })
-      }.to change(Page, :count).by(0)
+      end.to change(Page, :count).by(0)
 
       expect(response).to redirect_to('/does_not_exist/create_new_page_confirmation')
     end
@@ -65,9 +65,9 @@ RSpec.describe PagesController, type: :controller do
     it 'show confirmation page' do
       user = create(:user)
 
-      expect {
+      expect do
         get(:create_new_page_confirmation, params: { id: 'does_not_exist' }, session: { user_id: user.id })
-      }.to change(Page, :count).by(0)
+      end.to change(Page, :count).by(0)
 
       expect(response).to render_template('create_new_page_confirmation')
       expect(response.status).to eq(200)
@@ -78,9 +78,9 @@ RSpec.describe PagesController, type: :controller do
     it 'shows page edit' do
       user = create :user
 
-      expect {
+      expect do
         get(:edit, params: { id: @page.url }, session: { user_id: user.id })
-      }.not_to change(Page, :count)
+      end.not_to change(Page, :count)
 
       expect(response).to render_template('edit')
       expect(response.status).to eq(200)
@@ -89,9 +89,9 @@ RSpec.describe PagesController, type: :controller do
 
   describe 'GET destroy' do
     it 'cannot destroys the page' do
-      expect {
+      expect do
         get(:destroy, params: { id: @page.url })
-      }.to_not change(Page, :count)
+      end.not_to change(Page, :count)
 
       expect(flash[:notice].length).to be > 0
     end
@@ -109,9 +109,9 @@ RSpec.describe PagesController, type: :controller do
     it 'creates page' do
       user = create(:user)
 
-      expect {
+      expect do
         get(:create_new_page, params: { id: 'new_page' }, session: { user_id: user.id })
-      }.to change(Page, :count).by(1)
+      end.to change(Page, :count).by(1)
 
       expect(response.status).to eq(302)
       expect(response).to redirect_to(page_path('new_page'))
@@ -120,9 +120,9 @@ RSpec.describe PagesController, type: :controller do
     it 'creates page with special characters' do
       user = create(:user)
 
-      expect {
+      expect do
         get(:create_new_page, params: { id: 'AST^+' }, session: { user_id: user.id })
-      }.to change(Page, :count).by(1)
+      end.to change(Page, :count).by(1)
 
       expect(response.status).to eq(302)
       expect(response).to redirect_to(page_path('AST^+'))
@@ -130,9 +130,9 @@ RSpec.describe PagesController, type: :controller do
     end
 
     it 'does not create new page' do
-      expect {
+      expect do
         get(:create_new_page, params: { id: 'new_page' })
-      }.not_to change(Page, :count)
+      end.not_to change(Page, :count)
 
       expect(flash[:error].length).to be > 0
       expect(response).to redirect_to(root_path)
@@ -143,9 +143,9 @@ RSpec.describe PagesController, type: :controller do
     it 'updates the page' do
       user = create(:user)
 
-      expect {
+      expect do
         put(:update, params: { id: @page.full_title, content: 'Some other content' }, session: { user_id: user.id })
-      }.not_to change(Page, :count)
+      end.not_to change(Page, :count)
 
       expect(@page.reload.raw_content).to include('Some other content')
     end
@@ -155,9 +155,9 @@ RSpec.describe PagesController, type: :controller do
     it 'renames the page' do
       user = create(:user)
 
-      expect {
+      expect do
         get(:rename, params: { id: @page.full_title, newTitle: 'OtherTitle' }, session: { user_id: user.id })
-      }.not_to change(Page, :count)
+      end.not_to change(Page, :count)
 
       expect(@page.reload.title).to eq('OtherTitle')
     end
@@ -176,9 +176,9 @@ RSpec.describe PagesController, type: :controller do
 
   describe 'search' do
     it 'returns the correct page' do
-      expect {
+      expect do
         get(:search, params: { q: @page.title })
-      }.not_to change(Page, :count)
+      end.not_to change(Page, :count)
 
       expect(assigns(:search_results).length).to eq(1)
       expect(response).to render_template(:search)
@@ -193,9 +193,9 @@ RSpec.describe PagesController, type: :controller do
     end
 
     it 'can search without text' do
-      expect {
+      expect do
         get(:search)
-      }.not_to change(Page, :count)
+      end.not_to change(Page, :count)
 
       expect(response).to render_template(:search)
     end
@@ -209,9 +209,9 @@ RSpec.describe PagesController, type: :controller do
         user_repo: 'kevin-klein/pythonSyb'
       }
 
-      expect {
+      expect do
         post(:update_repo, params: { id: @page.url, repo_link: repo_link }, session: { user_id: user.id })
-      }.not_to change(Page, :count)
+      end.not_to change(Page, :count)
 
       expect(@page.reload.repo_link.folder).to eq('/')
     end

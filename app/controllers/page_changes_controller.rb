@@ -1,5 +1,4 @@
 class PageChangesController < ApplicationController
-
   def diff
     page_change = PageChange.get_by_id params[:page_change_id]
     another_page_change = PageChange.get_by_id params[:another_page_change_id]
@@ -24,27 +23,29 @@ class PageChangesController < ApplicationController
     @diff = PageChange.get_diff another_page_change.raw_content, page_change.raw_content
 
     # show title or 2 titles, if page was renamed
-    @title = (page_change.title == another_page_change.title)?
-        page_change.title : "#{page_change.title} => #{another_page_change.title}"
-
+    @title = if page_change.title == another_page_change.title
+               page_change.title
+             else
+               "#{page_change.title} => #{another_page_change.title}"
+end
   end
 
   def index
-    if params[:after_id]
-      @changes = PageChange.where('id > ?', params[:after_id])
-    else
-      @changes = PageChange.all
-    end
+    @changes = if params[:after_id]
+                 PageChange.where('id > ?', params[:after_id])
+               else
+                 PageChange.all
+               end
     @changes = @changes.order(:id).limit(500)
   end
 
   def get_all
-    data = ""
-    begin
-      @page = Page.find(params[:page_id])
-      data = render_to_string(:partial => 'pages/history_tab', :layout => false)
-    end
-    render :json => {:success => true, :history_html => data.html_safe}
+    data = ''
+
+    @page = Page.find(params[:page_id])
+    data = render_to_string(partial: 'pages/history_tab', layout: false)
+
+    render json: { success: true, history_html: data.html_safe }
   end
 
   def apply
@@ -56,14 +57,14 @@ class PageChangesController < ApplicationController
     end
 
     if cannot? :manage, page_change.page
-      flash[:error] = "Not enough permissions for applying revision"
+      flash[:error] = 'Not enough permissions for applying revision'
       go_to_previous_page and return
     end
 
     page = page_change.page
     page.namespace = page_change.namespace
     applying_result = page.update_or_rename(page_change.title, page_change.raw_content, nil, current_user)
-    flash[:warning] =  applying_result ? 'Restored page from revision' : 'Restoring was unsuccessful'
+    flash[:warning] = applying_result ? 'Restored page from revision' : 'Restoring was unsuccessful'
 
     redirect_to page_path(page.url)
   end
@@ -72,7 +73,7 @@ class PageChangesController < ApplicationController
     page_change = PageChange.get_by_id params[:page_change_id]
 
     if page_change.nil?
-      flash[:error] = "Cannot show page with content of this revision"
+      flash[:error] = 'Cannot show page with content of this revision'
       go_to_previous_page and return
     end
 
@@ -82,8 +83,8 @@ class PageChangesController < ApplicationController
 
     namespace_and_title = PageModule.retrieve_namespace_and_title page_change.title
 
-    @page.title = namespace_and_title["title"]
-    @page.namespace = namespace_and_title["namespace"]
+    @page.title = namespace_and_title['title']
+    @page.namespace = namespace_and_title['namespace']
     @page.raw_content = page_change.raw_content
 
     # do internal work with links e.t.c
