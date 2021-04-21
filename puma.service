@@ -8,7 +8,7 @@ User=ubuntu
 WorkingDirectory=/home/ubuntu/101rails/current
 Environment=RAILS_ENV=production
 Environment=PORT=9292
-
+EnvironmentFile=/home/ubuntu/101rails.env
 ExecStart=/home/ubuntu/.rvm/wrappers/ruby-3.0.0/bundle exec --keep-file-descriptors puma -C /home/ubuntu/101rails/current/config/puma_production.rb
 Restart=always
 KillMode=process
