@@ -12,9 +12,7 @@ const Editor = (props) => {
   const reactAceComponent = React.useRef(null);
 
   const onInsert = (help) => {
-    console.log(reactAceComponent.current.editor);
     const editor = reactAceComponent.current.editor;
-    console.log(editor.getSession());
 
     const toWrap = editor.getSession().getTextRange(editor.getSelectionRange());
     editor.getSession().replace(editor.getSelectionRange(), help.start + toWrap + help.end);
