@@ -9,53 +9,19 @@ import "ace-builds/src-noconflict/theme-xcode";
 import EditorBar from './EditorBar';
 
 const Editor = (props) => {
+  const reactAceComponent = React.useRef(null);
+
   const onInsert = (help) => {
-    const toWrap = editor.current.getSession().getTextRange(editor.current.getSelectionRange());
-    editor.current.getSession().replace(editor.current.getSelectionRange(), help.start + toWrap + help.end);
-    editor.current.navigateRight(help.end.length);
+    console.log(reactAceComponent.current.editor);
+    const editor = reactAceComponent.current.editor;
+    console.log(editor.getSession());
+
+    const toWrap = editor.getSession().getTextRange(editor.getSelectionRange());
+    editor.getSession().replace(editor.getSelectionRange(), help.start + toWrap + help.end);
+    editor.navigateRight(help.end.length);
   }
-  //
-  // React.useEffect(() => {
-  //   editor.current = ace.edit(props.name);
-  //   editor.current.getSession().setMode('ace/mode/' + props.mode);
-  //   editor.current.getSession().setUseWrapMode(true);
-  //   editor.current.setTheme('ace/theme/' + props.theme);
-  //   editor.current.setFontSize(props.fontSize);
-  //   editor.current.on('change', onChange);
-  //   editor.current.setValue(props.value, -1);
-  //   editor.current.renderer.setShowGutter(props.showGutter);
-  //   editor.current.currentsetShowPrintMargin(props.setShowPrintMargin);
-  //
-  //   editor.current.setOptions({
-  //     enableBasicAutocompletion: true
-  //   });
-  //
-  //   var langTools = ace.require("ace/ext/language_tools");
-  //   var wikiCompleter = {
-  //       getCompletions: function(editor, session, pos, prefix, callback) {
-  //           var line = editor.session.getLine(pos.row);
-  //           prefix = retrievePrecedingIdentifier(line, pos.column);
-  //           if(prefix.indexOf(':') > -1 && prefix.length > 2) {
-  //             $.getJSON('/autocomplete?prefix=' + prefix, function(members) {
-  //               callback(null, members.map(function(member) {
-  //                 return {name: member, value: member, score: 1.0, meta: "101"}
-  //               }));
-  //             });
-  //           }
-  //           else {
-  //             callback(null, []);
-  //           }
-  //       }
-  //   }
-  //   langTools.addCompleter(wikiCompleter);
-  //
-  //   if (props.onLoad) {
-  //     props.onLoad(editor.current);
-  //   }
-  // }, [props]);
-  //
-  const onChange = () => {
-    var value = editor.current.getValue();
+
+  const onChange = (value) => {
     if (props.onChange) {
       props.onChange(value);
     }
@@ -69,6 +35,7 @@ const Editor = (props) => {
     <div>
       <EditorBar onInsert={onInsert} />
       <AceEditor
+        ref={reactAceComponent}
         mode={props.mode}
         theme="xcode"
         onChange={onChange}
@@ -83,6 +50,7 @@ const Editor = (props) => {
         wrapEnabled={true}
         setOptions={{
           useWrapMode: true,
+          useWorker: false
         }}
       />
     </div>
