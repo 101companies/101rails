@@ -86,7 +86,7 @@ class ApplicationController < ActionController::Base
 
   def go_to_previous_page
     if request.referrer
-      redirect_to :back
+      redirect_back fallback_location: root_path
     else
       go_to_homepage
     end
