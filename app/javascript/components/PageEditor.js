@@ -33,9 +33,17 @@ export default class PageEditor extends React.Component {
 
   savePage() {
     var url = window.location.pathname.replace(/edit$/, '');
+
+    var token = $("meta[name='csrf-token']").attr('content');
     $.ajax({
       url: url,
+      headers: {
+        'X-CSRF-Token': token
+      },
       type: 'PUT',
+      xhrFields: {
+        withCredentials: true
+      },
       data: {
         content: this.state.rawContent,
         newTitle: this.props.full_title
