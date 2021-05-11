@@ -6,7 +6,7 @@ const options = {
   hue: 'blue',
 }
 
-export default ({data}) => {
+export default ({namespace, data}) => {
   const tagCloudData = Object.entries(data).map((item) => {
     const [key, value] = item;
     return { value: key, count: value };
@@ -18,7 +18,10 @@ export default ({data}) => {
       colorOptions={options}
       maxSize={35}
       tags={tagCloudData}
-      onClick={(tag) => {window.location.href = tag.value;} }
+      onClick={(tag) => {
+          window.location.href = `/${namespace}:${tag.value}`;
+        }
+      }
     />
   );
 }
