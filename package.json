@@ -17,6 +17,7 @@
     "turbolinks": "^5.2.0"
   },
   "devDependencies": {
+    "chokidar": "^3.5.1",
     "webpack-dev-server": "^3.11.2"
   }
 }

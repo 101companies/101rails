@@ -1,28 +1,10 @@
 <div class='row' style="margin-top: 100px;">
-  <div class='col-md-6 hidden-sm'>
+  <div class='col-md-9 hidden-sm'>
     <%= react_component('TagCloud', data: tagcloud_data, namespace: namespace) %>
     <div class='<%= tag_class_name %>'></div>
   </div>
-
-  <div class='col-md-3 col-sm-6'>
-    <h2 class='category-title'>Popular</h2>
-    <% popular_pages.each do |page| %>
-      <div class='page-preview'>
-        <h2>
-          <%= link_to(page.full_title, page_path(page.full_title))  %>
-        </h2>
-
-        <div class='content'>
-          <%= cache(page) do %>
-            <%= raw page.preview %>
-          <% end %>
-        </div>
-      </div>
-      <hr />
-    <% end %>
-  </div>
-  <div class='col-md-3 col-sm-6'>
-    <h2 class='category-title'>Recent</h2>
+  <div class='col-md-3'>
+    <h2 class='category-title'>Most recent</h2>
     <% recent_pages.each do |page| %>
       <div class='page-preview'>
         <h2>
