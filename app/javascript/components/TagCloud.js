@@ -2,8 +2,14 @@ import React from 'react';
 import { TagCloud } from 'react-tagcloud';
 
 const options = {
-  luminosity: 'light',
-  hue: 'blue',
+  // luminosity: 'light',
+  // hue: 'blue',
+}
+
+let seed = 1337
+function random() {
+  const x = Math.sin(seed++) * 10000
+  return x - Math.floor(x)
 }
 
 export default ({namespace, data}) => {
@@ -18,6 +24,7 @@ export default ({namespace, data}) => {
       colorOptions={options}
       maxSize={35}
       tags={tagCloudData}
+      randomNumberGenerator={random}
       onClick={(tag) => {
           window.location.href = `/${namespace}:${tag.value}`;
         }
