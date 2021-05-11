@@ -108,7 +108,15 @@ class Page < ApplicationRecord
   def render
     Rails.cache.fetch("#{cache_key}/content") do
       preparing_the_page
-      parse
+
+      text = sections
+        .filter { |s| s['title'] != 'Metadata' }
+        .map { |s| s['content'] }
+        .join("\n")
+
+      # raise
+
+      parse(text)
     end
   end
 
@@ -168,8 +176,13 @@ end
   end
 
   def parse(_content = raw_content)
-    parsed_page = get_parser
+    parsed_page = get_parser(_content)
     parsed_page.sections.first.auto_toc = false
+
+    parser = WikiCloth::Parser.new(data: _content, noedit: true)
+
+    parser.to_html
+
     html = parsed_page.to_html
 
     parsed_page.internal_links.each do |link|
@@ -287,12 +300,12 @@ end
     PageModule.url(full_title)
   end
 
-  def get_parser
+  def get_parser(_content = raw_content)
     WikiCloth::Parser.context = {
       ns: StringUtils.upcase_first_char(namespace),
       title: title
     }
-    parser = WikiCloth::Parser.new(data: raw_content, noedit: true)
+    parser = WikiCloth::Parser.new(data: _content, noedit: true)
 
     parser.to_html
 
