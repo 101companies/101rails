@@ -4,6 +4,8 @@ RSpec.describe ScriptsController, type: :controller do
   let!(:page) { create(:page) }
   let!(:abstraction_page) { create(:abstraction_page) }
 
+  render_views
+
   describe 'show' do
     it 'gets show' do
       get(:show, params: { id: page.full_underscore_title })
