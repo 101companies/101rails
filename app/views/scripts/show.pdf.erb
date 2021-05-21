@@ -13,60 +13,6 @@
   }
 </style>
 
-<script type="text/javascript">
-  $(document).ready(function() {
-    $('iframe').each(function() {
-      var title = $(this).prev().text();
-      $(this).replaceWith('<a href="' + $(this).attr('src') + '">' + title + '</a>')
-    });
-  });
-  <%
-  if @pages
-    page_refs = @pages.map do |page|
-      {
-        id: page_path(page.full_underscore_title),
-        full_title: page.full_underscore_title
-      }
-    end
-  else
-    page_refs = []
-  end
-   %>
-
-  var links = <%= raw page_refs.to_json %>;
-
-  $(document).ready(function() {
-    var internal_links = $('a').filter(function(index) {
-      var href = $(this).attr('href');
-      if(!href) {
-        return false;
-      }
-      return href.indexOf('/') === 0 || href.indexOf('/../') === 0;
-    });
-
-    internal_links.each(function(index, value) {
-      var $value = $(value);
-      var href = $value.attr('href');
-      if(href[0] != '/') {
-        href = '/'+ href;
-      }
-      $value.attr('href', 'http://101companies.org' + href);
-    });
-
-    $.each(window.links, function(index, link) {
-      $('a[href=\"' + 'http://101companies.org/' + link.full_title + '\"]').each(function(index, value) {
-        var $value = $(value);
-        $value.attr('href', '#' + link.id);
-      });
-
-      $('a[href=\"' + 'http://101companies.org/' + link.full_title + '\"]').each(function(index, value) {
-        var $value = $(value);
-        $value.attr('href', '#' + link.id);
-      });
-    });
-  });
-</script>
-
 <!-- <script>
   function number_pages() {
     var vars={};
@@ -81,5 +27,5 @@
 </script> -->
 
 <% @pages&.each do |page| %>
-  <%= render(partial: 'pages/page', formats: :html, locals: {:@script_render => true, page: page}) %>
+  <%= fix_pdf_links render(partial: 'pages/page', formats: :html, locals: {:@script_render => true, page: page}) %>
 <% end %>
