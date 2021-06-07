@@ -1,8 +1,8 @@
 GIT
   remote: https://github.com/101companies/wikicloth
-  revision: 19dad59430e9e48856a9c0003e290a10b1765668
+  revision: bde387aab8b52602e50728bc13d4c5dec15c4b7a
   specs:
-    wikicloth (0.8.0)
+    wikicloth (0.8.1)
       activesupport
       builder
       expression_parser
