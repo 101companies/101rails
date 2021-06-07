@@ -1,10 +1,5 @@
 Wiki::Application.routes.draw do
   resources :create_wiki_metrics
-  constraints(host: /101companies.org/) do
-    match '/(*path)' => redirect { |params, _req|
-      URI.encode("https://101wiki.softlang.org/#{params[:path]}")
-    }, :via => %i[get post]
-  end
 
   resources :mappings, only: %i[edit update]
 

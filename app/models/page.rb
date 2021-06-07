@@ -172,16 +172,12 @@ end
       "No headline found for page #{full_title}"
     else
       decorate_headline(headline_elem.text).strip
-end
+    end
   end
 
   def parse(_content = raw_content)
     parsed_page = get_parser(_content)
     parsed_page.sections.first.auto_toc = false
-
-    parser = WikiCloth::Parser.new(data: _content, noedit: true)
-
-    parser.to_html
 
     html = parsed_page.to_html
 
