@@ -104,7 +104,6 @@ class PageModule
       title: namespace_and_title['title'],
       namespace: namespace_and_title['namespace']
     )
-    page.save ? page : nil
   end
 
   # find page without creating
