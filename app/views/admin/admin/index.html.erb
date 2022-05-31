@@ -1,21 +1,19 @@
 <div class='row'>
-  <div class='col-md-3'>
+  <div class='col-md-6'>
 
-    <div class='info-box'>
+    <div class='alert alert-primary'>
       <span class="info-box-icon bg-aqua">
         <i class="ion ion-ios-gear-outline" style="margin-top: 20px;"></i>
       </span>
 
-      <div class="info-box-content">
-        <span class="info-box-text">Pages</span>
-        <span class="info-box-number"><%= number_with_delimiter(@page_count) %></span>
-      </div>
+      <span class="info-box-text">Pages</span>
+      <span class="info-box-number"><%= number_with_delimiter(@page_count) %></span>
     </div>
 
   </div>
 
-  <div class="col-md-3">
-    <div class='info-box'>
+  <div class="col-md-6">
+    <div class='alert alert-primary'>
       <span class="info-box-icon bg-red">
         <i class="ion ion-alert" style="margin-top: 20px;"></i>
       </span>
@@ -33,53 +31,16 @@
     </div>
   </div>
 
-  <div class="col-md-3">
-    <div class='info-box'>
-      <span class="info-box-icon bg-green">
-        <i class="ion ion-person" style="margin-top: 20px;"></i>
-      </span>
-
-      <div class="info-box-content">
-        <span class="info-box-text">Visits today</span>
-        <span class="info-box-number"><%= number_with_delimiter(@today_visits) %></span>
-      </div>
-    </div>
-  </div>
-
-  <div class="col-md-3">
-    <div class='info-box'>
-      <span class="info-box-icon bg-yellow">
-        <i class="ion ion-eye" style="margin-top: 20px;"></i>
-      </span>
-
-      <div class="info-box-content">
-        <span class="info-box-text">Page Views</span>
-        <span class="info-box-number"><%= number_with_delimiter(@today_views) %></span>
-      </div>
-    </div>
-  </div>
-
 </div>
 
 <div class='row'>
-  <div class='col-md-8'>
+  <div class='col-md-12'>
     <div class='box'>
       <div class="box-header with-border">
         <h3 class="box-title">Page Edits</h3>
       </div>
       <div class="box-body">
-        <%= area_chart PageChange.group_by_week(:created_at).where('created_at > ?', Date.today.beginning_of_year).count %>
-      </div>
-    </div>
-  </div>
-
-  <div class='col-md-4'>
-    <div class='box'>
-      <div class='box-header with-border'>
-        <h3 class="box-title">Popular Pages</h>
-      </div>
-      <div class="box-body">
-        <%= pie_chart(@popular_page_views) %>
+        <%= area_chart PageChange.group_by_week(:created_at).count, points: false %>
       </div>
     </div>
   </div>

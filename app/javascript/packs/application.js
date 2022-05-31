@@ -21,6 +21,7 @@ import '../src/css/style';
 import $ from 'jquery';
 import 'popper.js';
 import 'bootstrap';
+import "chartkick/chart.js"
 
 import Turbolinks from 'turbolinks';
 Turbolinks.start();
