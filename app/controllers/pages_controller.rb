@@ -18,8 +18,7 @@ class PagesController < ApplicationController
     @page = GetPage.run(full_title: full_title).value[:page]
     # if page doesn't exist, but it's user page -> create page and redirect
     if @page.nil? && !current_user.nil? && full_title.casecmp("Contributor:#{current_user.github_name}").zero?
-      page = PageModule.create_page_by_full_title(full_title)
-      page.save
+      PageModule.create_page_by_full_title(full_title)
       redirect_to page_path(full_title) and return
     end
     # page not found and user can create page -> create new page by full_title
@@ -130,7 +129,7 @@ class PagesController < ApplicationController
 
     full_title = params[:id]
     page = PageModule.create_page_by_full_title(full_title)
-    if page.save
+    if page.persisted?
       redirect_to page_path(full_title) and return
     else
       flash[:error] = "You cannot create new page #{full_title}"

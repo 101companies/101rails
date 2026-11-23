@@ -96,11 +96,13 @@ class PageModule
     uri_to_wiki(full_title)
   end
 
+  # Creates (and persists) the page for a full title. Returns the page; if it is
+  # invalid it is returned unsaved with errors, so callers can check persisted?.
   def self.create_page_by_full_title(full_title)
     full_title = self.unescape_wiki_url(full_title)
     namespace_and_title = self.retrieve_namespace_and_title full_title
 
-    page = Page.new(
+    Page.create(
       title: namespace_and_title['title'],
       namespace: namespace_and_title['namespace']
     )
