@@ -12,7 +12,7 @@ end
 module Wiki
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
-    config.load_defaults 7.2
+    config.load_defaults 8.0
 
     # don't generate RSpec tests for views and helpers
     config.generators do |g|

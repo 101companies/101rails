@@ -1,14 +1,14 @@
 source 'https://rubygems.org'
-ruby '3.3.10'
+ruby '3.4.12'
 
 gem 'concurrent-ruby'
-gem 'json', '~> 2.6' # json 3.x dropped quirks_mode, which Rails 6.1 JSON encoding needs
+gem 'json', '~> 2.6' # json 3.x dropped quirks_mode, which ActiveSupport's JSON encoding still passes
 gem 'html2text'
 gem 'listen'
 gem 'oj'
 gem 'pg'
 gem 'pg_search'
-gem 'rails', '~> 7.2.0'
+gem 'rails', '~> 8.0.0'
 # Static assets: Propshaft serves app/assets (incl. the esbuild output in
 # app/assets/builds); jsbundling-rails provides the javascript:build task.
 gem 'jsbundling-rails'
