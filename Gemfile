@@ -8,7 +8,10 @@ gem 'listen'
 gem 'oj'
 gem 'pg'
 gem 'pg_search'
-gem 'rails', '~> 6.0'
+gem 'rails', '~> 7.0.0'
+# Rails 7 no longer depends on sprockets-rails; the app still uses
+# stylesheet_link_tag / app/assets, so opt back in (replaced by propshaft later).
+gem 'sprockets-rails'
 gem 'ruby-stemmer', '>=0.8.3', require: 'lingua/stemmer'
 gem 'scenic', '1.8.0'
 gem 'view_component'
@@ -38,9 +41,7 @@ group :development, :test do
   gem 'binding_of_caller'
   gem 'database_cleaner'
   gem 'factory_bot_rails'
-  gem 'mina'
   gem 'rails-controller-testing'
-  gem 'rails-erd'
   gem 'rspec-rails'
   gem 'rubocop-github'
   gem 'rubocop-performance', require: false
@@ -56,7 +57,6 @@ gem 'puma'
 
 gem 'chartkick'
 gem 'groupdate'
-gem 'hightop'
 
 # work with wiki markdown
 gem 'wikicloth', git: 'https://github.com/101companies/wikicloth'
@@ -74,7 +74,4 @@ gem 'react-rails'
 
 gem 'jbuilder'
 
-gem 'flamegraph'
-gem 'memory_profiler'
 gem 'rack-mini-profiler'
-gem 'stackprof'

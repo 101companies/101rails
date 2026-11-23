@@ -11,6 +11,9 @@ end
 
 module Wiki
   class Application < Rails::Application
+    # Initialize configuration defaults for originally generated Rails version.
+    config.load_defaults 7.0
+
     # don't generate RSpec tests for views and helpers
     config.generators do |g|
       g.view_specs false
@@ -23,9 +26,12 @@ module Wiki
     # -- all .rb files in that directory are automatically loaded.
 
     # Custom directories with classes and modules you want to be autoloadable.
-    # config.autoload_paths += %W(#{config.root}/extras)
-    # config.autoload_paths += %W(#{config.root}/lib)
-    config.autoload_paths += Dir["#{config.root}/lib", "#{config.root}/lib/**/"]
+    # `app/lib` is autoloaded by Rails already; only `lib` needs to be added.
+    config.paths.add 'lib', eager_load: true
+
+    # app/repos only holds commented-out drafts that define no constants, so
+    # Zeitwerk must not manage them (it would raise Zeitwerk::NameError).
+    Rails.autoloaders.main.ignore(Rails.root.join('app/repos'))
 
     # Only load the plugins named here, in the order given (default is alphabetical).
     # :all can be used as a placeholder for all plugins not explicitly named.
@@ -62,10 +68,7 @@ module Wiki
     # parameters by using an attr_accessible or attr_protected declaration.
     # config.active_record.whitelist_attributes = true
 
-    # Enable the asset pipeline
-    config.assets.enabled = true
-
-    # Version of your assets, change this if you want to expire all your assets
+    # Enable the asset pipeline (sprockets; static images under app/assets)
     config.assets.version = '1.0'
 
     config.react.addons = true

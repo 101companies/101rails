@@ -9,8 +9,8 @@
 Wiki::Application.configure do
   # Settings specified here will take precedence over those in config/application.rb
 
-  # Code is not reloaded between requests
-  config.cache_classes = true
+  # Code is not reloaded between requests.
+  config.enable_reloading = false
 
   config.log_level = :debug
 
@@ -28,13 +28,8 @@ Wiki::Application.configure do
     config.logger    = ActiveSupport::TaggedLogging.new(logger)
   end
 
-  # Compress JavaScripts and CSS
-  config.assets.compress = true
-
   # Don't fallback to assets pipeline if a precompiled asset is missed
   config.assets.compile = false
-
-  config.assets.initialize_on_precompile = false
 
   # Generate digests for assets URLs
   config.assets.digest = true
@@ -79,6 +74,9 @@ Wiki::Application.configure do
 
   # Send deprecation notices to registered listeners
   config.active_support.deprecation = :notify
+
+  # Do not dump schema after migrations.
+  config.active_record.dump_schema_after_migration = false
 
   config.action_mailer.default_url_options = { host: '101companies.org' }
   # ActionMailer Config
