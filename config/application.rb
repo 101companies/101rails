@@ -12,7 +12,7 @@ end
 module Wiki
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
-    config.load_defaults 7.0
+    config.load_defaults 7.1
 
     # don't generate RSpec tests for views and helpers
     config.generators do |g|
@@ -53,9 +53,6 @@ module Wiki
 
     # Configure sensitive parameters which will be filtered from the log file.
     config.filter_parameters += %i[password password_confirmation]
-
-    # Enable escaping HTML in JSON.
-    config.active_support.escape_html_entities_in_json = true
 
     # Use SQL instead of Active Record's schema dumper when creating the database.
     # This is necessary if your schema can't be completely dumped by the schema dumper,

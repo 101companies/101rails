@@ -8,7 +8,7 @@ gem 'listen'
 gem 'oj'
 gem 'pg'
 gem 'pg_search'
-gem 'rails', '~> 7.0.0'
+gem 'rails', '~> 7.1.0'
 # Rails 7 no longer depends on sprockets-rails; the app still uses
 # stylesheet_link_tag / app/assets, so opt back in (replaced by propshaft later).
 gem 'sprockets-rails'
