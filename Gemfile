@@ -1,5 +1,5 @@
 source 'https://rubygems.org'
-ruby '3.0.3'
+ruby '3.3.10'
 
 gem 'concurrent-ruby'
 gem 'json', '~> 2.6' # json 3.x dropped quirks_mode, which Rails 6.1 JSON encoding needs
@@ -8,12 +8,12 @@ gem 'listen'
 gem 'oj'
 gem 'pg'
 gem 'pg_search'
-gem 'rails', '~> 7.1.0'
+gem 'rails', '~> 7.2.0'
 # Rails 7 no longer depends on sprockets-rails; the app still uses
 # stylesheet_link_tag / app/assets, so opt back in (replaced by propshaft later).
 gem 'sprockets-rails'
 gem 'ruby-stemmer', '>=0.8.3', require: 'lingua/stemmer'
-gem 'scenic', '1.8.0'
+gem 'scenic'
 gem 'view_component'
 gem 'webpacker'
 gem 'wicked_pdf'
