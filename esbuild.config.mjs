@@ -3,15 +3,27 @@
 //   node esbuild.config.mjs            one-off build
 //   node esbuild.config.mjs --watch    watch mode (used by `bin/dev`)
 //
-// NODE_ENV=production minifies and drops sourcemaps.
+// NODE_ENV=production or RAILS_ENV=production minifies and drops sourcemaps.
+import { mkdirSync, readdirSync, rmSync } from 'node:fs';
 import esbuild from 'esbuild';
 
 const watch = process.argv.includes('--watch');
-const production = process.env.NODE_ENV === 'production';
+// `rails assets:precompile` sets RAILS_ENV (not NODE_ENV), so honour both.
+const production =
+  process.env.NODE_ENV === 'production' || process.env.RAILS_ENV === 'production';
+
+const outdir = 'app/assets/builds';
+
+// Propshaft copies everything under app/assets, so stale output from a previous
+// build (e.g. an unminified bundle with sourcemaps) must not be shipped.
+mkdirSync(outdir, { recursive: true });
+for (const file of readdirSync(outdir)) {
+  if (file !== '.keep') rmSync(`${outdir}/${file}`, { recursive: true, force: true });
+}
 
 const shared = {
   bundle: true,
-  outdir: 'app/assets/builds',
+  outdir,
   sourcemap: !production,
   minify: production,
   logLevel: 'info',

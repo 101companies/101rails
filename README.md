@@ -6,28 +6,28 @@
 
 ## Software dependencies
 
-Before starting work with the application, you need to install such dependencies, if you are using Ubuntu:
+Versions are pinned in `.tool-versions` and are picked up by [mise](https://mise.jdx.dev):
 
-    apt-get install postfix curl git-core zlib1g-dev libssl-dev libreadline-dev
-      libyaml-dev libsqlite3-dev sqlite3 libxml2-dev libxslt1-dev postgresql-server-dev-all postgresql-contrib build-essential nodejs ruby2.3 ruby2.3-dev htop postgresql-9.5 postgresql-client bundler
+* Ruby 4.0.9
+* Node 22 (only needed to build the JavaScript/CSS bundles)
+* PostgreSQL (with `libpq-dev` and `build-essential` to compile the native gems)
+
+On Ubuntu:
+
+    apt-get install libpq-dev postgresql postgresql-client build-essential
 
 ## Ruby
 
-With OSX you already have Ruby.
+Install the pinned Ruby and Node with mise:
 
-If you are using Ubuntu you can install ruby via [rvm](http://rvm.io) or [rbenv](https://github.com/sstephenson/rbenv/).
-
-This app was tested with ruby 2.3.0-2.7.1.
+    mise install
 
 ## Installing the app
 
-At first you need to install **bundler** gem.
-
-    gem install bundler
-
-Now you need go to the project folder und install app:
+Install the Ruby and JavaScript dependencies:
 
     bundle install
+    npm install
 
 You need a postgres dump which must be acquired from the 101companies admins.
 If you have a dump load it like this:
@@ -36,7 +36,19 @@ If you have a dump load it like this:
 
 After setting up the database you need to start it and then launch application with:
 
+    bin/dev          # builds the JS/CSS bundles in watch mode + starts the server
+
+or, without asset watching:
+
+    npm run build
     bin/rails s
+
+JavaScript and CSS are bundled by [esbuild](https://esbuild.github.io) into
+`app/assets/builds` and served by [Propshaft](https://github.com/rails/propshaft).
+`app/javascript/application.js` and `app/javascript/styles/application.css` are
+the two entry points; React components are registered in
+`app/javascript/components/index.js` and mounted from `react_component` calls in
+views.
 
 ## Admin rights
 
@@ -65,6 +77,25 @@ For successful work with project in development mode you need to define next ENV
     export GITHUB_SECRET_DEV=
     export MONGODB_USER=
     export MONGODB_PWD=
+
+## Upgrade history (6.1 -> 8.1, Ruby 3.0 -> 4.0)
+
+The app was upgraded one Rails minor at a time, with a green test suite at every
+step:
+
+| Step | Rails | Ruby | Notes |
+| --- | --- | --- | --- |
+| 1 | 6.1.7.10 | 3.0.3 | baseline; `require 'logger'` in `config/boot.rb` (concurrent-ruby >= 1.3.5), `json` pinned < 3 |
+| 2 | 7.0.10 | 3.0.3 | `config.load_defaults 7.0` (this also enabled Zeitwerk), `sprockets-rails` added back |
+| 3 | 7.1.6 | 3.0.3 | `config/secrets.yml` removed (production reads `SECRET_KEY_BASE`) |
+| 4 | 7.2.3 | 3.3.10 | Rack 3 |
+| 5 | 7.2.3 | 3.3.10 | Webpacker + react-rails replaced by esbuild + Propshaft + jsbundling-rails |
+| 6 | 8.0.5.2 | 3.4.12 | `config.load_defaults 8.0` |
+| 7 | 8.1.4.1 | 4.0.9 | `json` pin dropped (Rails 8.1 no longer uses `quirks_mode`), ViewComponent 4 |
+
+Dropped along the way: `webpacker`, `react-rails`, `sprockets-rails`, `mina`,
+`rails-erd`, `hightop`, `flamegraph`, `stackprof`, `memory_profiler`,
+`turbolinks`, and `config/deploy.rb`.
 
 ## Contributing
 

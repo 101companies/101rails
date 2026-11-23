@@ -1,0 +1,14 @@
+#!/usr/bin/env sh
+
+if ! command -v npm > /dev/null; then
+  echo "npm not found. Install Node 22 (see .tool-versions) to build the JavaScript/CSS bundles."
+  exit 1
+fi
+
+trap "trap - SIGTERM && kill -- -$$" SIGINT SIGTERM EXIT
+
+# Watch the esbuild bundles (app/assets/builds) in the background ...
+npm run build -- --watch &
+
+# ... and run the Rails server in the foreground.
+bin/rails server
