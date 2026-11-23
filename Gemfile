@@ -9,13 +9,13 @@ gem 'oj'
 gem 'pg'
 gem 'pg_search'
 gem 'rails', '~> 7.2.0'
-# Rails 7 no longer depends on sprockets-rails; the app still uses
-# stylesheet_link_tag / app/assets, so opt back in (replaced by propshaft later).
-gem 'sprockets-rails'
+# Static assets: Propshaft serves app/assets (incl. the esbuild output in
+# app/assets/builds); jsbundling-rails provides the javascript:build task.
+gem 'jsbundling-rails'
+gem 'propshaft'
 gem 'ruby-stemmer', '>=0.8.3', require: 'lingua/stemmer'
 gem 'scenic'
 gem 'view_component'
-gem 'webpacker'
 gem 'wicked_pdf'
 gem 'wkhtmltopdf-binary'
 
@@ -69,8 +69,6 @@ gem 'simple_form'
 
 # ui for diff
 gem 'differ'
-
-gem 'react-rails'
 
 gem 'jbuilder'
 

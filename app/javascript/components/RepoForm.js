@@ -31,7 +31,7 @@ export default class RepoForm extends React.Component {
           loading_folders: false
         });
       }).fail(() => {
-        humane.error("Could not load folders from repository")
+        console.error("Could not load folders from repository")
         this.setState({
           folders: folders,
           loading_folders: false

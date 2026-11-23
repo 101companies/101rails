@@ -1,0 +1,5 @@
+/* Entry point for the stylesheet bundle (built by esbuild to
+ * app/assets/builds/application.css and served by Propshaft).
+ */
+@import "bootstrap/dist/css/bootstrap.css";
+@import "../src/css/pygments.css";

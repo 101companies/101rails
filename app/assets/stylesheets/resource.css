@@ -1,0 +1,13 @@
+/***************************************************************************************
+* This file contains the additional style for the visualization of linked data resources
+***************************************************************************************/
+table.res {
+  width: 100%;
+}
+tr.o td {
+  background-color: #f9f9f8;
+}
+tr.res td {
+  border-top: 1px solid #c3d9ff;
+  padding: 10px;
+}

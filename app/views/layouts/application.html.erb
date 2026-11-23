@@ -2,8 +2,8 @@
   <head>
     <title><%= yield(:title) %></title>
 
-    <%= stylesheet_pack_tag 'application', media: 'all' %>
-    <%= javascript_pack_tag 'application' %>
+    <%= stylesheet_link_tag 'application', media: 'all' %>
+    <%= javascript_include_tag 'application', defer: true %>
 
     <%= csrf_meta_tags %>
     <% if current_user %>
