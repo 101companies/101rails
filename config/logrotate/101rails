@@ -13,7 +13,11 @@
 # is that log lines written between the copy and the truncate can be lost, which
 # is acceptable here; the alternative is `create` plus `sudo systemctl restart
 # puma` in a `postrotate` hook.
+#
+# `su` is required too: the mina log directory is group-writable by `ubuntu`, and
+# logrotate otherwise refuses with "parent directory has insecure permissions".
 /home/ubuntu/101rails/shared/log/*.log {
+    su ubuntu ubuntu
     daily
     rotate 14
     compress
