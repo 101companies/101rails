@@ -78,6 +78,20 @@ For successful work with project in development mode you need to define next ENV
     export MONGODB_USER=
     export MONGODB_PWD=
 
+## Logging
+
+Production logs at `:info` level. Do **not** set `config.log_level = :debug` in
+production: every SQL statement of every request is written, and the log grew to
+9.1 GB on the production box before it was cleaned up.
+
+Rotation is not automatic. Install the shipped logrotate rule once per server:
+
+    sudo cp config/logrotate/101rails /etc/logrotate.d/101rails
+    sudo logrotate --debug /etc/logrotate.d/101rails   # dry run
+
+It rotates `shared/log/*.log` daily, keeps 14 days, compresses, and uses
+`copytruncate` so Puma never has to be restarted.
+
 ## Upgrade history (6.1 -> 8.1, Ruby 3.0 -> 4.0)
 
 The app was upgraded one Rails minor at a time, with a green test suite at every

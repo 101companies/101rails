@@ -12,7 +12,7 @@ Wiki::Application.configure do
   # Code is not reloaded between requests.
   config.enable_reloading = false
 
-  config.log_level = :debug
+  config.log_level = :info
 
   # Full error reports are disabled and caching is turned on
   config.consider_all_requests_local       = false

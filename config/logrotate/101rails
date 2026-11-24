@@ -1,0 +1,24 @@
+# Log rotation for the 101wiki production log.
+#
+# Install with:
+#
+#     sudo cp config/logrotate/101rails /etc/logrotate.d/101rails
+#     sudo logrotate --debug /etc/logrotate.d/101rails   # dry run
+#
+# The log lives in the mina `shared` directory so it survives deploys. Without
+# this, production.log grows forever (it reached 9.1 GB on 101companies.org).
+#
+# `copytruncate` is required because Puma keeps the log file open: rotating with
+# `create` would leave Puma writing to the old (now renamed) inode. The trade-off
+# is that log lines written between the copy and the truncate can be lost, which
+# is acceptable here; the alternative is `create` plus `sudo systemctl restart
+# puma` in a `postrotate` hook.
+/home/ubuntu/101rails/shared/log/*.log {
+    daily
+    rotate 14
+    compress
+    delaycompress
+    missingok
+    notifempty
+    copytruncate
+}
