@@ -20,13 +20,18 @@ test:
   password: root110120
   database: wiki_test
 
+# DATABASE_URL wins when it is set (Dokku's dokku-postgres injects it). Without
+# it we fall back to the on-host cluster, which is what the systemd puma.service
+# unit uses, so that path keeps working as a rollback.
 production:
   adapter:  postgresql
-  encoding: utf8
-  reconnect: false
-  pool: 8
   encoding: unicode
-  username: postgres
+  pool: 8
+<% if ENV['DATABASE_URL'] && !ENV['DATABASE_URL'].empty? %>
+  url: <%= ENV['DATABASE_URL'] %>
+<% else %>
   host: localhost
+  username: postgres
   database: wiki_production
-  password: <%= ENV.fetch('PGPASSWORD') {}  %>
+  password: <%= ENV.fetch('PGPASSWORD') {} %>
+<% end %>
