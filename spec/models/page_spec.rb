@@ -20,6 +20,14 @@ describe Page do
     end
   end
 
+  describe 'parse' do
+    it 'parses pages using the wikicloth file extension' do
+      page = build(:page, raw_content: '<file url="missing.rb">example</file>')
+
+      expect(page.parse).to include('Fragment not found')
+    end
+  end
+
   describe 'get_metadata_section' do
     it 'gives the section if metadata exists' do
       page = create :page
