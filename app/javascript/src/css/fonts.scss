@@ -1,5 +1,5 @@
-@import url(https://fonts.googleapis.com/css?family=Leckerli+One);
-
+// The Google Fonts @import lives in styles/application.scss, where it stays
+// first in the output (a CSS @import after other rules is ignored).
 $monospaced_font_family_with_bold: "Menlo", "Ubuntu Mono", "Droid Sans Mono", "Consolas", monospaced;
 $monospaced_font_family: "Monaco", $monospaced_font_family_with_bold;
 $normal_font_family: "Tahoma", "Helvetica Neue", "Helvetica", "Arial", sans-serif;

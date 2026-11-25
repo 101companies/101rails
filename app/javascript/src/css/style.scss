@@ -1,4 +1,6 @@
-@import "~bootstrap/scss/bootstrap.scss";
+// The `~` prefix was a webpack convention; dart-sass resolves bootstrap from
+// node_modules via --load-path instead.
+@import "bootstrap/scss/bootstrap";
 @import "./pygments";
 
 
@@ -231,7 +233,9 @@ table {
   width: 180px;
   background-size: 100%;
   float: left;
-  background-image: url(/assets/logo2.jpg);
+  // Served from public/, not app/assets: Propshaft does not rewrite url() in
+  // stylesheets, so an /assets/... path here would 404 (no digest).
+  background-image: url(/logo2.jpg);
 }
 
 .page {

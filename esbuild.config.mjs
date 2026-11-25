@@ -3,6 +3,9 @@
 //   node esbuild.config.mjs            one-off build
 //   node esbuild.config.mjs --watch    watch mode (used by `bin/dev`)
 //
+// CSS is not handled here: it is SCSS, so dart-sass compiles it (see the
+// build:css npm script). esbuild has no SCSS support.
+//
 // NODE_ENV=production or RAILS_ENV=production minifies and drops sourcemaps.
 import { mkdirSync, readdirSync, rmSync } from 'node:fs';
 import esbuild from 'esbuild';
@@ -16,6 +19,7 @@ const outdir = 'app/assets/builds';
 
 // Propshaft copies everything under app/assets, so stale output from a previous
 // build (e.g. an unminified bundle with sourcemaps) must not be shipped.
+// Note this also clears the compiled stylesheet, so build:css must run after.
 mkdirSync(outdir, { recursive: true });
 for (const file of readdirSync(outdir)) {
   if (file !== '.keep') rmSync(`${outdir}/${file}`, { recursive: true, force: true });
@@ -36,13 +40,11 @@ const shared = {
 };
 
 const js = { ...shared, entryPoints: ['app/javascript/application.js'] };
-const css = { ...shared, entryPoints: ['app/javascript/styles/application.css'] };
 
 if (watch) {
-  const ctx = await esbuild.context({ ...js, entryPoints: [...js.entryPoints, ...css.entryPoints] });
+  const ctx = await esbuild.context(js);
   await ctx.watch();
   console.log('esbuild watching for changes...');
 } else {
   await esbuild.build(js);
-  await esbuild.build(css);
 }

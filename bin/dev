@@ -7,8 +7,9 @@ fi
 
 trap "trap - SIGTERM && kill -- -$$" SIGINT SIGTERM EXIT
 
-# Watch the esbuild bundles (app/assets/builds) in the background ...
-npm run build -- --watch &
+# Watch the bundles (app/assets/builds) in the background: esbuild for JS,
+# dart-sass for CSS.
+npm run watch &
 
 # ... and run the Rails server in the foreground.
 bin/rails server

@@ -1,0 +1,14 @@
+// The webfont import must be the very first thing in the output: a CSS
+// @import that follows other rules is ignored by browsers. dart-sass does not
+// hoist it, so it lives here rather than in fonts.scss.
+@import url(https://fonts.googleapis.com/css?family=Leckerli+One);
+
+// Entry point for the stylesheet bundle.
+//
+// Compiled by dart-sass to app/assets/builds/application.css and served by
+// Propshaft. style.scss is the app's own stylesheet; it pulls in Bootstrap's
+// SCSS and pygments, so this entry only has to reach it.
+//
+// This used to be a plain .css file importing bootstrap's prebuilt CSS, which
+// silently dropped the 750-line style.scss (esbuild cannot compile SCSS).
+@import "../src/css/style";
